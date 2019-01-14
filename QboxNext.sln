@@ -40,7 +40,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Domain", "src\Qbox
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Infrastructure.Azure", "src\QboxNext.Infrastructure.Azure\QboxNext.Infrastructure.Azure.csproj", "{6E6DFA5A-80D3-4A4B-9F52-946ACCC8414E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QboxNext.Common", "src\QboxNext.Common\QboxNext.Common.csproj", "{0D0F4815-3670-4325-89F8-6F7C1C880325}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Common", "src\QboxNext.Common\QboxNext.Common.csproj", "{0D0F4815-3670-4325-89F8-6F7C1C880325}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
