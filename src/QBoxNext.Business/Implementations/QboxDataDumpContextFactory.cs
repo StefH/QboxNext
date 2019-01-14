@@ -6,6 +6,7 @@ using QboxNext.Core.Utils;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
+using QBoxNext.Business.Interfaces.Internal;
 using QBoxNext.Business.Interfaces.Public;
 using QBoxNext.Business.Models;
 using System;
@@ -13,28 +14,27 @@ using System.Collections.Generic;
 
 namespace QBoxNext.Business.Implementations
 {
-    public class QboxDataDumpContextFactory : IQboxDataDumpContextFactory
+    internal class QboxDataDumpContextFactory : IQboxDataDumpContextFactory
     {
         private readonly ILogger<QboxDataDumpContextFactory> _logger;
-        private readonly IStorageProvider _storageProvider;
+        private readonly IStorageProviderFactory _storageProviderFactory;
 
-        //public QboxDataDumpContextFactory([NotNull] IStorageProvider storageProvider, [NotNull] ILogger<QboxDataDumpContextFactory> logger)
-        //{
-        //    Guard.IsNotNull(logger, nameof(logger));
-
-        //    _storageProvider = storageProvider;
-        //    _logger = logger;
-        //}
-
-        public QboxDataDumpContextFactory([NotNull] ILogger<QboxDataDumpContextFactory> logger)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QboxDataDumpContextFactory"/> class.
+        /// </summary>
+        /// <param name="storageProviderFactory">The StorageProviderFactory.</param>
+        /// <param name="logger">The logger.</param>
+        public QboxDataDumpContextFactory([NotNull] IStorageProviderFactory storageProviderFactory, [NotNull] ILogger<QboxDataDumpContextFactory> logger)
         {
+            Guard.IsNotNull(storageProviderFactory, nameof(storageProviderFactory));
             Guard.IsNotNull(logger, nameof(logger));
 
+            _storageProviderFactory = storageProviderFactory;
             _logger = logger;
         }
 
-        /// <inheritdoc cref="IQboxDataDumpContextFactory.CreateContext(QboxContext)"/>
-        public QboxDataDumpContext CreateContext(QboxContext context)
+        /// <inheritdoc cref="IQboxDataDumpContextFactory.Create"/>
+        public QboxDataDumpContext Create(QboxContext context)
         {
             Guard.IsNotNull(context, nameof(context));
 
@@ -51,99 +51,56 @@ namespace QBoxNext.Business.Implementations
             }
             catch (Exception e)
             {
-                string s = $"SerialNumber: {context.SerialNumber} ProductNumber: {context.ProductNumber} original error message: {e.Message}";
-                _logger.LogError(e, s);
-                return new QboxDataDumpContext("N/A", 0, "N/A", "N/A", null, error: e.Message + " - " + s); //refactor: beter oplossen wordt nu gecontroleerd in de controller en die gooit een exception
-            }
-            finally
-            {
-                _logger.LogTrace("Return");
+                string errorMessage = $"SerialNumber: {context.SerialNumber} ProductNumber: {context.ProductNumber} original error message: {e.Message}";
+                _logger.LogError(e, errorMessage);
+
+                return new QboxDataDumpContext("N/A", 0, "N/A", "N/A", null, e.Message + " - " + errorMessage); //refactor: beter oplossen wordt nu gecontroleerd in de controller en die gooit een exception
             }
         }
 
-        /// <summary>
-		/// Returns a mini poco by serial number. First tries the Redis cache repository and if not found
-		/// checks if it can find the box in Eco.
-		/// Upon connection exception it will also fall back to ECO.
-		/// </summary>
-		/// <param name="sn">Serialnumber of the Mini</param>
-		/// <returns>MiniPoco object holding the Mini data</returns>
-        private MiniPoco InitMini(string sn)
+        private MiniPoco InitMini(string serialNumber)
         {
-            try
+            var counterSensorMappingsSmartMeter = new CounterSensorMappingPoco
             {
-                var counterSensorMappingsSmartMeter = new CounterSensorMappingPoco
-                {
-                    PeriodeBegin = new DateTime(2000, 1, 1),
-                    Formule = 1000
-                };
+                PeriodeBegin = new DateTime(2000, 1, 1),
+                Formule = 1000
+            };
 
-                var mini = new MiniPoco
-                {
-                    SerialNumber = sn,
-                    DataStorePath = Environment.OSVersion.Platform == PlatformID.Win32NT ? @"D:\QboxNextData" : "/var/qboxnextdata",
-                    Counters = new List<CounterPoco>
-                    {
-                        new CounterPoco
-                        {
-                            CounterId = 181,
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        },
-                        new CounterPoco
-                        {
-                            CounterId = 182,
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        },
-                        new CounterPoco
-                        {
-                            CounterId = 281,
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        },
-                        new CounterPoco
-                        {
-                            CounterId = 282,
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        },
-                        new CounterPoco
-                        {
-                            CounterId = 2421,
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        },
-                        new CounterPoco
-                        {
-                            CounterId = 1,
-                            // This is not correct, since the Eltako's have different formula's. Keep it simple for now.
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        }
-                    },
-                    Clients = new List<ClientQboxPoco>
-                    {
-                        new ClientQboxPoco
-                        {
-                            ClientId = 0,
-                            MeterType = DeviceMeterType.Smart_Meter_EG,     // Main meter type for second Qbox of Duo.
-                            SecondaryMeterType = DeviceMeterType.SO_Pulse   // Should be DeviceMeterType.SO_Pulse for Mono with Qbox Solar.
-                        }
-                    },
-                    Precision = Precision.mWh,
-                    MeterType = DeviceMeterType.NO_Meter,       // This should contain the actual meter type for Mono.
-                    SecondaryMeterType = DeviceMeterType.None,  // This should be DeviceMeterType.SO_Pulse for Mono with Qbox Solar.
-                    AutoAnswer = true
-                };
-
-                mini.PrepareCounters();
-
-                // TODO _storageProvider
-                mini.SetStorageProvider();
-
-                return mini;
-            }
-            catch (Exception e)
+            var mini = new MiniPoco
             {
-                _logger.LogError(e, e.Message);
+                SerialNumber = serialNumber,
+                Counters = new List<CounterPoco>
+                {
+                    new CounterPoco { CounterId = 181 },
+                    new CounterPoco { CounterId = 182 },
+                    new CounterPoco { CounterId = 281 },
+                    new CounterPoco { CounterId = 282 },
+                    new CounterPoco { CounterId = 2421 }
+                },
+                Clients = new List<ClientQboxPoco>
+                {
+                    new ClientQboxPoco
+                    {
+                        ClientId = 0,
+                        MeterType = DeviceMeterType.Smart_Meter_EG,     // Main meter type for second Qbox of Duo.
+                        SecondaryMeterType = DeviceMeterType.SO_Pulse   // Should be DeviceMeterType.SO_Pulse for Mono with Qbox Solar.
+                    }
+                },
+                Precision = Precision.mWh,
+                MeterType = DeviceMeterType.NO_Meter,       // This should contain the actual meter type for Mono.
+                SecondaryMeterType = DeviceMeterType.None,  // This should be DeviceMeterType.SO_Pulse for Mono with Qbox Solar.
+                AutoAnswer = true
+            };
+
+            // Init all Counters
+            foreach (var counter in mini.Counters)
+            {
+                counter.QboxSerial = serialNumber;
+                counter.CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter };
+                counter.StorageProvider = _storageProviderFactory.Create(serialNumber, counter.CounterId);
             }
 
-            throw new ArgumentOutOfRangeException(nameof(sn));
+            return mini;
         }
     }
 }

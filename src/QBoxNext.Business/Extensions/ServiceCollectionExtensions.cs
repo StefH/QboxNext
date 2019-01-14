@@ -3,9 +3,8 @@ using Qboxes.Classes;
 using Qboxes.Interfaces;
 using QboxNext.Core.Utils;
 using QboxNext.Qboxes.Parsing.Factories;
-using QboxNext.Qserver.Core.Factories;
-using QboxNext.Qserver.Core.Interfaces;
 using QBoxNext.Business.Implementations;
+using QBoxNext.Business.Interfaces.Internal;
 using QBoxNext.Business.Interfaces.Public;
 
 // ReSharper disable once CheckNamespace
@@ -33,14 +32,13 @@ namespace Microsoft.Extensions.DependencyInjection
         private static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IQboxMessagesLogger, QboxMessagesNullLogger>();
-            // services.AddScoped<IStorageProvider, CustomStorageProvider>(); TODO
+            services.AddSingleton<IStorageProviderFactory, StorageProviderFactory>();
             services.AddScoped<IQboxDataDumpContextFactory, QboxDataDumpContextFactory>();
         }
 
         private static void Register()
         {
             ParserFactory.RegisterAllParsers();
-            StorageProviderFactory.Register(StorageProvider.kWhStorage, typeof(CustomStorageProvider));
         }
     }
 }

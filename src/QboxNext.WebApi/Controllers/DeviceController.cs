@@ -48,7 +48,7 @@ namespace QboxNext.WebApi.Controllers
 
             var context = await MapQboxContextAsync(productNumber, serialNumber);
 
-            var qboxDataDumpContext = _qboxDataDumpContextFactory.CreateContext(context);
+            var qboxDataDumpContext = _qboxDataDumpContextFactory.Create(context);
             _logger.LogInformation(qboxDataDumpContext.Mini.SerialNumber);
 
             string result = new MiniDataHandler(qboxDataDumpContext, _qboxMessagesLogger).Handle();
