@@ -11,8 +11,13 @@ This project is based on https://bitbucket.org/qboxnext/dotnetcore-minimal all c
 WebApi which can receive messages send by the Qbox.
 
 ### QBoxNext.Business
-This project is a DI compatible business project which stores the received measerments data from Qbox.
+This project is a DI compatible business project which stores the received measurements data from Qbox.
 
+### QboxNext.Domain
+Domain model.
 
-## TODO
-TODO
+### QboxNext.Common
+Common logic.
+
+### QboxNext.Infrastructure.Azure
+This project stores the measurements in Azure Tables.
