@@ -1,4 +1,6 @@
-﻿using QboxNext.Core.Utils;
+﻿using JetBrains.Annotations;
+using QboxNext.Common.Validation;
+using QboxNext.Infrastructure.Azure.Interfaces.Public;
 using QboxNext.Qserver.Core.Interfaces;
 using QBoxNext.Business.Interfaces.Internal;
 
@@ -6,13 +8,20 @@ namespace QBoxNext.Business.Implementations
 {
     internal class StorageProviderFactory : IStorageProviderFactory
     {
+        private readonly IMeasurementStoreService _measurementStoreService;
+
+        public StorageProviderFactory([NotNull] IMeasurementStoreService measurementStoreService)
+        {
+            _measurementStoreService = measurementStoreService;
+        }
+
         /// <inheritdoc cref="IStorageProviderFactory.Create(string, string, int)"/>
         public IStorageProvider Create(string serialNumber, string productNumber, int counterId)
         {
-            Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
-            Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));
+            Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
+            Guard.NotNullOrEmpty(productNumber, nameof(productNumber));
 
-            return new CustomStorageProvider(serialNumber, productNumber, counterId);
+            return new CustomStorageProvider(_measurementStoreService, serialNumber, productNumber, counterId);
         }
     }
 }

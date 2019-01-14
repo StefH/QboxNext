@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Qboxes.Classes;
 using Qboxes.Interfaces;
-using QboxNext.Core.Utils;
+using QboxNext.Common.Validation;
 using QBoxNext.Business.Interfaces.Public;
 using QBoxNext.Business.Models;
 using System.IO;
@@ -27,9 +27,9 @@ namespace QboxNext.WebApi.Controllers
         /// <param name="logger">The logger.</param>
         public DeviceController([NotNull] IQboxDataDumpContextFactory qboxDataDataDumpContextFactory, [NotNull] IQboxMessagesLogger qboxMessagesLogger, [NotNull] ILogger<DeviceController> logger)
         {
-            Guard.IsNotNull(qboxDataDataDumpContextFactory, nameof(qboxDataDataDumpContextFactory));
-            Guard.IsNotNull(qboxMessagesLogger, nameof(qboxMessagesLogger));
-            Guard.IsNotNull(logger, nameof(logger));
+            Guard.NotNull(qboxDataDataDumpContextFactory, nameof(qboxDataDataDumpContextFactory));
+            Guard.NotNull(qboxMessagesLogger, nameof(qboxMessagesLogger));
+            Guard.NotNull(logger, nameof(logger));
 
             _qboxDataDumpContextFactory = qboxDataDataDumpContextFactory;
             _qboxMessagesLogger = qboxMessagesLogger;
@@ -41,8 +41,8 @@ namespace QboxNext.WebApi.Controllers
         [HttpPost("/device/qbox/{productNumber}/{serialNumber}")]
         public async Task<ActionResult> PostAsync([NotNull] string productNumber, [NotNull] string serialNumber)
         {
-            Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));
-            Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
+            Guard.NotNullOrEmpty(productNumber, nameof(productNumber));
+            Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
             _logger.LogTrace("Enter");
 
@@ -60,7 +60,7 @@ namespace QboxNext.WebApi.Controllers
 
         private async Task<QboxContext> MapQboxContextAsync(string productNumber, string serialNumber)
         {
-            return new QboxContext()
+            return new QboxContext
             {
                 ProductNumber = productNumber,
                 SerialNumber = serialNumber,

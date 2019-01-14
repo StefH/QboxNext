@@ -10,12 +10,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <!--<PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />-->
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\QBoxNext.Business\QBoxNext.Business.csproj" />
+    <ProjectReference Include="..\QboxNext.Infrastructure.Azure\QboxNext.Infrastructure.Azure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
