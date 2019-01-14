@@ -45,7 +45,7 @@ namespace QBoxNext.Business.Implementations
                 var message = QboxMessageDecrypter.DecryptPlainOrEncryptedMessage(context.Message);
                 int length = context.Message.Length;
 
-                var mini = InitMini(context.SerialNumber);
+                var mini = InitMini(context.SerialNumber, context.ProductNumber);
 
                 return new QboxDataDumpContext(message, length, lastSeenAtUrl, externalIp, mini);
             }
@@ -58,7 +58,7 @@ namespace QBoxNext.Business.Implementations
             }
         }
 
-        private MiniPoco InitMini(string serialNumber)
+        private MiniPoco InitMini(string serialNumber, string productNumber)
         {
             var counterSensorMappingsSmartMeter = new CounterSensorMappingPoco
             {
@@ -97,7 +97,7 @@ namespace QBoxNext.Business.Implementations
             {
                 counter.QboxSerial = serialNumber;
                 counter.CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter };
-                counter.StorageProvider = _storageProviderFactory.Create(serialNumber, counter.CounterId);
+                counter.StorageProvider = _storageProviderFactory.Create(serialNumber, productNumber, counter.CounterId);
             }
 
             return mini;

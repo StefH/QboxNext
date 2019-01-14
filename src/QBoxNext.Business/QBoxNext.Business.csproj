@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QboxNext.Domain\QboxNext.Domain.csproj" />
     <ProjectReference Include="..\QboxNext\QboxNext.csproj" />
   </ItemGroup>
 
