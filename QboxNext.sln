@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AF60A9C5-549D-46BC-B782-7B7AD1C207D0}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
+		GitHubReleaseNotes.txt = GitHubReleaseNotes.txt
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -35,7 +36,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext", "src\QboxNext\Qb
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-api", "src-api", "{94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QboxNext.Domain", "src\QboxNext.Domain\QboxNext.Domain.csproj", "{B6F8FED6-4F61-452C-85B1-B4B898E1BD1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Domain", "src\QboxNext.Domain\QboxNext.Domain.csproj", "{B6F8FED6-4F61-452C-85B1-B4B898E1BD1C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Infrastructure.Azure", "src\QboxNext.Infrastructure.Azure\QboxNext.Infrastructure.Azure.csproj", "{6E6DFA5A-80D3-4A4B-9F52-946ACCC8414E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QboxNext.Common", "src\QboxNext.Common\QboxNext.Common.csproj", "{0D0F4815-3670-4325-89F8-6F7C1C880325}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +80,14 @@ Global
 		{B6F8FED6-4F61-452C-85B1-B4B898E1BD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6F8FED6-4F61-452C-85B1-B4B898E1BD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6F8FED6-4F61-452C-85B1-B4B898E1BD1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E6DFA5A-80D3-4A4B-9F52-946ACCC8414E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E6DFA5A-80D3-4A4B-9F52-946ACCC8414E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E6DFA5A-80D3-4A4B-9F52-946ACCC8414E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E6DFA5A-80D3-4A4B-9F52-946ACCC8414E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D0F4815-3670-4325-89F8-6F7C1C880325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D0F4815-3670-4325-89F8-6F7C1C880325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D0F4815-3670-4325-89F8-6F7C1C880325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D0F4815-3670-4325-89F8-6F7C1C880325}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +101,8 @@ Global
 		{1C3D8877-4932-44F6-A821-170681E3AB3D} = {E04D98D6-6C1E-4E41-AB15-3C8CA6BC9F8D}
 		{D3804229-91F4-4502-9595-39884E5A01AD} = {CBFFFEA9-60E2-4179-BBBA-989DC6E9C3BD}
 		{B6F8FED6-4F61-452C-85B1-B4B898E1BD1C} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
+		{6E6DFA5A-80D3-4A4B-9F52-946ACCC8414E} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
+		{0D0F4815-3670-4325-89F8-6F7C1C880325} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A6ED5AF-7B32-444B-887A-ABF343EE609C}

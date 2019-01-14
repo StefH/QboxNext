@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using NLog;
+﻿using JetBrains.Annotations;
+using QboxNext.Common.Validation;
 using QboxNext.Core;
-using QboxNext.Core.Utils;
 using QboxNext.Domain;
+using QboxNext.Infrastructure.Azure.Interfaces.Public;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Statistics;
 using System;
@@ -12,8 +12,7 @@ namespace QBoxNext.Business.Implementations
 {
     internal class CustomStorageProvider : IStorageProvider
     {
-        private static readonly Logger Log = LogManager.GetLogger(nameof(CustomStorageProvider));
-
+        private readonly IMeasurementStoreService _measurementStoreService;
         private readonly string _serialNumber;
         private readonly string _productNumber;
         private readonly int _counterId;
@@ -21,14 +20,17 @@ namespace QBoxNext.Business.Implementations
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomStorageProvider"/> class.
         /// </summary>
+        /// <param name="measurementStoreService">The measurement store service.</param>
         /// <param name="serialNumber">The serial number.</param>
         /// <param name="productNumber">The product number.</param>
         /// <param name="counterId">The counter identifier.</param>
-        public CustomStorageProvider(string serialNumber, string productNumber, int counterId)
+        public CustomStorageProvider([NotNull] IMeasurementStoreService measurementStoreService, string serialNumber, string productNumber, int counterId)
         {
-            Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
-            Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));
+            Guard.NotNull(measurementStoreService, nameof(measurementStoreService));
+            Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
+            Guard.NotNullOrEmpty(productNumber, nameof(productNumber));
 
+            _measurementStoreService = measurementStoreService;
             _serialNumber = serialNumber;
             _productNumber = productNumber;
             _counterId = counterId;
@@ -56,7 +58,7 @@ namespace QBoxNext.Business.Implementations
                 EurocentsPerUnit = inEurocentsPerUnit
             };
 
-            Log.Trace(JsonConvert.SerializeObject(measurement));
+            _measurementStoreService.Store(measurement);
             return null;
         }
 

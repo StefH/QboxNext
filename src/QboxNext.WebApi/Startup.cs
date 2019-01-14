@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using QboxNext.Infrastructure.Azure.Options;
 
 namespace QboxNext.WebApi
 {
@@ -21,6 +22,9 @@ namespace QboxNext.WebApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddBusiness();
+
+            // Configure
+            services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

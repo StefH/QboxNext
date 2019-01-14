@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Qboxes.Classes;
 using QboxNext.Core.Encryption;
-using QboxNext.Core.Utils;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
@@ -11,6 +10,7 @@ using QBoxNext.Business.Interfaces.Public;
 using QBoxNext.Business.Models;
 using System;
 using System.Collections.Generic;
+using QboxNext.Common.Validation;
 
 namespace QBoxNext.Business.Implementations
 {
@@ -26,8 +26,8 @@ namespace QBoxNext.Business.Implementations
         /// <param name="logger">The logger.</param>
         public QboxDataDumpContextFactory([NotNull] IStorageProviderFactory storageProviderFactory, [NotNull] ILogger<QboxDataDumpContextFactory> logger)
         {
-            Guard.IsNotNull(storageProviderFactory, nameof(storageProviderFactory));
-            Guard.IsNotNull(logger, nameof(logger));
+            Guard.NotNull(storageProviderFactory, nameof(storageProviderFactory));
+            Guard.NotNull(logger, nameof(logger));
 
             _storageProviderFactory = storageProviderFactory;
             _logger = logger;
@@ -36,7 +36,7 @@ namespace QBoxNext.Business.Implementations
         /// <inheritdoc cref="IQboxDataDumpContextFactory.Create"/>
         public QboxDataDumpContext Create(QboxContext context)
         {
-            Guard.IsNotNull(context, nameof(context));
+            Guard.NotNull(context, nameof(context));
 
             try
             {

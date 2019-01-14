@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Qboxes.Classes;
 using Qboxes.Interfaces;
-using QboxNext.Core.Utils;
+using QboxNext.Common.Validation;
 using QboxNext.Qboxes.Parsing.Factories;
 using QBoxNext.Business.Implementations;
 using QBoxNext.Business.Interfaces.Internal;
@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
         public static void AddBusiness([NotNull] this IServiceCollection services)
         {
-            Guard.IsNotNull(services, nameof(services));
+            Guard.NotNull(services, nameof(services));
 
             services.AddServices();
 
@@ -31,9 +31,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static void AddServices(this IServiceCollection services)
         {
+            // Internal
             services.AddScoped<IQboxMessagesLogger, QboxMessagesNullLogger>();
-            services.AddSingleton<IStorageProviderFactory, StorageProviderFactory>();
+            services.AddScoped<IStorageProviderFactory, StorageProviderFactory>();
             services.AddScoped<IQboxDataDumpContextFactory, QboxDataDumpContextFactory>();
+
+            // Add Azure
+            services.AddAzure();
         }
 
         private static void Register()
