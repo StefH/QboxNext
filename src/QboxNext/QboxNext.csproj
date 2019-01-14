@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>QboxNext is a modified clone of Qplatform.</Description>
+    <AssemblyTitle>QboxNext</AssemblyTitle>
+    <Authors>Sebastiaan;Stef Heyenrath</Authors>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
+    <PackageId>QboxNext</PackageId>
+    <PackageTags>qbox;qboxnext;qurrent;server</PackageTags>
+    <PackageReleaseNotes>See CHANGELOG.md</PackageReleaseNotes>
+    <!--<PackageIconUrl>https://raw.githubusercontent.com/WireMock-Net/WireMock.Net/master/WireMock.Net-Logo.png</PackageIconUrl>-->
+    <PackageProjectUrl>https://github.com/stefh/QboxNext</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/stefh/QboxNext/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/stefh/QboxNext</RepositoryUrl>
+    <!--<ApplicationIcon>../../WireMock.Net-Logo.ico</ApplicationIcon>-->
+    <DebugType>full</DebugType>
+    <IncludeSource>True</IncludeSource>
+    <IncludeSymbols>True</IncludeSymbols>
+    <ProjectGuid>{D3804229-91F4-4502-9595-39884E5A01AD}</ProjectGuid>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <!--<CodeAnalysisRuleSet>WireMock.Net.ruleset</CodeAnalysisRuleSet>-->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PathMap>$(MSBuildProjectDirectory)=/</PathMap>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="NLog" Version="4.5.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\Qboxes.Model\obj\**\*.cs" Include="..\..\dependencies\dotnetcore-minimal\Qboxes.Model\**\*.cs" />
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\obj\**\*.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\**\*.cs" />
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\obj\**\*.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\**\*.cs" />
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Qserver.Core\obj\**\*.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qserver.Core\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\dependencies\dotnetcore-minimal\Qboxes.Model\obj\$(Configuration)\netcoreapp2.1\NuGet\8ED1AE52454947B26EC2CE4EE9B78109FB82B1D7\LibLog\5.0.4\*.cs" Link="Logging.QBoxes.Model\*.cs" />
+    <Compile Include="..\..\dependencies\dotnetcore-minimal\Qboxes.Model\obj\$(Configuration)\netcoreapp2.1\NuGet\8ED1AE52454947B26EC2CE4EE9B78109FB82B1D7\LibLog\5.0.4\LogProviders\*.cs" Link="Logging.QBoxes.Model\LogProviders\*.cs" />
+    <Compile Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\obj\$(Configuration)\netcoreapp2.1\NuGet\741A19C19ABFAC15F00175A44639E04EB8FFBEB1\LibLog\5.0.4\*.cs" Link="Logging.QboxNext.Core\*.cs" />
+    <Compile Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\obj\$(Configuration)\netcoreapp2.1\NuGet\741A19C19ABFAC15F00175A44639E04EB8FFBEB1\LibLog\5.0.4\LogProviders\*.cs" Link="Logging.QboxNext.Core\LogProviders\*.cs" />
+    <Compile Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\obj\$(Configuration)\netcoreapp2.1\NuGet\97D72B49C162339BCD9CBFDE1E2259197AFE9F35\LibLog\5.0.4\*.cs" Link="Logging.QboxNext.Qboxes.Parsing\*.cs" />
+    <Compile Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\obj\$(Configuration)\netcoreapp2.1\NuGet\97D72B49C162339BCD9CBFDE1E2259197AFE9F35\LibLog\5.0.4\LogProviders\*.cs" Link="Logging.QboxNext.Qboxes.Parsing\LogProviders\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Logging.QBoxes.Model\" />
+    <Folder Include="Logging.QboxNext.Core\" />
+    <Folder Include="Logging.QboxNext.Qboxes.Parsing\" />
+    <Folder Include="Logging.QboxNext.QServer.Core\" />
+  </ItemGroup>
+
+</Project>

@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dependencies\dotnetcore-minimal\Qboxes.Model\Qboxes.Model.csproj" />
     <ProjectReference Include="..\QBoxNext.Business\QBoxNext.Business.csproj" />
   </ItemGroup>
 
