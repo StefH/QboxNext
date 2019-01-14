@@ -1,0 +1,1630 @@
+[01/13/2019 23:02:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:02:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:02:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:02:56]   DNS QNAME=c0.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:02:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:02:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:02:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:02:56]   DNS QNAME=s0.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:02:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:02:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:02:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:02:56]   DNS QNAME=s1.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:02:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:02:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:02:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:02:56]   DNS QNAME=secure.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:02:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:02:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:02:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:02:56]   DNS QNAME=mstack-nl-linux.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:02:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:02:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:02:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:02:56]   DNS QNAME=stats.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:02:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:02:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:02:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:02:56]   DNS QNAME=widgets.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:02:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:02:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:02:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:02:56]   DNS QNAME=maps.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:02:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:02] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:02] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:02]   DNS QNAME=v0.wordpress.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:02]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:12]   DNS QNAME=0.client-channel.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:03:12]   DNS unsupported rr_type=28
+[01/13/2019 23:03:27] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:27] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:27]   DNS QNAME=nl.wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:27]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:30]   DNS QNAME=central.wordcamp.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:30]   DNS QNAME=codex.wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:30]   DNS QNAME=make.wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:30]   DNS QNAME=wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:30]   DNS QNAME=www.meetup.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:39] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:39] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:39]   DNS QNAME=clients1.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:39]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:40] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:40] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:40]   DNS QNAME=fonts.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:40]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:40] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:40] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:40]   DNS QNAME=fonts.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:40]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:41] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:41] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:41]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:41]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:44] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:44] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:44]   DNS QNAME=www.google-analytics.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:44]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:44] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:44] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:44]   DNS QNAME=www.googletagmanager.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:44]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:47]   DNS QNAME=10up.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:47]   DNS QNAME=automattic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:47]   DNS QNAME=plugin-planet.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:03:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:03:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:03:47]   DNS QNAME=www.arnebrachhold.de, QTYPE=1, QCLASS=1
+[01/13/2019 23:03:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:03] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:03] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:03]   DNS QNAME=www.csshero.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:03]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:03] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:03] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:03]   DNS QNAME=public-api.wordpress.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:03]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:07] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:07] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:07]   DNS QNAME=www.mstack.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:07]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:07] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:07] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:07]   DNS QNAME=secure.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:07]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:08] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:08] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:08]   DNS QNAME=s2.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:08]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:22] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:22] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:22]   DNS QNAME=bitbucket.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:22]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:22] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:22] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:22]   DNS QNAME=bitbucket.org, QTYPE=28, QCLASS=1
+[01/13/2019 23:04:22]   DNS unsupported rr_type=28
+[01/13/2019 23:04:23] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:23] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:23]   DNS QNAME=hpn-proxy-3.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:23]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:23] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:23] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:23]   DNS QNAME=ghostery-proxy-3-163502714.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:23]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:23] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:23] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:23]   DNS QNAME=ghostery-proxy-3-163502714.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:04:23]   DNS unsupported rr_type=28
+[01/13/2019 23:04:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:47]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:47]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:54] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:54] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:54]   DNS QNAME=s.w.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:54]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:56]   DNS QNAME=firefoxusercontent.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:56]   DNS QNAME=token.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:56]   DNS QNAME=token.r53-2.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:56]   DNS QNAME=token.r53-2.services.mozilla.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:04:56]   DNS unsupported rr_type=28
+[01/13/2019 23:04:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:56]   DNS QNAME=firefoxusercontent.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:56]   DNS QNAME=firefoxusercontent.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:04:56]   DNS unsupported rr_type=28
+[01/13/2019 23:04:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:56]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:56]   DNS QNAME=profile.accounts.firefox.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:56]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:57]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:57]   DNS QNAME=profile.accounts.firefox.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:57]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:57]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:04:57]   DNS unsupported rr_type=28
+[01/13/2019 23:04:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:57]   DNS QNAME=profile.accounts.firefox.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:04:57]   DNS unsupported rr_type=28
+[01/13/2019 23:04:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:57]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:04:57]   DNS unsupported rr_type=28
+[01/13/2019 23:04:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:57]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:04:57]   DNS unsupported rr_type=28
+[01/13/2019 23:04:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:58]   DNS QNAME=webextensions.settings.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:58]   DNS QNAME=webextensions.settings.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:04:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:58]   DNS QNAME=webextensions.settings.services.mozilla.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:04:58]   DNS unsupported rr_type=28
+[01/13/2019 23:04:59] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:04:59] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:04:59]   DNS QNAME=ps.w.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:04:59]   DNS host not found (Hostname unknown)
+[01/13/2019 23:05:22] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:22] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:22]   DNS QNAME=bitbucket.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:05:22]   DNS host not found (Hostname unknown)
+[01/13/2019 23:05:22] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:22] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:22]   DNS QNAME=bitbucket.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:05:22]   DNS host not found (Hostname unknown)
+[01/13/2019 23:05:22] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:22] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:22]   DNS QNAME=bitbucket.org, QTYPE=28, QCLASS=1
+[01/13/2019 23:05:22]   DNS unsupported rr_type=28
+[01/13/2019 23:05:23] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:23] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:23]   DNS QNAME=hpn-proxy-4.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:05:23]   DNS host not found (Hostname unknown)
+[01/13/2019 23:05:23] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:23] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:23]   DNS QNAME=ghostery-proxy-4-1831978672.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:05:23]   DNS host not found (Hostname unknown)
+[01/13/2019 23:05:23] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:23] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:23]   DNS QNAME=ghostery-proxy-4-1831978672.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:05:23]   DNS unsupported rr_type=28
+[01/13/2019 23:05:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:24]   DNS QNAME=hpn-proxy-5.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:05:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:05:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:24]   DNS QNAME=ghostery-proxy-5-306834329.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:05:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:05:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:24]   DNS QNAME=ghostery-proxy-5-306834329.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:05:24]   DNS unsupported rr_type=28
+[01/13/2019 23:05:42] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:42] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:42]   DNS QNAME=www.mstack.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:05:42]   DNS host not found (Hostname unknown)
+[01/13/2019 23:05:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:58]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:05:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:05:59] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:05:59] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:05:59]   DNS QNAME=0.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:05:59]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:02] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:02] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:02]   DNS QNAME=bbpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:02]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:02] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:02] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:02]   DNS QNAME=automattic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:02]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:02] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:02] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:02]   DNS QNAME=buddypress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:02]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:02] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:02] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:02]   DNS QNAME=github.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:02]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:02] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:02] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:02]   DNS QNAME=jetpack.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:02]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:11] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:11] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:11]   DNS QNAME=sync-v3.getpostman.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:11]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=elementor.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=accesspressthemes.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=looks-awesome.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=oceanwp.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=peepso.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=revive.social, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=robincornett.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=socialshare.pro, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=socialsnap.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=ultimatelysocial.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=warfareplugins.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.acurax.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.blog2social.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.cybernetikz.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.devpups.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.heateor.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.machothemes.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.mashshare.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.miniorange.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.nextscripts.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.oneall.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.slickremix.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.studiopress.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:12]   DNS QNAME=www.wpbrigade.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:13] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:13]   DNS QNAME=www.wpzoom.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:13]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:13] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:13] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:13]   DNS QNAME=yoa.st, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:13]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:21] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:21] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:21]   DNS QNAME=blogplay.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:21]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:30]   DNS QNAME=safebrowsing.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:43] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:43] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:43]   DNS QNAME=ps.w.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:43]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:46] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:46] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:47]   DNS QNAME=www.arnebrachhold.de, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:06:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:06:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:06:47]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:06:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:10] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:10] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:10]   DNS QNAME=stef.visualstudio.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:10]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:10] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:10] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:10]   DNS QNAME=b-0020.b-msedge.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:10]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:10] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:10] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:10]   DNS QNAME=b-0020.b-msedge.net, QTYPE=28, QCLASS=1
+[01/13/2019 23:07:10]   DNS unsupported rr_type=28
+[01/13/2019 23:07:11] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:11] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:11]   DNS QNAME=0.client-channel.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:11]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:11] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:11] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:11]   DNS QNAME=0.client-channel.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:11]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:11] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:11] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:11]   DNS QNAME=0.client-channel.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:07:11]   DNS unsupported rr_type=28
+[01/13/2019 23:07:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:30]   DNS QNAME=clients4.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:30]   DNS QNAME=clients.l.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:30]   DNS QNAME=clients.l.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:07:30]   DNS unsupported rr_type=28
+[01/13/2019 23:07:33] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:33] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:33]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:33]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:37] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:37] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:37]   DNS QNAME=play.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:37]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:37] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:37] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:37]   DNS QNAME=play.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:07:37]   DNS unsupported rr_type=28
+[01/13/2019 23:07:48] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:48] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:48]   DNS QNAME=www.mstack.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:48]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:48] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:49] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:49]   DNS QNAME=maps.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:49]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:52] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:52] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:52]   DNS QNAME=sheyenrath.stackstorage.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:52]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:56]   DNS QNAME=codex.wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:56]   DNS QNAME=nl.wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:56]   DNS QNAME=wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:56]   DNS QNAME=stef.visualstudio.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:56]   DNS QNAME=b-0020.b-msedge.net, QTYPE=28, QCLASS=1
+[01/13/2019 23:07:56]   DNS unsupported rr_type=28
+[01/13/2019 23:07:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:58]   DNS QNAME=fonts.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:07:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:07:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:07:58]   DNS QNAME=public-api.wordpress.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:07:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:04] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:04] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:04]   DNS QNAME=vortex.data.microsoft.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:04]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=bitbucket.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=bitbucket.org, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:24]   DNS unsupported rr_type=28
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=mail.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=googlemail.l.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=www.mstack.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=waws-prod-am2-215.cloudapp.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=ocsp.comodoca.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=waws-prod-am2-215.cloudapp.net, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:24]   DNS unsupported rr_type=28
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=a652.dscb.akamai.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=www.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=a652.dscb.akamai.net, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:24]   DNS unsupported rr_type=28
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=www.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:24]   DNS unsupported rr_type=28
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:24] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:24]   DNS QNAME=hpn-proxy-1.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:24]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:24] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:25]   DNS QNAME=ghostery-proxy-1-1423647327.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:25]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:25]   DNS QNAME=ghostery-proxy-1-1423647327.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:25]   DNS unsupported rr_type=28
+[01/13/2019 23:08:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:25]   DNS QNAME=hpn-proxy-2.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:25]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:25]   DNS QNAME=ghostery-proxy-2-1689892443.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:25]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:25]   DNS QNAME=ghostery-proxy-2-1689892443.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:25]   DNS unsupported rr_type=28
+[01/13/2019 23:08:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:25]   DNS QNAME=c0.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:25]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:25]   DNS QNAME=c0.wp.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:25]   DNS unsupported rr_type=28
+[01/13/2019 23:08:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:25]   DNS QNAME=fonts.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:25]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:25]   DNS QNAME=s0.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:26]   DNS QNAME=secure.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:26]   DNS QNAME=googleadapis.l.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:26]   DNS QNAME=stats.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:26]   DNS QNAME=s0.wp.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:26]   DNS unsupported rr_type=28
+[01/13/2019 23:08:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:26]   DNS QNAME=secure.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:26]   DNS QNAME=googleadapis.l.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:26]   DNS unsupported rr_type=28
+[01/13/2019 23:08:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:26]   DNS QNAME=stats.wp.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:26]   DNS unsupported rr_type=28
+[01/13/2019 23:08:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:26]   DNS QNAME=secure.gravatar.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:26]   DNS unsupported rr_type=28
+[01/13/2019 23:08:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:27]   DNS QNAME=gstaticadssl.l.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:27]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:27] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:27] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:27]   DNS QNAME=pixel.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:27]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:27] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:27] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:27]   DNS QNAME=pixel.wp.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:27]   DNS unsupported rr_type=28
+[01/13/2019 23:08:27] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:27] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:27]   DNS QNAME=maps.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:27]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:27] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:27] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:27]   DNS QNAME=googleapis.l.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:27]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:27] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:27] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:27]   DNS QNAME=googleapis.l.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:27]   DNS unsupported rr_type=28
+[01/13/2019 23:08:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:28]   DNS QNAME=maps.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:28]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:28]   DNS QNAME=maps.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:28]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:28]   DNS QNAME=maps.gstatic.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:28]   DNS unsupported rr_type=28
+[01/13/2019 23:08:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:30]   DNS QNAME=update.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:38] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:38] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:38]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:38]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:47]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:47]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:47]   DNS QNAME=ssl.gstatic.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:08:47]   DNS unsupported rr_type=28
+[01/13/2019 23:08:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:50]   DNS QNAME=docs.kriesi.at, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:50]   DNS QNAME=en.wikipedia.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:50]   DNS QNAME=kriesi.at, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:50]   DNS QNAME=admin.mailchimp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:50]   DNS QNAME=console.developers.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:50]   DNS QNAME=ec.europa.eu, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:50]   DNS QNAME=fontello.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:50]   DNS QNAME=fonts.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:50]   DNS QNAME=mbsy.co, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:51] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:51]   DNS QNAME=woocommerce.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:51]   DNS host not found (Hostname unknown)
+[01/13/2019 23:08:51] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:08:51] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:08:51]   DNS QNAME=www.flaticon.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:08:51]   DNS host not found (Hostname unknown)
+[01/13/2019 23:09:19] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:09:19] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:09:19]   DNS QNAME=0.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:09:19]   DNS host not found (Hostname unknown)
+[01/13/2019 23:09:19] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:09:19] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:09:19]   DNS QNAME=fonts.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:09:19]   DNS host not found (Hostname unknown)
+[01/13/2019 23:09:20] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:09:20] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:09:20]   DNS QNAME=s.w.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:09:20]   DNS host not found (Hostname unknown)
+[01/13/2019 23:09:21] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:09:21] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:09:21]   DNS QNAME=nl.wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:09:21]   DNS host not found (Hostname unknown)
+[01/13/2019 23:09:21] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:09:21] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:09:21]   DNS QNAME=wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:09:21]   DNS host not found (Hostname unknown)
+[01/13/2019 23:09:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:09:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:09:57]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:09:57]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:04] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:05] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:05]   DNS QNAME=www.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:05]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:05] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:05] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:05]   DNS QNAME=id.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:05]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:05] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:05] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:05]   DNS QNAME=lh3.googleusercontent.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:05]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:05] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:05] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:05]   DNS QNAME=apis.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:05]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:06] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:06] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:06]   DNS QNAME=ogs.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:06]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:10] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:10] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:10]   DNS QNAME=natuurgeneeskundepeerbooms.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:10]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:15] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:15] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:15]   DNS QNAME=www.natuurgeneeskundepeerbooms.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:15]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:15] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:15] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:15]   DNS QNAME=www.facebook.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:15]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:17] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:17] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:17]   DNS QNAME=facebook.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:17]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:17] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:17] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:18]   DNS QNAME=static.xx.fbcdn.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:18]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:18] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:18] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:18]   DNS QNAME=scontent-ams3-1.xx.fbcdn.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:18]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:18] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:18] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:18]   DNS QNAME=external-ams3-1.xx.fbcdn.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:18]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:22] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:22] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:22]   DNS QNAME=scontent.xx.fbcdn.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:22]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:22] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:22] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:22]   DNS QNAME=sync-v3.getpostman.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:22]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:25]   DNS QNAME=qboxnext.miraheze.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:25]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:25]   DNS QNAME=qboxnext.miraheze.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:25]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:25]   DNS QNAME=qboxnext.miraheze.org, QTYPE=28, QCLASS=1
+[01/13/2019 23:10:25]   DNS unsupported rr_type=28
+[01/13/2019 23:10:44] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:44] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:44]   DNS QNAME=0.client-channel.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:44]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:44] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:44] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:44]   DNS QNAME=0.client-channel.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:44]   DNS host not found (Hostname unknown)
+[01/13/2019 23:10:59] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:10:59] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:10:59]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:10:59]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:00] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:00] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:00]   DNS QNAME=ps.w.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:00]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:03] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:03] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:03]   DNS QNAME=admin.mailchimp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:03]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:03] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:03] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:03]   DNS QNAME=fontello.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:03]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:11] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:11] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:11]   DNS QNAME=www.mstack.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:11]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:15] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:15] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:15]   DNS QNAME=config.edge.skype.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:15]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:22] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:22] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:22]   DNS QNAME=go.microsoft.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:22]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:22] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:22] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:22]   DNS QNAME=vsstartpage.blob.core.windows.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:22]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:26]   DNS QNAME=chat-pa.clients6.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:26]   DNS QNAME=chat-pa.clients6.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:26]   DNS QNAME=hpn-proxy-3.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:26]   DNS QNAME=chat-pa.clients6.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:11:26]   DNS unsupported rr_type=28
+[01/13/2019 23:11:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:26]   DNS QNAME=ghostery-proxy-3-163502714.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:26]   DNS QNAME=ghostery-proxy-3-163502714.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:11:26]   DNS unsupported rr_type=28
+[01/13/2019 23:11:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:26]   DNS QNAME=hpn-proxy-4.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:26]   DNS QNAME=ghostery-proxy-4-1831978672.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:26]   DNS QNAME=ghostery-proxy-4-1831978672.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:11:26]   DNS unsupported rr_type=28
+[01/13/2019 23:11:27] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:27] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:27]   DNS QNAME=visualstudio-devdiv-c2s.msedge.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:27]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:28]   DNS QNAME=az700632.vo.msecnd.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:28]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:43] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:43] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:43]   DNS QNAME=mstackbv-my.sharepoint.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:43]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:43] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:43] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:43]   DNS QNAME=login.windows.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:43]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:43] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:43] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:43]   DNS QNAME=storage.live.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:43]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:44] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:44] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:44]   DNS QNAME=onedriveclubprodbn20001.blob.core.windows.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:44]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:50]   DNS QNAME=nl.wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:50]   DNS QNAME=www.facebook.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:50] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:50] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:50]   DNS QNAME=www.natuurgeneeskundepeerbooms.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:50]   DNS host not found (Hostname unknown)
+[01/13/2019 23:11:54] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:11:54] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:11:54]   DNS QNAME=az667904.vo.msecnd.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:11:54]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:05] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:05] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:05]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:05]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:08] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:08] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:08]   DNS QNAME=maps.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:08]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:08] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:08] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:08]   DNS QNAME=ps.w.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:08]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:09] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:09] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:09]   DNS QNAME=s0.wp.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:09]   DNS unsupported rr_type=28
+[01/13/2019 23:12:09] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:09] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:09]   DNS QNAME=codex.wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:09]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:10] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:10] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:10]   DNS QNAME=wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:10]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:10] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:10] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:10]   DNS QNAME=s1.wp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:10]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:10] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:10] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:10]   DNS QNAME=s1.wp.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:10]   DNS unsupported rr_type=28
+[01/13/2019 23:12:19] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:19] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:19]   DNS QNAME=notifications.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:19]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:19] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:19] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:19]   DNS QNAME=plus.l.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:19]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:19] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:19] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:19]   DNS QNAME=plus.l.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:19]   DNS unsupported rr_type=28
+[01/13/2019 23:12:25] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:25] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:25]   DNS QNAME=www.mstack.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:25]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:26]   DNS QNAME=safe-browsing-quorum.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:26]   DNS QNAME=ghostery-safe-browsing-quorum-505017451.us-east-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:26]   DNS QNAME=ghostery-safe-browsing-quorum-505017451.us-east-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:26]   DNS unsupported rr_type=28
+[01/13/2019 23:12:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:26]   DNS QNAME=community.qurrent.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:26]   DNS QNAME=qurrent-nl-community.insided.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:26]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:26]   DNS QNAME=qurrent-nl-community.insided.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:26]   DNS unsupported rr_type=28
+[01/13/2019 23:12:27] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:27] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:27]   DNS QNAME=www.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:28]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:28]   DNS QNAME=www.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:28]   DNS unsupported rr_type=28
+[01/13/2019 23:12:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:28]   DNS QNAME=qurrent-nl-community.insided.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:28]   DNS unsupported rr_type=28
+[01/13/2019 23:12:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:28]   DNS QNAME=qurrent-nl-community.insided.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:28]   DNS unsupported rr_type=28
+[01/13/2019 23:12:29] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:29] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:29]   DNS QNAME=hpn-proxy-5.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:29]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:29] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:29] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:29]   DNS QNAME=ghostery-proxy-5-306834329.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:29]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:29] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:29] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:29]   DNS QNAME=ghostery-proxy-5-306834329.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:29]   DNS unsupported rr_type=28
+[01/13/2019 23:12:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:30]   DNS QNAME=hpn-proxy-1.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:30]   DNS QNAME=ghostery-proxy-1-1423647327.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:30]   DNS QNAME=ghostery-proxy-1-1423647327.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:30]   DNS unsupported rr_type=28
+[01/13/2019 23:12:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:30]   DNS QNAME=fonts.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:34] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:34] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:34]   DNS QNAME=people-pa.clients6.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:34]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:34] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:34] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:34]   DNS QNAME=people-pa.clients6.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:34]   DNS unsupported rr_type=28
+[01/13/2019 23:12:36] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:36] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:36]   DNS QNAME=admin.mailchimp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:36]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:36] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:36] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:36]   DNS QNAME=woocommerce.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:36]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:37] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:37] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:37]   DNS QNAME=play.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:37]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:37] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:37] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:37]   DNS QNAME=play.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:37]   DNS unsupported rr_type=28
+[01/13/2019 23:12:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:47]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:47]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:47]   DNS QNAME=ssl.gstatic.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:47]   DNS unsupported rr_type=28
+[01/13/2019 23:12:55] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:55] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:55]   DNS QNAME=client-office365-tas.msedge.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:55]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:57]   DNS QNAME=stef.visualstudio.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:57]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:57]   DNS QNAME=b-0020.b-msedge.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:12:57]   DNS host not found (Hostname unknown)
+[01/13/2019 23:12:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:12:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:12:57]   DNS QNAME=b-0020.b-msedge.net, QTYPE=28, QCLASS=1
+[01/13/2019 23:12:57]   DNS unsupported rr_type=28
+[01/13/2019 23:13:33] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:33] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:33]   DNS QNAME=www.mstack.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:13:33]   DNS host not found (Hostname unknown)
+[01/13/2019 23:13:33] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:33] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:33]   DNS QNAME=fonts.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:13:33]   DNS host not found (Hostname unknown)
+[01/13/2019 23:13:36] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:36] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:36]   DNS QNAME=ghostery-sign.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:13:36]   DNS host not found (Hostname unknown)
+[01/13/2019 23:13:36] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:36] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:36]   DNS QNAME=ghostery-sign-1030905311.us-east-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:13:36]   DNS host not found (Hostname unknown)
+[01/13/2019 23:13:36] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:36] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:36]   DNS QNAME=ghostery-sign-1030905311.us-east-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:13:36]   DNS unsupported rr_type=28
+[01/13/2019 23:13:37] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:37] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:37]   DNS QNAME=hpn-proxy-2.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:13:37]   DNS host not found (Hostname unknown)
+[01/13/2019 23:13:37] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:37] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:37]   DNS QNAME=ghostery-proxy-2-1689892443.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:13:37]   DNS host not found (Hostname unknown)
+[01/13/2019 23:13:37] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:37] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:37]   DNS QNAME=ghostery-proxy-2-1689892443.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:13:37]   DNS unsupported rr_type=28
+[01/13/2019 23:13:37] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:37] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:37]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:13:37]   DNS host not found (Hostname unknown)
+[01/13/2019 23:13:39] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:39] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:39]   DNS QNAME=0.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:13:39]   DNS host not found (Hostname unknown)
+[01/13/2019 23:13:56] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:13:56] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:13:56]   DNS QNAME=clients4.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:13:56]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:06] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:06] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:06]   DNS QNAME=sheyenrath.stackstorage.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:06]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:07] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:07] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:07]   DNS QNAME=0.client-channel.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:07]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:07] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:07] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:07]   DNS QNAME=0.client-channel.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:07]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:07] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:07] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:07]   DNS QNAME=0.client-channel.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:07]   DNS unsupported rr_type=28
+[01/13/2019 23:14:23] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:23] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:23]   DNS QNAME=admin.mailchimp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:23]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:23] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:23] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:23]   DNS QNAME=ec.europa.eu, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:23]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:23] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:23] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:23]   DNS QNAME=fontello.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:23]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:23] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:23] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:23]   DNS QNAME=fonts.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:23]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:28]   DNS QNAME=www.greenchoice.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:28]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:28]   DNS QNAME=www.greenchoice.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:28]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:28]   DNS QNAME=www.greenchoice.nl, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:28]   DNS unsupported rr_type=28
+[01/13/2019 23:14:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:28]   DNS QNAME=www.greenchoice.nl, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:28]   DNS unsupported rr_type=28
+[01/13/2019 23:14:29] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:29] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:29]   DNS QNAME=hpn-proxy-2.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:29]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:29] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:29] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:29]   DNS QNAME=ghostery-proxy-2-1689892443.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:29]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:29] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:29] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:29]   DNS QNAME=ghostery-proxy-2-1689892443.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:29]   DNS unsupported rr_type=28
+[01/13/2019 23:14:29] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:29] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:29]   DNS QNAME=hpn-proxy-3.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:29]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:29] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:29] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:29]   DNS QNAME=ghostery-proxy-3-163502714.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:29]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:29] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:29] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:29]   DNS QNAME=ghostery-proxy-3-163502714.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:29]   DNS unsupported rr_type=28
+[01/13/2019 23:14:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:47]   DNS QNAME=ssl.gstatic.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:47]   DNS unsupported rr_type=28
+[01/13/2019 23:14:48] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:48] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:48]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:48]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:58]   DNS QNAME=firefoxusercontent.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:58]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:58]   DNS QNAME=firefoxusercontent.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:58]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:58]   DNS QNAME=firefoxusercontent.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:58]   DNS unsupported rr_type=28
+[01/13/2019 23:14:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:58]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:58]   DNS unsupported rr_type=28
+[01/13/2019 23:14:59] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:59] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:59]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:59]   DNS unsupported rr_type=28
+[01/13/2019 23:14:59] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:59] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:59]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:59]   DNS unsupported rr_type=28
+[01/13/2019 23:14:59] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:59] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:59]   DNS QNAME=webextensions.settings.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:59]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:59] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:59] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:59]   DNS QNAME=webextensions.settings.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:14:59]   DNS host not found (Hostname unknown)
+[01/13/2019 23:14:59] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:14:59] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:14:59]   DNS QNAME=webextensions.settings.services.mozilla.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:14:59]   DNS unsupported rr_type=28
+[01/13/2019 23:15:10] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:10] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:10]   DNS QNAME=2.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:10]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:10] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:10] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:10]   DNS QNAME=s.w.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:10]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:17] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:17] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:17]   DNS QNAME=www.natuurgeneeskundepeerbooms.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:17]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:18] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:18] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:18]   DNS QNAME=safebrowsing.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:18]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:28]   DNS QNAME=www.rtlnieuws.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:28]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:28]   DNS QNAME=a1881.dscg1.akamai.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:28]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:28] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:28] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:28]   DNS QNAME=a1881.dscg1.akamai.net, QTYPE=28, QCLASS=1
+[01/13/2019 23:15:28]   DNS unsupported rr_type=28
+[01/13/2019 23:15:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:30]   DNS QNAME=hpn-proxy-4.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:30]   DNS QNAME=ghostery-proxy-4-1831978672.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:30]   DNS QNAME=ghostery-proxy-4-1831978672.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:15:30]   DNS unsupported rr_type=28
+[01/13/2019 23:15:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:30]   DNS QNAME=hpn-proxy-5.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:30]   DNS QNAME=ghostery-proxy-5-306834329.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:30]   DNS QNAME=ghostery-proxy-5-306834329.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:15:30]   DNS unsupported rr_type=28
+[01/13/2019 23:15:44] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:45] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:45]   DNS QNAME=www.facebook.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:45]   DNS host not found (Hostname unknown)
+[01/13/2019 23:15:54] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:15:54] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:15:54]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:15:54]   DNS host not found (Hostname unknown)
+[01/13/2019 23:16:06] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:16:06] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:16:06]   DNS QNAME=array806-prod.do.dsp.mp.microsoft.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:16:06]   DNS host not found (Hostname unknown)
+[01/13/2019 23:16:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:16:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:16:47]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:16:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:16:47] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:16:47] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:16:47]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:16:47]   DNS host not found (Hostname unknown)
+[01/13/2019 23:17:26] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:17:26] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:17:26]   DNS QNAME=0.client-channel.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:17:26]   DNS unsupported rr_type=28
+[01/13/2019 23:17:29] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:17:29] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:17:29]   DNS QNAME=play.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:17:29]   DNS host not found (Hostname unknown)
+[01/13/2019 23:17:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:17:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:17:30]   DNS QNAME=play.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:17:30]   DNS unsupported rr_type=28
+[01/13/2019 23:17:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:17:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:17:30]   DNS QNAME=tile-service.weather.microsoft.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:17:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:17:30] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:17:30] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:17:30]   DNS QNAME=service.weather.microsoft.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:17:30]   DNS host not found (Hostname unknown)
+[01/13/2019 23:17:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:17:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:17:58]   DNS QNAME=stef.visualstudio.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:17:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:17:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:17:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:17:58]   DNS QNAME=b-0020.b-msedge.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:17:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:17:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:17:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:17:58]   DNS QNAME=b-0020.b-msedge.net, QTYPE=28, QCLASS=1
+[01/13/2019 23:17:58]   DNS unsupported rr_type=28
+[01/13/2019 23:18:05] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:05] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:05]   DNS QNAME=public-api.wordpress.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:05]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:11] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:11] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:11]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:11]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:12]   DNS QNAME=0.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:12]   DNS QNAME=maps.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:12]   DNS QNAME=2.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:12] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:12] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:12]   DNS QNAME=fonts.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:12]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:13] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:13] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:13]   DNS QNAME=codex.wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:13]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:13] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:13] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:13]   DNS QNAME=en.wikipedia.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:13]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:13] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:13] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:13]   DNS QNAME=nl.wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:13]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:13] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:13] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:13]   DNS QNAME=wordpress.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:13]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:13] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:13] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:13]   DNS QNAME=fontello.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:13]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:13] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:13] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:13]   DNS QNAME=woocommerce.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:13]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:13] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:13] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:13]   DNS QNAME=admin.mailchimp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:13]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:13] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:13] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:13]   DNS QNAME=ec.europa.eu, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:13]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:14] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:14] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:14]   DNS QNAME=fonts.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:14]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:27] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:27] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:27]   DNS QNAME=ps.w.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:27]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:48] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:48] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:48]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:48]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:48] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:48] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:48]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:48]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:48] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:48] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:48]   DNS QNAME=ssl.gstatic.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:18:48]   DNS unsupported rr_type=28
+[01/13/2019 23:18:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:57]   DNS QNAME=www.natuurgeneeskundepeerbooms.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:57]   DNS host not found (Hostname unknown)
+[01/13/2019 23:18:57] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:18:57] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:18:57]   DNS QNAME=www.facebook.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:18:57]   DNS host not found (Hostname unknown)
+[01/13/2019 23:19:11] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:19:11] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:19:11]   DNS QNAME=natuurgeneeskundepeerbooms.azurewebsites.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:19:11]   DNS host not found (Hostname unknown)
+[01/13/2019 23:19:18] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:19:18] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:19:18]   DNS QNAME=s.w.org, QTYPE=1, QCLASS=1
+[01/13/2019 23:19:18]   DNS host not found (Hostname unknown)
+[01/13/2019 23:19:19] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:19:19] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:19:19]   DNS QNAME=admin.mailchimp.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:19:19]   DNS host not found (Hostname unknown)
+[01/13/2019 23:19:19] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:19:19] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:19:19]   DNS QNAME=ec.europa.eu, QTYPE=1, QCLASS=1
+[01/13/2019 23:19:19]   DNS host not found (Hostname unknown)
+[01/13/2019 23:19:19] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:19:19] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:19:19]   DNS QNAME=fonts.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:19:19]   DNS host not found (Hostname unknown)
+[01/13/2019 23:20:40] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:20:40] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:20:40]   DNS QNAME=0.gravatar.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:20:40]   DNS host not found (Hostname unknown)
+[01/13/2019 23:20:40] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:20:40] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:20:40]   DNS QNAME=fonts.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:20:40]   DNS host not found (Hostname unknown)
+[01/13/2019 23:20:40] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:20:41] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:20:41]   DNS QNAME=www.facebook.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:20:41]   DNS host not found (Hostname unknown)
+[01/13/2019 23:20:41] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:20:41] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:20:41]   DNS QNAME=www.natuurgeneeskundepeerbooms.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:20:41]   DNS host not found (Hostname unknown)
+[01/13/2019 23:21:00] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:21:00] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:21:00]   DNS QNAME=0.client-channel.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:21:00]   DNS host not found (Hostname unknown)
+[01/13/2019 23:21:00] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:21:00] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:21:00]   DNS QNAME=0.client-channel.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:21:00]   DNS host not found (Hostname unknown)
+[01/13/2019 23:21:00] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:21:00] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:21:00]   DNS QNAME=0.client-channel.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:21:00]   DNS unsupported rr_type=28
+[01/13/2019 23:21:02] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:21:02] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:21:02]   DNS QNAME=sheyenrath.stackstorage.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:21:02]   DNS host not found (Hostname unknown)
+[01/13/2019 23:21:14] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:21:14] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:21:14]   DNS QNAME=safebrowsing.googleapis.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:21:14]   DNS host not found (Hostname unknown)
+[01/13/2019 23:21:34] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:21:34] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:21:34]   DNS QNAME=vortex.data.microsoft.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:21:34]   DNS host not found (Hostname unknown)
+[01/13/2019 23:21:38] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:21:38] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:21:38]   DNS QNAME=dc.services.visualstudio.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:21:38]   DNS host not found (Hostname unknown)
+[01/13/2019 23:22:38] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:22:38] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:22:38]   DNS QNAME=play.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:22:38]   DNS host not found (Hostname unknown)
+[01/13/2019 23:22:38] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:22:38] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:22:38]   DNS QNAME=play.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:22:38]   DNS unsupported rr_type=28
+[01/13/2019 23:22:48] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:22:48] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:22:48]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:22:48]   DNS host not found (Hostname unknown)
+[01/13/2019 23:22:48] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:22:48] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:22:48]   DNS QNAME=ssl.gstatic.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:22:48]   DNS host not found (Hostname unknown)
+[01/13/2019 23:22:48] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:22:48] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:22:48]   DNS QNAME=ssl.gstatic.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:22:48]   DNS unsupported rr_type=28
+[01/13/2019 23:22:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:22:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:22:58]   DNS QNAME=stef.visualstudio.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:22:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:22:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:22:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:22:58]   DNS QNAME=b-0020.b-msedge.net, QTYPE=1, QCLASS=1
+[01/13/2019 23:22:58]   DNS host not found (Hostname unknown)
+[01/13/2019 23:22:58] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:22:58] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:22:58]   DNS QNAME=b-0020.b-msedge.net, QTYPE=28, QCLASS=1
+[01/13/2019 23:22:58]   DNS unsupported rr_type=28
+[01/13/2019 23:23:32] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:23:32] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:23:32]   DNS QNAME=community.qurrent.nl, QTYPE=1, QCLASS=1
+[01/13/2019 23:23:32]   DNS host not found (Hostname unknown)
+[01/13/2019 23:23:32] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:23:32] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:23:32]   DNS QNAME=qurrent-nl-community.insided.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:23:32]   DNS host not found (Hostname unknown)
+[01/13/2019 23:23:32] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:23:32] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:23:32]   DNS QNAME=qurrent-nl-community.insided.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:23:32]   DNS unsupported rr_type=28
+[01/13/2019 23:23:33] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:23:33] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:23:33]   DNS QNAME=hpn-proxy-1.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:23:33]   DNS host not found (Hostname unknown)
+[01/13/2019 23:23:33] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:23:33] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:23:33]   DNS QNAME=ghostery-proxy-1-1423647327.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:23:33]   DNS host not found (Hostname unknown)
+[01/13/2019 23:23:33] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:23:33] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:23:33]   DNS QNAME=ghostery-proxy-1-1423647327.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:23:33]   DNS unsupported rr_type=28
+[01/13/2019 23:23:33] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:23:33] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:23:33]   DNS QNAME=hpn-proxy-2.ghostery.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:23:33]   DNS host not found (Hostname unknown)
+[01/13/2019 23:23:33] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:23:33] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:23:33]   DNS QNAME=ghostery-proxy-2-1689892443.eu-central-1.elb.amazonaws.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:23:33]   DNS host not found (Hostname unknown)
+[01/13/2019 23:23:33] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:23:33] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:23:33]   DNS QNAME=ghostery-proxy-2-1689892443.eu-central-1.elb.amazonaws.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:23:33]   DNS unsupported rr_type=28
+[01/13/2019 23:24:06] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:24:06] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:24:06]   DNS QNAME=chat-pa.clients6.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:24:06]   DNS host not found (Hostname unknown)
+[01/13/2019 23:24:06] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:24:06] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:24:06]   DNS QNAME=chat-pa.clients6.google.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:24:06]   DNS unsupported rr_type=28
+[01/13/2019 23:25:00] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:25:00] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:25:00]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:25:00]   DNS host not found (Hostname unknown)
+[01/13/2019 23:25:00] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:25:00] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:25:00]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:25:00]   DNS host not found (Hostname unknown)
+[01/13/2019 23:25:00] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:25:00] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:25:00]   DNS QNAME=sync-630-us-west-2.sync.services.mozilla.com, QTYPE=28, QCLASS=1
+[01/13/2019 23:25:00]   DNS unsupported rr_type=28
+[01/13/2019 23:25:00] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:25:00] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:25:00]   DNS QNAME=0.client-channel.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:25:00]   DNS host not found (Hostname unknown)
+[01/13/2019 23:25:00] Adapter 2 has recognized an incoming DNS request
+[01/13/2019 23:25:00] DNS request QR=0, op=0, TC=0, RD=1, QDCOUNT=1, ANCOUNT=0, AUCOUNT=0, ADCOUNT=0
+[01/13/2019 23:25:00]   DNS QNAME=0.client-channel.google.com, QTYPE=1, QCLASS=1
+[01/13/2019 23:25:00]   DNS host not found (Hostname unknown)
+[01/13/2019 23:25:01] Adapter 2 has recognized an incoming DNS request
