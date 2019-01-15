@@ -35,6 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IQboxMessagesLogger, QboxMessagesNullLogger>();
             services.AddScoped<IStorageProviderFactory, StorageProviderFactory>();
             services.AddScoped<IQboxDataDumpContextFactory, QboxDataDumpContextFactory>();
+            services.AddScoped<IMiniPocoFactory, MiniPocoFactory>();
 
             // Add Azure
             services.AddAzure();
