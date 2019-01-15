@@ -3,12 +3,12 @@
 namespace QboxNext.WebApi.Docker.Controllers
 {
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class StatusController : ControllerBase
     {
         [HttpGet("/")]
         public string Get()
         {
-            return "ok";
+            return "QboxNext.WebApi.Docker is running";
         }
     }
 }

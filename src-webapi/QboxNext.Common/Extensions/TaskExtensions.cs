@@ -14,7 +14,7 @@ namespace QboxNext.Common.Extensions
                 if (completedTask == task)
                 {
                     timeoutCancellationTokenSource.Cancel();
-                    return await task;  // Very important in order to propagate exceptions
+                    return await task; // Very important in order to propagate exceptions
                 }
 
                 throw new TimeoutException();
