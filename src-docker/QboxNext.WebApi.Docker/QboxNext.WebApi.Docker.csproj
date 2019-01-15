@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <UserSecretsId>39c2bcda-5faa-4071-bf87-f5dfd92f69e0</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src-webapi\QboxNext.WebApi\Controllers\DeviceController.cs" Link="Controllers\DeviceController.cs" />
+    <Compile Include="..\..\src-webapi\QboxNext.WebApi\Program.cs" Link="Program.cs" />
+    <Compile Include="..\..\src-webapi\QboxNext.WebApi\Startup.cs" Link="Startup.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\src-webapi\QboxNext.WebApi\nlog.config" Link="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.2105168" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src-webapi\QboxNext.Common\QboxNext.Common.csproj" />
+    <ProjectReference Include="..\..\src-webapi\QboxNext.Infrastructure.Azure\QboxNext.Infrastructure.Azure.csproj" />
+    <ProjectReference Include="..\QBoxNext.Business.Docker\QBoxNext.Business.Docker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Properties\launchSettings.json">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

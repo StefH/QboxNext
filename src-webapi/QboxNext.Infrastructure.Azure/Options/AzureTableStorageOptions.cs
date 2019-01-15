@@ -11,5 +11,9 @@ namespace QboxNext.Infrastructure.Azure.Options
         [Required]
         [MinLength(0)]
         public string MeasurementsTableName { get; set; }
+
+        [Required]
+        [Range(0, 3600)]
+        public int ServerTimeout { get; set; }
     }
 }

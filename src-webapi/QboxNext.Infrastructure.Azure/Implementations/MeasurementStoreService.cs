@@ -3,12 +3,15 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using QboxNext.Common;
 using QboxNext.Common.Validation;
 using QboxNext.Domain;
 using QboxNext.Infrastructure.Azure.Interfaces.Public;
 using QboxNext.Infrastructure.Azure.Models.Internal;
 using QboxNext.Infrastructure.Azure.Models.Public;
 using QboxNext.Infrastructure.Azure.Options;
+using System;
+using QboxNext.Common.Extensions;
 
 namespace QboxNext.Infrastructure.Azure.Implementations
 {
@@ -16,6 +19,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
     {
         private readonly ILogger<MeasurementStoreService> _logger;
         private readonly CloudTable _measurementsTable;
+        private readonly TimeSpan _serverTimeout;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MeasurementStoreService"/> class.
@@ -28,10 +32,9 @@ namespace QboxNext.Infrastructure.Azure.Implementations
             Guard.NotNull(logger, nameof(logger));
 
             _logger = logger;
+            _serverTimeout = TimeSpan.FromSeconds(options.Value.ServerTimeout);
 
-            var storageAccount = CloudStorageAccount.Parse(options.Value.ConnectionString);
-
-            var client = storageAccount.CreateCloudTableClient();
+            var client = CloudStorageAccount.Parse(options.Value.ConnectionString).CreateCloudTableClient();
 
             _measurementsTable = client.GetTableReference(options.Value.MeasurementsTableName);
         }
@@ -46,7 +49,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
             var insertOperation = TableOperation.Insert(entity);
 
             _logger.LogInformation($"Inserting measurement for entity '{entity.PartitionKey}' into Azure Table '{_measurementsTable.Name}'");
-            var result = _measurementsTable.ExecuteAsync(insertOperation).Result; // TODO ?
+            var result = _measurementsTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout).Result; // TODO ?
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
         }

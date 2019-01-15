@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>QBoxNext.Business</AssemblyName>
+    <RootNamespace>QBoxNext.Business</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Extensions\ServiceCollectionExtensions.cs" Link="Extensions\ServiceCollectionExtensions.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\CustomStorageProvider.cs" Link="Implementations\CustomStorageProvider.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\MiniPocoFactory.cs" Link="Implementations\MiniPocoFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\QboxDataDumpContextFactory.cs" Link="Implementations\QboxDataDumpContextFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\StorageProviderFactory.cs" Link="Implementations\StorageProviderFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Internal\IMiniPocoFactory.cs" Link="Interfaces\IMiniPocoFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Internal\IStorageProviderFactory.cs" Link="Interfaces\IStorageProviderFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Public\IQboxDataDumpContextFactory.cs" Link="Interfaces\IQboxDataDumpContextFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Models\QboxContext.cs" Link="Models\QboxContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="Implementations\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="QboxNext" Version="1.0.0-preview-20190115" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src-webapi\QboxNext.Common\QboxNext.Common.csproj" />
+    <ProjectReference Include="..\..\src-webapi\QboxNext.Domain\QboxNext.Domain.csproj" />
+    <ProjectReference Include="..\..\src-webapi\QboxNext.Infrastructure.Azure\QboxNext.Infrastructure.Azure.csproj" />
+  </ItemGroup>
+
+</Project>
