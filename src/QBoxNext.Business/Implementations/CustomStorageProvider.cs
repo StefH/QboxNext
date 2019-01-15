@@ -54,11 +54,11 @@ namespace QBoxNext.Business.Implementations
                 LogTime = DateTime.UtcNow,
                 MeasureTime = inMeasureTime,
                 PulseValue = inPulseValue,
-                PulsesPerUnit = inPulsesPerUnit,
-                EurocentsPerUnit = inEurocentsPerUnit
+                PulsesPerUnit = inPulsesPerUnit
             };
 
             _measurementStoreService.Store(measurement);
+
             return null;
         }
 

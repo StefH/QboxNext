@@ -22,8 +22,6 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
 
         public double PulsesPerUnit { get; set; }
 
-        public double EurocentsPerUnit { get; set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MeasurementEntity"/> class.
         ///
@@ -54,7 +52,6 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
             CounterId = measurement.CounterId;
             PulseValue = measurement.PulseValue;
             PulsesPerUnit = (double)measurement.PulsesPerUnit;
-            EurocentsPerUnit = (double)measurement.EurocentsPerUnit;
         }
     }
 }

@@ -17,7 +17,5 @@ namespace QboxNext.Domain
         public ulong PulseValue { get; set; }
 
         public decimal PulsesPerUnit { get; set; }
-
-        public decimal EurocentsPerUnit { get; set; }
     }
 }

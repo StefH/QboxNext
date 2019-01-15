@@ -36,9 +36,10 @@ namespace QboxNext.Infrastructure.Azure.Implementations
             Guard.NotNull(measurement, nameof(measurement));
 
             var entity = new MeasurementEntity(measurement);
+
             var insertOperation = TableOperation.Insert(entity);
 
-            var result = _measurementsTable.ExecuteAsync(insertOperation).Result; // TODO
+            var result = _measurementsTable.ExecuteAsync(insertOperation).Result; // TODO ?
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
         }
