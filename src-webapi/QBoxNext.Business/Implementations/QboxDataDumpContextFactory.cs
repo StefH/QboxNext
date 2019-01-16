@@ -38,6 +38,7 @@ namespace QBoxNext.Business.Implementations
             {
                 string lastSeenAtUrl = context.LastSeenAtUrl;
                 string externalIp = context.ExternalIp;
+
                 var message = QboxMessageDecrypter.DecryptPlainOrEncryptedMessage(context.Message);
                 int length = context.Message.Length;
 

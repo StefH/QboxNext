@@ -1,4 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Qboxes.Classes;
 using Qboxes.Interfaces;
@@ -9,11 +13,9 @@ using QboxNext.Qboxes.Parsing.Factories;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using QBoxNext.Business.Interfaces.Internal;
 
-namespace QboxNext.Extra
+namespace QBoxNext.Business.Implementations
 {
     /// <summary>
     /// Class that encapsulates the handling of the Qbox mini data dump.
@@ -21,7 +23,7 @@ namespace QboxNext.Extra
     /// Based on <see cref="MiniDataHandler"/> but with fixes for:
     /// - handle Payload.Visit(...) exceptions correctly
     /// </summary>
-    public class QboxNextDataHandler : IVisitor
+    public class QboxNextDataHandler : IVisitorAsync
     {
         private static readonly Dictionary<int, int> SmartMeterIdMapping = new Dictionary<int, int>
         {
@@ -62,7 +64,7 @@ namespace QboxNext.Extra
             _logger = logger;
         }
 
-        public string Handle()
+        public async Task<string> HandleAsync()
         {
             using (new ExtendedLogger(_context.Mini.SerialNumber))
             {
@@ -129,10 +131,16 @@ namespace QboxNext.Extra
                             _context.Mini.QboxStatus.LastInvalidResponse = DateTime.UtcNow;
                         }
 
-                        // Loop all payloads and visit
-                        foreach (var payload in parseResult.Model.Payloads)
+                        // Loop all payloads except CounterPayload and visit
+                        foreach (var payload in parseResult.Model.Payloads.Where(p => !(p is CounterPayload)))
                         {
                             payload.Visit(this);
+                        }
+
+                        // Loop all CounterPayloads and store each measurement
+                        foreach (var counterPayload in parseResult.Model.Payloads.Where(p => p is CounterPayload).Cast<CounterPayload>())
+                        {
+                            await AcceptAsync(counterPayload);
                         }
 
                         BuildResult(ResponseType.Normal);
@@ -252,12 +260,18 @@ namespace QboxNext.Extra
             return _context.Mini.Counters.SingleOrDefault(s => s.CounterId == payload.InternalNr);
         }
 
-        #region Implementation of IVisitor
+        #region Implementation of IVisitorAsync
+
+        public void Accept(CounterPayload payload)
+        {
+            throw new NotSupportedException("Use AcceptAsync(...)");
+        }
+
         /// <summary>
         /// Process the payload
         /// </summary>
         /// <param name="payload">Payload, InternalNr will be mapped to the actual internal number used to store the data.</param>
-        public void Accept(CounterPayload payload)
+        public async Task AcceptAsync(CounterPayload payload)
         {
             if (payload.Value == ulong.MaxValue)
             {
@@ -295,7 +309,17 @@ namespace QboxNext.Extra
                 return;
             }
 
-            counter.SetValue(parseResult.Model.MeasurementTime, payload.Value, _context.Mini.QboxStatus);
+            if (counter.StorageProvider is IStorageProviderAsync asyncStorageProvider)
+            {
+                await asyncStorageProvider.StoreValueAsync(parseResult.Model.MeasurementTime, payload.Value, counter.CounterSensorMappings.First().Formule);
+            }
+            else
+            {
+                throw new NotSupportedException("Only providers which implement IStorageProviderAsync are supported.");
+            }
+
+            // counter.SetValue(parseResult.Model.MeasurementTime, payload.Value, _context.Mini.QboxStatus);
+
             _context.Mini.QboxStatus.LastDataReceived = DateTime.UtcNow;
         }
 

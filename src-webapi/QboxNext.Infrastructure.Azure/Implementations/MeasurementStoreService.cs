@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using QboxNext.Common;
+using QboxNext.Common.Extensions;
 using QboxNext.Common.Validation;
 using QboxNext.Domain;
 using QboxNext.Infrastructure.Azure.Interfaces.Public;
@@ -11,7 +11,7 @@ using QboxNext.Infrastructure.Azure.Models.Internal;
 using QboxNext.Infrastructure.Azure.Models.Public;
 using QboxNext.Infrastructure.Azure.Options;
 using System;
-using QboxNext.Common.Extensions;
+using System.Threading.Tasks;
 
 namespace QboxNext.Infrastructure.Azure.Implementations
 {
@@ -39,8 +39,8 @@ namespace QboxNext.Infrastructure.Azure.Implementations
             _measurementsTable = client.GetTableReference(options.Value.MeasurementsTableName);
         }
 
-        /// <inheritdoc cref="IMeasurementStoreService.Store(Measurement)"/>
-        public StoreResult Store(Measurement measurement)
+        /// <inheritdoc cref="IMeasurementStoreService.StoreAsync(Measurement)"/>
+        public async Task<StoreResult> StoreAsync(Measurement measurement)
         {
             Guard.NotNull(measurement, nameof(measurement));
 
@@ -49,7 +49,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
             var insertOperation = TableOperation.Insert(entity);
 
             _logger.LogInformation($"Inserting measurement for entity '{entity.PartitionKey}' into Azure Table '{_measurementsTable.Name}'");
-            var result = _measurementsTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout).Result; // TODO ?
+            var result = await _measurementsTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout);
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
         }

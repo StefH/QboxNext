@@ -6,7 +6,7 @@ using QBoxNext.Business.Interfaces.Public;
 using QBoxNext.Business.Models;
 using System.IO;
 using System.Threading.Tasks;
-using QboxNext.Extra;
+using QBoxNext.Business.Implementations;
 
 namespace QboxNext.WebApi.Controllers
 {
@@ -54,7 +54,7 @@ namespace QboxNext.WebApi.Controllers
 
             // Create handler and handle the message
             var handler = _qboxNextDataHandlerFactory.Create(qboxDataDumpContext);
-            string result = handler.Handle();
+            string result = await handler.HandleAsync();
 
             _logger.LogInformation("Parsing Done: {0}", result);
             _logger.LogTrace("Return");

@@ -7,10 +7,12 @@ using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Statistics;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using QBoxNext.Business.Interfaces.Internal;
 
 namespace QBoxNext.Business.Implementations
 {
-    internal class CustomStorageProvider : IStorageProvider
+    internal class CustomStorageProvider : IStorageProviderAsync
     {
         private readonly IMeasurementStoreService _measurementStoreService;
         private readonly string _serialNumber;
@@ -36,15 +38,7 @@ namespace QBoxNext.Business.Implementations
             _counterId = counterId;
         }
 
-        /// <summary>
-        /// Sets the value for the given measurement time by calculating the value for kWh, euro and quality index.
-        /// </summary>
-        /// <param name="inMeasureTime">the time of the measurement</param>
-        /// <param name="inPulseValue">the raw pulse value</param>
-        /// <param name="inPulsesPerUnit">the formula to calculate the kWh from</param>
-        /// <param name="inEurocentsPerUnit">The formula to calculate the value in Euro's</param>
-        /// <param name="inRunningTotal">N/A</param>
-        public Record SetValue(DateTime inMeasureTime, ulong inPulseValue, decimal inPulsesPerUnit, decimal inEurocentsPerUnit, Record inRunningTotal = null)
+        public async Task StoreValueAsync(DateTime inMeasureTime, ulong inPulseValue, decimal inPulsesPerUnit)
         {
             var measurement = new Measurement
             {
@@ -57,9 +51,12 @@ namespace QBoxNext.Business.Implementations
                 PulsesPerUnit = inPulsesPerUnit
             };
 
-            _measurementStoreService.Store(measurement);
+            await _measurementStoreService.StoreAsync(measurement);
+        }
 
-            return null;
+        public Record SetValue(DateTime inMeasureTime, ulong inPulseValue, decimal inPulsesPerUnit, decimal inEurocentsPerUnit, Record inRunningTotal = null)
+        {
+            throw new NotImplementedException();
         }
 
         public Record FindPrevious(DateTime inMeasurementTime)

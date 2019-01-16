@@ -16,7 +16,7 @@ namespace QBoxNext.Business.Implementations
         }
 
         /// <inheritdoc cref="IStorageProviderFactory.Create(string, string, int)"/>
-        public IStorageProvider Create(string serialNumber, string productNumber, int counterId)
+        public IStorageProviderAsync Create(string serialNumber, string productNumber, int counterId)
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
             Guard.NotNullOrEmpty(productNumber, nameof(productNumber));

@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
-namespace QboxNext.WebApi.Docker.Controllers
+namespace QboxNext.WebApi.Controllers
 {
     [ApiController]
     public class StatusController : ControllerBase
     {
-        [HttpGet("/")]
+        [HttpGet("/status")]
         public string Get()
         {
-            return "QboxNext.WebApi.Docker is running";
+            return $"QboxNext.WebApi.Docker is running @ {DateTime.UtcNow}";
         }
     }
 }

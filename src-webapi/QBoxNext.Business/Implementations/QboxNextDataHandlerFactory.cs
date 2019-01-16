@@ -3,13 +3,14 @@ using Microsoft.Extensions.Logging;
 using Qboxes.Classes;
 using Qboxes.Interfaces;
 using QboxNext.Core.Utils;
+using QBoxNext.Business.Interfaces.Public;
 
-namespace QboxNext.Extra
+namespace QBoxNext.Business.Implementations
 {
     internal class QboxNextDataHandlerFactory : IQboxNextDataHandlerFactory
     {
-        [NotNull] private readonly IQboxMessagesLogger _qboxMessagesLogger;
-        [NotNull] private readonly ILogger<QboxNextDataHandler> _logger;
+        private readonly IQboxMessagesLogger _qboxMessagesLogger;
+        private readonly ILogger<QboxNextDataHandler> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QboxNextDataHandlerFactory"/> class.

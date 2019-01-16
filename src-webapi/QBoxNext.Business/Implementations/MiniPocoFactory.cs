@@ -4,7 +4,6 @@ using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
 using QBoxNext.Business.Interfaces.Internal;
-using System;
 using System.Collections.Generic;
 
 namespace QBoxNext.Business.Implementations
@@ -30,11 +29,7 @@ namespace QBoxNext.Business.Implementations
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
             Guard.NotNullOrEmpty(productNumber, nameof(productNumber));
 
-            var counterSensorMappingsSmartMeter = new CounterSensorMappingPoco
-            {
-                PeriodeBegin = new DateTime(2000, 1, 1),
-                Formule = 1000
-            };
+            var counterSensorMappingsSmartMeter = new CounterSensorMappingPoco { Formule = 1000 /* inPulsesPerUnit */ };
 
             var mini = new MiniPoco
             {

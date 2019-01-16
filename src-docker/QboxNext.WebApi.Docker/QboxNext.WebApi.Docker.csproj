@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\src-webapi\QboxNext.WebApi\Controllers\DeviceController.cs" Link="Controllers\DeviceController.cs" />
+    <Compile Include="..\..\src-webapi\QboxNext.WebApi\Controllers\StatusController.cs" Link="Controllers\StatusController.cs" />
     <Compile Include="..\..\src-webapi\QboxNext.WebApi\Program.cs" Link="Program.cs" />
     <Compile Include="..\..\src-webapi\QboxNext.WebApi\Startup.cs" Link="Startup.cs" />
   </ItemGroup>
