@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 using QboxNext.Core.Utils;
-using QboxNext.Handlers;
+using QboxNext.Extra;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection

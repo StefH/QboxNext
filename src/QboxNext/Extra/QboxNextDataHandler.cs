@@ -13,13 +13,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QboxNext.Handlers
+namespace QboxNext.Extra
 {
     /// <summary>
     /// Class that encapsulates the handling of the Qbox mini data dump.
     ///
     /// Based on <see cref="MiniDataHandler"/> but with fixes for:
-    /// - handle store exception correctly
+    /// - handle Payload.Visit(...) exceptions correctly
     /// </summary>
     public class QboxNextDataHandler : IVisitor
     {
@@ -84,7 +84,9 @@ namespace QboxNext.Handlers
                         _context.Mini.QboxStatus.FirmwareVersion = parseResult.ProtocolNr;
                         _context.Mini.State = parseResult.Model.Status.Status;
                         _context.Mini.QboxStatus.State = (byte)parseResult.Model.Status.Status;
-                        var operational = false;
+
+                        bool operational = false;
+
                         switch (_context.Mini.State)
                         {
                             case MiniState.HardReset:
@@ -127,6 +129,7 @@ namespace QboxNext.Handlers
                             _context.Mini.QboxStatus.LastInvalidResponse = DateTime.UtcNow;
                         }
 
+                        // Loop all payloads and visit
                         foreach (var payload in parseResult.Model.Payloads)
                         {
                             payload.Visit(this);
@@ -154,19 +157,19 @@ namespace QboxNext.Handlers
 
                     return _result.GetMessageWithEnvelope();
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
                     if (_context.Mini != null)
                     {
                         _context.Mini.QboxStatus.LastSeen = DateTime.UtcNow;
                         _context.Mini.QboxStatus.LastError = DateTime.UtcNow;
-                        _context.Mini.QboxStatus.LastErrorMessage = e.Message;
+                        _context.Mini.QboxStatus.LastErrorMessage = exception.Message;
                     }
 
-                    LogQboxMessage(e.ToString(), QboxMessageType.Exception);
-                    _logger.LogError(e, $"sn: {_context.Mini.SerialNumber} | Error: {e.Message}");
+                    LogQboxMessage(exception.ToString(), QboxMessageType.Exception);
+                    _logger.LogError(exception, $"sn: {_context.Mini.SerialNumber}");
 
-                    return e.Message;
+                    throw;
                 }
             }
         }
@@ -186,15 +189,14 @@ namespace QboxNext.Handlers
             bool canSendAutoStatusCommand = inResponseType == ResponseType.Normal && CanSendAutoStatusCommand((byte)_result.SequenceNr);
             bool canSendAutoAnswerCommand = inResponseType == ResponseType.Normal;
             var responseBuilder = new QboxResponseBuilder(_context.Mini, ClientRepositories.Queue, canSendAutoStatusCommand, canSendAutoAnswerCommand);
-            List<string> commands = responseBuilder.Build();
 
+            var commands = responseBuilder.Build();
             if (commands != null && commands.Count > 0)
             {
                 _result.Write(commands[0]);
                 QueueCommands(commands.Skip(1));
             }
         }
-
 
         /// <summary>
         /// Put commands in the Qbox' command queue.
@@ -203,12 +205,15 @@ namespace QboxNext.Handlers
         {
             // When resubmitting, there is no queue.
             if (ClientRepositories.Queue == null)
+            {
                 return;
+            }
 
             foreach (var command in inCommands)
+            {
                 ClientRepositories.Queue.Enqueue(_context.Mini.SerialNumber, command);
+            }
         }
-
 
         /// <summary>
         /// result = true when Mini has 1 client and clientstatus 'ConnectionWithClient' = false
@@ -217,23 +222,28 @@ namespace QboxNext.Handlers
         /// <returns></returns>
         private bool ClientNotConnected()
         {
-            if (_context.Mini.QboxStatus.ClientStatuses.Count() == 1)
+            if (_context.Mini.QboxStatus.ClientStatuses.Count == 1)
             {
                 var state = new ClientMiniStatus(_context.Mini.QboxStatus.ClientStatuses.First().Value, _context.Mini.QboxStatus.FirmwareVersion);
                 return !state.ConnectionWithClient;
             }
+
             return false;
         }
 
         private CounterPoco FindCounter(CounterPayload payload)
         {
-            if (payload is CounterWithSourcePayload)
+            if (payload is CounterWithSourcePayload withSourcePayload)
             {
-                var pl = payload as CounterWithSourcePayload;
-                var counter = _context.Mini.Counters.SingleOrDefault(s => s.CounterId == payload.InternalNr && s.Secondary != pl.PrimaryMeter && s.Groupid == pl.Source);
+                var counter = _context.Mini.Counters
+                    .SingleOrDefault(s => s.CounterId == payload.InternalNr &&
+                                          s.Secondary != withSourcePayload.PrimaryMeter &&
+                                          s.Groupid == withSourcePayload.Source);
 
                 if (counter != null)
+                {
                     return counter;
+                }
 
                 // No specific counter found, try to find counter with only internalNr
             }
@@ -242,7 +252,6 @@ namespace QboxNext.Handlers
             return _context.Mini.Counters.SingleOrDefault(s => s.CounterId == payload.InternalNr);
         }
 
-
         #region Implementation of IVisitor
         /// <summary>
         /// Process the payload
@@ -250,47 +259,44 @@ namespace QboxNext.Handlers
         /// <param name="payload">Payload, InternalNr will be mapped to the actual internal number used to store the data.</param>
         public void Accept(CounterPayload payload)
         {
-            try
+            if (payload.Value == ulong.MaxValue)
             {
-                if (payload.Value == ulong.MaxValue)
-                    return;
-
-                if (payload is R21CounterPayload && !(payload as R21CounterPayload).IsValid)
-                {
-                    _logger.LogDebug("Invalid value for counter {0} / {1}", payload.InternalNr, _context.Mini.SerialNumber);
-                    return;
-                }
-
-                if (ClientNotConnected())
-                {
-                    // No connection with client, payload is last measured value and not the real value. First real value will be spread out over missing values
-                    _logger.LogDebug("No connection with client, data not saved");
-                    return;
-                }
-
-                if (!MapCounterId(payload, _context.Mini))
-                    return;
-
-                // store the data in the payload into the corresponding counter
-                var counter = FindCounter(payload);
-                if (counter == null)
-                {
-                    _logger.LogWarning($"Received value for unknown counter: {payload.InternalNr} / {_context.Mini.SerialNumber}");
-                    return; //todo: investigate if exception would be better 
-                }
-
-                var parseResult = _result as MiniParseResult;
-                if (parseResult == null)
-                    return;
-
-                counter.SetValue(parseResult.Model.MeasurementTime, payload.Value, _context.Mini.QboxStatus);
-                _context.Mini.QboxStatus.LastDataReceived = DateTime.UtcNow;
+                return;
             }
-            catch (Exception e)
+
+            if (payload is R21CounterPayload counterPayload && !counterPayload.IsValid)
             {
-                //todo: add specific handling for file locking etc iso this Pokemon... (rolf)
-                _logger.LogError(e, e.Message);
+                _logger.LogDebug("Invalid value for counter {0} / {1}", counterPayload.InternalNr, _context.Mini.SerialNumber);
+                return;
             }
+
+            if (ClientNotConnected())
+            {
+                // No connection with client, payload is last measured value and not the real value. First real value will be spread out over missing values
+                _logger.LogDebug("No connection with client, data not saved");
+                return;
+            }
+
+            if (!MapCounterId(payload, _context.Mini))
+            {
+                return;
+            }
+
+            // store the data in the payload into the corresponding counter
+            var counter = FindCounter(payload);
+            if (counter == null)
+            {
+                _logger.LogWarning($"Received value for unknown counter: {payload.InternalNr} / {_context.Mini.SerialNumber}");
+                return; //todo: investigate if exception would be better 
+            }
+
+            if (!(_result is MiniParseResult parseResult))
+            {
+                return;
+            }
+
+            counter.SetValue(parseResult.Model.MeasurementTime, payload.Value, _context.Mini.QboxStatus);
+            _context.Mini.QboxStatus.LastDataReceived = DateTime.UtcNow;
         }
 
         public void Accept(DeviceSettingsPayload payload)
@@ -299,7 +305,7 @@ namespace QboxNext.Handlers
             {
                 if (Enum.GetValues(typeof(DeviceSettingType)).Cast<DeviceSettingType>().Contains(payload.DeviceSetting))
                 {
-                    var key = payload.DeviceSetting.ToString();
+                    string key = payload.DeviceSetting.ToString();
                     _context.Mini.QboxStatus.DebugSettings[key] = payload.DeviceSettingValueStr;
                     _context.Mini.QboxStatus.DebugSettingsLastReceived[key] = DateTime.UtcNow;
                 }
@@ -342,10 +348,15 @@ namespace QboxNext.Handlers
             if (counterWithSourcePayload == null || counterWithSourcePayload.PrimaryMeter)
             {
                 // Firmware A34, Smart Meter and soladin measured on client reports counters instead of specific message:
-                if (inMini.Clients.Any(d => d.MeterType == DeviceMeterType.Smart_Meter_E || d.MeterType == DeviceMeterType.Smart_Meter_EG))
+                if (inMini.Clients.Any(d =>
+                    d.MeterType == DeviceMeterType.Smart_Meter_E || d.MeterType == DeviceMeterType.Smart_Meter_EG))
+                {
                     mapping = SmartMeterIdMapping;
+                }
                 else if (inMini.Clients.Any(d => d.MeterType == DeviceMeterType.Soladin_600))
+                {
                     mapping = SoladinIdMapping;
+                }
             }
 
             if (counterWithSourcePayload != null && !counterWithSourcePayload.PrimaryMeter)
@@ -364,17 +375,17 @@ namespace QboxNext.Handlers
             }
 
             if (mapping != null && mapping.ContainsKey(ioPayload.InternalNr))
+            {
                 ioPayload.InternalNr = mapping[ioPayload.InternalNr];
+            }
 
             return true;
         }
-
 
         /// <summary>
         /// Can we send the auto status commands on the specified sequence nr?
         /// TODO : return always false for now
         /// </summary>
-        // ReSharper disable once UnusedParameter.Local
         private bool CanSendAutoStatusCommand(byte inSequenceNr)
         {
             return false;

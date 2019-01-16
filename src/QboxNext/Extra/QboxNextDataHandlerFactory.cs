@@ -4,7 +4,7 @@ using Qboxes.Classes;
 using Qboxes.Interfaces;
 using QboxNext.Core.Utils;
 
-namespace QboxNext.Handlers
+namespace QboxNext.Extra
 {
     internal class QboxNextDataHandlerFactory : IQboxNextDataHandlerFactory
     {

@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Qboxes.Classes;
 
-namespace QboxNext.Handlers
+namespace QboxNext.Extra
 {
     public interface IQboxNextDataHandlerFactory
     {
