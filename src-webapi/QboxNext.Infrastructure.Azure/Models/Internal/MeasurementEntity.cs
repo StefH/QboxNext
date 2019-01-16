@@ -10,9 +10,9 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
     {
         public DateTime LogTime { get; set; }
 
-        public string SerialNumber { get; set; }
-
         public string ProductNumber { get; set; }
+
+        public string SerialNumber { get; set; }
 
         public DateTime MeasureTime { get; set; }
 
@@ -42,7 +42,7 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
         {
             Guard.NotNull(measurement, nameof(measurement));
 
-            PartitionKey = $"{measurement.SerialNumber}:{measurement.ProductNumber}";
+            PartitionKey = $"{measurement.ProductNumber}:{measurement.SerialNumber}";
             RowKey = $"{measurement.CounterId:D4}:{measurement.LogTime.Ticks}";
 
             SerialNumber = measurement.SerialNumber;
