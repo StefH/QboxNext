@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Qboxes.Classes;
 using Qboxes.Interfaces;
-using QboxNext.Core.Utils;
+using QboxNext.Common.Validation;
 using QBoxNext.Business.Interfaces.Public;
 
 namespace QBoxNext.Business.Implementations
@@ -19,8 +19,8 @@ namespace QBoxNext.Business.Implementations
         /// <param name="logger">The logger.</param>
         public QboxNextDataHandlerFactory([NotNull] IQboxMessagesLogger qboxMessagesLogger, [NotNull] ILogger<QboxNextDataHandler> logger)
         {
-            Guard.IsNotNull(qboxMessagesLogger, nameof(qboxMessagesLogger));
-            Guard.IsNotNull(logger, nameof(logger));
+            Guard.NotNull(qboxMessagesLogger, nameof(qboxMessagesLogger));
+            Guard.NotNull(logger, nameof(logger));
 
             _qboxMessagesLogger = qboxMessagesLogger;
             _logger = logger;
@@ -29,7 +29,7 @@ namespace QBoxNext.Business.Implementations
         /// <inheritdoc cref="IQboxNextDataHandlerFactory.Create(QboxDataDumpContext)"/>
         public QboxNextDataHandler Create(QboxDataDumpContext context)
         {
-            Guard.IsNotNull(context, nameof(context));
+            Guard.NotNull(context, nameof(context));
 
             return new QboxNextDataHandler(context, _qboxMessagesLogger, _logger);
         }

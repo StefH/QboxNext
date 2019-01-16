@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -11,17 +11,23 @@
     <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\CustomStorageProvider.cs" Link="Implementations\CustomStorageProvider.cs" />
     <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\MiniPocoFactory.cs" Link="Implementations\MiniPocoFactory.cs" />
     <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\QboxDataDumpContextFactory.cs" Link="Implementations\QboxDataDumpContextFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\QboxNextDataHandler.cs" Link="Implementations\QboxNextDataHandler.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\QboxNextDataHandlerFactory.cs" Link="Implementations\QboxNextDataHandlerFactory.cs" />
     <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\StorageProviderFactory.cs" Link="Implementations\StorageProviderFactory.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Internal\IMiniPocoFactory.cs" Link="Interfaces\IMiniPocoFactory.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Internal\IStorageProviderFactory.cs" Link="Interfaces\IStorageProviderFactory.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Public\IQboxDataDumpContextFactory.cs" Link="Interfaces\IQboxDataDumpContextFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Internal\IMiniPocoFactory.cs" Link="Interfaces\Internal\IMiniPocoFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Internal\IStorageProviderAsync.cs" Link="Interfaces\Internal\IStorageProviderAsync.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Internal\IStorageProviderFactory.cs" Link="Interfaces\Internal\IStorageProviderFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Internal\IVisitorAsync.cs" Link="Interfaces\Internal\IVisitorAsync.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Public\IQboxDataDumpContextFactory.cs" Link="Interfaces\Public\IQboxDataDumpContextFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Public\IQboxNextDataHandlerFactory.cs" Link="Interfaces\Public\IQboxNextDataHandlerFactory.cs" />
     <Compile Include="..\..\src-webapi\QBoxNext.Business\Models\QboxContext.cs" Link="Models\QboxContext.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Implementations\" />
-    <Folder Include="Interfaces\" />
+    <Folder Include="Interfaces\Internal\" />
+    <Folder Include="Interfaces\Public\" />
     <Folder Include="Models\" />
   </ItemGroup>
 

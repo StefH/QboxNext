@@ -6,8 +6,8 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Qboxes.Classes;
 using Qboxes.Interfaces;
+using QboxNext.Common.Validation;
 using QboxNext.Core.Dto;
-using QboxNext.Core.Utils;
 using QboxNext.Qboxes.Parsing.Elements;
 using QboxNext.Qboxes.Parsing.Factories;
 using QboxNext.Qboxes.Parsing.Protocols;
@@ -55,9 +55,9 @@ namespace QBoxNext.Business.Implementations
         /// <param name="logger">The logger.</param>
         public QboxNextDataHandler([NotNull] QboxDataDumpContext context, [NotNull] IQboxMessagesLogger qboxMessagesLogger, [NotNull] ILogger<QboxNextDataHandler> logger)
         {
-            Guard.IsNotNull(context, nameof(context));
-            Guard.IsNotNull(qboxMessagesLogger, nameof(qboxMessagesLogger));
-            Guard.IsNotNull(logger, nameof(logger));
+            Guard.NotNull(context, nameof(context));
+            Guard.NotNull(qboxMessagesLogger, nameof(qboxMessagesLogger));
+            Guard.NotNull(logger, nameof(logger));
 
             _context = context;
             _qboxMessagesLogger = qboxMessagesLogger;
