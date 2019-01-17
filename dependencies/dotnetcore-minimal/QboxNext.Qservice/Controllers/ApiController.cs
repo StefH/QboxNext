@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using QboxNext.Core.Log;
 using QboxNext.Core.Utils;
 using QboxNext.Qservice.Classes;
-using QboxNext.Qservice.Mvc.Classes;
 
 namespace QboxNext.Qservice.Controllers
 {
@@ -15,11 +11,11 @@ namespace QboxNext.Qservice.Controllers
     public class ApiController : ControllerBase
     {
         private static readonly Logger Log = QboxNextLogFactory.GetLogger("ApiController");
-        private readonly IOldSeriesRetriever _oldSeriesRetriever;
+        private readonly ISeriesRetriever _seriesRetriever;
 
         public ApiController()
         {
-            _oldSeriesRetriever = new SeriesRetriever();
+            _seriesRetriever = new SeriesRetriever();
         }
 
         [HttpGet("/api/getseries")]
@@ -39,7 +35,7 @@ namespace QboxNext.Qservice.Controllers
             var derivedResolution = DeriveResolution(from, to);
             var fromUtc = DateTimeUtils.NlDateTimeToUtc(from);
             var toUtc = DateTimeUtils.NlDateTimeToUtc(to);
-            var series = _oldSeriesRetriever.RetrieveForAccount(sn, fromUtc, toUtc, derivedResolution);
+            var series = _seriesRetriever.RetrieveForAccount(sn, fromUtc, toUtc, derivedResolution);
             var response = new
             {
                 result = true,

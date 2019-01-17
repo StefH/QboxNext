@@ -219,7 +219,9 @@ namespace QboxNext.Core.Utils
             return date1.Year == date2.Year && date1.Month == date2.Month;
         }
 
-        public static readonly TimeZoneInfo TimeZoneNl = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
+        public static readonly TimeZoneInfo TimeZoneNl = Environment.OSVersion.Platform == PlatformID.Win32NT ? 
+            TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time") :
+            TimeZoneInfo.FindSystemTimeZoneById("WET");
         private static long _lastTimeStamp = DateTime.UtcNow.Ticks;
     }
 }

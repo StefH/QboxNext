@@ -217,7 +217,7 @@ namespace Qboxes.Classes
             if (payload is CounterWithSourcePayload)
             {
                 var pl = payload as CounterWithSourcePayload;
-                var counter = _context.Mini.Counters.SingleOrDefault(s => s.CounterId == payload.InternalNr && s.Secondary != pl.PrimaryMeter && s.Groupid == pl.Source);
+                var counter = _context.Mini.Counters.SingleOrDefault(s => s.CounterId == payload.InternalNr && s.Secondary != pl.PrimaryMeter && s.GroupId == pl.Source);
 
                 if (counter != null)
                     return counter;
@@ -276,7 +276,6 @@ namespace Qboxes.Classes
 			}
             catch (Exception e)
             {
-                //todo: add specific handling for file locking etc iso this Pokemon... (rolf)
                 Log.Error(e, e.Message);                
             }
         }
@@ -294,7 +293,6 @@ namespace Qboxes.Classes
             }
             catch (Exception e)
             {
-                //todo: add specific handling for file locking etc iso this Pokemon... (rolf)
                 Log.Error(e, e.Message);
             }
         }
@@ -311,7 +309,6 @@ namespace Qboxes.Classes
             }
             catch (Exception e)
             {
-                //todo: add specific handling for file locking etc iso this Pokemon... (rolf)
                 Log.Error(e, e.Message);
             }
         }

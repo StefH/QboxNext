@@ -248,7 +248,7 @@ namespace QboxNext.Extensions.Implementations
                 var counter = _context.Mini.Counters
                     .SingleOrDefault(s => s.CounterId == payload.InternalNr &&
                                           s.Secondary != withSourcePayload.PrimaryMeter &&
-                                          s.Groupid == withSourcePayload.Source);
+                                          s.GroupId == withSourcePayload.Source);
 
                 if (counter != null)
                 {

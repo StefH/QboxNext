@@ -4,7 +4,6 @@ namespace QboxNext.Core
 	{
 		Raw,
 		kWh,
-		Euro,
 		M3
 	}
 }

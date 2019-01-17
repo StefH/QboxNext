@@ -21,9 +21,9 @@ namespace Qboxes.Model.Qboxes
         public int CounterId { get; set; }
         public IEnumerable<CounterDeviceMapping> CounterDeviceMappings { get; set; }
         public IStorageProvider StorageProvider { get; set; }
-        public string Storageid { get; set; }
+        public string StorageId { get; set; }
         public Qbox Qbox { get; set; }
-        public CounterSource Groupid { get; set; }
+        public CounterSource GroupId { get; set; }
         public bool Secondary { get; set; }
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace Qboxes.Model.Qboxes
                     resolution = SeriesResolution.Hour;
                 }
                 var values = SeriesValueListBuilder.BuildSeries(from, to, resolution);
-                if (eenheid != Unit.Euro && CounterId == 2421)
+                if (CounterId == 2421)
                 {
-                    //todo: refactor hack (rolf)
+                    //todo: refactor hack, this can be properly handled when we have Energy and Power as units.
                     eenheid = Unit.M3;
                 }
 
@@ -61,7 +61,6 @@ namespace Qboxes.Model.Qboxes
                     {
                         if (rec != null && rec.Value != null)
                         {
-
                             if (rec.Value == 0m)
                             {
                                 var distance = 1;
@@ -75,10 +74,6 @@ namespace Qboxes.Model.Qboxes
                                 while (currentIndex + distance < data.Count && data[currentIndex + distance].Value == 0m)
                                     distance++;
                                 rec.Value = rec.Value / distance;
-                            }
-                            else
-                            {
-
                             }
                         }
                         currentIndex++;
@@ -96,15 +91,15 @@ namespace Qboxes.Model.Qboxes
         }
 
         /// <summary>
-        /// Storageid introduced for storing counter data based on Counterid, Groupid and secondary attributes
-        /// Groupid and secondary attribute are new attributes for handling data from secondary meterdevice and (multiple)clients
+        /// StorageId introduced for storing counter data based on Counterid, GroupId and secondary attributes
+        /// GroupId and secondary attribute are new attributes for handling data from secondary meterdevice and (multiple)clients
         /// </summary>
         public void ComposeStorageid()
         {
-            Storageid = String.Format("{0}_{1:00000000}{2}{3}",
+            StorageId = String.Format("{0}_{1:00000000}{2}{3}",
                 Qbox.SerialNumber,
                 CounterId,
-                Groupid == CounterSource.Host ? "" : "_" + Groupid.ToString(),
+                GroupId == CounterSource.Host ? "" : "_" + GroupId.ToString(),
                 Secondary ? "_secondary" : "");
         }
 
@@ -119,7 +114,7 @@ namespace Qboxes.Model.Qboxes
             {
                 Debug.Assert(Qbox.SerialNumber != null, "Qbox.SerialNumber != null");
 
-                StorageProvider = StorageProviderFactory.GetStorageProvider(false, Qbox.Storageprovider, Qbox.SerialNumber, Qbox.DataStore.Path, CounterId, Qbox.Precision, Storageid);
+                StorageProvider = StorageProviderFactory.GetStorageProvider(false, Qbox.Storageprovider, Qbox.SerialNumber, Qbox.DataStore.Path, CounterId, Qbox.Precision, StorageId);
                 return true;
             }
             return false;

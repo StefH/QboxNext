@@ -149,12 +149,12 @@ namespace QboxNext.Qserver.Core.DataStore
         public int Counter { get; private set; }
 
         /// <summary>
-        /// Storageid added by firmware 39
-        /// By Storageid = null/empty, the old filename is used
-        /// By Storageid != null, value is used for filename
+        /// StorageId added by firmware 39
+        /// By StorageId = null/empty, the old filename is used
+        /// By StorageId != null, value is used for filename
         /// </summary>
         //todo: refactor naar 1 storage id methode naam geving. Let wel op dat dan een tool geschreven moet worden om alle bestaande files eerst te hernoemen
-        public string Storageid { get; private set; }
+        public string StorageId { get; private set; }
 
         /// <summary>
         /// A Guid id intended to be used as a unique identifier for the file
@@ -255,7 +255,7 @@ namespace QboxNext.Qserver.Core.DataStore
             ReferenceDate = referenceDate.TruncateToMinute();
             AllowOverwrite = allowOverwrite;
             GrowthNrOfDays = nrOfDays;
-            Storageid = storageId;
+            StorageId = storageId;
 
             ID = Guid.NewGuid();
 
@@ -643,10 +643,11 @@ namespace QboxNext.Qserver.Core.DataStore
                     // TotalMinutes is een double
                     var minutes = (int)(last.Time - first.Time).TotalMinutes;
                     minutes = minutes <= 0 ? 1 : minutes;
+                    // SAM: factor is a nasty hack to show power in day graph and energy in other graphs.
+                    // We should probably fix it by replacing the unit types kWh and M3 with Energy and
+                    // adding a new one, Power.
                     var factor = Convert.ToDecimal(minutes < 60d ? (60.0 / minutes) : 1.0);
                     return ((last.KiloWattHour - first.KiloWattHour) * factor) * 1000m;
-                case Unit.Euro:
-                    return last.Money - first.Money;
                 case Unit.M3:
                     return (last.KiloWattHour - first.KiloWattHour) * 1000m;
                 default:
@@ -709,9 +710,9 @@ namespace QboxNext.Qserver.Core.DataStore
         public string GetFilePath()
         {
             // Create the filename
-            var filename = String.IsNullOrEmpty(Storageid) ?
-                string.Format("{0}_{1:00000000}.{2}", SerialNumber, Counter, Extension) :
-                string.Format("{0}.{1}", Storageid, Extension);
+            var filename = String.IsNullOrEmpty(StorageId) ? 
+                $"{SerialNumber}_{Counter:00000000}.{Extension}" :
+                $"{StorageId}.{Extension}";
             var result = Path.Combine(GetDirectory(), filename);
             return result;
         }

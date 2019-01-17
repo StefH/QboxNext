@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 using AutoMapper;
-using NLog.Fluent;
 using Qboxes;
 using Qboxes.Model.Qboxes;
 using QboxNext.Core;
@@ -12,20 +9,21 @@ using QboxNext.Core.Dto;
 using QboxNext.Core.Utils;
 using QboxNext.Qbiz.Dto;
 using QboxNext.Qboxes.Parsing.Protocols;
-using QboxNext.Qserver.Core.DataStore;
 using QboxNext.Qserver.Core.Interfaces;
-using QboxNext.Qserver.Core.Model;
 using QboxNext.Qservice.Classes;
 using QboxNext.Qserver.Core.Statistics;
 using QboxNext.Qservice.Logging;
 
-namespace QboxNext.Qservice.Mvc.Classes
+namespace QboxNext.Qservice.Classes
 {
     /// <summary>
-    /// Class to retrieve series from Qplatform.
+    /// Class to retrieve series from QBX files.
     /// </summary>
-    public class SeriesRetriever : IOldSeriesRetriever
+    public class SeriesRetriever : ISeriesRetriever
     {
+        private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+        private const int GenerationCounterId = 9999;
+
         static SeriesRetriever()
         {
             Mapper.Initialize(cfg =>
@@ -33,11 +31,6 @@ namespace QboxNext.Qservice.Mvc.Classes
                     .ForMember(dest => dest.Data, action => action.MapFrom(src => src.Data.Select(
                         s => s.Value).ToList()))
             );
-            //can be negative with ferraris without s0, but this is solved in the retrieval of daily data
-            //(src.EnergyType == DbEnergyType.Consumption
-            //    ? (s.Value < 0 ? 0 : s.Value)
-            //    : s.Value)).ToList()));
-            //.AfterMap((src, dest) => dest.DataAverage = dest.Data != null && dest.Data.Count(e => e != null) > 0 ? (dest.Data.Sum(e => (e ?? decimal.Zero))) / (decimal)dest.Data.Count(e => e != null) : 0m);
         }
 
         /// <summary>
@@ -47,90 +40,6 @@ namespace QboxNext.Qservice.Mvc.Classes
         {
             var valueSeries = RetrieveSerieValuesForAccount(inQboxSerial, inFromUtc, inToUtc, inResolution);
             return Mapper.Map<IEnumerable<ValueSerie>, IList<Serie>>(valueSeries);
-        }
-
-        private static ValueSerie ChangeValueSerieEnergyType(ValueSerie serie, DeviceEnergyType energyType)
-        {
-            serie.EnergyType = energyType;
-            return serie;
-        }
-
-
-        private static List<ValueSerie> InvertValueSerieValues(List<ValueSerie> series, DeviceEnergyType energyType)
-        {
-            series.First(s => s.EnergyType == energyType).Data.ForEach(v => v.Value *= -1);
-            series.First(s => s.EnergyType == energyType).Total *= -1;
-            series.First(s => s.EnergyType == energyType).TotalMoney *= -1;
-            return series;
-        }
-
-
-        /// <summary>
-        /// Combines the slots of a higher resolution to slots of a lower resolution.
-        /// </summary>
-        /// <remarks>
-        /// The source and destination resolution are the same, the original list of values is returned.
-        /// </remarks>
-        private List<ValueSerie> CombineSlots(List<ValueSerie> inValueSeriePerDevice, DateTime inFromUtc, DateTime inToUtc,
-                                              SeriesResolution inSourceResolution, SeriesResolution inDestinationResolution)
-        {
-            if (inSourceResolution == inDestinationResolution)
-                return inValueSeriePerDevice;
-
-            var combinedValueSeriePerDevice = new List<ValueSerie>();
-            foreach (var valueSerie in inValueSeriePerDevice)
-            {
-                var combinedValueSerie = new ValueSerie
-                {
-                    EnergyType = valueSerie.EnergyType,
-                    Name = valueSerie.Name,
-                    RelativeTotal = valueSerie.RelativeTotal,
-                    Total = valueSerie.Total,
-                    TotalMoney = valueSerie.TotalMoney,
-                    Data = BuildNlSeries(inFromUtc, inToUtc, inDestinationResolution)
-                };
-                foreach (var destinationSlot in combinedValueSerie.Data)
-                {
-                    var slotBeginUtc = DateTimeUtils.NlDateTimeToUtc(destinationSlot.Begin);
-                    var slotEndUtc = DateTimeUtils.NlDateTimeToUtc(destinationSlot.End);
-                    destinationSlot.Value = GetCombinedValue(valueSerie.Data, slotBeginUtc, slotEndUtc);
-                }
-
-                combinedValueSeriePerDevice.Add(combinedValueSerie);
-            }
-
-            return combinedValueSeriePerDevice;
-        }
-
-
-        private List<SeriesValue> BuildNlSeries(DateTime inFromUtc, DateTime inToUtc, SeriesResolution inDestinationResolution)
-        {
-            // The original Builder can only handle local times and resolution boundaries on these times.
-            // So we first convert to NL times, then build the series, and convert the times back to UTC.
-            var fromNl = DateTimeUtils.UtcDateTimeToNl(inFromUtc);
-            var toNl = DateTimeUtils.UtcDateTimeToNl(inToUtc);
-            return SeriesValueListBuilder.BuildSeries(fromNl, toNl, inDestinationResolution);
-        }
-
-
-        /// <summary>
-        /// Get the combined value of a number of slots.
-        /// </summary>
-        /// <returns>null if none of the source slots had a value, or the sum of the non-null values otherwise.</returns>
-        private static decimal? GetCombinedValue(IEnumerable<SeriesValue> inSourceValues, DateTime inFromUtc, DateTime inToUtc)
-        {
-            var relevantSourceValues = inSourceValues.Where(s => s.Begin.ToUniversalTime() >= inFromUtc && s.End.ToUniversalTime() <= inToUtc && s.Value.HasValue);
-            decimal? combinedValue = null;
-            foreach (var sourceValue in relevantSourceValues)
-            {
-                if (!combinedValue.HasValue)
-                    combinedValue = 0m;
-
-                Debug.Assert(sourceValue.Value != null);
-                combinedValue += sourceValue.Value.Value;
-            }
-
-            return combinedValue;
         }
 
 
@@ -155,64 +64,58 @@ namespace QboxNext.Qservice.Mvc.Classes
         public List<ValueSerie> RetrieveQboxSeries(RetrieveSeriesParameters parameters)
         {
             var resultSeries = new List<ValueSerie>();
-            var counterSeries = GetSeriesAtCounterLevel(parameters);
+            Dictionary<int, IList<SeriesValue>> counterSeriesList = GetSeriesAtCounterLevel(parameters);
             var usageEnergyType = DeviceEnergyType.Consumption;
 
-            foreach (var counterSerie in counterSeries)
+            foreach (var (counterId, counterSeries) in counterSeriesList)
             {
-                var counterId = counterSerie.Key;
-
-                //fake counter for generation is used
-                if (parameters.OnlyQboxSolar && counterId != GenerationCounterId)
+                var valueSerie = new ValueSerie
                 {
-                    continue;
-                }
-
-                var serie = new ValueSerie();
-                serie.Data = counterSerie.Value.ToList();
-                serie.Total = serie.Data.Sum(d => d.Value ?? 0);
+                    Data = counterSeries.ToList()
+                };
+                valueSerie.Total = valueSerie.Data.Sum(d => d.Value ?? 0);
 
                 switch (counterId)
                 {
-                    case 181: //consumptionlow
-                        serie.EnergyType = DeviceEnergyType.NetLow;
-                        AddSerieToResult(serie, resultSeries, usageEnergyType);
+                    case 181: // consumption low
+                        valueSerie.EnergyType = DeviceEnergyType.NetLow;
+                        AddSerieToResult(valueSerie, resultSeries, usageEnergyType);
                         break;
-                    case 182: //consumptionhigh
-                        serie.EnergyType = DeviceEnergyType.NetHigh;
-                        AddSerieToResult(serie, resultSeries, usageEnergyType);
+                    case 182: // consumption high
+                        valueSerie.EnergyType = DeviceEnergyType.NetHigh;
+                        AddSerieToResult(valueSerie, resultSeries, usageEnergyType);
                         break;
-                    case 281: //generationlow
-                        serie.EnergyType = DeviceEnergyType.NetLow;
-                        serie.Data.ForEach(d => d.Value *= -1);
-                        AddSerieToResult(serie, resultSeries, usageEnergyType);
+                    case 281: // generation low
+                        valueSerie.EnergyType = DeviceEnergyType.NetLow;
+                        valueSerie.Data.ForEach(d => d.Value *= -1);
+                        AddSerieToResult(valueSerie, resultSeries, usageEnergyType);
                         break;
-                    case 282: //generationhigh
-                        serie.EnergyType = DeviceEnergyType.NetHigh;
-                        serie.Data.ForEach(d => d.Value *= -1);
-                        AddSerieToResult(serie, resultSeries, usageEnergyType);
+                    case 282: // generation high
+                        valueSerie.EnergyType = DeviceEnergyType.NetHigh;
+                        valueSerie.Data.ForEach(d => d.Value *= -1);
+                        AddSerieToResult(valueSerie, resultSeries, usageEnergyType);
                         break;
-                    case 2421: //gas
-                        if (serie.Data.Sum(d => d.Value ?? 0) == 0 && serie.Data.Any(d => !d.Value.HasValue)) break; //there is a gas counter but no data found or file found, so not monitored
-                        serie.EnergyType = DeviceEnergyType.Gas;
-                        AddSerieToResult(serie, resultSeries, null);
+                    case 2421: // gas
+                        if (valueSerie.Data.Sum(d => d.Value ?? 0) == 0 && valueSerie.Data.Any(d => !d.Value.HasValue))
+                        {
+                            break; //there is a gas counter but no data found or file found, so not monitored
+                        }
+                        valueSerie.EnergyType = DeviceEnergyType.Gas;
+                        AddSerieToResult(valueSerie, resultSeries, null);
                         break;
-                    case 1: //net but also generation???
-                        serie.EnergyType = usageEnergyType;
-                        AddSerieToResult(serie, resultSeries, null);
+                    case 1: // net but also generation???
+                        valueSerie.EnergyType = usageEnergyType;
+                        AddSerieToResult(valueSerie, resultSeries, null);
                         break;
                     case 3: //net
-                        serie.EnergyType = usageEnergyType;
-                        serie.Data.ForEach(d => d.Value *= -1);
-                        AddSerieToResult(serie, resultSeries, null);
+                        valueSerie.EnergyType = usageEnergyType;
+                        valueSerie.Data.ForEach(d => d.Value *= -1);
+                        AddSerieToResult(valueSerie, resultSeries, null);
                         break;
                     case GenerationCounterId:   //this is a fake counter that has been built to contain S0 (generation) data, 
-                                                //it is set in GetSeriesAtCounterLevel() at the top of that funcion
-                        serie.EnergyType = DeviceEnergyType.Generation;
-                        if (parameters.OnlyQboxSolar)
-                            AddSerieToResult(serie, resultSeries, usageEnergyType);
-                        else //if it is not onlyS0, the counter will be added with the non generation counter 1 mapping
-                            AddSerieToResult(serie, resultSeries, null);
+                                                //it is set in GetSeriesAtCounterLevel() at the top of that function
+                        valueSerie.EnergyType = DeviceEnergyType.Generation;
+                        AddSerieToResult(valueSerie, resultSeries, null);
                         break;
                     default:
                         Log.Error("Invalid counter id :" + counterId);
@@ -253,7 +156,6 @@ namespace QboxNext.Qservice.Mvc.Classes
                 }
 
                 existingSerie.Total = existingSerie.Data.Sum(d => d.Value ?? 0);
-                existingSerie.TotalMoney += inSerie.TotalMoney;
             }
             else
             {
@@ -415,7 +317,7 @@ namespace QboxNext.Qservice.Mvc.Classes
                     new Counter
                     {
                         CounterId = 181,
-                        Groupid = CounterSource.Client0,
+                        GroupId = CounterSource.Client0,
                         CounterDeviceMappings = new List<CounterDeviceMapping>
                         {
                             new CounterDeviceMapping
@@ -433,7 +335,7 @@ namespace QboxNext.Qservice.Mvc.Classes
                     new Counter
                     {
                         CounterId = 182,
-                        Groupid = CounterSource.Client0,
+                        GroupId = CounterSource.Client0,
                         CounterDeviceMappings = new List<CounterDeviceMapping>
                         {
                             new CounterDeviceMapping
@@ -451,7 +353,7 @@ namespace QboxNext.Qservice.Mvc.Classes
                     new Counter
                     {
                         CounterId = 281,
-                        Groupid = CounterSource.Client0,
+                        GroupId = CounterSource.Client0,
                         CounterDeviceMappings = new List<CounterDeviceMapping>
                         {
                             new CounterDeviceMapping
@@ -469,7 +371,7 @@ namespace QboxNext.Qservice.Mvc.Classes
                     new Counter
                     {
                         CounterId = 282,
-                        Groupid = CounterSource.Client0,
+                        GroupId = CounterSource.Client0,
                         CounterDeviceMappings = new List<CounterDeviceMapping>
                         {
                             new CounterDeviceMapping
@@ -487,7 +389,7 @@ namespace QboxNext.Qservice.Mvc.Classes
                     new Counter
                     {
                         CounterId = 2421,
-                        Groupid = CounterSource.Client0,
+                        GroupId = CounterSource.Client0,
                         CounterDeviceMappings = new List<CounterDeviceMapping>
                         {
                             new CounterDeviceMapping
@@ -505,7 +407,7 @@ namespace QboxNext.Qservice.Mvc.Classes
                     new Counter
                     {
                         CounterId = 1,
-                        Groupid = CounterSource.Client0,
+                        GroupId = CounterSource.Client0,
                         Secondary = true,
                         CounterDeviceMappings = new List<CounterDeviceMapping>
                         {
@@ -566,8 +468,5 @@ namespace QboxNext.Qservice.Mvc.Classes
                 inSeriesValue.Insert(0, value);
             }
         }
-
-        private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
-        private const int GenerationCounterId = 9999;
     }
 }

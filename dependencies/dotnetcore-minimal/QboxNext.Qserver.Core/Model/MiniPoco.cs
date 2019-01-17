@@ -113,7 +113,7 @@ namespace QboxNext.Qserver.Core.Model
             {
                 counterPoco.StorageProvider = StorageProviderFactory.GetStorageProvider(
                     false, StorageProvider, SerialNumber, DataStorePath,
-                    counterPoco.CounterId, Precision, counterPoco.Storageid);
+                    counterPoco.CounterId, Precision, counterPoco.StorageId);
             }
         }
 

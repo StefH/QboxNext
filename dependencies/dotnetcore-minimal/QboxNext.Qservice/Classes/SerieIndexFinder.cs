@@ -33,7 +33,7 @@ namespace QboxNext.Qservice.Classes
                 return -1;
 
             // Efficient short cut: if the next slot is adjacent to the previous slot we directly know the new index.
-            if (_lastFoundIndex >= 0 && _lastFoundIndex + 1 < _nrSlots && _slots[_lastFoundIndex + 1].Begin == inBeginToFind)
+            if (IsBeginOfNextSlot(inBeginToFind))
             {
                 _lastFoundIndex++;
                 return _lastFoundIndex;
@@ -44,6 +44,12 @@ namespace QboxNext.Qservice.Classes
             return _lastFoundIndex;
         }
 
+        private bool IsBeginOfNextSlot(DateTime inBeginToFind)
+        {
+            return _lastFoundIndex >= 0 && 
+                   _lastFoundIndex + 1 < _nrSlots && 
+                   _slots[_lastFoundIndex + 1].Begin == inBeginToFind;
+        }
 
         private class SeriesValueComparer : IComparer<SeriesValue>
         {

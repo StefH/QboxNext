@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using QboxNext.Core.Simulation;
 using QboxNext.Core.Utils;
 using QboxNext.Qserver.Core.Utils;
 using QboxNext.Qserver.Core.Extensions;
@@ -151,80 +150,6 @@ namespace QboxNext.Qserver.Core.Statistics
 				serie.Add(new SeriesValue(time, time.AddMinutes((int)resolution)));
 			}
 			return serie;
-		}
-
-		/// <summary>
-		/// Genereren van waarden tbv een serie.
-		/// Per 5 minuten wordt een waarde berekend mbv 'sin' functie.
-		/// Over de hele dag is 1 volledige sinus beschikbaar
-		/// </summary>
-		/// <param name="values"> </param>
-		/// <param name="factor">Bepaald de hoogte van de sinus, negatieve waarde gebruiken voor opwekking</param>
-		/// <param name="cycles"> </param>
-		/// <param name="yOffset"> </param>
-		/// <param name="negate"> </param>
-		/// <returns>List met iedere 5 minuten een waarde van _from tot _to</returns>
-		public static void BuildData(IList<SeriesValue> values, double factor, double cycles, int yOffset, bool negate)
-		{
-			var random = new Random();
-
-			var i = 0;
-			foreach (var value in values)
-			{
-				var xOffset = value.Begin >= DateTime.Today ? 0 : random.Next(45);
-				//if (i % 1440 == 0)
-				//{
-				//    if (_from.AddMinutes(i) >= DateTime.Today)
-				//    {
-				//        xOffset = 0;  // Geen offset bij huidige dag
-				//    }
-				//    else
-				//    {
-				//        xOffset = random.Next(45); // random offset bij vorige dagen
-				//    }
-				//}
-
-				if (value.Begin < DateTime.Now)
-				{
-					value.Value = (decimal?)((Math.Sin((i + xOffset) / 1440.0 * 360.0 * Math.PI / 180.0 * cycles) + 1.0) * factor);
-					if (negate)
-					{
-						value.Value = value.Value * -1;
-					}
-				}
-				i++;
-			}
-		}
-
-
-		/// <summary>
-		/// Generate values using a value generator.
-		/// </summary>
-		public static void BuildData(IList<SeriesValue> values, CounterValueGenerator generator, bool isElectricity)
-		{
-			foreach (var value in values)
-			{
-				if (value.Begin < DateTime.Now)
-				{
-					var startTicks = generator.GetNext(value.Begin);
-					var endTicks = generator.GetNext(value.End);
-					double diffTicks = endTicks - startTicks;
-					double usage = 0;
-
-					// For electricity, assume 1000 ticks per kWh.
-					// For gas, assume 1000 ticks per m3.
-					if (isElectricity)
-						// This is the amount of counter ticks that have elapsed. Now we have to compute the average usage.
-						// For example 10 ticks per minute = 50 ticks per minute
-						// Assume 1000 ticks per kWh, so 50 ticks equals 50 Wh equals 50 * 3600 Ws.
-						// Dividing this by the elapsed seconds will give the average usage.
-						usage = diffTicks * 3600.0 / (value.End - value.Begin).TotalSeconds;
-					else
-						usage = diffTicks / 1000.0;
-
-					value.Value = (decimal)usage;
-				}
-			}
 		}
 	}
 }
