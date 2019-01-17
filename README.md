@@ -1,11 +1,19 @@
 # QboxNext
 This project is based on https://bitbucket.org/qboxnext/dotnetcore-minimal all credits for the original source go to Sebastiaan.
 
-## NuGet
+## NuGet Packages
 
-[![NuGet Badge](https://buildstats.info/nuget/QboxNext)](https://www.nuget.org/packages/QboxNext)
+| NuGet | Info |
+| --- | --- |
+| [![NuGet Badge](https://buildstats.info/nuget/QboxNext)](https://www.nuget.org/packages/QboxNext) | Original source code from [qboxnext](https://bitbucket.org/qboxnext/dotnetcore-minimal) combined in one NetStandard 2.0 Library.
+| [![NuGet Badge](https://buildstats.info/nuget/QboxNext.Extensions)](https://www.nuget.org/packages/QboxNext.Extensions) | Additional code, see list below for the changes.
 
-## Project
+## QboxNext.Extensions
+todo
+todo
+<hr>
+
+## Example Project
 
 ### QBoxNext.WebApi
 WebApi which can receive messages send by the Qbox.
