@@ -1,15 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Description>QboxNext extensions like support for Async and more.</Description>
+    <AssemblyTitle>QboxNext.Extensions</AssemblyTitle>
+    <Authors>Stef Heyenrath</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
+    <PackageId>QboxNext.Extensions</PackageId>
+    <PackageTags>qbox;qboxnext;qurrent;server;qboxextensions</PackageTags>
+    <PackageReleaseNotes>See CHANGELOG.md</PackageReleaseNotes>
+    <!--<PackageIconUrl>https://raw.githubusercontent.com/WireMock-Net/WireMock.Net/master/WireMock.Net-Logo.png</PackageIconUrl>-->
+    <PackageProjectUrl>https://github.com/stefh/QboxNext</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/stefh/QboxNext/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/stefh/QboxNext</RepositoryUrl>
+    <!--<ApplicationIcon>../../WireMock.Net-Logo.ico</ApplicationIcon>-->
+    <DebugType>full</DebugType>
+    <IncludeSource>True</IncludeSource>
+    <IncludeSymbols>True</IncludeSymbols>
+    <ProjectGuid>{D3804229-91F4-4502-9595-39884E5A01AE}</ProjectGuid>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <!--<CodeAnalysisRuleSet>WireMock.Net.ruleset</CodeAnalysisRuleSet>-->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PathMap>$(MSBuildProjectDirectory)=/</PathMap>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="NLog" Version="4.5.11" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />-->
+    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
   </ItemGroup>
