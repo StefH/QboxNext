@@ -1,5 +1,5 @@
 ﻿using JetBrains.Annotations;
-using QboxNext.Common.Validation;
+using QboxNext.Core.Utils;
 using QboxNext.Infrastructure.Azure.Implementations;
 using QboxNext.Infrastructure.Azure.Interfaces.Public;
 
@@ -18,7 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
         public static void AddAzure([NotNull] this IServiceCollection services)
         {
-            Guard.NotNull(services, nameof(services));
+            Guard.IsNotNull(services, nameof(services));
 
             services.AddOptions();
 

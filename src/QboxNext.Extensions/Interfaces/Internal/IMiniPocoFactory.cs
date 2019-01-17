@@ -1,11 +1,11 @@
 ﻿using QboxNext.Qserver.Core.Model;
 
-namespace QBoxNext.Business.Interfaces.Internal
+namespace QboxNext.Extensions.Interfaces.Internal
 {
     interface IMiniPocoFactory
     {
         /// <summary>
-        /// Creates a MiniPoco.
+        /// Creates a <see cref="MiniPoco"/>.
         /// </summary>
         /// <param name="serialNumber">The serial number.</param>
         /// <param name="productNumber">The product number.</param>

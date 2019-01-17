@@ -1,18 +1,18 @@
 ﻿using JetBrains.Annotations;
-using QboxNext.Common.Validation;
 using QboxNext.Core;
+using QboxNext.Core.Utils;
 using QboxNext.Domain;
+using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Infrastructure.Azure.Interfaces.Public;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using QBoxNext.Business.Interfaces.Internal;
 
 namespace QBoxNext.Business.Implementations
 {
-    internal class CustomStorageProvider : IStorageProviderAsync
+    internal class DefaultAsyncStorageProvider : IAsyncStorageProvider
     {
         private readonly IMeasurementStoreService _measurementStoreService;
         private readonly string _serialNumber;
@@ -20,17 +20,17 @@ namespace QBoxNext.Business.Implementations
         private readonly int _counterId;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomStorageProvider"/> class.
+        /// Initializes a new instance of the <see cref="DefaultAsyncStorageProvider"/> class.
         /// </summary>
         /// <param name="measurementStoreService">The measurement store service.</param>
         /// <param name="serialNumber">The serial number.</param>
         /// <param name="productNumber">The product number.</param>
         /// <param name="counterId">The counter identifier.</param>
-        public CustomStorageProvider([NotNull] IMeasurementStoreService measurementStoreService, string serialNumber, string productNumber, int counterId)
+        public DefaultAsyncStorageProvider([NotNull] IMeasurementStoreService measurementStoreService, string serialNumber, string productNumber, int counterId)
         {
-            Guard.NotNull(measurementStoreService, nameof(measurementStoreService));
-            Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
-            Guard.NotNullOrEmpty(productNumber, nameof(productNumber));
+            Guard.IsNotNull(measurementStoreService, nameof(measurementStoreService));
+            Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
+            Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));
 
             _measurementStoreService = measurementStoreService;
             _serialNumber = serialNumber;

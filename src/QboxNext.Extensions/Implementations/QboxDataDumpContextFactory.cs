@@ -1,14 +1,14 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Qboxes.Classes;
-using QboxNext.Common.Validation;
 using QboxNext.Core.Encryption;
-using QBoxNext.Business.Interfaces.Internal;
-using QBoxNext.Business.Interfaces.Public;
-using QBoxNext.Business.Models;
+using QboxNext.Core.Utils;
+using QboxNext.Extensions.Interfaces.Internal;
+using QboxNext.Extensions.Interfaces.Public;
+using QboxNext.Extensions.Models.Public;
 using System;
 
-namespace QBoxNext.Business.Implementations
+namespace QboxNext.Extensions.Implementations
 {
     internal class QboxDataDumpContextFactory : IQboxDataDumpContextFactory
     {
@@ -22,8 +22,8 @@ namespace QBoxNext.Business.Implementations
         /// <param name="logger">The logger.</param>
         public QboxDataDumpContextFactory([NotNull] IMiniPocoFactory miniPocoFactory, [NotNull] ILogger<QboxDataDumpContextFactory> logger)
         {
-            Guard.NotNull(miniPocoFactory, nameof(miniPocoFactory));
-            Guard.NotNull(logger, nameof(logger));
+            Guard.IsNotNull(miniPocoFactory, nameof(miniPocoFactory));
+            Guard.IsNotNull(logger, nameof(logger));
 
             _miniPocoFactory = miniPocoFactory;
             _logger = logger;
@@ -32,7 +32,7 @@ namespace QBoxNext.Business.Implementations
         /// <inheritdoc cref="IQboxDataDumpContextFactory.Create(QboxContext)"/>
         public QboxDataDumpContext Create(QboxContext context)
         {
-            Guard.NotNull(context, nameof(context));
+            Guard.IsNotNull(context, nameof(context));
 
             try
             {

@@ -1,4 +1,4 @@
-﻿namespace QBoxNext.Business.Models
+﻿namespace QboxNext.Extensions.Models.Public
 {
     public class QboxContext
     {

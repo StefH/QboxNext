@@ -1,33 +1,34 @@
 ﻿using JetBrains.Annotations;
-using QboxNext.Common.Validation;
+using QboxNext.Core.Utils;
+using QboxNext.Extensions.Interfaces.Internal;
+using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
-using QBoxNext.Business.Interfaces.Internal;
 using System.Collections.Generic;
 
-namespace QBoxNext.Business.Implementations
+namespace QboxNext.Extensions.Implementations
 {
     internal class MiniPocoFactory : IMiniPocoFactory
     {
-        private readonly IStorageProviderFactory _storageProviderFactory;
+        private readonly IAsyncStorageProviderFactory _asyncStorageProviderFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MiniPocoFactory"/> class.
         /// </summary>
-        /// <param name="storageProviderFactory">The storage provider factory.</param>
-        public MiniPocoFactory([NotNull] IStorageProviderFactory storageProviderFactory)
+        /// <param name="asyncStorageProviderFactory">The storage provider factory.</param>
+        public MiniPocoFactory([NotNull] IAsyncStorageProviderFactory asyncStorageProviderFactory)
         {
-            Guard.NotNull(storageProviderFactory, nameof(storageProviderFactory));
+            Guard.IsNotNull(asyncStorageProviderFactory, nameof(asyncStorageProviderFactory));
 
-            _storageProviderFactory = storageProviderFactory;
+            _asyncStorageProviderFactory = asyncStorageProviderFactory;
         }
 
         /// <inheritdoc cref="IMiniPocoFactory.Create(string, string)"/>
         public MiniPoco Create(string serialNumber, string productNumber)
         {
-            Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
-            Guard.NotNullOrEmpty(productNumber, nameof(productNumber));
+            Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
+            Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));
 
             var counterSensorMappingsSmartMeter = new CounterSensorMappingPoco { Formule = 1000 /* inPulsesPerUnit */ };
 
@@ -62,7 +63,7 @@ namespace QBoxNext.Business.Implementations
             {
                 counter.QboxSerial = serialNumber;
                 counter.CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter };
-                counter.StorageProvider = _storageProviderFactory.Create(serialNumber, productNumber, counter.CounterId);
+                counter.StorageProvider = _asyncStorageProviderFactory.Create(serialNumber, productNumber, counter.CounterId);
             }
 
             return mini;

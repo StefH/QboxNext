@@ -1,14 +1,14 @@
-﻿namespace QBoxNext.Business.Interfaces.Internal
+﻿namespace QboxNext.Extensions.Interfaces.Public
 {
-    internal interface IStorageProviderFactory
+    public interface IAsyncStorageProviderFactory
     {
         /// <summary>
-        /// Creates IStorageProvider.
+        /// Creates <see cref="IAsyncStorageProvider"/>.
         /// </summary>
         /// <param name="serialNumber">The serial number.</param>
         /// <param name="productNumber">The product number.</param>
         /// <param name="counterId">The counter identifier.</param>
         /// <returns>IStorageProviderAsync</returns>
-        IStorageProviderAsync Create(string serialNumber, string productNumber, int counterId);
+        IAsyncStorageProvider Create(string serialNumber, string productNumber, int counterId);
     }
 }

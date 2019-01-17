@@ -1,8 +1,8 @@
 ﻿using JetBrains.Annotations;
 using Qboxes.Classes;
-using QBoxNext.Business.Implementations;
+using QboxNext.Extensions.Implementations;
 
-namespace QBoxNext.Business.Interfaces.Public
+namespace QboxNext.Extensions.Interfaces.Public
 {
     public interface IQboxNextDataHandlerFactory
     {

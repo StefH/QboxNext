@@ -1,12 +1,11 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using QboxNext.Common.Validation;
-using QBoxNext.Business.Interfaces.Public;
-using QBoxNext.Business.Models;
+using QboxNext.Core.Utils;
+using QboxNext.Extensions.Interfaces.Public;
+using QboxNext.Extensions.Models.Public;
 using System.IO;
 using System.Threading.Tasks;
-using QBoxNext.Business.Implementations;
 
 namespace QboxNext.WebApi.Controllers
 {
@@ -26,9 +25,9 @@ namespace QboxNext.WebApi.Controllers
         /// <param name="logger">The logger.</param>
         public DeviceController([NotNull] IQboxDataDumpContextFactory qboxDataDataDumpContextFactory, [NotNull] IQboxNextDataHandlerFactory qboxNextDataHandlerFactory, [NotNull] ILogger<DeviceController> logger)
         {
-            Guard.NotNull(qboxDataDataDumpContextFactory, nameof(qboxDataDataDumpContextFactory));
-            Guard.NotNull(qboxNextDataHandlerFactory, nameof(qboxNextDataHandlerFactory));
-            Guard.NotNull(logger, nameof(logger));
+            Guard.IsNotNull(qboxDataDataDumpContextFactory, nameof(qboxDataDataDumpContextFactory));
+            Guard.IsNotNull(qboxNextDataHandlerFactory, nameof(qboxNextDataHandlerFactory));
+            Guard.IsNotNull(logger, nameof(logger));
 
             _qboxDataDumpContextFactory = qboxDataDataDumpContextFactory;
             _qboxNextDataHandlerFactory = qboxNextDataHandlerFactory;
@@ -40,8 +39,8 @@ namespace QboxNext.WebApi.Controllers
         [HttpPost("/device/qbox/{productNumber}/{serialNumber}")]
         public async Task<ActionResult> PostAsync([NotNull] string productNumber, [NotNull] string serialNumber)
         {
-            Guard.NotNullOrEmpty(productNumber, nameof(productNumber));
-            Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
+            Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));
+            Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
 
             _logger.LogTrace("Enter");
 

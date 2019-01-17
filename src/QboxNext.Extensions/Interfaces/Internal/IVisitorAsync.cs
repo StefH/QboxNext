@@ -2,9 +2,9 @@
 using JetBrains.Annotations;
 using QboxNext.Qboxes.Parsing.Protocols;
 
-namespace QBoxNext.Business.Interfaces.Internal
+namespace QboxNext.Extensions.Interfaces.Internal
 {
-    internal interface IVisitorAsync : IVisitor
+    public interface IVisitorAsync : IVisitor
     {
         Task AcceptAsync([NotNull] CounterPayload payload);
     }

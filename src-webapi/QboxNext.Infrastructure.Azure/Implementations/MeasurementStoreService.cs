@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using QboxNext.Common.Extensions;
-using QboxNext.Common.Validation;
+using QboxNext.Core.Utils;
 using QboxNext.Domain;
 using QboxNext.Infrastructure.Azure.Interfaces.Public;
 using QboxNext.Infrastructure.Azure.Models.Internal;
@@ -28,8 +28,8 @@ namespace QboxNext.Infrastructure.Azure.Implementations
         /// <param name="logger">The logger.</param>
         public MeasurementStoreService([NotNull] IOptions<AzureTableStorageOptions> options, [NotNull] ILogger<MeasurementStoreService> logger)
         {
-            Guard.NotNull(options, nameof(options));
-            Guard.NotNull(logger, nameof(logger));
+            Guard.IsNotNull(options, nameof(options));
+            Guard.IsNotNull(logger, nameof(logger));
 
             _logger = logger;
             _serverTimeout = TimeSpan.FromSeconds(options.Value.ServerTimeout);
@@ -42,7 +42,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
         /// <inheritdoc cref="IMeasurementStoreService.StoreAsync(Measurement)"/>
         public async Task<StoreResult> StoreAsync(Measurement measurement)
         {
-            Guard.NotNull(measurement, nameof(measurement));
+            Guard.IsNotNull(measurement, nameof(measurement));
 
             var entity = new MeasurementEntity(measurement);
 

@@ -1,27 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Qboxes.Classes;
 using Qboxes.Interfaces;
-using QboxNext.Common.Validation;
 using QboxNext.Core.Dto;
+using QboxNext.Core.Utils;
+using QboxNext.Extensions.Interfaces.Internal;
+using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Qboxes.Parsing.Elements;
 using QboxNext.Qboxes.Parsing.Factories;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
-using QBoxNext.Business.Interfaces.Internal;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace QBoxNext.Business.Implementations
+namespace QboxNext.Extensions.Implementations
 {
     /// <summary>
     /// Class that encapsulates the handling of the Qbox mini data dump.
     ///
     /// Based on <see cref="MiniDataHandler"/> but with fixes for:
     /// - handle Payload.Visit(...) exceptions correctly
+    /// - Async support
     /// </summary>
     public class QboxNextDataHandler : IVisitorAsync
     {
@@ -55,9 +57,9 @@ namespace QBoxNext.Business.Implementations
         /// <param name="logger">The logger.</param>
         public QboxNextDataHandler([NotNull] QboxDataDumpContext context, [NotNull] IQboxMessagesLogger qboxMessagesLogger, [NotNull] ILogger<QboxNextDataHandler> logger)
         {
-            Guard.NotNull(context, nameof(context));
-            Guard.NotNull(qboxMessagesLogger, nameof(qboxMessagesLogger));
-            Guard.NotNull(logger, nameof(logger));
+            Guard.IsNotNull(context, nameof(context));
+            Guard.IsNotNull(qboxMessagesLogger, nameof(qboxMessagesLogger));
+            Guard.IsNotNull(logger, nameof(logger));
 
             _context = context;
             _qboxMessagesLogger = qboxMessagesLogger;
@@ -309,7 +311,7 @@ namespace QBoxNext.Business.Implementations
                 return;
             }
 
-            if (counter.StorageProvider is IStorageProviderAsync asyncStorageProvider)
+            if (counter.StorageProvider is IAsyncStorageProvider asyncStorageProvider)
             {
                 await asyncStorageProvider.StoreValueAsync(parseResult.Model.MeasurementTime, payload.Value, counter.CounterSensorMappings.First().Formule);
             }
