@@ -9,20 +9,20 @@ namespace QboxNext.Extensions.Implementations
 {
     internal class QboxNextDataHandlerFactory : IQboxNextDataHandlerFactory
     {
-        private readonly IQboxMessagesLogger _qboxMessagesLogger;
+        private readonly IAsyncStatusProvider _asyncStatusProvider;
         private readonly ILogger<QboxNextDataHandler> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QboxNextDataHandlerFactory"/> class.
         /// </summary>
-        /// <param name="qboxMessagesLogger">The qbox messages logger.</param>
+        /// <param name="asyncStatusProvider">The asynchronous status provider.</param>
         /// <param name="logger">The logger.</param>
-        public QboxNextDataHandlerFactory([NotNull] IQboxMessagesLogger qboxMessagesLogger, [NotNull] ILogger<QboxNextDataHandler> logger)
+        public QboxNextDataHandlerFactory([NotNull] IAsyncStatusProvider asyncStatusProvider, [NotNull] ILogger<QboxNextDataHandler> logger)
         {
-            Guard.IsNotNull(qboxMessagesLogger, nameof(qboxMessagesLogger));
+            Guard.IsNotNull(asyncStatusProvider, nameof(asyncStatusProvider));
             Guard.IsNotNull(logger, nameof(logger));
 
-            _qboxMessagesLogger = qboxMessagesLogger;
+            _asyncStatusProvider = asyncStatusProvider;
             _logger = logger;
         }
 
@@ -31,7 +31,7 @@ namespace QboxNext.Extensions.Implementations
         {
             Guard.IsNotNull(context, nameof(context));
 
-            return new QboxNextDataHandler(context, _qboxMessagesLogger, _logger);
+            return new QboxNextDataHandler(context, _asyncStatusProvider, _logger);
         }
     }
 }

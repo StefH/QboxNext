@@ -6,6 +6,6 @@ namespace QboxNext.Extensions.Interfaces.Public
 {
     public interface IAsyncStorageProvider : IStorageProvider
     {
-        Task StoreValueAsync(DateTime inMeasureTime, ulong inPulseValue, decimal inPulsesPerUnit);
+        Task StoreValueAsync(Guid correlationId, DateTime inMeasureTime, ulong inPulseValue, decimal inPulsesPerUnit);
     }
 }

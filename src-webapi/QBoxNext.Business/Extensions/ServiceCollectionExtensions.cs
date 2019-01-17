@@ -30,6 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             // Internal
             services.AddScoped<IAsyncStorageProviderFactory, DefaultAsyncStorageProviderFactory>();
+            services.AddScoped<IAsyncStatusProvider, DefaultAsyncStatusProvider>();
 
             // Add External
             services.AddQboxNext();

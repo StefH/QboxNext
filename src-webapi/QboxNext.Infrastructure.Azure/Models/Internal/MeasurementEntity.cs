@@ -3,11 +3,14 @@ using Microsoft.WindowsAzure.Storage.Table;
 using QboxNext.Core.Utils;
 using QboxNext.Domain;
 using System;
+using CommandLine.Text;
 
 namespace QboxNext.Infrastructure.Azure.Models.Internal
 {
     public class MeasurementEntity : TableEntity
     {
+        public Guid CorrelationId { get; set; }
+
         public DateTime LogTime { get; set; }
 
         public string ProductNumber { get; set; }
@@ -45,6 +48,7 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
             PartitionKey = $"{measurement.ProductNumber}:{measurement.SerialNumber}";
             RowKey = $"{measurement.CounterId:D4}:{measurement.LogTime.Ticks}";
 
+            CorrelationId = measurement.CorrelationId;
             SerialNumber = measurement.SerialNumber;
             ProductNumber = measurement.ProductNumber;
             LogTime = measurement.LogTime;

@@ -38,10 +38,11 @@ namespace QBoxNext.Business.Implementations
             _counterId = counterId;
         }
 
-        public async Task StoreValueAsync(DateTime inMeasureTime, ulong inPulseValue, decimal inPulsesPerUnit)
+        public async Task StoreValueAsync(Guid correlationId, DateTime inMeasureTime, ulong inPulseValue, decimal inPulsesPerUnit)
         {
             var measurement = new Measurement
             {
+                CorrelationId = correlationId,
                 SerialNumber = _serialNumber,
                 ProductNumber = _productNumber,
                 CounterId = _counterId,

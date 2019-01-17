@@ -4,6 +4,8 @@ namespace QboxNext.Domain
 {
     public class Measurement
     {
+        public Guid CorrelationId { get; set; }
+
         public DateTime LogTime { get; set; }
 
         public int CounterId { get; set; }
