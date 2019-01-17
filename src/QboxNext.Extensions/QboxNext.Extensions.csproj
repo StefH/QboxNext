@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>QboxNext extensions like support for Async and more.</Description>
+    <Description>QboxNext extensions with support for better Depencency Injection, Async and more.</Description>
     <AssemblyTitle>QboxNext.Extensions</AssemblyTitle>
     <Authors>Stef Heyenrath</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -32,7 +32,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
   </ItemGroup>
