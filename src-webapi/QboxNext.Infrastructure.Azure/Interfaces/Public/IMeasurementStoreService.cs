@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using QboxNext.Domain;
 using QboxNext.Infrastructure.Azure.Models.Public;
+using System.Threading.Tasks;
 
 namespace QboxNext.Infrastructure.Azure.Interfaces.Public
 {
@@ -10,6 +11,6 @@ namespace QboxNext.Infrastructure.Azure.Interfaces.Public
         /// Stores the specified measurement in Azure Tables.
         /// </summary>
         /// <param name="measurement">The measurement.</param>
-        StoreResult Store([NotNull] Measurement measurement);
+        Task<StoreResult> StoreAsync([NotNull] Measurement measurement);
     }
 }

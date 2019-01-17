@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -8,14 +8,8 @@
 
   <ItemGroup>
     <Compile Include="..\..\src-webapi\QBoxNext.Business\Extensions\ServiceCollectionExtensions.cs" Link="Extensions\ServiceCollectionExtensions.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\CustomStorageProvider.cs" Link="Implementations\CustomStorageProvider.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\MiniPocoFactory.cs" Link="Implementations\MiniPocoFactory.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\QboxDataDumpContextFactory.cs" Link="Implementations\QboxDataDumpContextFactory.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\StorageProviderFactory.cs" Link="Implementations\StorageProviderFactory.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Internal\IMiniPocoFactory.cs" Link="Interfaces\IMiniPocoFactory.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Internal\IStorageProviderFactory.cs" Link="Interfaces\IStorageProviderFactory.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Interfaces\Public\IQboxDataDumpContextFactory.cs" Link="Interfaces\IQboxDataDumpContextFactory.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Models\QboxContext.cs" Link="Models\QboxContext.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\DefaultAsyncStorageProvider.cs" Link="Implementations\DefaultAsyncStorageProvider.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\DefaultAsyncStorageProviderFactory.cs" Link="Implementations\DefaultAsyncStorageProviderFactory.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="QboxNext" Version="1.0.0-preview-20190115" />
+    <PackageReference Include="QboxNext.Extensions" Version="1.0.0-preview-20190117" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,11 +1,9 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Qboxes.Classes;
-using Qboxes.Interfaces;
-using QboxNext.Common.Validation;
-using QBoxNext.Business.Interfaces.Public;
-using QBoxNext.Business.Models;
+using QboxNext.Core.Utils;
+using QboxNext.Extensions.Interfaces.Public;
+using QboxNext.Extensions.Models.Public;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -17,22 +15,22 @@ namespace QboxNext.WebApi.Controllers
         private readonly ILogger<DeviceController> _logger;
 
         private readonly IQboxDataDumpContextFactory _qboxDataDumpContextFactory;
-        private readonly IQboxMessagesLogger _qboxMessagesLogger;
+        private readonly IQboxNextDataHandlerFactory _qboxNextDataHandlerFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceController"/> class.
         /// </summary>
         /// <param name="qboxDataDataDumpContextFactory">The qbox data data dump context factory.</param>
-        /// <param name="qboxMessagesLogger">The qbox messages logger.</param>
+        /// <param name="qboxNextDataHandlerFactory">The qbox messages logger.</param>
         /// <param name="logger">The logger.</param>
-        public DeviceController([NotNull] IQboxDataDumpContextFactory qboxDataDataDumpContextFactory, [NotNull] IQboxMessagesLogger qboxMessagesLogger, [NotNull] ILogger<DeviceController> logger)
+        public DeviceController([NotNull] IQboxDataDumpContextFactory qboxDataDataDumpContextFactory, [NotNull] IQboxNextDataHandlerFactory qboxNextDataHandlerFactory, [NotNull] ILogger<DeviceController> logger)
         {
-            Guard.NotNull(qboxDataDataDumpContextFactory, nameof(qboxDataDataDumpContextFactory));
-            Guard.NotNull(qboxMessagesLogger, nameof(qboxMessagesLogger));
-            Guard.NotNull(logger, nameof(logger));
+            Guard.IsNotNull(qboxDataDataDumpContextFactory, nameof(qboxDataDataDumpContextFactory));
+            Guard.IsNotNull(qboxNextDataHandlerFactory, nameof(qboxNextDataHandlerFactory));
+            Guard.IsNotNull(logger, nameof(logger));
 
             _qboxDataDumpContextFactory = qboxDataDataDumpContextFactory;
-            _qboxMessagesLogger = qboxMessagesLogger;
+            _qboxNextDataHandlerFactory = qboxNextDataHandlerFactory;
             _logger = logger;
         }
 
@@ -41,17 +39,22 @@ namespace QboxNext.WebApi.Controllers
         [HttpPost("/device/qbox/{productNumber}/{serialNumber}")]
         public async Task<ActionResult> PostAsync([NotNull] string productNumber, [NotNull] string serialNumber)
         {
-            Guard.NotNullOrEmpty(productNumber, nameof(productNumber));
-            Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
+            Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));
+            Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
 
             _logger.LogTrace("Enter");
 
+            // Create QboxContext
             var context = await MapQboxContextAsync(productNumber, serialNumber);
 
+            // Create QboxDatDumpContext
             var qboxDataDumpContext = _qboxDataDumpContextFactory.Create(context);
             _logger.LogInformation(qboxDataDumpContext.Mini.SerialNumber);
 
-            string result = new MiniDataHandler(qboxDataDumpContext, _qboxMessagesLogger).Handle();
+            // Create handler and handle the message
+            var handler = _qboxNextDataHandlerFactory.Create(qboxDataDumpContext);
+            string result = await handler.HandleAsync();
+
             _logger.LogInformation("Parsing Done: {0}", result);
             _logger.LogTrace("Return");
 

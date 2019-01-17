@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.WindowsAzure.Storage.Table;
-using QboxNext.Common.Validation;
+using QboxNext.Core.Utils;
 using QboxNext.Domain;
 using System;
 
@@ -10,9 +10,9 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
     {
         public DateTime LogTime { get; set; }
 
-        public string SerialNumber { get; set; }
-
         public string ProductNumber { get; set; }
+
+        public string SerialNumber { get; set; }
 
         public DateTime MeasureTime { get; set; }
 
@@ -40,9 +40,9 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
         /// <param name="measurement">The measurement.</param>
         public MeasurementEntity([NotNull] Measurement measurement)
         {
-            Guard.NotNull(measurement, nameof(measurement));
+            Guard.IsNotNull(measurement, nameof(measurement));
 
-            PartitionKey = $"{measurement.SerialNumber}:{measurement.ProductNumber}";
+            PartitionKey = $"{measurement.ProductNumber}:{measurement.SerialNumber}";
             RowKey = $"{measurement.CounterId:D4}:{measurement.LogTime.Ticks}";
 
             SerialNumber = measurement.SerialNumber;

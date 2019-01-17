@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\QboxNext\QboxNext.csproj" />
     <ProjectReference Include="..\QboxNext.Common\QboxNext.Common.csproj" />
     <ProjectReference Include="..\QboxNext.Domain\QboxNext.Domain.csproj" />
   </ItemGroup>
