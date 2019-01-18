@@ -27,7 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static void AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IMeasurementStoreService, MeasurementStoreService>();
+            services.AddScoped<IDataStoreService, DataStoreService>();
         }
     }
 }

@@ -8,6 +8,8 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
 {
     public class MeasurementEntity : TableEntity
     {
+        public Guid CorrelationId { get; set; }
+
         public DateTime LogTime { get; set; }
 
         public string ProductNumber { get; set; }
@@ -37,21 +39,22 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
         /// <summary>
         /// Initializes a new instance of the <see cref="MeasurementEntity"/> class.
         /// </summary>
-        /// <param name="measurement">The measurement.</param>
-        public MeasurementEntity([NotNull] Measurement measurement)
+        /// <param name="qboxMeasurement">The measurement.</param>
+        public MeasurementEntity([NotNull] QboxMeasurement qboxMeasurement)
         {
-            Guard.IsNotNull(measurement, nameof(measurement));
+            Guard.IsNotNull(qboxMeasurement, nameof(qboxMeasurement));
 
-            PartitionKey = $"{measurement.ProductNumber}:{measurement.SerialNumber}";
-            RowKey = $"{measurement.CounterId:D4}:{measurement.LogTime.Ticks}";
+            PartitionKey = $"{qboxMeasurement.ProductNumber}:{qboxMeasurement.SerialNumber}";
+            RowKey = $"{qboxMeasurement.LogTime.Ticks}:{qboxMeasurement.CounterId:D4}";
 
-            SerialNumber = measurement.SerialNumber;
-            ProductNumber = measurement.ProductNumber;
-            LogTime = measurement.LogTime;
-            MeasureTime = measurement.MeasureTime;
-            CounterId = measurement.CounterId;
-            PulseValue = measurement.PulseValue;
-            PulsesPerUnit = (double)measurement.PulsesPerUnit;
+            CorrelationId = qboxMeasurement.CorrelationId;
+            SerialNumber = qboxMeasurement.SerialNumber;
+            ProductNumber = qboxMeasurement.ProductNumber;
+            LogTime = qboxMeasurement.LogTime;
+            MeasureTime = qboxMeasurement.MeasureTime;
+            CounterId = qboxMeasurement.CounterId;
+            PulseValue = qboxMeasurement.PulseValue;
+            PulsesPerUnit = (double)qboxMeasurement.PulsesPerUnit;
         }
     }
 }

@@ -29,7 +29,8 @@ namespace Microsoft.Extensions.DependencyInjection
         private static void AddServices(this IServiceCollection services)
         {
             // Internal
-            services.AddScoped<IAsyncStorageProviderFactory, DefaultAsyncStorageProviderFactory>();
+            services.AddScoped<ICounterStoreService, DefaultCounterStoreService>();
+            services.AddScoped<IStateStoreService, DefaultStateStoreService>();
 
             // Add External
             services.AddQboxNext();
