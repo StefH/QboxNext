@@ -8,24 +8,17 @@ This project is based on https://bitbucket.org/qboxnext/dotnetcore-minimal all c
 | [![NuGet Badge](https://buildstats.info/nuget/QboxNext)](https://www.nuget.org/packages/QboxNext) | Original source code from [qboxnext](https://bitbucket.org/qboxnext/dotnetcore-minimal) combined in one library.
 | [![NuGet Badge](https://buildstats.info/nuget/QboxNext.Extensions)](https://www.nuget.org/packages/QboxNext.Extensions) | Additional code, see list below for the changes.
 
+
+## QboxNext
+A new project includes all original c# code from [dotnetcore-minimal](https://bitbucket.org/qboxnext/dotnetcore-minimal) are a new NuGet is created.
+See the [WIKI : QboxNext](https://github.com/StefH/QboxNext/wiki/QboxNext).
+
 ## QboxNext.Extensions
-todo
-todo
-<hr>
+This is an extension project which uses the code from QboxNext.
+See the [WIKI : QboxNext.Extensions](https://github.com/StefH/QboxNext/wiki/QboxNext.Extensions).
 
 ## Example Project
+See the [WIKI : Example Project](https://github.com/StefH/https://github.com/StefH/QboxNext/wiki/Example-Project).
 
-### QBoxNext.WebApi
-WebApi which can receive messages send by the Qbox.
-
-### QBoxNext.Business
-This project is a DI compatible business project which stores the received measurements data from Qbox.
-
-### QboxNext.Domain
-Domain model.
-
-### QboxNext.Common
-Common logic.
-
-### QboxNext.Infrastructure.Azure
-This project stores the measurements in Azure Tables.
+## Connecting the Qbox to a windows based system for debugging
+See the [WIKI : Debugging-the-Qbox](https://github.com/StefH/QboxNext/wiki/Debugging-the-Qbox).
