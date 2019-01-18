@@ -80,7 +80,7 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
             Guard.IsNotNull(qboxState, nameof(qboxState));
 
             PartitionKey = $"{qboxState.ProductNumber}:{qboxState.SerialNumber}";
-            RowKey = $"{qboxState.MessageType}:{qboxState.LogTime.Ticks}";
+            RowKey = $"{qboxState.LogTime.Ticks}:{qboxState.MessageType}";
 
             CorrelationId = qboxState.CorrelationId;
             SerialNumber = qboxState.SerialNumber;

@@ -45,7 +45,7 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
             Guard.IsNotNull(qboxMeasurement, nameof(qboxMeasurement));
 
             PartitionKey = $"{qboxMeasurement.ProductNumber}:{qboxMeasurement.SerialNumber}";
-            RowKey = $"{qboxMeasurement.CounterId:D4}:{qboxMeasurement.LogTime.Ticks}";
+            RowKey = $"{qboxMeasurement.LogTime.Ticks}:{qboxMeasurement.CounterId:D4}";
 
             CorrelationId = qboxMeasurement.CorrelationId;
             SerialNumber = qboxMeasurement.SerialNumber;
