@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <Compile Include="..\..\src-webapi\QBoxNext.Business\Extensions\ServiceCollectionExtensions.cs" Link="Extensions\ServiceCollectionExtensions.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\DefaultAsyncStorageProvider.cs" Link="Implementations\DefaultAsyncStorageProvider.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\DefaultAsyncStorageProviderFactory.cs" Link="Implementations\DefaultAsyncStorageProviderFactory.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\DefaultCounterStoreService.cs" Link="Implementations\DefaultCounterStoreService.cs" />
+    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\DefaultStateStoreService.cs" Link="Implementations\DefaultStateStoreService.cs" />
   </ItemGroup>
 
   <ItemGroup>
