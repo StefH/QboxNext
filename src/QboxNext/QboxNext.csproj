@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <VersionPrefix>1.0.0.0</VersionPrefix>
     <Description>QboxNext is a modified clone of Qplatform.</Description>
     <AssemblyTitle>QboxNext</AssemblyTitle>
     <Authors>Sebastiaan;Stef Heyenrath</Authors>

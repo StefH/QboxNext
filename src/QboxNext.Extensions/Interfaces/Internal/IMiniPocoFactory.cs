@@ -9,7 +9,7 @@ namespace QboxNext.Extensions.Interfaces.Internal
         /// </summary>
         /// <param name="serialNumber">The serial number.</param>
         /// <param name="productNumber">The product number.</param>
-        /// <returns>{MiniPoco}</returns>
+        /// <returns><see cref="MiniPoco"/></returns>
         MiniPoco Create(string serialNumber, string productNumber);
     }
 }

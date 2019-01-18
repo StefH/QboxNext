@@ -15,18 +15,18 @@ using System.Threading.Tasks;
 
 namespace QboxNext.Infrastructure.Azure.Implementations
 {
-    internal class MeasurementStoreService : IMeasurementStoreService
+    internal class DataStoreService : IDataStoreService
     {
-        private readonly ILogger<MeasurementStoreService> _logger;
+        private readonly ILogger<DataStoreService> _logger;
         private readonly CloudTable _measurementsTable;
         private readonly TimeSpan _serverTimeout;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MeasurementStoreService"/> class.
+        /// Initializes a new instance of the <see cref="DataStoreService"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public MeasurementStoreService([NotNull] IOptions<AzureTableStorageOptions> options, [NotNull] ILogger<MeasurementStoreService> logger)
+        public DataStoreService([NotNull] IOptions<AzureTableStorageOptions> options, [NotNull] ILogger<DataStoreService> logger)
         {
             Guard.IsNotNull(options, nameof(options));
             Guard.IsNotNull(logger, nameof(logger));
@@ -39,7 +39,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
             _measurementsTable = client.GetTableReference(options.Value.MeasurementsTableName);
         }
 
-        /// <inheritdoc cref="IMeasurementStoreService.StoreAsync(Measurement)"/>
+        /// <inheritdoc cref="IDataStoreService.StoreAsync(Measurement)"/>
         public async Task<StoreResult> StoreAsync(Measurement measurement)
         {
             Guard.IsNotNull(measurement, nameof(measurement));

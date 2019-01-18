@@ -1,7 +1,5 @@
-﻿using JetBrains.Annotations;
-using QboxNext.Core.Utils;
+﻿using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Internal;
-using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
@@ -11,19 +9,6 @@ namespace QboxNext.Extensions.Implementations
 {
     internal class MiniPocoFactory : IMiniPocoFactory
     {
-        private readonly IAsyncStorageProviderFactory _asyncStorageProviderFactory;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MiniPocoFactory"/> class.
-        /// </summary>
-        /// <param name="asyncStorageProviderFactory">The storage provider factory.</param>
-        public MiniPocoFactory([NotNull] IAsyncStorageProviderFactory asyncStorageProviderFactory)
-        {
-            Guard.IsNotNull(asyncStorageProviderFactory, nameof(asyncStorageProviderFactory));
-
-            _asyncStorageProviderFactory = asyncStorageProviderFactory;
-        }
-
         /// <inheritdoc cref="IMiniPocoFactory.Create(string, string)"/>
         public MiniPoco Create(string serialNumber, string productNumber)
         {
@@ -64,7 +49,6 @@ namespace QboxNext.Extensions.Implementations
             {
                 counter.QboxSerial = serialNumber;
                 counter.CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter };
-                counter.StorageProvider = _asyncStorageProviderFactory.Create(serialNumber, productNumber, counter.CounterId);
             }
 
             return mini;

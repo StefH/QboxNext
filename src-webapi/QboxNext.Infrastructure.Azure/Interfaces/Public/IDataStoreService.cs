@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace QboxNext.Infrastructure.Azure.Interfaces.Public
 {
-    public interface IMeasurementStoreService
+    public interface IDataStoreService
     {
         /// <summary>
         /// Stores the specified measurement in Azure Tables.
