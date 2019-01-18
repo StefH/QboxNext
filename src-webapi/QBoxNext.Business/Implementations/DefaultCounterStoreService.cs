@@ -24,6 +24,7 @@ namespace QBoxNext.Business.Implementations
             _dataStoreService = dataStoreService;
         }
 
+        /// <inheritdoc cref="ICounterStoreService.StoreAsync(Guid, CounterData)"/>
         public async Task StoreAsync(Guid correlationId, CounterData counterData)
         {
             Guard.IsNotNull(counterData, nameof(counterData));

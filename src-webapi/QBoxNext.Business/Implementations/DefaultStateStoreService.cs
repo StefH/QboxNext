@@ -31,6 +31,7 @@ namespace QBoxNext.Business.Implementations
             _logger = logger;
         }
 
+        /// <inheritdoc cref="IStateStoreService.StoreAsync(Guid, StateData)"/>
         public async Task StoreAsync(Guid correlationId, StateData stateData)
         {
             Guard.IsNotNull(stateData, nameof(stateData));
