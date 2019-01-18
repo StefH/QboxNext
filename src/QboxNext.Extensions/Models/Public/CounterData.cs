@@ -5,9 +5,11 @@ namespace QboxNext.Extensions.Models.Public
 {
     public class CounterData
     {
-        [NotNull] public string SerialNumber { get; set; }
+        [NotNull]
+        public string SerialNumber { get; set; }
 
-        [NotNull] public string ProductNumber { get; set; }
+        [NotNull]
+        public string ProductNumber { get; set; }
 
         public DateTime MeasureTime { get; set; }
 

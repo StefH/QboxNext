@@ -1,8 +1,9 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace QboxNext.Domain
 {
-    public class Measurement
+    public class QboxMeasurement
     {
         public Guid CorrelationId { get; set; }
 
@@ -10,9 +11,9 @@ namespace QboxNext.Domain
 
         public int CounterId { get; set; }
 
-        public string SerialNumber { get; set; }
+        [NotNull] public string SerialNumber { get; set; }
 
-        public string ProductNumber { get; set; }
+        [NotNull] public string ProductNumber { get; set; }
 
         public DateTime MeasureTime { get; set; }
 

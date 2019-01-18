@@ -13,6 +13,10 @@ namespace QboxNext.Infrastructure.Azure.Options
         public string MeasurementsTableName { get; set; }
 
         [Required]
+        [MinLength(0)]
+        public string StatesTableName { get; set; }
+
+        [Required]
         [Range(0, 3600)]
         public int ServerTimeout { get; set; }
     }

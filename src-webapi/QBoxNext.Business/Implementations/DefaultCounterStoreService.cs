@@ -28,7 +28,7 @@ namespace QBoxNext.Business.Implementations
         {
             Guard.IsNotNull(counterData, nameof(counterData));
 
-            var measurement = new Measurement
+            var measurement = new QboxMeasurement
             {
                 CorrelationId = correlationId,
                 SerialNumber = counterData.SerialNumber,

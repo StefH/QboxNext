@@ -19,6 +19,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
     {
         private readonly ILogger<DataStoreService> _logger;
         private readonly CloudTable _measurementsTable;
+        private readonly CloudTable _statesTable;
         private readonly TimeSpan _serverTimeout;
 
         /// <summary>
@@ -34,22 +35,39 @@ namespace QboxNext.Infrastructure.Azure.Implementations
             _logger = logger;
             _serverTimeout = TimeSpan.FromSeconds(options.Value.ServerTimeout);
 
+            // Create CloudTableClient
             var client = CloudStorageAccount.Parse(options.Value.ConnectionString).CreateCloudTableClient();
 
+            // Get reference to the tables
             _measurementsTable = client.GetTableReference(options.Value.MeasurementsTableName);
+            _statesTable = client.GetTableReference(options.Value.StatesTableName);
         }
 
-        /// <inheritdoc cref="IDataStoreService.StoreAsync(Measurement)"/>
-        public async Task<StoreResult> StoreAsync(Measurement measurement)
+        /// <inheritdoc cref="IDataStoreService.StoreAsync(QboxMeasurement)"/>
+        public async Task<StoreResult> StoreAsync(QboxMeasurement qboxMeasurement)
         {
-            Guard.IsNotNull(measurement, nameof(measurement));
+            Guard.IsNotNull(qboxMeasurement, nameof(qboxMeasurement));
 
-            var entity = new MeasurementEntity(measurement);
+            var entity = new MeasurementEntity(qboxMeasurement);
 
             var insertOperation = TableOperation.Insert(entity);
 
             _logger.LogInformation($"Inserting measurement for entity '{entity.PartitionKey}' into Azure Table '{_measurementsTable.Name}'");
             var result = await _measurementsTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout);
+
+            return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
+        }
+
+        public async Task<StoreResult> StoreAsync(QboxState qboxState)
+        {
+            Guard.IsNotNull(qboxState, nameof(qboxState));
+
+            var entity = new StateEntity(qboxState);
+
+            var insertOperation = TableOperation.Insert(entity);
+
+            _logger.LogInformation($"Inserting state for entity '{entity.PartitionKey}' into Azure Table '{_statesTable.Name}'");
+            var result = await _statesTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout);
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
         }
