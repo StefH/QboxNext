@@ -1,3 +1,6 @@
+# 1.0.1.0 (18 January 2019)
+- [#5](https://github.com/StefH/QboxNext/pull/5) - Save Status [feature] contributed by [StefH](https://github.com/StefH)
+
 # 1.0.0.0 (17 January 2019)
 - [#1](https://github.com/StefH/QboxNext/pull/1) - Azure Tables [feature] contributed by [StefH](https://github.com/StefH)
 - [#2](https://github.com/StefH/QboxNext/pull/2) - Docker [feature] contributed by [StefH](https://github.com/StefH)
