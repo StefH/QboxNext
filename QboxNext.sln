@@ -55,6 +55,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Qserver", "depende
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Extensions", "src\QboxNext.Extensions\QboxNext.Extensions.csproj", "{D3804229-91F4-4502-9595-39884E5A01AE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-simulation", "src-simulation", "{F6DD70BD-1AD9-452B-B8AC-CDCE55B51635}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.SimulateQbox", "dependencies\dotnetcore-minimal\QboxNext.SimulateQbox\QboxNext.SimulateQbox.csproj", "{536B0C4F-5588-4073-8A40-F50741784EF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +125,10 @@ Global
 		{D3804229-91F4-4502-9595-39884E5A01AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3804229-91F4-4502-9595-39884E5A01AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3804229-91F4-4502-9595-39884E5A01AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{536B0C4F-5588-4073-8A40-F50741784EF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{536B0C4F-5588-4073-8A40-F50741784EF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{536B0C4F-5588-4073-8A40-F50741784EF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{536B0C4F-5588-4073-8A40-F50741784EF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +149,7 @@ Global
 		{A34CE19C-5B35-4915-85C5-D96423CFF1CC} = {E04D98D6-6C1E-4E41-AB15-3C8CA6BC9F8D}
 		{84F46257-F4F9-40AF-91FB-6394D67C8F60} = {E04D98D6-6C1E-4E41-AB15-3C8CA6BC9F8D}
 		{D3804229-91F4-4502-9595-39884E5A01AE} = {CBFFFEA9-60E2-4179-BBBA-989DC6E9C3BD}
+		{536B0C4F-5588-4073-8A40-F50741784EF7} = {F6DD70BD-1AD9-452B-B8AC-CDCE55B51635}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A6ED5AF-7B32-444B-887A-ABF343EE609C}
