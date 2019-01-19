@@ -47,7 +47,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Infrastructure.Azu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.WebApi.Docker", "src-docker\QboxNext.WebApi.Docker\QboxNext.WebApi.Docker.csproj", "{2DF3EBEC-4915-421A-B970-3127A04AF551}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QBoxNext.Business.Docker", "src-docker\QboxNext.Business.Docker\QboxNext.Business.Docker.csproj", "{F7940E10-E76F-4428-A93D-EE4210EBD893}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Business.Docker", "src-docker\QboxNext.Business.Docker\QboxNext.Business.Docker.csproj", "{F7940E10-E76F-4428-A93D-EE4210EBD893}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Qservice", "dependencies\dotnetcore-minimal\QboxNext.Qservice\QboxNext.Qservice.csproj", "{A34CE19C-5B35-4915-85C5-D96423CFF1CC}"
 EndProject

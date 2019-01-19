@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.WindowsAzure.Storage.Table;
-using QboxNext.Core.Utils;
+using QboxNext.Common.Validation;
 using QboxNext.Domain;
 using System;
 using System.Linq;
@@ -77,7 +77,7 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
 
         public StateEntity([NotNull] QboxState qboxState)
         {
-            Guard.IsNotNull(qboxState, nameof(qboxState));
+            Guard.NotNull(qboxState, nameof(qboxState));
 
             PartitionKey = $"{qboxState.ProductNumber}:{qboxState.SerialNumber}";
             RowKey = $"{qboxState.LogTime.Ticks}:{qboxState.MessageType}";

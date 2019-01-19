@@ -328,3 +328,7 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# Azurite table.exe simulator
+/Tools/azurite.2.6.5/__azurite_db_table__.json
+/src-docker/QboxNext.WebApi.Docker/logs/nlog.txt

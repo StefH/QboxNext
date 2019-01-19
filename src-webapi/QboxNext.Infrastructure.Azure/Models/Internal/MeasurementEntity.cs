@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.WindowsAzure.Storage.Table;
-using QboxNext.Core.Utils;
+using QboxNext.Common.Validation;
 using QboxNext.Domain;
 using System;
 
@@ -42,7 +42,7 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
         /// <param name="qboxMeasurement">The measurement.</param>
         public MeasurementEntity([NotNull] QboxMeasurement qboxMeasurement)
         {
-            Guard.IsNotNull(qboxMeasurement, nameof(qboxMeasurement));
+            Guard.NotNull(qboxMeasurement, nameof(qboxMeasurement));
 
             PartitionKey = $"{qboxMeasurement.ProductNumber}:{qboxMeasurement.SerialNumber}";
             RowKey = $"{qboxMeasurement.LogTime.Ticks}:{qboxMeasurement.CounterId:D4}";
