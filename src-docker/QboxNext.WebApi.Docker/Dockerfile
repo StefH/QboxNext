@@ -9,8 +9,8 @@ EXPOSE 443
 FROM microsoft/dotnet:2.1-sdk-nanoserver-1803 AS build
 WORKDIR /src
 COPY ["src-docker/QboxNext.WebApi.Docker/QboxNext.WebApi.Docker.csproj", "src-docker/QboxNext.WebApi.Docker/"]
+COPY ["src-docker/QboxNext.Business.Docker/QBoxNext.Business.Docker.csproj", "src-docker/QBoxNext.Business.Docker/"]
 COPY ["src-webapi/QboxNext.Common/QboxNext.Common.csproj", "src-webapi/QboxNext.Common/"]
-COPY ["src-docker/QBoxNext.Business.Docker/QBoxNext.Business.Docker.csproj", "src-docker/QBoxNext.Business.Docker/"]
 COPY ["src-webapi/QboxNext.Domain/QboxNext.Domain.csproj", "src-webapi/QboxNext.Domain/"]
 COPY ["src-webapi/QboxNext.Infrastructure.Azure/QboxNext.Infrastructure.Azure.csproj", "src-webapi/QboxNext.Infrastructure.Azure/"]
 RUN dotnet restore "src-docker/QboxNext.WebApi.Docker/QboxNext.WebApi.Docker.csproj"

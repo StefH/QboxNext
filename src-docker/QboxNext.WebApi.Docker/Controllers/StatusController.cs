@@ -9,7 +9,7 @@ namespace QboxNext.WebApi.Controllers
         [HttpGet("/status")]
         public string Get()
         {
-            return $"QboxNext.WebApi is running @ {DateTime.UtcNow}";
+            return $"QboxNext.WebApi.Docker is running @ {DateTime.UtcNow}";
         }
     }
 }
