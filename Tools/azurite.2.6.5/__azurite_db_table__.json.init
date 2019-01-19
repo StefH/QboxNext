@@ -1,0 +1,203 @@
+{
+  "filename": "__azurite_db_table__.json",
+  "collections": [
+    {
+      "name": "Tables",
+      "data": [
+        {
+          "name": "QboxMeasurements",
+          "odata": {
+            "metadata": "http://127.0.0.1:10002/devstoreaccount1/$metadata#Tables/@Element",
+            "type": "devstoreaccount1.Tables",
+            "id": "http://127.0.0.1:10002/devstoreaccount1/Tables('QboxMeasurements')",
+            "editLink": "Tables('QboxMeasurements')"
+          },
+          "meta": {
+            "revision": 0,
+            "created": 1547891984543,
+            "version": 0
+          },
+          "$loki": 1
+        },
+        {
+          "name": "QboxStates",
+          "odata": {
+            "metadata": "http://127.0.0.1:10002/devstoreaccount1/$metadata#Tables/@Element",
+            "type": "devstoreaccount1.Tables",
+            "id": "http://127.0.0.1:10002/devstoreaccount1/Tables('QboxStates')",
+            "editLink": "Tables('QboxStates')"
+          },
+          "meta": {
+            "revision": 0,
+            "created": 1547891996266,
+            "version": 0
+          },
+          "$loki": 2
+        }
+      ],
+      "idIndex": [
+        1,
+        2
+      ],
+      "binaryIndices": {},
+      "constraints": null,
+      "uniqueNames": [],
+      "transforms": {},
+      "objType": "Tables",
+      "dirty": false,
+      "cachedIndex": null,
+      "cachedBinaryIndex": null,
+      "cachedData": null,
+      "adaptiveBinaryIndices": true,
+      "transactional": false,
+      "cloneObjects": false,
+      "cloneMethod": "parse-stringify",
+      "asyncListeners": false,
+      "disableChangesApi": true,
+      "disableDeltaChangesApi": true,
+      "autoupdate": false,
+      "serializableIndices": true,
+      "ttl": null,
+      "maxId": 2,
+      "DynamicViews": [],
+      "events": {
+        "insert": [
+          null
+        ],
+        "update": [
+          null
+        ],
+        "pre-insert": [],
+        "pre-update": [],
+        "close": [],
+        "flushbuffer": [],
+        "error": [],
+        "delete": [
+          null
+        ],
+        "warning": [
+          null
+        ]
+      },
+      "changes": []
+    },
+    {
+      "name": "QboxMeasurements",
+      "data": [],
+      "idIndex": [],
+      "binaryIndices": {},
+      "constraints": null,
+      "uniqueNames": [],
+      "transforms": {},
+      "objType": "QboxMeasurements",
+      "dirty": false,
+      "cachedIndex": null,
+      "cachedBinaryIndex": null,
+      "cachedData": null,
+      "adaptiveBinaryIndices": true,
+      "transactional": false,
+      "cloneObjects": false,
+      "cloneMethod": "parse-stringify",
+      "asyncListeners": false,
+      "disableChangesApi": true,
+      "disableDeltaChangesApi": true,
+      "autoupdate": false,
+      "serializableIndices": true,
+      "ttl": null,
+      "maxId": 0,
+      "DynamicViews": [],
+      "events": {
+        "insert": [
+          null
+        ],
+        "update": [
+          null
+        ],
+        "pre-insert": [],
+        "pre-update": [],
+        "close": [],
+        "flushbuffer": [],
+        "error": [],
+        "delete": [
+          null
+        ],
+        "warning": [
+          null
+        ]
+      },
+      "changes": []
+    },
+    {
+      "name": "QboxStates",
+      "data": [],
+      "idIndex": [],
+      "binaryIndices": {},
+      "constraints": null,
+      "uniqueNames": [],
+      "transforms": {},
+      "objType": "QboxStates",
+      "dirty": false,
+      "cachedIndex": null,
+      "cachedBinaryIndex": null,
+      "cachedData": null,
+      "adaptiveBinaryIndices": true,
+      "transactional": false,
+      "cloneObjects": false,
+      "cloneMethod": "parse-stringify",
+      "asyncListeners": false,
+      "disableChangesApi": true,
+      "disableDeltaChangesApi": true,
+      "autoupdate": false,
+      "serializableIndices": true,
+      "ttl": null,
+      "maxId": 0,
+      "DynamicViews": [],
+      "events": {
+        "insert": [
+          null
+        ],
+        "update": [
+          null
+        ],
+        "pre-insert": [],
+        "pre-update": [],
+        "close": [],
+        "flushbuffer": [],
+        "error": [],
+        "delete": [
+          null
+        ],
+        "warning": [
+          null
+        ]
+      },
+      "changes": []
+    }
+  ],
+  "databaseVersion": 1.5,
+  "engineVersion": 1.5,
+  "autosave": true,
+  "autosaveInterval": 5000,
+  "autosaveHandle": null,
+  "throttledSaves": true,
+  "options": {
+    "autosave": true,
+    "autosaveInterval": 5000,
+    "serializationMethod": "normal",
+    "destructureDelimiter": "$<\n"
+  },
+  "persistenceMethod": "fs",
+  "persistenceAdapter": null,
+  "verbose": false,
+  "events": {
+    "init": [
+      null
+    ],
+    "loaded": [],
+    "flushChanges": [],
+    "close": [],
+    "changes": [],
+    "warning": []
+  },
+  "ENV": "NODEJS"
+}
