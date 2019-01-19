@@ -13,5 +13,22 @@ The solution is to use https://github.com/azure/azurite.
 
 ## Build Docker for Windows
 
-- Go to the root from this project
-- Run command: `docker build -t sheyenrath/qboxnext-webapi-nanoserver-1803 -f .\src-docker\QboxNext.WebApi.Docker\Dockerfile .`
+Go to the root from this project
+
+#### 1. Build
+
+``` cmd
+docker build -t sheyenrath/qboxnext-webapi-nanoserver-1803 -f .\src-docker\QboxNext.WebApi.Docker\Dockerfile .
+```
+
+#### 2. Tag
+
+``` cmd
+docker tag sheyenrath/qboxnext-webapi-nanoserver-1803:latest sheyenrath/qboxnext-webapi-nanoserver-1803:1.0.2
+```
+
+#### 3. Push
+
+``` cmd
+docker push sheyenrath/qboxnext-webapi-nanoserver-1803:latest
+```
