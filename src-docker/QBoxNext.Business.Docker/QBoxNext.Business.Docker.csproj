@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="QboxNext.Extensions" Version="1.0.1" />
+    <PackageReference Include="QboxNext.Extensions" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
