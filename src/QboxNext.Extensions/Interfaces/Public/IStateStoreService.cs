@@ -1,6 +1,5 @@
 ﻿using JetBrains.Annotations;
 using QboxNext.Extensions.Models.Public;
-using System;
 using System.Threading.Tasks;
 
 namespace QboxNext.Extensions.Interfaces.Public
@@ -12,6 +11,6 @@ namespace QboxNext.Extensions.Interfaces.Public
         /// </summary>
         /// <param name="correlationId">The correlation id.</param>
         /// <param name="stateData">The StateData.</param>
-        Task StoreAsync(Guid correlationId, [NotNull] StateData stateData);
+        Task StoreAsync(string correlationId, [NotNull] StateData stateData);
     }
 }

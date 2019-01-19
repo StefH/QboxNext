@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CorrelationId;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,7 @@ namespace QboxNext.WebApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Add External services
+            services.AddCorrelationId();
             services.AddBusiness();
 
             // Configure
@@ -31,16 +33,13 @@ namespace QboxNext.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseCorrelationId(new CorrelationIdOptions
             {
-                // app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // app.UseHsts();
-            }
+                UpdateTraceIdentifier = true,
+                IncludeInResponse = true,
+                UseGuidForCorrelationId = true
+            });
 
-            // app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

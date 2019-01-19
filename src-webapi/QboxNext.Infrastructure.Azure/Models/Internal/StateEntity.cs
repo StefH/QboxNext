@@ -9,7 +9,7 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
 {
     public class StateEntity : TableEntity
     {
-        public Guid CorrelationId { get; set; }
+        public string CorrelationId { get; set; }
 
         public DateTime LogTime { get; set; }
 

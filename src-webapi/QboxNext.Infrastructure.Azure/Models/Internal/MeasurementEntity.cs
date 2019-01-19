@@ -8,7 +8,7 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
 {
     public class MeasurementEntity : TableEntity
     {
-        public Guid CorrelationId { get; set; }
+        public string CorrelationId { get; set; }
 
         public DateTime LogTime { get; set; }
 

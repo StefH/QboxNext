@@ -42,6 +42,7 @@ namespace QboxNext.Extensions.Implementations
         };
         private static readonly DateTime Epoch = new DateTime(2007, 1, 1);
 
+        private readonly string _correlationId;
         private readonly QboxDataDumpContext _context;
         private readonly ICounterStoreService _counterService;
         private readonly IStateStoreService _stateStoreService;
@@ -52,21 +53,25 @@ namespace QboxNext.Extensions.Implementations
         /// <summary>
         /// Initializes a new instance of the <see cref="QboxNextDataHandler"/> class.
         /// </summary>
+        /// <param name="correlationId">The correlation identifier.</param>
         /// <param name="context">The context.</param>
         /// <param name="counterService">The counter service.</param>
-        /// <param name="stateStoreService">The status provider.</param>
+        /// <param name="stateStoreService">The state store service.</param>
         /// <param name="logger">The logger.</param>
         public QboxNextDataHandler(
+            [NotNull] string correlationId,
             [NotNull] QboxDataDumpContext context,
             [NotNull] ICounterStoreService counterService,
             [NotNull] IStateStoreService stateStoreService,
             [NotNull] ILogger<QboxNextDataHandler> logger)
         {
+            Guard.IsNotNullOrEmpty(correlationId, nameof(correlationId));
             Guard.IsNotNull(context, nameof(context));
             Guard.IsNotNull(counterService, nameof(counterService));
             Guard.IsNotNull(stateStoreService, nameof(stateStoreService));
             Guard.IsNotNull(logger, nameof(logger));
 
+            _correlationId = correlationId;
             _context = context;
             _counterService = counterService;
             _stateStoreService = stateStoreService;
@@ -76,8 +81,6 @@ namespace QboxNext.Extensions.Implementations
         /// <inheritdoc cref="IQboxNextDataHandler.HandleAsync()"/>
         public async Task<string> HandleAsync()
         {
-            Guid correlationId = Guid.NewGuid();
-
             var stateData = new StateData
             {
                 SerialNumber = _context.Mini.SerialNumber,
@@ -93,7 +96,7 @@ namespace QboxNext.Extensions.Implementations
                 stateData.Message = _context.Message;
                 stateData.State = _context.Mini.State;
                 stateData.Status = _context.Mini.QboxStatus;
-                await _stateStoreService.StoreAsync(correlationId, stateData);
+                await _stateStoreService.StoreAsync(_correlationId, stateData);
 
                 // start parsing
                 var parser = ParserFactory.GetParserFromMessage(_context.Message);
@@ -160,7 +163,7 @@ namespace QboxNext.Extensions.Implementations
                     // Loop all CounterPayloads and store each measurement
                     foreach (var counterPayload in parseResult.Model.Payloads.Where(p => p is CounterPayload).Cast<CounterPayload>())
                     {
-                        await StoreCounterPayloadAsync(correlationId, counterPayload, stateData.SerialNumber, stateData.ProductNumber);
+                        await StoreCounterPayloadAsync(counterPayload);
                     }
 
                     BuildResult(ResponseType.Normal);
@@ -173,7 +176,7 @@ namespace QboxNext.Extensions.Implementations
                         stateData.Message = errorParseResult.Error;
                         stateData.State = _context.Mini.State;
                         stateData.Status = _context.Mini.QboxStatus;
-                        await _stateStoreService.StoreAsync(correlationId, stateData);
+                        await _stateStoreService.StoreAsync(_correlationId, stateData);
                     }
 
                     // We could not handle the message normally, but if we don't answer at all, the Qbox will just retransmit the message.
@@ -191,7 +194,7 @@ namespace QboxNext.Extensions.Implementations
                 stateData.Message = resultWithEnvelope;
                 stateData.State = _context.Mini.State;
                 stateData.Status = _context.Mini.QboxStatus;
-                await _stateStoreService.StoreAsync(correlationId, stateData);
+                await _stateStoreService.StoreAsync(_correlationId, stateData);
 
                 return resultWithEnvelope;
             }
@@ -208,7 +211,7 @@ namespace QboxNext.Extensions.Implementations
                 stateData.Message = exception.ToString();
                 stateData.State = _context.Mini?.State ?? MiniState.Waiting;
                 stateData.Status = _context.Mini?.QboxStatus;
-                await _stateStoreService.StoreAsync(correlationId, stateData);
+                await _stateStoreService.StoreAsync(_correlationId, stateData);
 
                 _logger.LogError(exception, $"sn: {stateData.SerialNumber}");
 
@@ -294,7 +297,7 @@ namespace QboxNext.Extensions.Implementations
             return _context.Mini.Counters.SingleOrDefault(s => s.CounterId == payload.InternalNr);
         }
 
-        private async Task StoreCounterPayloadAsync(Guid correlationId, CounterPayload payload, string serialNumber, string productNumber)
+        private async Task StoreCounterPayloadAsync(CounterPayload payload)
         {
             if (payload.Value == ulong.MaxValue)
             {
@@ -334,14 +337,14 @@ namespace QboxNext.Extensions.Implementations
 
             var counterData = new CounterData
             {
-                SerialNumber = serialNumber,
-                ProductNumber = productNumber,
+                SerialNumber = _context.Mini.SerialNumber,
+                ProductNumber = _context.Mini.Id,
                 MeasureTime = parseResult.Model.MeasurementTime,
                 CounterId = payload.InternalNr,
                 PulseValue = payload.Value,
                 PulsesPerUnit = counter.CounterSensorMappings.First().Formule
             };
-            await _counterService.StoreAsync(correlationId, counterData);
+            await _counterService.StoreAsync(_correlationId, counterData);
 
             _context.Mini.QboxStatus.LastDataReceived = DateTime.UtcNow;
         }

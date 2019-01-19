@@ -9,6 +9,7 @@ namespace QboxNext.Extensions.Interfaces.Public
         /// Creates a QboxNextDataHandler based on specified <see cref="QboxDataDumpContext"/>.
         /// </summary>
         /// <param name="context">The context.</param>
-        IQboxNextDataHandler Create([NotNull] QboxDataDumpContext context);
+        /// <param name="correlationId">The correlationId.</param>
+        IQboxNextDataHandler Create([NotNull] string correlationId, [NotNull] QboxDataDumpContext context);
     }
 }
