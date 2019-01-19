@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using QboxNext.Common.Extensions;
-using QboxNext.Core.Utils;
+using QboxNext.Common.Validation;
 using QboxNext.Domain;
 using QboxNext.Infrastructure.Azure.Interfaces.Public;
 using QboxNext.Infrastructure.Azure.Models.Internal;
@@ -29,8 +29,8 @@ namespace QboxNext.Infrastructure.Azure.Implementations
         /// <param name="logger">The logger.</param>
         public DataStoreService([NotNull] IOptions<AzureTableStorageOptions> options, [NotNull] ILogger<DataStoreService> logger)
         {
-            Guard.IsNotNull(options, nameof(options));
-            Guard.IsNotNull(logger, nameof(logger));
+            Guard.NotNull(options, nameof(options));
+            Guard.NotNull(logger, nameof(logger));
 
             _logger = logger;
             _serverTimeout = TimeSpan.FromSeconds(options.Value.ServerTimeout);
@@ -46,7 +46,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
         /// <inheritdoc cref="IDataStoreService.StoreAsync(QboxMeasurement)"/>
         public async Task<StoreResult> StoreAsync(QboxMeasurement qboxMeasurement)
         {
-            Guard.IsNotNull(qboxMeasurement, nameof(qboxMeasurement));
+            Guard.NotNull(qboxMeasurement, nameof(qboxMeasurement));
 
             var entity = new MeasurementEntity(qboxMeasurement);
 
@@ -60,7 +60,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
 
         public async Task<StoreResult> StoreAsync(QboxState qboxState)
         {
-            Guard.IsNotNull(qboxState, nameof(qboxState));
+            Guard.NotNull(qboxState, nameof(qboxState));
 
             var entity = new StateEntity(qboxState);
 

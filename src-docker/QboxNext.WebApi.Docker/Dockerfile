@@ -2,6 +2,9 @@
 #For more information, please see https://aka.ms/containercompat
 
 FROM microsoft/dotnet:2.1-aspnetcore-runtime-nanoserver-1803 AS base
+
+LABEL maintainer="Stef Heyenrath"
+
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
@@ -26,4 +29,9 @@ RUN dotnet publish "QboxNext.WebApi.Docker.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+EXPOSE 80
 ENTRYPOINT ["dotnet", "QboxNext.WebApi.Docker.dll"]
+
+# Just some info to build and run:
+# - Build with : docker build -t sheyenrath/qboxnext-webapi-nanoserver-1803 -f .\src-docker\QboxNext.WebApi.Docker\Dockerfile .
+# - Run with   : docker run --rm -i -p 5002:80 sheyenrath/qboxnext-webapi-nanoserver-1803

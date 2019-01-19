@@ -42,7 +42,7 @@ namespace QboxNext.WebApi.Controllers
             Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));
             Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
 
-            _logger.LogTrace("Enter");
+            _logger.LogInformation("Post");
 
             // Create QboxContext
             var context = await MapQboxContextAsync(productNumber, serialNumber);
@@ -55,8 +55,7 @@ namespace QboxNext.WebApi.Controllers
             var handler = _qboxNextDataHandlerFactory.Create(qboxDataDumpContext);
             string result = await handler.HandleAsync();
 
-            _logger.LogInformation("Parsing Done: {0}", result);
-            _logger.LogTrace("Return");
+            _logger.LogTrace("Parsing Done: {0}", result);
 
             return Ok(result);
         }
