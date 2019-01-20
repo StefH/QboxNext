@@ -11,6 +11,7 @@ using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -87,7 +88,6 @@ namespace QboxNext.Extensions.Implementations
                 ProductNumber = _context.Mini.Id
             };
 
-            _logger.LogTrace("Enter");
             try
             {
                 _logger.LogInformation("sn: {0} | input: {1} | lastUrl: {2}", stateData.SerialNumber, _context.Message, _context.Mini.QboxStatus.Url);
@@ -154,17 +154,7 @@ namespace QboxNext.Extensions.Implementations
                         _context.Mini.QboxStatus.LastInvalidResponse = DateTime.UtcNow;
                     }
 
-                    // Loop all payloads except CounterPayload and visit
-                    foreach (var payload in parseResult.Model.Payloads.Where(p => !(p is CounterPayload)))
-                    {
-                        payload.Visit(this);
-                    }
-
-                    // Loop all CounterPayloads and store each measurement
-                    foreach (var counterPayload in parseResult.Model.Payloads.Where(p => p is CounterPayload).Cast<CounterPayload>())
-                    {
-                        await StoreCounterPayloadAsync(counterPayload);
-                    }
+                    await StorePayloadsAsync(parseResult.Model.Payloads);
 
                     BuildResult(ResponseType.Normal);
                 }
@@ -185,8 +175,6 @@ namespace QboxNext.Extensions.Implementations
                 }
 
                 _context.Mini.QboxStatus.LastSeen = DateTime.UtcNow;
-
-                _logger.LogDebug("sn: {0} | result: {1}", stateData.SerialNumber, _result.GetMessage());
 
                 string resultWithEnvelope = _result.GetMessageWithEnvelope();
 
@@ -219,6 +207,47 @@ namespace QboxNext.Extensions.Implementations
             }
         }
 
+        private async Task StorePayloadsAsync(IList<BasePayload> payloads)
+        {
+            // Loop all payloads except CounterPayload and visit
+            var exceptionInformation = new ConcurrentQueue<(string details, Exception exception)>();
+            foreach (var payload in payloads.Where(p => !(p is CounterPayload)))
+            {
+                try
+                {
+                    payload.Visit(this);
+                }
+                catch (Exception ex)
+                {
+                    exceptionInformation.Enqueue((payload.GetType().Name, ex));
+                }
+            }
+
+            // Loop all CounterPayloads and store each measurement
+            foreach (var counterPayload in payloads.Where(p => p is CounterPayload).Cast<CounterPayload>())
+            {
+                try
+                {
+                    await StoreCounterPayloadAsync(counterPayload);
+                }
+                catch (Exception ex)
+                {
+                    exceptionInformation.Enqueue(($"{counterPayload.GetType().Name} {counterPayload.InternalNr}", ex));
+                }
+            }
+
+            // Only throw exception when all counters fail
+            if (exceptionInformation.Count == payloads.Count)
+            {
+                throw new AggregateException(exceptionInformation.Select(x => x.exception));
+            }
+
+            // Else just log as error
+            foreach (var info in exceptionInformation)
+            {
+                _logger.LogError(info.exception, $"Error storing Payload '{info.details}'");
+            }
+        }
         private void BuildResult(ResponseType inResponseType)
         {
             // sequence number of the message received
@@ -306,7 +335,7 @@ namespace QboxNext.Extensions.Implementations
 
             if (payload is R21CounterPayload counterPayload && !counterPayload.IsValid)
             {
-                _logger.LogDebug("Invalid value for counter {0} / {1}", counterPayload.InternalNr, _context.Mini.SerialNumber);
+                _logger.LogInformation("Invalid value for counter {0} / {1}", counterPayload.InternalNr, _context.Mini.SerialNumber);
                 return;
             }
 

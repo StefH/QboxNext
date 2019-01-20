@@ -50,18 +50,17 @@ namespace QboxNext.WebApi.Controllers
             Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));
             Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
 
+            _logger.LogInformation($"PostAsync /device/qbox/{productNumber}/{serialNumber}");
+
             // Create QboxContext
             var context = await MapQboxContextAsync(productNumber, serialNumber);
 
             // Create QboxDataDumpContext
             var qboxDataDumpContext = _qboxDataDumpContextFactory.Create(context);
-            _logger.LogInformation(qboxDataDumpContext.Mini.SerialNumber);
 
             // Create handler and handle the message
             var handler = _qboxNextDataHandlerFactory.Create(_correlationContext.CorrelationContext.CorrelationId, qboxDataDumpContext);
             string result = await handler.HandleAsync();
-
-            _logger.LogTrace("Parsing Done: {0}", result);
 
             return Ok(result);
         }
