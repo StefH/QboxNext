@@ -52,7 +52,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
 
             var insertOperation = TableOperation.Insert(entity);
 
-            _logger.LogInformation($"Inserting measurement for entity '{entity.PartitionKey}' into Azure Table '{_measurementsTable.Name}'");
+            _logger.LogInformation($"Inserting measurement for entity '{entity.RowKey}' into Azure Table '{_measurementsTable.Name}'");
             var result = await _measurementsTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout);
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
@@ -66,7 +66,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
 
             var insertOperation = TableOperation.Insert(entity);
 
-            _logger.LogInformation($"Inserting state for entity '{entity.PartitionKey}' into Azure Table '{_statesTable.Name}'");
+            _logger.LogInformation($"Inserting state for entity '{entity.RowKey}' into Azure Table '{_statesTable.Name}'");
             var result = await _statesTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout);
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };

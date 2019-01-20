@@ -199,7 +199,7 @@ namespace QboxNext.Extensions.Implementations
                 }
 
                 stateData.MessageType = QboxMessageType.Exception;
-                stateData.Message = exception.ToString();
+                stateData.Message = null;
                 stateData.State = _context.Mini?.State ?? MiniState.Waiting;
                 stateData.Status = _context.Mini?.QboxStatus;
                 await _stateStoreService.StoreAsync(_correlationId, stateData);
