@@ -31,4 +31,5 @@ docker tag sheyenrath/qboxnext-webapi-nanoserver-1803:latest sheyenrath/qboxnext
 
 ``` cmd
 docker push sheyenrath/qboxnext-webapi-nanoserver-1803:latest
+docker push sheyenrath/qboxnext-webapi-nanoserver-1803:1.0.2
 ```
