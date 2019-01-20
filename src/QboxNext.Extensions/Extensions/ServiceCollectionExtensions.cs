@@ -35,7 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IQboxMessagesLogger, QboxMessagesNullLogger>();
             services.AddScoped<IQboxDataDumpContextFactory, QboxDataDumpContextFactory>();
             services.AddScoped<IQboxNextDataHandlerFactory, QboxNextDataHandlerFactory>();
-            services.AddScoped<IMiniPocoFactory, MiniPocoFactory>();
+            services.AddSingleton<IMiniPocoFactory, MiniPocoFactory>();
         }
 
         private static void Register()

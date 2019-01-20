@@ -1,32 +1,25 @@
 ﻿using JetBrains.Annotations;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Qboxes.Classes;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
+using System;
 
 namespace QboxNext.Extensions.Implementations
 {
     internal class QboxNextDataHandlerFactory : IQboxNextDataHandlerFactory
     {
-        private readonly ICounterStoreService _counterStoreService;
-        private readonly IStateStoreService _stateStoreService;
-        private readonly ILogger<QboxNextDataHandler> _logger;
+        private readonly IServiceProvider _provider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QboxNextDataHandlerFactory"/> class.
         /// </summary>
-        /// <param name="counterStoreService">The counter store service.</param>
-        /// <param name="stateStoreService">The state store service.</param>
-        /// <param name="logger">The logger.</param>
-        public QboxNextDataHandlerFactory([NotNull] ICounterStoreService counterStoreService, [NotNull] IStateStoreService stateStoreService, [NotNull] ILogger<QboxNextDataHandler> logger)
+        /// <param name="provider">The provider.</param>
+        public QboxNextDataHandlerFactory([NotNull] IServiceProvider provider)
         {
-            Guard.IsNotNull(stateStoreService, nameof(stateStoreService));
-            Guard.IsNotNull(stateStoreService, nameof(stateStoreService));
-            Guard.IsNotNull(logger, nameof(logger));
+            Guard.IsNotNull(provider, nameof(provider));
 
-            _counterStoreService = counterStoreService;
-            _stateStoreService = stateStoreService;
-            _logger = logger;
+            _provider = provider;
         }
 
         /// <inheritdoc cref="IQboxNextDataHandlerFactory.Create(string, QboxDataDumpContext)"/>
@@ -35,7 +28,7 @@ namespace QboxNext.Extensions.Implementations
             Guard.IsNotNullOrEmpty(correlationId, nameof(correlationId));
             Guard.IsNotNull(context, nameof(context));
 
-            return new QboxNextDataHandler(correlationId, context, _counterStoreService, _stateStoreService, _logger);
+            return ActivatorUtilities.CreateInstance<QboxNextDataHandler>(_provider, correlationId, context);
         }
     }
 }
