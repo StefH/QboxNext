@@ -5,7 +5,7 @@ using QboxNext.Extensions.Interfaces.Internal;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Model.Classes;
 using QboxNext.Model.Interfaces;
-using QboxNext.Qboxes.Parsing.Factories;
+using QboxNext.Qboxes.Parsing.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -24,9 +24,11 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             Guard.IsNotNull(services, nameof(services));
 
-            services.AddServices();
+            // Add external
+            services.AddParsers();
 
-            Register();
+            // Add internal
+            services.AddServices();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -36,12 +38,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IQboxDataDumpContextFactory, QboxDataDumpContextFactory>();
             services.AddScoped<IQboxNextDataHandlerFactory, QboxNextDataHandlerFactory>();
             services.AddSingleton<IMiniPocoFactory, MiniPocoFactory>();
-        }
-
-        private static void Register()
-        {
-            // TODO
-            // ParserFactory.RegisterAllParsers();
         }
     }
 }

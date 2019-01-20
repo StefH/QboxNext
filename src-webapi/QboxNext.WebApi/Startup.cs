@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using QboxNext.Infrastructure.Azure.Options;
 using QboxNext.Logging;
-using QboxNext.Qboxes.Parsing.Factories;
 
 namespace QboxNext.WebApi
 {
@@ -37,9 +36,6 @@ namespace QboxNext.WebApi
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory)
         {
             QboxNextLogProvider.LoggerFactory = logFactory;
-
-            // TODO: move to QboxNext.Extensions
-            ParserFactory.RegisterAllParsers();
 
             app.UseCorrelationId(new CorrelationIdOptions
             {

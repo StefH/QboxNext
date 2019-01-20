@@ -4,10 +4,9 @@ using System.Linq;
 using NLog;
 using QboxNext.Core.Dto;
 using QboxNext.Core.Log;
-using QboxNext.Core.Utils;
 using QboxNext.Model.Interfaces;
+using QboxNext.Qboxes.Parsing;
 using QboxNext.Qboxes.Parsing.Elements;
-using QboxNext.Qboxes.Parsing.Factories;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
@@ -35,18 +34,21 @@ namespace QboxNext.Model.Classes
 				                                                                   { 3, 120 },
 																			   };
 		private static readonly DateTime Epoch = new DateTime(2007, 1, 1);
-		private readonly QboxDataDumpContext _context;
+
+        private readonly QboxDataDumpContext _context;
+        private readonly IQboxMessagesLogger _qboxMessagesLogger;
+        private readonly IParserFactory _parserFactory;
+
         private BaseParseResult _result;
-	    private IQboxMessagesLogger _qobxMessagesLogger;
 
 	    public static List<int> AutoStatusCommandSequenceNrs { get; set; }
 
 
-        public MiniDataHandler(QboxDataDumpContext context, IQboxMessagesLogger qboxMessagesLogger)
+        public MiniDataHandler(QboxDataDumpContext context, IQboxMessagesLogger qboxMessagesLogger, IParserFactory parserFactory)
         {
-            Guard.IsNotNull(context, "context is missing");
-            _context = context;
-	        _qobxMessagesLogger = qboxMessagesLogger;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _qboxMessagesLogger = qboxMessagesLogger ?? new QboxMessagesNullLogger();
+            _parserFactory = parserFactory ?? throw new ArgumentNullException(nameof(parserFactory));
         }
 
         public string DebugTrace()
@@ -72,7 +74,7 @@ namespace QboxNext.Model.Classes
 
                     // start parsing
                     
-                    var parser = ParserFactory.GetParserFromMessage(_context.Message);
+                    var parser = _parserFactory.GetParser(_context.Message);
                     _result = parser.Parse(_context.Message);
                     
                     // end of parsing
@@ -372,7 +374,7 @@ namespace QboxNext.Model.Classes
 
 		private void LogQboxMessage(string message, QboxMessageType messageType)
 		{
-			_qobxMessagesLogger.LogQboxMessage(_context.Mini.SerialNumber, message, messageType);
+			_qboxMessagesLogger.LogQboxMessage(_context.Mini.SerialNumber, message, messageType);
 		}
 
 

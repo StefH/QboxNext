@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using QboxNext.Core.Log;
 using QboxNext.Model.Classes;
 using QboxNext.Model.Interfaces;
+using QboxNext.Qboxes.Parsing;
 using QboxNext.Qserver.Classes;
 
 namespace QboxNext.Qserver.Controllers
@@ -15,12 +14,14 @@ namespace QboxNext.Qserver.Controllers
     public class DeviceController : ControllerBase
     {
         private readonly IQboxDataDumpContextFactory _qboxDataDumpContextFactory;
+        private readonly IParserFactory _parserFactory;
         private readonly IQboxMessagesLogger _qboxMessagesLogger;
         private static readonly Logger Log = QboxNextLogFactory.GetLogger("DeviceController");
 
-        public DeviceController(IQboxDataDumpContextFactory qboxDataDataDumpContextFactory)
+        public DeviceController(IQboxDataDumpContextFactory qboxDataDataDumpContextFactory, IParserFactory parserFactory)
         {
-            _qboxDataDumpContextFactory = qboxDataDataDumpContextFactory;
+            _qboxDataDumpContextFactory = qboxDataDataDumpContextFactory ?? throw new ArgumentNullException(nameof(qboxDataDataDumpContextFactory));
+            _parserFactory = parserFactory ?? throw new ArgumentNullException(nameof(parserFactory));
             _qboxMessagesLogger = new QboxMessagesNullLogger();
         }
 
@@ -34,7 +35,7 @@ namespace QboxNext.Qserver.Controllers
             try
             {
                 Log.Info(qboxDataDumpContext.Mini.SerialNumber);
-                string result = new MiniDataHandler(qboxDataDumpContext, _qboxMessagesLogger).Handle();
+                string result = new MiniDataHandler(qboxDataDumpContext, _qboxMessagesLogger, _parserFactory).Handle();
                 Log.Info("Parsing Done: {0}", result);
                 Log.Trace("Return");
                 return Content(result);

@@ -1,8 +1,8 @@
-image: microsoft/dotnet
+image: microsoft/dotnet:sdk
 
 pipelines:
   default:
-    - step:
+    - step: &build
         name: Build
         caches:
           - dotnetcore
@@ -17,15 +17,4 @@ pipelines:
           # TODO: run integration?
   pull-requests:
     '{feature/*,fix/*}':
-      - step:
-          name: Build
-          caches:
-            - dotnetcore
-          script:
-            - chmod +x ./build.sh
-            - sh ./build.sh
-      - step:
-          name: Unit tests
-          script:
-            - chmod +x ./run-unittests.sh
-            - sh ./run-unittests.sh
+      - step: *build

@@ -5,8 +5,8 @@ using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
 using QboxNext.Model.Classes;
+using QboxNext.Qboxes.Parsing;
 using QboxNext.Qboxes.Parsing.Elements;
-using QboxNext.Qboxes.Parsing.Factories;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
@@ -45,6 +45,7 @@ namespace QboxNext.Extensions.Implementations
 
         private readonly string _correlationId;
         private readonly QboxDataDumpContext _context;
+        private readonly IParserFactory _parserFactory;
         private readonly ICounterStoreService _counterService;
         private readonly IStateStoreService _stateStoreService;
         private readonly ILogger<QboxNextDataHandler> _logger;
@@ -56,24 +57,28 @@ namespace QboxNext.Extensions.Implementations
         /// </summary>
         /// <param name="correlationId">The correlation identifier.</param>
         /// <param name="context">The context.</param>
+        /// <param name="parserFactory">The parser factory.</param>
         /// <param name="counterService">The counter service.</param>
         /// <param name="stateStoreService">The state store service.</param>
         /// <param name="logger">The logger.</param>
         public QboxNextDataHandler(
             [NotNull] string correlationId,
             [NotNull] QboxDataDumpContext context,
+            [NotNull] IParserFactory parserFactory,
             [NotNull] ICounterStoreService counterService,
             [NotNull] IStateStoreService stateStoreService,
             [NotNull] ILogger<QboxNextDataHandler> logger)
         {
             Guard.IsNotNullOrEmpty(correlationId, nameof(correlationId));
             Guard.IsNotNull(context, nameof(context));
+            Guard.IsNotNull(parserFactory, nameof(parserFactory));
             Guard.IsNotNull(counterService, nameof(counterService));
             Guard.IsNotNull(stateStoreService, nameof(stateStoreService));
             Guard.IsNotNull(logger, nameof(logger));
 
             _correlationId = correlationId;
             _context = context;
+            _parserFactory = parserFactory;
             _counterService = counterService;
             _stateStoreService = stateStoreService;
             _logger = logger;
@@ -98,10 +103,8 @@ namespace QboxNext.Extensions.Implementations
                 stateData.Status = _context.Mini.QboxStatus;
                 await _stateStoreService.StoreAsync(_correlationId, stateData);
 
-                // start parsing
-                var parser = ParserFactory.GetParserFromMessage(_context.Message);
+                var parser = _parserFactory.GetParser(_context.Message);
                 _result = parser.Parse(_context.Message);
-                // end of parsing
 
                 if (_result is MiniParseResult parseResult)
                 {

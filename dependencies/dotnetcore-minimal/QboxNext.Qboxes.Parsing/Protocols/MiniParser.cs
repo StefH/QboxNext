@@ -12,21 +12,14 @@ namespace QboxNext.Qboxes.Parsing.Protocols
     /// message structure. The structure is not generic and must be specifically implemented
     /// for every changed version.
     /// </summary>
-    public abstract class MiniParser
+    public abstract class MiniParser : IMessageParser
     {
         private static readonly ILogger Log = QboxNextLogProvider.CreateLogger<MiniParser>();
 
         protected StringParser Parser;
         protected BaseParseResult BaseParseResult;
 
-        /// <summary>
-        /// Main method for the parsing of the message.
-        /// This method should not throw any exception because it would disrupt the flow
-        /// of the qbox data dump. Qboxes hold their data if presented with any error response
-        /// So the qbox would fill up with unhandled messages.
-        /// </summary>
-        /// <param name="source">the text to be parsed</param>
-        /// <returns>a base result object that holds the resulting model objects</returns>
+        /// <inheritdoc />
         public BaseParseResult Parse(string source)
         {
             Log.LogTrace("Enter");
