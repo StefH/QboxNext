@@ -11,11 +11,11 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
     {
         public string CorrelationId { get; set; }
 
-        public DateTime LogTime { get; set; }
-
-        public string SerialNumber { get; set; }
+        public DateTime LogTimeStamp { get; set; }
 
         public string ProductNumber { get; set; }
+
+        public string SerialNumber { get; set; }
 
         public string MessageType { get; set; }
 
@@ -83,9 +83,9 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
             RowKey = $"{qboxState.LogTime.Ticks}:{qboxState.MessageType}";
 
             CorrelationId = qboxState.CorrelationId;
-            SerialNumber = qboxState.SerialNumber;
             ProductNumber = qboxState.ProductNumber;
-            LogTime = qboxState.LogTime;
+            SerialNumber = qboxState.SerialNumber;
+            LogTimeStamp = qboxState.LogTime;
             MessageType = qboxState.MessageType;
             Message = qboxState.Message;
             State = qboxState.State;

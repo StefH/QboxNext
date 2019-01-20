@@ -38,7 +38,7 @@ namespace QboxNext.WebApi
         {
             QboxNextLogProvider.LoggerFactory = logFactory;
 
-            // TODO
+            // TODO: move to QboxNext.Extensions
             ParserFactory.RegisterAllParsers();
 
             app.UseCorrelationId(new CorrelationIdOptions

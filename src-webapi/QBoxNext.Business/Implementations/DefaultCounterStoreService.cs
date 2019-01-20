@@ -36,7 +36,7 @@ namespace QBoxNext.Business.Implementations
                 SerialNumber = counterData.SerialNumber,
                 ProductNumber = counterData.ProductNumber,
                 CounterId = counterData.CounterId,
-                LogTime = DateTime.UtcNow,
+                LogTimeStamp = DateTime.UtcNow,
                 MeasureTime = counterData.MeasureTime,
                 PulseValue = counterData.PulseValue,
                 PulsesPerUnit = counterData.PulsesPerUnit

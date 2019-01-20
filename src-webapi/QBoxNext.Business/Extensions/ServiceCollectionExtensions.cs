@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IStateStoreService, DefaultStateStoreService>();
 
             // Add External
-            services.AddQboxNext();
+            services.AddQboxNextExtensions();
             services.AddAzure();
         }
     }
