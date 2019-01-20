@@ -1,5 +1,4 @@
 ﻿using JetBrains.Annotations;
-using Microsoft.Extensions.Logging;
 using QboxNext.Core.Utils;
 using QboxNext.Domain;
 using QboxNext.Extensions.Interfaces.Public;
@@ -14,26 +13,24 @@ namespace QBoxNext.Business.Implementations
 {
     internal class DefaultStateStoreService : IStateStoreService
     {
-        [NotNull] private readonly IDataStoreService _dataStoreService;
-        private readonly ILogger<DefaultStateStoreService> _logger;
+        private readonly IDataStoreService _dataStoreService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultStateStoreService"/> class.
         /// </summary>
         /// <param name="dataStoreService">The data store service.</param>
         /// <param name="logger">The logger.</param>
-        public DefaultStateStoreService([NotNull] IDataStoreService dataStoreService, [NotNull] ILogger<DefaultStateStoreService> logger)
+        public DefaultStateStoreService([NotNull] IDataStoreService dataStoreService)
         {
             Guard.IsNotNull(dataStoreService, nameof(dataStoreService));
-            Guard.IsNotNull(logger, nameof(logger));
 
             _dataStoreService = dataStoreService;
-            _logger = logger;
         }
 
-        /// <inheritdoc cref="IStateStoreService.StoreAsync(Guid, StateData)"/>
-        public async Task StoreAsync(Guid correlationId, StateData stateData)
+        /// <inheritdoc cref="IStateStoreService.StoreAsync(string, StateData)"/>
+        public async Task StoreAsync(string correlationId, StateData stateData)
         {
+            Guard.IsNotNullOrEmpty(correlationId, nameof(correlationId));
             Guard.IsNotNull(stateData, nameof(stateData));
 
             var state = new QboxState

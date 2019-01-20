@@ -24,9 +24,10 @@ namespace QBoxNext.Business.Implementations
             _dataStoreService = dataStoreService;
         }
 
-        /// <inheritdoc cref="ICounterStoreService.StoreAsync(Guid, CounterData)"/>
-        public async Task StoreAsync(Guid correlationId, CounterData counterData)
+        /// <inheritdoc cref="ICounterStoreService.StoreAsync(string, CounterData)"/>
+        public async Task StoreAsync(string correlationId, CounterData counterData)
         {
+            Guard.IsNotNullOrEmpty(correlationId, nameof(correlationId));
             Guard.IsNotNull(counterData, nameof(counterData));
 
             var measurement = new QboxMeasurement

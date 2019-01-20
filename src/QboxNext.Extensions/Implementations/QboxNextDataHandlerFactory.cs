@@ -29,12 +29,13 @@ namespace QboxNext.Extensions.Implementations
             _logger = logger;
         }
 
-        /// <inheritdoc cref="IQboxNextDataHandlerFactory.Create(QboxDataDumpContext)"/>
-        public IQboxNextDataHandler Create(QboxDataDumpContext context)
+        /// <inheritdoc cref="IQboxNextDataHandlerFactory.Create(string, QboxDataDumpContext)"/>
+        public IQboxNextDataHandler Create(string correlationId, QboxDataDumpContext context)
         {
+            Guard.IsNotNullOrEmpty(correlationId, nameof(correlationId));
             Guard.IsNotNull(context, nameof(context));
 
-            return new QboxNextDataHandler(context, _counterStoreService, _stateStoreService, _logger);
+            return new QboxNextDataHandler(correlationId, context, _counterStoreService, _stateStoreService, _logger);
         }
     }
 }

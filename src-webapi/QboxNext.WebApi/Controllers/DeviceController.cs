@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using CorrelationId;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QboxNext.Core.Utils;
@@ -13,24 +14,31 @@ namespace QboxNext.WebApi.Controllers
     public class DeviceController : ControllerBase
     {
         private readonly ILogger<DeviceController> _logger;
-
         private readonly IQboxDataDumpContextFactory _qboxDataDumpContextFactory;
         private readonly IQboxNextDataHandlerFactory _qboxNextDataHandlerFactory;
+        private readonly ICorrelationContextAccessor _correlationContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceController"/> class.
         /// </summary>
         /// <param name="qboxDataDataDumpContextFactory">The qbox data data dump context factory.</param>
-        /// <param name="qboxNextDataHandlerFactory">The qbox messages logger.</param>
+        /// <param name="qboxNextDataHandlerFactory">The qbox next data handler factory.</param>
+        /// <param name="correlationContext">The correlation context.</param>
         /// <param name="logger">The logger.</param>
-        public DeviceController([NotNull] IQboxDataDumpContextFactory qboxDataDataDumpContextFactory, [NotNull] IQboxNextDataHandlerFactory qboxNextDataHandlerFactory, [NotNull] ILogger<DeviceController> logger)
+        public DeviceController(
+            [NotNull] IQboxDataDumpContextFactory qboxDataDataDumpContextFactory,
+            [NotNull] IQboxNextDataHandlerFactory qboxNextDataHandlerFactory,
+            [NotNull] ICorrelationContextAccessor correlationContext,
+            [NotNull] ILogger<DeviceController> logger)
         {
             Guard.IsNotNull(qboxDataDataDumpContextFactory, nameof(qboxDataDataDumpContextFactory));
             Guard.IsNotNull(qboxNextDataHandlerFactory, nameof(qboxNextDataHandlerFactory));
+            Guard.IsNotNull(correlationContext, nameof(correlationContext));
             Guard.IsNotNull(logger, nameof(logger));
 
             _qboxDataDumpContextFactory = qboxDataDataDumpContextFactory;
             _qboxNextDataHandlerFactory = qboxNextDataHandlerFactory;
+            _correlationContext = correlationContext;
             _logger = logger;
         }
 
@@ -42,20 +50,17 @@ namespace QboxNext.WebApi.Controllers
             Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));
             Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
 
-            _logger.LogInformation("Post");
+            _logger.LogInformation($"PostAsync /device/qbox/{productNumber}/{serialNumber}");
 
             // Create QboxContext
             var context = await MapQboxContextAsync(productNumber, serialNumber);
 
-            // Create QboxDatDumpContext
+            // Create QboxDataDumpContext
             var qboxDataDumpContext = _qboxDataDumpContextFactory.Create(context);
-            _logger.LogInformation(qboxDataDumpContext.Mini.SerialNumber);
 
             // Create handler and handle the message
-            var handler = _qboxNextDataHandlerFactory.Create(qboxDataDumpContext);
+            var handler = _qboxNextDataHandlerFactory.Create(_correlationContext.CorrelationContext.CorrelationId, qboxDataDumpContext);
             string result = await handler.HandleAsync();
-
-            _logger.LogTrace("Parsing Done: {0}", result);
 
             return Ok(result);
         }

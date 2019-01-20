@@ -331,4 +331,7 @@ ASALocalRun/
 
 # Azurite table.exe simulator
 /Tools/azurite.2.6.5/__azurite_db_table__.json
+
+# Logs
 /src-docker/QboxNext.WebApi.Docker/logs/nlog.txt
+/src-webapi/QboxNext.WebApi/logs/nlog.txt
