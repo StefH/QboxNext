@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using QboxNext.Qboxes.Parsing.Logging;
+﻿using Microsoft.Extensions.Logging;
+using QboxNext.Logging;
+using System.Linq;
 
 namespace QboxNext.Qboxes.Parsing.Protocols
 {
@@ -8,11 +9,11 @@ namespace QboxNext.Qboxes.Parsing.Protocols
     /// </summary>
     public class MiniResponse : MiniParser
     {
-		private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger<MiniResponse>();
 
-	    protected override void DoParse()
-	    {
-            Log.Trace("Enter");
+        protected override void DoParse()
+        {
+            Logger.LogTrace("Enter");
 
             var response = new ResponseParseResult();
             BaseParseResult = response;
@@ -42,8 +43,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             {
                 // suppress error
             }
-            Log.Trace("Exit");
+            Logger.LogTrace("Exit");
         }
-
     }
 }

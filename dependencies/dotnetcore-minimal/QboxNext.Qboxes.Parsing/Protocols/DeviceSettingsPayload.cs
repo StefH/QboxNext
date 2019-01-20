@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using QboxNext.Qboxes.Parsing.Logging;
+using QboxNext.Logging;
 
 namespace QboxNext.Qboxes.Parsing.Protocols
 {
-
 	public class DeviceSettingsPayload : BasePayload
 	{
-		private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
-		/// <summary>
-		/// Parse devicesettings and returns one or a list of DeviceSettings
-		/// Number of DeviceSettings is dependent on first DeviceSettingType (setting), SensorSettingsComposite and SensorMeasurements contains multi settings
-		/// </summary>
-		/// <param name="ProtocolNr">Firmware version 39: clientbyte added by client settings & client info</param>
-		/// <param name="setting">DeviceSettingType</param>
-		/// <param name="parser"></param>
-		/// <returns></returns>
-		public static IEnumerable<DeviceSettingsPayload> GetDeviceSettings(int ProtocolNr, DeviceSettingType setting, StringParser parser)
+	    private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger<DeviceSettingsPayload>();
+
+        /// <summary>
+        /// Parse devicesettings and returns one or a list of DeviceSettings
+        /// Number of DeviceSettings is dependent on first DeviceSettingType (setting), SensorSettingsComposite and SensorMeasurements contains multi settings
+        /// </summary>
+        /// <param name="ProtocolNr">Firmware version 39: clientbyte added by client settings & client info</param>
+        /// <param name="setting">DeviceSettingType</param>
+        /// <param name="parser"></param>
+        /// <returns></returns>
+        public static IEnumerable<DeviceSettingsPayload> GetDeviceSettings(int ProtocolNr, DeviceSettingType setting, StringParser parser)
 		{
 			bool handled = false;
 
@@ -227,10 +228,9 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 
 		public override void Visit(IVisitor visitor)
 		{
-			Log.Trace("Enter");
+			Logger.LogTrace("Enter");
 			visitor.Accept(this);
-			Log.Trace("Exit");
+		    Logger.LogTrace("Exit");
 		}
 	}
 }
-

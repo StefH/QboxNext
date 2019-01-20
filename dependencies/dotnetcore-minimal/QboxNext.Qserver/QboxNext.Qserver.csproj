@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -42,8 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Qboxes.Model\Qboxes.Model.csproj" />
     <ProjectReference Include="..\QboxNext.Core\QboxNext.Core.csproj" />
+    <ProjectReference Include="..\QboxNext.Logging\QboxNext.Logging.csproj" />
+    <ProjectReference Include="..\QboxNext.Model\QboxNext.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,10 +1,10 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Qboxes.Classes;
 using QboxNext.Core.Dto;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
+using QboxNext.Model.Classes;
 using QboxNext.Qboxes.Parsing.Elements;
 using QboxNext.Qboxes.Parsing.Factories;
 using QboxNext.Qboxes.Parsing.Protocols;

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections;
+using Microsoft.Extensions.Logging;
+using QboxNext.Logging;
 using QboxNext.Qboxes.Parsing.Elements;
-using QboxNext.Qboxes.Parsing.Logging;
 
 namespace QboxNext.Qboxes.Parsing.Protocols
 {
 	public class ClientStatusPayload : BasePayload
 	{
-		private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+	    private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger<ClientStatusPayload>();
 
-		public ClientMiniStatus State { get; private set; }
+        public ClientMiniStatus State { get; private set; }
 		private BitArray Data { get; set; }
 		public DateTime MeasurementTime { get; private set; }
 		public byte RawValue { get; private set; }
@@ -25,9 +26,9 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 
 		public override void Visit(IVisitor visitor)
 		{
-			Log.Trace("Enter");
+			Logger.LogTrace("Enter");
 			visitor.Accept(this);
-			Log.Trace("Exit");
+			Logger.LogTrace("Exit");
 		}
 	}
 

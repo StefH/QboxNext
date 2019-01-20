@@ -1,10 +1,10 @@
 ﻿using JetBrains.Annotations;
-using Qboxes.Classes;
-using Qboxes.Interfaces;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Implementations;
 using QboxNext.Extensions.Interfaces.Internal;
 using QboxNext.Extensions.Interfaces.Public;
+using QboxNext.Model.Classes;
+using QboxNext.Model.Interfaces;
 using QboxNext.Qboxes.Parsing.Factories;
 
 // ReSharper disable once CheckNamespace
@@ -40,7 +40,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static void Register()
         {
-            ParserFactory.RegisterAllParsers();
+            // TODO
+            // ParserFactory.RegisterAllParsers();
         }
     }
 }

@@ -1,6 +1,6 @@
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
-using Qboxes.Classes;
+using QboxNext.Model.Classes;
 
 namespace QboxNext.Qserver.Classes
 {

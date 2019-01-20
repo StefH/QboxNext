@@ -1,7 +1,6 @@
 ﻿using JetBrains.Annotations;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
-using QboxNext.Qboxes.Parsing.Factories;
 using QBoxNext.Business.Implementations;
 
 // ReSharper disable once CheckNamespace
@@ -22,8 +21,6 @@ namespace Microsoft.Extensions.DependencyInjection
             Guard.IsNotNull(services, nameof(services));
 
             services.AddServices();
-
-            Register();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -35,11 +32,6 @@ namespace Microsoft.Extensions.DependencyInjection
             // Add External
             services.AddQboxNext();
             services.AddAzure();
-        }
-
-        private static void Register()
-        {
-            ParserFactory.RegisterAllParsers();
         }
     }
 }

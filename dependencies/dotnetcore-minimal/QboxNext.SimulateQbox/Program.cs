@@ -1,17 +1,17 @@
 ﻿// SimulateQbox simulates a Qbox attached to any meter.
 // It will send immediately, and then after each minute, so it will not send on the minute boundary.
 // It saves the sequence nr of the Qbox so it can be safely stopped and started.
-
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Threading;
 using NLog;
+using NLog.Extensions.Logging;
 using QboxNext.Core.CommandLine;
 using QboxNext.Core.Simulation;
+using QboxNext.Logging;
 using QboxNext.SimulateQbox;
-
 
 namespace SimulateQbox
 {
@@ -21,6 +21,9 @@ namespace SimulateQbox
 		
         static void Main(string[] args)
 		{
+            // Setup static logger factory
+		    QboxNextLogProvider.LoggerFactory = new NLogLoggerFactory();
+
             Log.Info("Starting...");
 
 			// Make sure that the default parsing and formatting of numbers is using '.' as floating point.

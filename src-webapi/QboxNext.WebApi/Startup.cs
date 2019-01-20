@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using QboxNext.Infrastructure.Azure.Options;
+using QboxNext.Logging;
+using QboxNext.Qboxes.Parsing.Factories;
 
 namespace QboxNext.WebApi
 {
@@ -31,8 +34,13 @@ namespace QboxNext.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory)
         {
+            QboxNextLogProvider.LoggerFactory = logFactory;
+
+            // TODO
+            ParserFactory.RegisterAllParsers();
+
             app.UseCorrelationId(new CorrelationIdOptions
             {
                 UpdateTraceIdentifier = true,

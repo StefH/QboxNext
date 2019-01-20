@@ -7,6 +7,7 @@ using NLog;
 using QboxNext.Core;
 using QboxNext.Core.Log;
 using QboxNext.Core.Utils;
+using QboxNext.Qserver.Core.Exceptions;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Statistics;
 using QboxNext.Qserver.Core.Utils;
@@ -40,11 +41,11 @@ namespace QboxNext.Qserver.Core.DataStore
         {
             get
             {
-				// Calling File.Exists is really expensive, so we first try to find out if we already opened the file.
-				if (_reader != null || _writer != null)
-					return true;
+                // Calling File.Exists is really expensive, so we first try to find out if we already opened the file.
+                if (_reader != null || _writer != null)
+                    return true;
 
-	            return File.Exists(GetFilePath());
+                return File.Exists(GetFilePath());
             }
         }
         /// <summary>
@@ -112,14 +113,14 @@ namespace QboxNext.Qserver.Core.DataStore
         /// <summary>
         /// Settings for the recordsize used in the calculations for the offset
         /// </summary>
-        private const int RecordSize = 26;	// 8 bytes raw, 8 bytes kWh, 8 bytes money, 2 bytes quality
+        private const int RecordSize = 26;  // 8 bytes raw, 8 bytes kWh, 8 bytes money, 2 bytes quality
 
-		private kWhStorageBuffer _buffer;
+        private kWhStorageBuffer _buffer;
 
         #endregion
 
         #region protected
-        
+
         /// <summary>
         /// NLog file logger. Relayes the log messages to a log manager that will ultimatly write to a log
         /// that has been created using the configuration files.
@@ -130,7 +131,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// Auto implement property for the number of days that is used to create the file when initialized or expanded.
         /// </summary>
         protected double GrowthNrOfDays { get; set; }
-        
+
         #endregion protected
 
         #region public
@@ -139,7 +140,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// Serialnumber for the Qbox that holds the counter for which this storage provider is storing the data
         /// </summary>
         public string SerialNumber { get; private set; }
-        
+
         /// <summary>
         /// The counter nr for the counter in the Qbox
         /// </summary>
@@ -171,8 +172,8 @@ namespace QboxNext.Qserver.Core.DataStore
             {
                 if (_startOfFile == null)
                     ReadHeader();
-				if (_startOfFile == null)
-					return new DateTime();
+                if (_startOfFile == null)
+                    return new DateTime();
 
                 return _startOfFile.Value;
             }
@@ -188,8 +189,8 @@ namespace QboxNext.Qserver.Core.DataStore
             {
                 if (_endOfFile == null)
                     ReadHeader();
-				if (_endOfFile == null)
-					return new DateTime();
+                if (_endOfFile == null)
+                    return new DateTime();
 
                 return _endOfFile.Value;
             }
@@ -256,12 +257,12 @@ namespace QboxNext.Qserver.Core.DataStore
 
             ID = Guid.NewGuid();
 
-			_buffer = new kWhStorageBuffer(this);
+            _buffer = new kWhStorageBuffer(this);
 
             Log.Debug("SerialNumber: {0}, filePath: {1}", serialNumber, GetFilePath());
 
             if (!FileExists)
-				return;
+                return;
 
             try
             {
@@ -338,7 +339,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 writer.Write(money);
                 writer.Write(record.Quality);
 
-				_buffer.Clear();
+                _buffer.Clear();
             }
             catch (Exception e)
             {
@@ -351,16 +352,16 @@ namespace QboxNext.Qserver.Core.DataStore
 #endif
         }
 
-	    /// <summary>
-	    /// Reads a complete time slot record from the streams current location
-	    /// </summary>
-	    /// <param name="reader">BinaryReader positioned at the beginning of the time slot record. Positiong is done
-	    /// previously using GetOffset</param>
-	    /// <param name="inTimestamp"></param>
-	    /// <returns>a new record holding the dat found in the file or NULL if the raw dat was 0. Raw == 0 means there is no measurement in the time slot</returns>
-	    private Record ReadSlot(DateTime inTimestamp)
+        /// <summary>
+        /// Reads a complete time slot record from the streams current location
+        /// </summary>
+        /// <param name="reader">BinaryReader positioned at the beginning of the time slot record. Positiong is done
+        /// previously using GetOffset</param>
+        /// <param name="inTimestamp"></param>
+        /// <returns>a new record holding the dat found in the file or NULL if the raw dat was 0. Raw == 0 means there is no measurement in the time slot</returns>
+        private Record ReadSlot(DateTime inTimestamp)
         {
-			return _buffer.ReadSlot(inTimestamp);
+            return _buffer.ReadSlot(inTimestamp);
         }
 
         /// <summary>
@@ -384,15 +385,15 @@ namespace QboxNext.Qserver.Core.DataStore
             Log.Trace("Exit");
         }
 
-		/// <summary>
-		/// Calculate the offset, throws an exception if it's out of bounds.
-		/// </summary>
-		private long CalculateSafeOffset(DateTime pulseTime)
-		{
-			var offset = CalculateOffset(pulseTime);
-			CheckOffset(offset);
-			return offset;
-		}
+        /// <summary>
+        /// Calculate the offset, throws an exception if it's out of bounds.
+        /// </summary>
+        private long CalculateSafeOffset(DateTime pulseTime)
+        {
+            var offset = CalculateOffset(pulseTime);
+            CheckOffset(offset);
+            return offset;
+        }
 
 
         /// <summary>
@@ -407,52 +408,52 @@ namespace QboxNext.Qserver.Core.DataStore
             return offset;
         }
 
-		/// <summary>
-		/// Check the offset and throw an exception if it's out of bounds.
-		/// </summary>
-		private void CheckOffset(long inOffset)
-		{
-			if (IsOffsetTooHigh(inOffset))
-			{
-				var error = string.Format("Offset after end of file ({0}) - offset {1} [file is limited to {2} - {3}]", GetFilePath(), inOffset, CalculateOffset(StartOfFile), CalculateOffset(EndOfFile));
-				Log.Error(error);
-				throw new InvalidOperationException(error);
-			}
+        /// <summary>
+        /// Check the offset and throw an exception if it's out of bounds.
+        /// </summary>
+        private void CheckOffset(long inOffset)
+        {
+            if (IsOffsetTooHigh(inOffset))
+            {
+                var error = string.Format("Offset after end of file ({0}) - offset {1} [file is limited to {2} - {3}]", GetFilePath(), inOffset, CalculateOffset(StartOfFile), CalculateOffset(EndOfFile));
+                Log.Error(error);
+                throw new InvalidOperationException(error);
+            }
 
-			if (IsOffsetTooLow(inOffset))
-			{
-				var error = string.Format("Offset before start of file ({0}) - offset {1} [file is limited to {2} - {3}]", GetFilePath(), inOffset, CalculateOffset(StartOfFile), CalculateOffset(EndOfFile));
-				Log.Error(error);
-				throw new InvalidOperationException(error);
-			}
-		}
-
-
-		/// <summary>
-		/// Is the given offset valid?
-		/// </summary>
-		private bool IsOffsetValid(long inOffset)
-		{
-			return !IsOffsetTooHigh(inOffset) && !IsOffsetTooLow(inOffset);
-		}
+            if (IsOffsetTooLow(inOffset))
+            {
+                var error = string.Format("Offset before start of file ({0}) - offset {1} [file is limited to {2} - {3}]", GetFilePath(), inOffset, CalculateOffset(StartOfFile), CalculateOffset(EndOfFile));
+                Log.Error(error);
+                throw new InvalidOperationException(error);
+            }
+        }
 
 
-		/// <summary>
-		/// Is the offset located beyond the end of the file?
-		/// </summary>
-		private bool IsOffsetTooHigh(long inOffset)
-		{
-			return inOffset >= HeaderSize + (EndOfFile - StartOfFile).TotalMinutes * RecordSize;
-		}
+        /// <summary>
+        /// Is the given offset valid?
+        /// </summary>
+        private bool IsOffsetValid(long inOffset)
+        {
+            return !IsOffsetTooHigh(inOffset) && !IsOffsetTooLow(inOffset);
+        }
 
 
-		/// <summary>
-		/// Is the offset located before the data part of the file?
-		/// </summary>
-		private bool IsOffsetTooLow(long inOffset)
-		{
-			return inOffset < HeaderSize;
-		}
+        /// <summary>
+        /// Is the offset located beyond the end of the file?
+        /// </summary>
+        private bool IsOffsetTooHigh(long inOffset)
+        {
+            return inOffset >= HeaderSize + (EndOfFile - StartOfFile).TotalMinutes * RecordSize;
+        }
+
+
+        /// <summary>
+        /// Is the offset located before the data part of the file?
+        /// </summary>
+        private bool IsOffsetTooLow(long inOffset)
+        {
+            return inOffset < HeaderSize;
+        }
 
         /// <summary>
         /// Calculated endtime based on length of stream
@@ -556,18 +557,18 @@ namespace QboxNext.Qserver.Core.DataStore
         }
 
 
-		/// <summary>
-		/// Find the previous record.
-		/// </summary>
-		public Record FindPrevious(DateTime inMeasurementTime)
-		{
-			Record lastValue;
-			FindPrevious(inMeasurementTime.TruncateToMinute(), out lastValue);
-			return lastValue;
-		}
-		
-		
-		/// <summary>
+        /// <summary>
+        /// Find the previous record.
+        /// </summary>
+        public Record FindPrevious(DateTime inMeasurementTime)
+        {
+            Record lastValue;
+            FindPrevious(inMeasurementTime.TruncateToMinute(), out lastValue);
+            return lastValue;
+        }
+
+
+        /// <summary>
         /// Finds the previous record and calculates the distance between the given datetime and the one before that.
         /// </summary>
         /// <param name="inMeasureTime">The measure time.</param>
@@ -578,22 +579,22 @@ namespace QboxNext.Qserver.Core.DataStore
             Log.Trace("Enter");
             var distance = 1;
 
-			Guard.IsTrue(inMeasureTime.Second == 0, "inMeasureTime should be truncated to 1 minute");
-			var timestamp = inMeasureTime.AddMinutes(-1);
+            Guard.IsTrue(inMeasureTime.Second == 0, "inMeasureTime should be truncated to 1 minute");
+            var timestamp = inMeasureTime.AddMinutes(-1);
             while (IsExistingSlot(timestamp))
             {
-				if (_buffer.IsValidSlot(timestamp))
-				{
-					outPrevious = _buffer.ReadSlot(timestamp);
-					Log.Trace("Return: {0}, {1}, {2}, {3}, {4}", distance, outPrevious.Raw, outPrevious.KiloWattHour, outPrevious.Money, outPrevious.Quality);
-					return distance;
-				}
+                if (_buffer.IsValidSlot(timestamp))
+                {
+                    outPrevious = _buffer.ReadSlot(timestamp);
+                    Log.Trace("Return: {0}, {1}, {2}, {3}, {4}", distance, outPrevious.Raw, outPrevious.KiloWattHour, outPrevious.Money, outPrevious.Quality);
+                    return distance;
+                }
                 distance++;
-				timestamp = timestamp.AddMinutes(-1);
+                timestamp = timestamp.AddMinutes(-1);
             }
-            
-			Log.Trace("Return: {0}, no previous value", distance);
-			outPrevious = null;
+
+            Log.Trace("Return: {0}, no previous value", distance);
+            outPrevious = null;
             return distance;
         }
 
@@ -707,7 +708,7 @@ namespace QboxNext.Qserver.Core.DataStore
         public string GetFilePath()
         {
             // Create the filename
-            var filename = String.IsNullOrEmpty(StorageId) ? 
+            var filename = String.IsNullOrEmpty(StorageId) ?
                 $"{SerialNumber}_{Counter:00000000}.{Extension}" :
                 $"{StorageId}.{Extension}";
             var result = Path.Combine(GetDirectory(), filename);
@@ -752,20 +753,20 @@ namespace QboxNext.Qserver.Core.DataStore
             return CalculateDelta(first, last, eenheid);
         }
 
-	    /// <summary>
-	    /// Gets the records from the file. This uses an alogrythm to increase data quality.
-	    /// </summary>
-	    /// <param name="inBegin">The begin of the period to read from the file.</param>
-	    /// <param name="inEnd">The end of the period to read from the file.</param>
-	    /// <param name="inUnit">The unit that the records will contain</param>
-	    /// <param name="ioSlots">A list of series values that are used to put the records in. This allows for empty "buckets" 
-	    ///  so the caller can always expect a correct period division in the resolution that was given. The series value can have 
-	    /// values from othe counters (combined devices)
-	    ///  see the SeriesValue for more info</param>
-	    /// <param name="inNegate">In case the call is made from a Device that has multiple counters and this is a negative counter 
-	    /// the values are negated in the resulting seriesvalue</param>
-	    /// <returns></returns>
-	    public bool GetRecords(DateTime inBegin, DateTime inEnd, Unit inUnit, IList<SeriesValue> ioSlots, bool inNegate)
+        /// <summary>
+        /// Gets the records from the file. This uses an alogrythm to increase data quality.
+        /// </summary>
+        /// <param name="inBegin">The begin of the period to read from the file.</param>
+        /// <param name="inEnd">The end of the period to read from the file.</param>
+        /// <param name="inUnit">The unit that the records will contain</param>
+        /// <param name="ioSlots">A list of series values that are used to put the records in. This allows for empty "buckets" 
+        ///  so the caller can always expect a correct period division in the resolution that was given. The series value can have 
+        /// values from othe counters (combined devices)
+        ///  see the SeriesValue for more info</param>
+        /// <param name="inNegate">In case the call is made from a Device that has multiple counters and this is a negative counter 
+        /// the values are negated in the resulting seriesvalue</param>
+        /// <returns></returns>
+        public bool GetRecords(DateTime inBegin, DateTime inEnd, Unit inUnit, IList<SeriesValue> ioSlots, bool inNegate)
         {
             inBegin = inBegin.TruncateToMinute();
             inEnd = inEnd.TruncateToMinute();
@@ -780,40 +781,40 @@ namespace QboxNext.Qserver.Core.DataStore
                 return false;
             }
 
-			SeriesValue previousSlot = null;
-			Record previousLast = null;
+            SeriesValue previousSlot = null;
+            Record previousLast = null;
             foreach (var currentSlot in ioSlots)
             {
-				Log.Trace("process slot {0} - {1}", currentSlot.Begin, currentSlot.End);
+                Log.Trace("process slot {0} - {1}", currentSlot.Begin, currentSlot.End);
                 var beginTime = currentSlot.Begin < inBegin ? inBegin : currentSlot.Begin;
                 var endTime = currentSlot.End > inEnd ? inEnd : (currentSlot.End < beginTime ? beginTime : currentSlot.End);
-				Log.Trace("beginTime = {0}, endTime = {1}", beginTime, endTime);
+                Log.Trace("beginTime = {0}, endTime = {1}", beginTime, endTime);
 
-				Record first;
-				// Optimization: use previous last value if the end of the previous slot is the start of the current slot,
-				// this prevents an unneeded extra file read.
-				if (previousSlot != null && previousLast != null && previousLast.IsValidMeasurement && previousSlot.End == beginTime)
-					first = previousLast;
-				else
-					first = beginTime < StartOfFile ? GetClosestValue(StartOfFile, true) : GetValue(beginTime);
+                Record first;
+                // Optimization: use previous last value if the end of the previous slot is the start of the current slot,
+                // this prevents an unneeded extra file read.
+                if (previousSlot != null && previousLast != null && previousLast.IsValidMeasurement && previousSlot.End == beginTime)
+                    first = previousLast;
+                else
+                    first = beginTime < StartOfFile ? GetClosestValue(StartOfFile, true) : GetValue(beginTime);
 
-				// When for some reason the value contains an invalid measurement, search for the next valid measurement.
-				if (first != null && !first.IsValidMeasurement)
-				{
-					first = GetClosestValue(beginTime, true);
-					if (first != null && first.Time > endTime)
-						continue;
-				}
+                // When for some reason the value contains an invalid measurement, search for the next valid measurement.
+                if (first != null && !first.IsValidMeasurement)
+                {
+                    first = GetClosestValue(beginTime, true);
+                    if (first != null && first.Time > endTime)
+                        continue;
+                }
 
-				Log.Trace("first = {0}", first != null ? first.Raw.ToString(CultureInfo.InvariantCulture) : "null");
+                Log.Trace("first = {0}", first != null ? first.Raw.ToString(CultureInfo.InvariantCulture) : "null");
                 // todo (evalueren): als eerste waarde niet gevonden wordt heeft verder zoeken geen zin??!!
                 if (first == null)
                     break;
 
-				var lastAllowedTimestamp = ReferenceDate < EndOfFile ? ReferenceDate : EndOfFile;
+                var lastAllowedTimestamp = ReferenceDate < EndOfFile ? ReferenceDate : EndOfFile;
                 var last = endTime > lastAllowedTimestamp ? GetClosestValue(lastAllowedTimestamp, false) : GetValue(endTime);
 
-				Log.Trace("last = {0}", last != null ? last.Raw.ToString() : "null");
+                Log.Trace("last = {0}", last != null ? last.Raw.ToString() : "null");
                 // Bij dag of maand resolution zoeken naar dichtsbijzijnde waarde indien first en last geen waarde heeft (qplat-73)
                 if (first.Time <= endTime && first.IsValidMeasurement && (last == null || !last.IsValidMeasurement) && ((currentSlot.End - currentSlot.Begin).TotalDays >= 1.0))
                     last = GetClosestValue(endTime, false);
@@ -822,7 +823,7 @@ namespace QboxNext.Qserver.Core.DataStore
                     (first.IsValidMeasurement) && (last.IsValidMeasurement))
                 {
                     var delta = CalculateDelta(first, last, inUnit);
-					Log.Trace("delta = {0}", delta);
+                    Log.Trace("delta = {0}", delta);
                     currentSlot.Value = Convert.ToDecimal(inNegate ? delta * -1m : delta);
                     if (endTime > EndOfFile)
                     {
@@ -830,27 +831,27 @@ namespace QboxNext.Qserver.Core.DataStore
                     }
                 }
 
-				previousSlot = currentSlot;
-				previousLast = last;
+                previousSlot = currentSlot;
+                previousLast = last;
             }
 
-			if (Log.IsDebugEnabled)
-			{
-				foreach (var seriesValue in ioSlots)
-					Log.Debug("{0} - {1} : {2}", seriesValue.Begin, seriesValue.End, seriesValue.Value);
-			}
+            if (Log.IsDebugEnabled)
+            {
+                foreach (var seriesValue in ioSlots)
+                    Log.Debug("{0} - {1} : {2}", seriesValue.Begin, seriesValue.End, seriesValue.Value);
+            }
             Log.Trace("Exit");
             return true;
         }
 
 
-		private bool IsExistingSlot(DateTime inTimestamp)
-		{
+        private bool IsExistingSlot(DateTime inTimestamp)
+        {
             if (!FileExists)
                 return false;
 
-			return (inTimestamp >= StartOfFile && inTimestamp < EndOfFile && inTimestamp <= ReferenceDate.AddMinutes(5));
-		}
+            return (inTimestamp >= StartOfFile && inTimestamp < EndOfFile && inTimestamp <= ReferenceDate.AddMinutes(5));
+        }
 
 
         /// <summary>
@@ -876,7 +877,7 @@ namespace QboxNext.Qserver.Core.DataStore
 
                 var result = ReadSlot(measureTime);
                 result.Time = measureTime;
-				Log.Trace("Read {0} for timestamp {1}", result.Raw, measureTime);
+                Log.Trace("Read {0} for timestamp {1}", result.Raw, measureTime);
                 return result;
             }
             catch (Exception ex)
@@ -910,7 +911,7 @@ namespace QboxNext.Qserver.Core.DataStore
             Log.Trace("Enter");
 
             if (!IsTimeAllowed(inMeasureTime))
-				return null;
+                return null;
 
             EnsureFileExists(inMeasureTime);
 
@@ -938,7 +939,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 }
                 else
                 {
-					Log.Trace("distance: {0}", distance);
+                    Log.Trace("distance: {0}", distance);
                     // calculate the qualityindex
                     var quality = distance == 0 ? (ushort)0 : Convert.ToUInt16(Math.Log10(distance) * 10000);
 
@@ -1024,130 +1025,149 @@ namespace QboxNext.Qserver.Core.DataStore
         {
             Log.Trace("Enter");
 
-	        try
-	        {
-				// If the file does not exist yet, there are no slots to reinitialize.
-				if (!FileExists)
-					return;
+            try
+            {
+                // If the file does not exist yet, there are no slots to reinitialize.
+                if (!FileExists)
+                    return;
 
-				var span = EndOfFile - inFrom;
-				var offset = CalculateOffset(inFrom);
-				if (!IsOffsetValid(offset))
-					return;
+                var span = EndOfFile - inFrom;
+                var offset = CalculateOffset(inFrom);
+                if (!IsOffsetValid(offset))
+                    return;
 
-				Log.Debug("Total minutes: {0}, from: {1}, end of file: {2}", span.TotalMinutes, inFrom, EndOfFile);
-				Writer.BaseStream.Seek(offset, SeekOrigin.Begin);
-				for (var i = 0; i < span.TotalMinutes; i++)
-					WriteSlot(Writer, new Record(ulong.MaxValue, 0, 0, 0));
-			}
-	        finally
-	        {
-				Log.Trace("Exit");
-			}
+                Log.Debug("Total minutes: {0}, from: {1}, end of file: {2}", span.TotalMinutes, inFrom, EndOfFile);
+                Writer.BaseStream.Seek(offset, SeekOrigin.Begin);
+                for (var i = 0; i < span.TotalMinutes; i++)
+                    WriteSlot(Writer, new Record(ulong.MaxValue, 0, 0, 0));
+            }
+            finally
+            {
+                Log.Trace("Exit");
+            }
         }
 
 
-		/// <summary>
-		/// Create a record from values as they are read from file or memory.
-		/// </summary>
-		private Record CreateRecord(ulong inRaw, ulong inEnergy, ulong inMoney, ushort inQuality, DateTime inTimestamp)
-		{
-			return new Record(inRaw, inEnergy / (decimal)Precision, inMoney / (decimal)Precision, inQuality)
-				{
-					Time = inTimestamp
-				};
-		}
+        /// <summary>
+        /// Create a record from values as they are read from file or memory.
+        /// </summary>
+        private Record CreateRecord(ulong inRaw, ulong inEnergy, ulong inMoney, ushort inQuality, DateTime inTimestamp)
+        {
+            return new Record(inRaw, inEnergy / (decimal)Precision, inMoney / (decimal)Precision, inQuality)
+            {
+                Time = inTimestamp
+            };
+        }
 
 
-		/// <summary>
-		/// Determine if a slot contains a valid measurement from the raw value and the quality.
-		/// </summary>
-		private bool IsValidSlot(ulong inRaw, ushort inQuality)
-		{
-			return (inRaw < ulong.MaxValue || (inRaw == ulong.MaxValue && (inQuality > 0 && !AllowOverwrite)));
-		}
+        /// <summary>
+        /// Determine if a slot contains a valid measurement from the raw value and the quality.
+        /// </summary>
+        private bool IsValidSlot(ulong inRaw, ushort inQuality)
+        {
+            return (inRaw < ulong.MaxValue || (inRaw == ulong.MaxValue && (inQuality > 0 && !AllowOverwrite)));
+        }
 
 
-		/// <summary>
-		/// Class for buffered reading of slots.
-		/// </summary>
-		private class kWhStorageBuffer
-		{
-			public kWhStorageBuffer(kWhStorage inKwhStorage)
-			{
-				_kwhStorage = inKwhStorage;
-				Clear();
-			}
+        public void Merge(kWhStorage storageToAppend)
+        {
+            var timestamp = storageToAppend.StartOfFile;
+            while (storageToAppend.IsExistingSlot(timestamp))
+            {
+                Record record = storageToAppend.ReadSlot(timestamp);
+                if (record.Raw != ulong.MaxValue)
+                {
+                    Record storedRecord = SetValue(timestamp, record.Raw, 1000, 21);
+                    if (storedRecord == null)
+                    {
+                        throw new StorageWriteException($"Could not store record ${timestamp}:${record.Raw}");
+                    }
+                }
+                timestamp = timestamp.AddMinutes(1);
+            }
+        }
 
 
-			public void Clear()
-			{
-				_buffer = null;
-				_startSectorOfBuffer = -1;
-				_endSectorOfBuffer = -1;
-			}
+        /// <summary>
+        /// Class for buffered reading of slots.
+        /// </summary>
+        private class kWhStorageBuffer
+        {
+            public kWhStorageBuffer(kWhStorage inKwhStorage)
+            {
+                _kwhStorage = inKwhStorage;
+                Clear();
+            }
 
 
-			public Record ReadSlot(DateTime inTimestamp)
-			{
-				var offsetInBuffer = MakeSureSectorsAreLoaded(inTimestamp);
-
-				var raw = BitConverter.ToUInt64(_buffer, offsetInBuffer);
-				var energy = BitConverter.ToUInt64(_buffer, offsetInBuffer + 8);
-				var money = BitConverter.ToUInt64(_buffer, offsetInBuffer + 16);
-				var quality = BitConverter.ToUInt16(_buffer, offsetInBuffer + 24);
-
-				return _kwhStorage.CreateRecord(raw, energy, money, quality, inTimestamp);
-			}
+            public void Clear()
+            {
+                _buffer = null;
+                _startSectorOfBuffer = -1;
+                _endSectorOfBuffer = -1;
+            }
 
 
-			public bool IsValidSlot(DateTime inTimestamp)
-			{
-				var offsetInBuffer = MakeSureSectorsAreLoaded(inTimestamp);
-				var raw = BitConverter.ToUInt64(_buffer, offsetInBuffer);
-				var quality = BitConverter.ToUInt16(_buffer, offsetInBuffer + 24);
-				return _kwhStorage.IsValidSlot(raw, quality);
-			}
+            public Record ReadSlot(DateTime inTimestamp)
+            {
+                var offsetInBuffer = MakeSureSectorsAreLoaded(inTimestamp);
+
+                var raw = BitConverter.ToUInt64(_buffer, offsetInBuffer);
+                var energy = BitConverter.ToUInt64(_buffer, offsetInBuffer + 8);
+                var money = BitConverter.ToUInt64(_buffer, offsetInBuffer + 16);
+                var quality = BitConverter.ToUInt16(_buffer, offsetInBuffer + 24);
+
+                return _kwhStorage.CreateRecord(raw, energy, money, quality, inTimestamp);
+            }
 
 
-			/// <summary>
-			/// Make sure the sectors needed to read the slot at inTimestamp are loaded.
-			/// </summary>
-			/// <returns>Offset of the slot in the buffer.</returns>
-			private int MakeSureSectorsAreLoaded(DateTime inTimestamp)
-			{
-				long timestampStartFileOffset = _kwhStorage.CalculateSafeOffset(inTimestamp);
-				// We have to compute the sector in which the last byte of the slot resides, hence the -1.
-				long timestampEndFileOffset = timestampStartFileOffset + RecordSize - 1;
-
-				var startSector = (int)(timestampStartFileOffset / SectorSize);
-				var endSector = (int)(timestampEndFileOffset / SectorSize);
-
-				if (startSector < _startSectorOfBuffer || endSector > _endSectorOfBuffer)
-				{
-					var bufferStartFileOffset = startSector * SectorSize;
-					if (_kwhStorage.Reader.BaseStream.Seek(bufferStartFileOffset, SeekOrigin.Begin) != bufferStartFileOffset)
-						throw new IOException(String.Format("Could not seek to position {0}", bufferStartFileOffset));
-
-					// In contrast to timestampEndFileOffset, bufferEndFileOffset points to the first byte NOT in the buffer anymore.
-					var bufferEndFileOffset = (endSector + 1) * SectorSize;
-					var nrBytes = bufferEndFileOffset - bufferStartFileOffset;
-					_buffer = _kwhStorage.Reader.ReadBytes(nrBytes);
-
-					_startSectorOfBuffer = startSector;
-					_endSectorOfBuffer = endSector;
-				}
-
-				return (int)(timestampStartFileOffset - _startSectorOfBuffer * SectorSize);
-			}
+            public bool IsValidSlot(DateTime inTimestamp)
+            {
+                var offsetInBuffer = MakeSureSectorsAreLoaded(inTimestamp);
+                var raw = BitConverter.ToUInt64(_buffer, offsetInBuffer);
+                var quality = BitConverter.ToUInt16(_buffer, offsetInBuffer + 24);
+                return _kwhStorage.IsValidSlot(raw, quality);
+            }
 
 
-			private readonly kWhStorage _kwhStorage;
-			private const int SectorSize = 4 * 1024;
-			private int _startSectorOfBuffer = -1;
-			private int _endSectorOfBuffer = -1;
-			private byte[] _buffer;
-		}
+            /// <summary>
+            /// Make sure the sectors needed to read the slot at inTimestamp are loaded.
+            /// </summary>
+            /// <returns>Offset of the slot in the buffer.</returns>
+            private int MakeSureSectorsAreLoaded(DateTime inTimestamp)
+            {
+                long timestampStartFileOffset = _kwhStorage.CalculateSafeOffset(inTimestamp);
+                // We have to compute the sector in which the last byte of the slot resides, hence the -1.
+                long timestampEndFileOffset = timestampStartFileOffset + RecordSize - 1;
+
+                var startSector = (int)(timestampStartFileOffset / SectorSize);
+                var endSector = (int)(timestampEndFileOffset / SectorSize);
+
+                if (startSector < _startSectorOfBuffer || endSector > _endSectorOfBuffer)
+                {
+                    var bufferStartFileOffset = startSector * SectorSize;
+                    if (_kwhStorage.Reader.BaseStream.Seek(bufferStartFileOffset, SeekOrigin.Begin) != bufferStartFileOffset)
+                        throw new IOException(String.Format("Could not seek to position {0}", bufferStartFileOffset));
+
+                    // In contrast to timestampEndFileOffset, bufferEndFileOffset points to the first byte NOT in the buffer anymore.
+                    var bufferEndFileOffset = (endSector + 1) * SectorSize;
+                    var nrBytes = bufferEndFileOffset - bufferStartFileOffset;
+                    _buffer = _kwhStorage.Reader.ReadBytes(nrBytes);
+
+                    _startSectorOfBuffer = startSector;
+                    _endSectorOfBuffer = endSector;
+                }
+
+                return (int)(timestampStartFileOffset - _startSectorOfBuffer * SectorSize);
+            }
+
+
+            private readonly kWhStorage _kwhStorage;
+            private const int SectorSize = 4 * 1024;
+            private int _startSectorOfBuffer = -1;
+            private int _endSectorOfBuffer = -1;
+            private byte[] _buffer;
+        }
     }
 
 
@@ -1178,7 +1198,7 @@ namespace QboxNext.Qserver.Core.DataStore
             if (!Stream.TryOpen(new TimeSpan(30000)))
                 Log.Error("Cannot open file: {0}", filePath);
             BinaryWriter = new BinaryWriter(Stream.UnderlyingStream);
-            
+
             Log.Trace("Exit");
         }
 
@@ -1205,8 +1225,8 @@ namespace QboxNext.Qserver.Core.DataStore
 
             if (BinaryWriter != null)
                 BinaryWriter.Dispose();
-			if (Stream != null)
-				Stream.Dispose();
+            if (Stream != null)
+                Stream.Dispose();
 
             Log.Trace("Exit");
         }
@@ -1242,24 +1262,24 @@ namespace QboxNext.Qserver.Core.DataStore
         private readonly FileShare _mFileShare;
         #endregion//Private Members
 
-	    #region Constructors
+        #region Constructors
 
-	    /// <summary>
-	    /// Constructor for the SaveFileStream creates the resources the stream depends upon
-	    /// </summary>
-	    /// <param name="path">The path including the file name for the file to open</param>
-	    /// <param name="mode">The mode for the file open.</param>
-	    /// <param name="access">The required access type</param>
-	    /// <param name="share">The type of share that is allowed between streams opening the same file</param>
-	    public SafeFileStream(string path, FileMode mode, FileAccess access, FileShare share)
-	    {
-	        _mPath = path;
-		    _mFileMode = mode;
-		    _mFileAccess = access;
-		    _mFileShare = share;
-	    }
+        /// <summary>
+        /// Constructor for the SaveFileStream creates the resources the stream depends upon
+        /// </summary>
+        /// <param name="path">The path including the file name for the file to open</param>
+        /// <param name="mode">The mode for the file open.</param>
+        /// <param name="access">The required access type</param>
+        /// <param name="share">The type of share that is allowed between streams opening the same file</param>
+        public SafeFileStream(string path, FileMode mode, FileAccess access, FileShare share)
+        {
+            _mPath = path;
+            _mFileMode = mode;
+            _mFileAccess = access;
+            _mFileShare = share;
+        }
 
-	    #endregion//Constructors
+        #endregion//Constructors
 
         #region Properties
 

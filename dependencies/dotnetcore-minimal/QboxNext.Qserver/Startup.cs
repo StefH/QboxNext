@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using QboxNext.Logging;
 using QboxNext.Qboxes.Parsing.Factories;
 using QboxNext.Qserver.Classes;
 using QboxNext.Qserver.Core.DataStore;
@@ -17,9 +19,6 @@ namespace QboxNext.Qserver
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            ParserFactory.RegisterAllParsers();
-            StorageProviderFactory.Register(StorageProvider.kWhStorage, typeof(kWhStorage));
-            ClientRepositories.Queue = new MemoryQueue<string>();
         }
 
         public IConfiguration Configuration { get; }
@@ -32,8 +31,14 @@ namespace QboxNext.Qserver
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory)
         {
+            QboxNextLogProvider.LoggerFactory = logFactory;
+
+            ParserFactory.RegisterAllParsers();
+            StorageProviderFactory.Register(StorageProvider.kWhStorage, typeof(kWhStorage));
+            ClientRepositories.Queue = new MemoryQueue<string>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -2,20 +2,22 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using QboxNext.Qboxes.Parsing.Logging;
+using Microsoft.Extensions.Logging;
+using QboxNext.Logging;
 
 namespace QboxNext.Qboxes.Parsing
 {
 	public class StringParser
     {
-        private static readonly ILog Log = LogProvider.GetLogger("StringParser");
+        private static readonly ILogger Log = QboxNextLogProvider.CreateLogger<StringParser>();
+
         private readonly StringReader _reader;
 
         public StringParser(string source)
         {
-            Log.TraceFormat("Enter: {source}", source);
+            Log.LogTrace("Enter: {source}", source);
             _reader = new StringReader(source);
-            Log.Trace("Exit");
+            Log.LogTrace("Exit");
         }
 
         protected StringReader Reader
@@ -48,7 +50,7 @@ namespace QboxNext.Qboxes.Parsing
 
         private string ReadCharacters(int count)
         {
-            Log.TraceFormat("Enter - count: {count}", count);
+            Log.LogTrace("Enter - count: {count}", count);
             var buffer = new char[count];
             for (var i = 0; i < count; i++)
             {
@@ -56,18 +58,18 @@ namespace QboxNext.Qboxes.Parsing
                 buffer[i] = Convert.ToChar(ch);
             }
             var result = new string(buffer);
-            Log.TraceFormat("Return - {result}", result);
+            Log.LogTrace("Return - {result}", result);
             return result;
         }
 
         public DateTime ParseTime()
         {
-            Log.Trace("Enter");
+            Log.LogTrace("Enter");
             var buffer = HexEncoding.HexStringToByteArray(ReadCharacters(8));
             Array.Reverse(buffer); // MSB -> LSB stuff
             var seconds = BitConverter.ToInt32(buffer, 0);
             var result = new DateTime(2007, 1, 1).AddSeconds(seconds);
-            Log.TraceFormat("Return - {result}", result);
+            Log.LogTrace("Return - {result}", result);
             return result;
         }
 
@@ -114,7 +116,7 @@ namespace QboxNext.Qboxes.Parsing
 		/// This means that for elecricity, the returned unit is Wh, for gas the unit is liter.</returns>
         public ulong ReadSmartMeterCounterValue(string value, int counter)
         {
-            Log.TraceFormat("Enter - value: {value}", value);
+            Log.LogTrace("Enter - value: {value}", value);
 			var result = UInt64.MaxValue;
 
             if (!string.IsNullOrEmpty(value))
@@ -157,13 +159,13 @@ namespace QboxNext.Qboxes.Parsing
 				}
 			}
 
-            Log.TraceFormat("Return - {result}", result);
+            Log.LogTrace("Return - {result}", result);
             return result;
         }
 
         public ulong Read24bits(string value)
         {
-            Log.TraceFormat("Enter - value: {value}", value);
+            Log.LogTrace("Enter - value: {value}", value);
 
             if (string.IsNullOrEmpty(value)) return UInt64.MaxValue;
 

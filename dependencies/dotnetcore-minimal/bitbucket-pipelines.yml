@@ -1,0 +1,31 @@
+image: microsoft/dotnet
+
+pipelines:
+  default:
+    - step:
+        name: Build
+        caches:
+          - dotnetcore
+        script:
+          - chmod +x ./build.sh
+          - sh ./build.sh
+    - step:
+        name: Unit tests
+        script:
+          - chmod +x ./run-unittests.sh
+          - sh ./run-unittests.sh
+          # TODO: run integration?
+  pull-requests:
+    '{feature/*,fix/*}':
+      - step:
+          name: Build
+          caches:
+            - dotnetcore
+          script:
+            - chmod +x ./build.sh
+            - sh ./build.sh
+      - step:
+          name: Unit tests
+          script:
+            - chmod +x ./run-unittests.sh
+            - sh ./run-unittests.sh

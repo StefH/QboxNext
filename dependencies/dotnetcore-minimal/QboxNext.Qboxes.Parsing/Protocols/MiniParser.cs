@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using QboxNext.Qboxes.Parsing.Logging;
+using Microsoft.Extensions.Logging;
+using QboxNext.Logging;
 
 namespace QboxNext.Qboxes.Parsing.Protocols
 {
@@ -13,7 +14,8 @@ namespace QboxNext.Qboxes.Parsing.Protocols
     /// </summary>
     public abstract class MiniParser
     {
-        private static readonly ILog Log = LogProvider.GetLogger("MiniParser");
+        private static readonly ILogger Log = QboxNextLogProvider.CreateLogger<MiniParser>();
+
         protected StringParser Parser;
         protected BaseParseResult BaseParseResult;
 
@@ -27,7 +29,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
         /// <returns>a base result object that holds the resulting model objects</returns>
         public BaseParseResult Parse(string source)
         {
-            Log.Trace("Enter");
+            Log.LogTrace("Enter");
             BaseParseResult = new MiniParseResult();
             try
             {
@@ -40,10 +42,10 @@ namespace QboxNext.Qboxes.Parsing.Protocols
                 {
                     Error = String.Format("Source: {0}{1}Error: {2} {3}", source, Environment.NewLine, e.Message, e.InnerException == null ? "" : e.InnerException.Message)
                 };
-                Log.ErrorException(String.Format("{0} (source = {1})", e.Message, source), e);
+                Log.LogError(e, "{0} (source = {1})", e.Message, source);
             }
      
-            Log.Trace("Return");
+            Log.LogTrace("Return");
             return BaseParseResult;
         }
 
@@ -86,7 +88,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             {
                 if (balancedParentheses && value != null && (value.Count('('.Equals) != value.Count(')'.Equals)))
                 {
-                    Log.WarnFormat("Parentheses not in balance for counter {nbr}: {value}", nbr, value);
+                    Log.LogWarning("Parentheses not in balance for counter {nbr}: {value}", nbr, value);
                 }
                 else
                 {
@@ -102,7 +104,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             }
             catch (InvalidFormatException)
             {
-                Log.WarnFormat("Invalid syntax of value for counter {nbr}: {value} not in format XXXXX.XXX", nbr, value);
+                Log.LogWarning("Invalid syntax of value for counter {nbr}: {value} not in format XXXXX.XXX", nbr, value);
             }
         }
 
@@ -129,7 +131,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 	        {
 				if (balancedParentheses && value != null && (value.Count('('.Equals) != value.Count(')'.Equals)))
 				{
-					Log.WarnFormat("Parentheses not in balance for counter {nrb}: {value}", nbr, value);
+					Log.LogWarning("Parentheses not in balance for counter {nrb}: {value}", nbr, value);
 					return;
 				}
 
@@ -139,7 +141,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 				}
 				catch (InvalidFormatException)
 				{
-					Log.WarnFormat("Invalid syntax of value for counter {nrb}: {value} not in format XXXXX.XXX", nbr, value);
+					Log.LogWarning("Invalid syntax of value for counter {nrb}: {value} not in format XXXXX.XXX", nbr, value);
 					return;
 				}
 	        }
@@ -149,4 +151,3 @@ namespace QboxNext.Qboxes.Parsing.Protocols
         }
     }
 }
-

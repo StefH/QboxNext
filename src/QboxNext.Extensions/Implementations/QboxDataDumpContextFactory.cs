@@ -1,11 +1,11 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Qboxes.Classes;
 using QboxNext.Core.Encryption;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Internal;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
+using QboxNext.Model.Classes;
 using System;
 
 namespace QboxNext.Extensions.Implementations

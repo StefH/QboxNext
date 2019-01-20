@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using QboxNext.Core.CommandLine;
 using QboxNext.Core.Utils;
+using QboxNext.Logging;
 using QboxNext.Qboxes.Parsing.Factories;
 using QboxNext.Qboxes.Parsing.Protocols;
 
@@ -13,6 +15,9 @@ namespace QboxNext.ParseQboxMessage
 
         static void Main(string[] args)
         {
+            // Setup static logger factory
+            QboxNextLogProvider.LoggerFactory = new LoggerFactory();
+
             var program = new Program();
             var settings = new CommandLineParserSettings { IgnoreUnknownArguments = true, CaseSensitive = false };
             ICommandLineParser parser = new CommandLineParser(settings);

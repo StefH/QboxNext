@@ -19,7 +19,7 @@ namespace QboxNext.Qservice.Controllers
         }
 
         [HttpGet("/api/getseries")]
-        public ActionResult GetSeries(string sn, DateTime from, DateTime to)
+        public ActionResult GetSeries(string sn, DateTime from, DateTime to, SeriesResolution? resolution)
         {
             // Sanitize from and to. Sometimes from is DateTime.MinValue for whatever reason, but earliest Qbox data is from 2012.
             var earliestDateWithNoDataForSure = new DateTime(2010, 1, 1);
@@ -32,10 +32,10 @@ namespace QboxNext.Qservice.Controllers
                 to = from.AddDays(1);
             }
 
-            var derivedResolution = DeriveResolution(from, to);
+            var actualResolution = resolution ?? DeriveResolution(from, to);
             var fromUtc = DateTimeUtils.NlDateTimeToUtc(from);
             var toUtc = DateTimeUtils.NlDateTimeToUtc(to);
-            var series = _seriesRetriever.RetrieveForAccount(sn, fromUtc, toUtc, derivedResolution);
+            var series = _seriesRetriever.RetrieveForAccount(sn, fromUtc, toUtc, actualResolution);
             var response = new
             {
                 result = true,

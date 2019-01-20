@@ -1,13 +1,14 @@
+using Microsoft.Extensions.Logging;
+using QboxNext.Logging;
 using System;
 using System.Globalization;
 using System.IO;
-using QboxNext.Qboxes.Parsing.Logging;
 
 namespace QboxNext.Qboxes.Parsing
 {
     public class BinaryParser
     {
-        private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger<BinaryParser>();
 
         #region private
 
@@ -17,12 +18,12 @@ namespace QboxNext.Qboxes.Parsing
 
         #region public
 
-        public long Length 
-        { 
-            get 
-            { 
-                return _reader.BaseStream.Length; 
-            } 
+        public long Length
+        {
+            get
+            {
+                return _reader.BaseStream.Length;
+            }
         }
 
         public long Position
@@ -65,24 +66,24 @@ namespace QboxNext.Qboxes.Parsing
         public int GetSerialDataLength()
         {
             int length = this.ParseInt16(true) - 2;
-            Log.Trace(string.Format("Serial data length: {0}", length));
+            Logger.LogTrace(string.Format("Serial data length: {0}", length));
             return length;
-        }       
+        }
 
         public int StartByte()
         {
-            Log.Trace(string.Format("StartByte() Position: {0}", _reader.BaseStream.Position));
+            Logger.LogTrace(string.Format("StartByte() Position: {0}", _reader.BaseStream.Position));
             byte _byte = _reader.ReadByte();
             switch (_byte)
             {
                 case 0xFF:
-                    Log.Trace("Skip FF");
+                    Logger.LogTrace("Skip FF");
                     return StartByte();
                 case 0x10:
-                    Log.Trace("Skip <DLE>");
+                    Logger.LogTrace("Skip <DLE>");
                     if (_reader.ReadByte() == 0x02)
                     {
-                        Log.Trace("Return 02");
+                        Logger.LogTrace("Return 02");
                         return 0x02;
                     }
                     else
@@ -94,7 +95,7 @@ namespace QboxNext.Qboxes.Parsing
 
         public byte[] GetBytes(int count)
         {
-            Log.Trace(string.Format("GetBytes({0})", count));
+            Logger.LogTrace(string.Format("GetBytes({0})", count));
 
             byte[] bytes = new byte[count];
             byte input;
@@ -103,62 +104,62 @@ namespace QboxNext.Qboxes.Parsing
                 input = _reader.ReadByte();
                 if (SkipDLE && input == 0x10) // step over <dle> and spaces
                 {
-                    Log.Trace("Skip <DLE>");
+                    Logger.LogTrace("Skip <DLE>");
                     input = _reader.ReadByte();
                 }
                 bytes[i] = input;
             }
             for (int i = 0; i < count; i++)
             {
-                Log.Trace(bytes[i].ToString("X2"));
+                Logger.LogTrace(bytes[i].ToString("X2"));
             }
             return bytes;
-        }        
+        }
 
         public Int16 ParseInt16(bool invert)
         {
-            Log.Trace("ParseInt16");
-            byte[] bytes = GetRealBytes(2);            
+            Logger.LogTrace("ParseInt16");
+            byte[] bytes = GetRealBytes(2);
             Int16 value = BitConverter.ToInt16(invert ? InvertByteArray(bytes) : bytes, 0);
-            Log.Debug("ParseInt16: value=" + value.ToString(CultureInfo.InvariantCulture));
-            return value; 
+            Logger.LogDebug("ParseInt16: value=" + value.ToString(CultureInfo.InvariantCulture));
+            return value;
         }
 
         public UInt16 ParseUInt16(bool invert)
         {
-            Log.Trace("ParseUInt16");
+            Logger.LogTrace("ParseUInt16");
             byte[] bytes = GetRealBytes(2);
             UInt16 value = BitConverter.ToUInt16(invert ? InvertByteArray(bytes) : bytes, 0);
-            Log.Debug("ParseUInt16: value=" + value.ToString(CultureInfo.InvariantCulture));
+            Logger.LogDebug("ParseUInt16: value=" + value.ToString(CultureInfo.InvariantCulture));
             return value;
         }
 
         public UInt16 ParseMSBUInt()
         {
-            Log.Trace("ParseMSBUInt");
+            Logger.LogTrace("ParseMSBUInt");
 
             byte[] bytes = new byte[2];
             bytes[1] = GetRealBytes(1)[0];
             bytes[0] = GetRealBytes(1)[0];
 
             UInt16 value = BitConverter.ToUInt16(bytes, 0);
-            Log.Debug("ParseMSBUInt: value=" + value.ToString(CultureInfo.InvariantCulture));
-            return value; 
+            Logger.LogDebug("ParseMSBUInt: value=" + value.ToString(CultureInfo.InvariantCulture));
+            return value;
 
         }
 
         public UInt16 ParseUInt16()
         {
-            Log.Trace("ParseUInt16()");
+            Logger.LogTrace("ParseUInt16()");
             byte[] bytes = GetRealBytes(2);
             UInt16 value = BitConverter.ToUInt16(bytes, 0);
-            Log.Debug("ParseUInt16: value=" + value.ToString(CultureInfo.InvariantCulture));
-            return value; 
+            Logger.LogDebug("ParseUInt16: value=" + value.ToString(CultureInfo.InvariantCulture));
+            return value;
         }
 
         public byte ParseByte()
         {
-            Log.Trace("ParseByte()");
+            Logger.LogTrace("ParseByte()");
 
             byte[] bytes = GetBytes(1);
             return bytes[0];
@@ -166,12 +167,12 @@ namespace QboxNext.Qboxes.Parsing
 
         public DateTime ParseTimeInSeconds()
         {
-            Log.Trace("ParseTime()");
+            Logger.LogTrace("ParseTime()");
 
             int seconds = this.ParseInt32(true, true);
             var value = ConvertToDateTime(seconds);
-            Log.Debug("ParseTime: value=" + value.ToString(CultureInfo.InvariantCulture));
-            return value; 
+            Logger.LogDebug("ParseTime: value=" + value.ToString(CultureInfo.InvariantCulture));
+            return value;
 
         }
 
@@ -181,7 +182,7 @@ namespace QboxNext.Qboxes.Parsing
             var value = start.AddSeconds(seconds);
             if (value < start)
             {
-                Log.Warn("Time cannot be smaller then epoch!");
+                Logger.LogWarning("Time cannot be smaller then epoch!");
                 value = start;
             }
             return value;
@@ -194,7 +195,7 @@ namespace QboxNext.Qboxes.Parsing
         /// <returns>Date time from epoch in minutes</returns>
         public DateTime ParseTimeInMinutes()
         {
-            Log.Trace("ParseTime()");
+            Logger.LogTrace("ParseTime()");
 
             var minutes = this.ParseInt32(true);
             return TimeFromMinutes(minutes);
@@ -203,18 +204,18 @@ namespace QboxNext.Qboxes.Parsing
 
         public static DateTime TimeFromMinutes(int minutes)
         {
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
 
             var start = new DateTime(2007, 1, 1);
 
             var value = start.AddMinutes(minutes);
             if (value < start)
             {
-                Log.Warn("Time cannot be smaller then epoch!");
+                Logger.LogWarning("Time cannot be smaller then epoch!");
                 value = start;
             }
-            Log.Debug("ParseTime: value=" + value.ToString(CultureInfo.InvariantCulture));
-            Log.Trace("Return");
+            Logger.LogDebug("ParseTime: value=" + value.ToString(CultureInfo.InvariantCulture));
+            Logger.LogTrace("Return");
             return value;
         }
 
@@ -247,10 +248,10 @@ namespace QboxNext.Qboxes.Parsing
 
         public UInt32 ParseUInt32(bool invert)
         {
-            Log.Trace("ParseUInt32");
+            Logger.LogTrace("ParseUInt32");
             byte[] bytes = GetRealBytes(4);
             var value = BitConverter.ToUInt32(invert ? InvertByteArray(bytes) : bytes, 0);
-            Log.Debug("ParseUInt32: value=" + value.ToString(CultureInfo.InvariantCulture));
+            Logger.LogDebug("ParseUInt32: value=" + value.ToString(CultureInfo.InvariantCulture));
             return value;
         }
 

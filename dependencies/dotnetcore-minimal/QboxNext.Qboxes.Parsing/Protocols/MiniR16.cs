@@ -1,5 +1,6 @@
 ﻿using System;
-using QboxNext.Qboxes.Parsing.Logging;
+using Microsoft.Extensions.Logging;
+using QboxNext.Logging;
 
 namespace QboxNext.Qboxes.Parsing.Protocols
 {
@@ -10,9 +11,9 @@ namespace QboxNext.Qboxes.Parsing.Protocols
     /// </summary>
 	public class MiniR16 : MiniR07
 	{
-		private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+	    private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger<MiniR16>();
 
-		protected virtual void AddCounterPayload(Mini07ParseModel model, CounterGroup group)
+        protected virtual void AddCounterPayload(Mini07ParseModel model, CounterGroup group)
 		{
 			model.Payloads.Add(new CounterWithSourcePayload
 			{
@@ -25,7 +26,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 
         protected override void ParseCounters(Mini07ParseModel model)
         {
-            Log.DebugFormat("Nr of countergroups: {nrOfCounters}", model.PayloadIndicator.NrOfCounters);
+            Logger.LogDebug("Nr of countergroups: {nrOfCounters}", model.PayloadIndicator.NrOfCounters);
             int i = 0;
             // Total number of counters
             while (i < model.PayloadIndicator.NrOfCounters)

@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
-using Qboxes.Classes;
 using QboxNext.Extensions.Models.Public;
+using QboxNext.Model.Classes;
 
 namespace QboxNext.Extensions.Interfaces.Public
 {

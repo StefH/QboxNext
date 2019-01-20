@@ -1,50 +1,51 @@
-﻿using System;
-using System.Linq;
+﻿using Microsoft.Extensions.Logging;
+using QboxNext.Logging;
 using QboxNext.Qboxes.Parsing.Elements;
 using QboxNext.Qboxes.Parsing.Exceptions;
-using QboxNext.Qboxes.Parsing.Logging;
+using System;
+using System.Linq;
 
 namespace QboxNext.Qboxes.Parsing.Protocols
 {
-	public class MiniR07 : MiniParser
-	{
-		private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+    public class MiniR07 : MiniParser
+    {
+        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger<MiniR07>();
 
-		protected override void DoParse()
+        protected override void DoParse()
         {
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
 
             BaseParseResult.ProtocolNr = Parser.ParseByte();
             BaseParseResult.SequenceNr = Parser.ParseByte();
             var model = new Mini07ParseModel
-                {
-                    Status = new QboxMiniStatus(Parser.ParseByte()),
-                    MeasurementTime = Parser.ParseTime(),
-                    MeterType = (DeviceMeterType)Parser.ParseByte(),
-                    PayloadIndicator = new PayloaderIndicator(Parser.ParseByte())
-                };
+            {
+                Status = new QboxMiniStatus(Parser.ParseByte()),
+                MeasurementTime = Parser.ParseTime(),
+                MeterType = (DeviceMeterType)Parser.ParseByte(),
+                PayloadIndicator = new PayloaderIndicator(Parser.ParseByte())
+            };
 
-			if (!Enum.IsDefined(typeof(DeviceMeterType), model.MeterType))
-				throw new BaseParserException(String.Format("Unexpected metertype: {0}", model.MeterType));
-			if ((model.MeasurementTime - DateTime.Now).TotalHours > 3.0)
-				throw new BaseParserException(String.Format("Unreliable time {0}", model.MeasurementTime));
+            if (!Enum.IsDefined(typeof(DeviceMeterType), model.MeterType))
+                throw new BaseParserException(String.Format("Unexpected metertype: {0}", model.MeterType));
+            if ((model.MeasurementTime - DateTime.Now).TotalHours > 3.0)
+                throw new BaseParserException(String.Format("Unreliable time {0}", model.MeasurementTime));
 
             ParsePayload(model);
 
             var miniParseResult = BaseParseResult as MiniParseResult;
             if (miniParseResult != null) miniParseResult.Model = model;
 
-            Log.Trace("Exit");
+            Logger.LogTrace("Exit");
         }
 
         private void ParsePayload(Mini07ParseModel model)
         {
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
             if (model.PayloadIndicator.ClientStatusPresent)
             {
                 ParseClientStatuses(model);
             }
-            Log.DebugFormat("DeviceSettingsPresent: {deviceSettingPresent}", model.PayloadIndicator.DeviceSettingPresent);
+            Logger.LogDebug("DeviceSettingsPresent: {deviceSettingPresent}", model.PayloadIndicator.DeviceSettingPresent);
             if (model.PayloadIndicator.DeviceSettingPresent)
             {
                 ParseDeviceSettings(model);
@@ -69,22 +70,22 @@ namespace QboxNext.Qboxes.Parsing.Protocols
                     throw new BaseParserException("Invalid metertype for message payload parsing");
                 }
             }
-            
-            Log.Trace("Exit");
+
+            Logger.LogTrace("Exit");
         }
 
         protected virtual void ParseCounters(Mini07ParseModel model)
         {
-            Log.DebugFormat("Nr of counters: {nrOfCounters}", model.PayloadIndicator.NrOfCounters);
+            Logger.LogDebug("Nr of counters: {nrOfCounters}", model.PayloadIndicator.NrOfCounters);
             for (var i = 0; i < model.PayloadIndicator.NrOfCounters; i++)
             {
                 try
                 {
-					model.Payloads.Add(new CounterPayload
-					{
-						InternalNr = Parser.ParseByte(),
-						Value = Parser.ParseUInt32()
-					});
+                    model.Payloads.Add(new CounterPayload
+                    {
+                        InternalNr = Parser.ParseByte(),
+                        Value = Parser.ParseUInt32()
+                    });
                 }
                 catch (Exception ex)
                 {
@@ -99,11 +100,11 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             {
                 // qplat-74: clientstatus R32
                 var NbrOfClientStatussen = Parser.ParseByte();
-                Log.DebugFormat("Nr of client statuses: {nbrOfClientStatussen}", NbrOfClientStatussen);
+                Logger.LogDebug("Nr of client statuses: {nbrOfClientStatussen}", NbrOfClientStatussen);
                 for (byte client = 0; client < NbrOfClientStatussen; client++)
                 {
-					var clientId = BaseParseResult.ProtocolNr >= MiniR21.ProtocolVersion ? Parser.ParseByte() : client;
-					model.Payloads.Add(new ClientStatusPayload(model.MeasurementTime, clientId, Parser.ParseByte(), BaseParseResult.ProtocolNr));
+                    var clientId = BaseParseResult.ProtocolNr >= MiniR21.ProtocolVersion ? Parser.ParseByte() : client;
+                    model.Payloads.Add(new ClientStatusPayload(model.MeasurementTime, clientId, Parser.ParseByte(), BaseParseResult.ProtocolNr));
                 }
             }
             catch (Exception ex)
@@ -117,7 +118,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             try
             {
                 var setting = (DeviceSettingType)Parser.ParseByte();
-                foreach(var item in DeviceSettingsPayload.GetDeviceSettings(BaseParseResult.ProtocolNr, setting, Parser).ToList())
+                foreach (var item in DeviceSettingsPayload.GetDeviceSettings(BaseParseResult.ProtocolNr, setting, Parser).ToList())
                     model.Payloads.Add(item);
             }
             catch (Exception ex)
@@ -140,15 +141,15 @@ namespace QboxNext.Qboxes.Parsing.Protocols
                 var source = Parser.ReadToEnd();
                 if (string.IsNullOrEmpty(source))
                 {
-                    Log.TraceFormat("Nothing to parse (empty string), measurementTime: {measurementTime}", model.MeasurementTime);
+                    Logger.LogTrace("Nothing to parse (empty string), measurementTime: {measurementTime}", model.MeasurementTime);
                     return;
                 }
                 var value = source.Substring(40, 6);
                 model.Payloads.Add(new CounterPayload
-                                       {
-                                           InternalNr = 120,
-                                           Value = Parser.Read24bits(value)
-                                       });
+                {
+                    InternalNr = 120,
+                    Value = Parser.Read24bits(value)
+                });
             }
             catch (Exception ex)
             {
@@ -166,7 +167,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
                 var strings = source.Split(':');
                 if (string.IsNullOrEmpty(source))
                 {
-                    Log.TraceFormat("Nothing to parse (empty string), measurementTime: {measurementTime}", model.MeasurementTime);
+                    Logger.LogTrace("Nothing to parse (empty string), measurementTime: {measurementTime}", model.MeasurementTime);
                     return;
                 }
                 AddCounterPayload(model.Payloads, 181, strings.FirstOrDefault(s => s.Contains("1.8.1")), true);
@@ -177,12 +178,12 @@ namespace QboxNext.Qboxes.Parsing.Protocols
                     strings.Where(
                         s =>
                         s.Contains("24.2.1)(m3)") || s.Contains("24.2.0)(m3)")).ToList();
-				// Check on DSMR message for gas:
-				if (raw.Count == 0)
-					raw =
-					strings.Where(
-						s =>
-						s.Contains("*m3")).ToList();
+                // Check on DSMR message for gas:
+                if (raw.Count == 0)
+                    raw =
+                    strings.Where(
+                        s =>
+                        s.Contains("*m3")).ToList();
                 AddCounterPayload(model.Payloads, 2421, raw, false);
             }
             catch (Exception ex)

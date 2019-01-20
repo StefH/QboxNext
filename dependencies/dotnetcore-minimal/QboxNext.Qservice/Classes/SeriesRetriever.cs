@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Qboxes;
-using Qboxes.Model.Qboxes;
+using Microsoft.Extensions.Logging;
+using NLog.Fluent;
+using QboxNext.Model.Qboxes;
 using QboxNext.Core;
 using QboxNext.Core.Dto;
 using QboxNext.Core.Utils;
+using QboxNext.Logging;
 using QboxNext.Qbiz.Dto;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
-using QboxNext.Qservice.Classes;
 using QboxNext.Qserver.Core.Statistics;
-using QboxNext.Qservice.Logging;
 
 namespace QboxNext.Qservice.Classes
 {
@@ -21,7 +21,8 @@ namespace QboxNext.Qservice.Classes
     /// </summary>
     public class SeriesRetriever : ISeriesRetriever
     {
-        private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger<SeriesRetriever>();
+
         private const int GenerationCounterId = 9999;
 
         static SeriesRetriever()
@@ -118,7 +119,7 @@ namespace QboxNext.Qservice.Classes
                         AddSerieToResult(valueSerie, resultSeries, null);
                         break;
                     default:
-                        Log.Error("Invalid counter id :" + counterId);
+                        Logger.LogError("Invalid counter id : {0}", counterId);
                         break;
                 }
             }
@@ -279,7 +280,7 @@ namespace QboxNext.Qservice.Classes
                     catch (Exception e)
                     {
                         // we do not want any errors to show up because it will invalidate the whole view
-                        Log.ErrorException("Error in GetSeriesAtCounterLevel", e);
+                        Logger.LogError(e, "Error in GetSeriesAtCounterLevel");
                     }
                 }
             }
@@ -291,8 +292,9 @@ namespace QboxNext.Qservice.Classes
                 }
             }
 
-            if (Log.IsTraceEnabled())
+            if (Logger.IsEnabled(LogLevel.Trace))
                 Log.Trace(JsonUtils.ObjectToJsonString(countersSeriesValue));
+
             return countersSeriesValue;
         }
 

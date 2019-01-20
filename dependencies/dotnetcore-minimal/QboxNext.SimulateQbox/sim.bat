@@ -1,1 +1,0 @@
-dotnet run -i 2 --qserver=http://localhost:5000 --qboxserial=99-99-{0:000}-{1:000} --metertype=smart --pattern=181:flat(2);182:zero;281:zero;282:zero;2421:zero

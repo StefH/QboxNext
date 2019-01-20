@@ -1,24 +1,26 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using QboxNext.Core.Logging;
+using System;
+using QboxNext.Logging;
 
 namespace QboxNext.Core.Utils
 {
-    public class JsonUtils
+    public static class JsonUtils
     {
+        private static readonly ILogger Log = QboxNextLogProvider.CreateLogger("JsonUtils");
+
         public static string ObjectToJsonString(object inData)
         {
             try
             {
+                Log.LogInformation("test");
                 return JsonConvert.SerializeObject(inData, Formatting.Indented);
             }
             catch (Exception e)
             {
-                Log.ErrorException(String.Format("ObjectToJsonString: {0}", inData.GetType().Name), e);
-                return String.Format("Error serializing object to json: {0}", e.Message);
+                Log.LogError(e, "ObjectToJsonString: {0}", inData.GetType().Name);
+                return $"Error serializing object to json: {e.Message}";
             }
         }
-
-        private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
     }
 }

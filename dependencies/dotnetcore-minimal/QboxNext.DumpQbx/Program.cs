@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using QboxNext.Core.CommandLine;
+using QboxNext.Logging;
+using QboxNext.Qserver.Core.Utils;
+using System;
 using System.Globalization;
 using System.IO;
-using QboxNext.Core.CommandLine;
-using QboxNext.Qserver.Core.Utils;
 
 namespace QboxNext.DumpQbx
 {
@@ -17,6 +19,9 @@ namespace QboxNext.DumpQbx
 
         static void Main(string[] args)
         {
+            // Setup static logger factory
+            QboxNextLogProvider.LoggerFactory = new LoggerFactory();
+
             var program = new Program();
             var settings = new CommandLineParserSettings { IgnoreUnknownArguments = true, CaseSensitive = false };
             ICommandLineParser parser = new CommandLineParser(settings);

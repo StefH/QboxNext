@@ -1,8 +1,8 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
-using Qboxes.Classes;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
+using QboxNext.Model.Classes;
 using System;
 
 namespace QboxNext.Extensions.Implementations
