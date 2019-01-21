@@ -9,7 +9,7 @@ pipelines:
         script:
           - chmod +x ./build.sh
           - sh ./build.sh
-    - step:
+    - step: &unittest
         name: Unit tests
         script:
           - chmod +x ./run-unittests.sh
@@ -18,3 +18,4 @@ pipelines:
   pull-requests:
     '{feature/*,fix/*}':
       - step: *build
+      - step: *unittest

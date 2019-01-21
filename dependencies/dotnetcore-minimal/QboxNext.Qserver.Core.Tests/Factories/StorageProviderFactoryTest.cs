@@ -8,6 +8,7 @@ using QboxNext.Qserver.Core.Interfaces;
 namespace QboxNext.Model.Factories
 {
     [TestFixture]
+    [NonParallelizable]
     public class StorageProviderFactoryTest
     {
         [Test]
