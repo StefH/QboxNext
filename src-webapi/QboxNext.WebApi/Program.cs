@@ -14,12 +14,11 @@ namespace QboxNext.WebApi
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
-                logger.Debug("init main");
                 CreateWebHostBuilder(args).Build().Run();
             }
             catch (Exception ex)
             {
-                //NLog: catch setup errors
+                // NLog: catch setup errors
                 logger.Error(ex, "Stopped program because of exception");
                 throw;
             }

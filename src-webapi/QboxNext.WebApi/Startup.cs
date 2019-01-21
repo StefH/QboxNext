@@ -25,8 +25,9 @@ namespace QboxNext.WebApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Add External services
-            services.AddCorrelationId();
-            services.AddBusiness();
+            services
+                .AddBusiness()
+                .AddCorrelationId();
 
             // Configure
             services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));

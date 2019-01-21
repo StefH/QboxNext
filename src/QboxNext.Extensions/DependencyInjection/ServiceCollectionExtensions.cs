@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
-        public static void AddQboxNextExtensions([NotNull] this IServiceCollection services)
+        public static IServiceCollection AddQboxNextExtensions([NotNull] this IServiceCollection services)
         {
             Guard.IsNotNull(services, nameof(services));
 
@@ -29,6 +29,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // Add internal
             services.AddServices();
+
+            return services;
         }
 
         private static void AddServices(this IServiceCollection services)

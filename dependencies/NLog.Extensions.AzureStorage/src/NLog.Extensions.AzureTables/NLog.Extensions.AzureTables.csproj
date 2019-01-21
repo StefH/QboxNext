@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <Version>1.0.0-preview-01</Version>
+    <Description>NLog target that supports Table storage in single nuget package. Can use queued batches to greatly improve performance. Recommended to use as a async target.</Description>
+    <Authors>jdetmar</Authors>
+    <Copyright>jdetmar;Stef Heyenrath</Copyright>
+    <PackageTags>NLog;azure;tables;log;logging</PackageTags>
+    <!--<PackageIconUrl>https://github.com/JDetmar/NLog.Extensions.AzureStorage/raw/master/logo64.png?raw=true</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/JDetmar/NLog.Extensions.AzureStorage</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/JDetmar/NLog.Extensions.AzureStorage/blob/master/LICENSE</PackageLicenseUrl>-->
+    <RepositoryType>git</RepositoryType>
+    <!--<RepositoryUrl>https://github.com/JDetmar/NLog.Extensions.AzureStorage.git</RepositoryUrl>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <!--<PackageReference Include="CorrelationId" Version="2.1.0" />-->
+    <!--<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.1" />-->
+    <!--<PackageReference Include="NLog" Version="4.5.11" />-->
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
+    <PackageReference Include="WindowsAzure.Storage" version="9.3.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <!--<PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />-->
+  </ItemGroup>
+
+</Project>
