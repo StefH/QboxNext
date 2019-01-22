@@ -17,20 +17,20 @@ namespace NLog.Extensions.AzureTables
     [Target("AzureTableStorage")]
     public sealed class TableStorageTarget : TargetWithLayout
     {
+        private readonly AzureStorageNameCache _containerNameCache = new AzureStorageNameCache();
+        private readonly Func<string, string> _checkAndRepairTableNameDelegate;
+
         private CloudTableClient _client;
         private CloudTable _table;
         private string _machineName;
-        private readonly AzureStorageNameCache _containerNameCache = new AzureStorageNameCache();
-        private readonly Func<string, string> _checkAndRepairTableNameDelegate;
 
         // Delegates for bucket sorting
         private SortHelpers.KeySelector<AsyncLogEventInfo, TablePartitionKey> _getTablePartitionNameDelegate;
 
         [PublicAPI]
         [NotNull]
-        public string ConnectionString { get => ((SimpleLayout)_connectionString).Text; set => _connectionString = value; }
-
-        private Layout _connectionString;
+        [RequiredParameter]
+        public string ConnectionString { get; set; } = "UseDevelopmentStorage=true;";
 
         [PublicAPI]
         [RequiredParameter]
@@ -41,7 +41,7 @@ namespace NLog.Extensions.AzureTables
         public Layout CorrelationId { get; set; }
 
         [PublicAPI]
-        public string LogTimeStampFormat { get; set; } = "O";
+        public bool IncludeStackTrace { get; set; } = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableStorageTarget"/> class.
@@ -69,7 +69,7 @@ namespace NLog.Extensions.AzureTables
             }
             catch (Exception ex)
             {
-                InternalLogger.Error(ex, "AzureTableStorageTarget(Name={0}): Failed to create TableClient with connectionString={1}.", Name, _connectionString);
+                InternalLogger.Error(ex, "AzureTableStorageTarget(Name={0}): Failed to create TableClient with connectionString={1}.", Name, ConnectionString);
                 throw;
             }
         }
@@ -95,13 +95,13 @@ namespace NLog.Extensions.AzureTables
 
                 string correlationId = CorrelationId != null ? RenderLogEvent(CorrelationId, logEvent) : null;
                 string layoutMessage = RenderLogEvent(Layout, logEvent);
-                var entity = new NLogEntity(logEvent, correlationId, layoutMessage, _machineName, logEvent.LoggerName, LogTimeStampFormat);
+                var entity = CreateEntity(logEvent, layoutMessage, _machineName, logEvent.LoggerName, correlationId);
                 var insertOperation = TableOperation.Insert(entity);
                 TableExecute(_table, insertOperation);
             }
             catch (StorageException ex)
             {
-                InternalLogger.Error(ex, "AzureTableStorageTarget: failed writing to table: {0}", tableName);
+                InternalLogger.Error(ex, "AzureTableStorage: failed writing to table: {0}", tableName);
                 throw;
             }
         }
@@ -146,7 +146,7 @@ namespace NLog.Extensions.AzureTables
                     {
                         string correlationId = CorrelationId != null ? RenderLogEvent(CorrelationId, asyncLogEventInfo.LogEvent) : null;
                         string layoutMessage = RenderLogEvent(Layout, asyncLogEventInfo.LogEvent);
-                        var entity = new NLogEntity(asyncLogEventInfo.LogEvent, correlationId, layoutMessage, _machineName, partitionBucket.Key.PartitionId, LogTimeStampFormat);
+                        var entity = CreateEntity(asyncLogEventInfo.LogEvent, layoutMessage, _machineName, partitionBucket.Key.PartitionId, correlationId);
                         batch.Insert(entity);
                         if (batch.Count == 100)
                         {
@@ -167,7 +167,7 @@ namespace NLog.Extensions.AzureTables
                 }
                 catch (StorageException ex)
                 {
-                    InternalLogger.Error(ex, "AzureTableStorageTarget: failed writing batch to table: {0}", tableName);
+                    InternalLogger.Error(ex, "AzureTableStorage: failed writing batch to table: {0}", tableName);
                     throw;
                 }
             }
@@ -203,7 +203,7 @@ namespace NLog.Extensions.AzureTables
                 }
                 catch (StorageException storageException)
                 {
-                    InternalLogger.Error(storageException, "AzureTableStorageTarget: failed to get a reference to storage table.");
+                    InternalLogger.Error(storageException, "AzureTableStorage: failed to get a reference to storage table.");
                     throw;
                 }
             }
@@ -216,15 +216,15 @@ namespace NLog.Extensions.AzureTables
 
         private string CheckAndRepairTableNamingRules(string tableName)
         {
-            InternalLogger.Trace("AzureTableStorageTarget(Name={0}): Requested Table Name: {1}", Name, tableName);
+            InternalLogger.Trace("AzureTableStorage(Name={0}): Requested Table Name: {1}", Name, tableName);
             string validTableName = AzureStorageNameCache.CheckAndRepairTableNamingRules(tableName);
             if (validTableName == tableName)
             {
-                InternalLogger.Trace("AzureTableStorageTarget(Name={0}): Using Table Name: {0}", Name, validTableName);
+                InternalLogger.Trace("AzureTableStorage(Name={0}): Using Table Name: {0}", Name, validTableName);
             }
             else
             {
-                InternalLogger.Trace("AzureTableStorageTarget(Name={0}): Using Cleaned Table name: {0}", Name, validTableName);
+                InternalLogger.Trace("AzureTableStorage(Name={0}): Using Cleaned Table name: {0}", Name, validTableName);
             }
 
             return validTableName;
@@ -236,8 +236,8 @@ namespace NLog.Extensions.AzureTables
         private static string GetMachineName()
         {
             return TryLookupValue(() => Environment.GetEnvironmentVariable("COMPUTERNAME"), "COMPUTERNAME")
-                ?? TryLookupValue(() => Environment.GetEnvironmentVariable("HOSTNAME"), "HOSTNAME")
-                ?? TryLookupValue(System.Net.Dns.GetHostName, "DnsHostName");
+                   ?? TryLookupValue(() => Environment.GetEnvironmentVariable("HOSTNAME"), "HOSTNAME")
+                   ?? TryLookupValue(System.Net.Dns.GetHostName, "DnsHostName");
         }
 
         private static string TryLookupValue(Func<string> lookupFunc, string lookupType)
@@ -249,9 +249,70 @@ namespace NLog.Extensions.AzureTables
             }
             catch (Exception ex)
             {
-                InternalLogger.Warn(ex, "AzureTableStorageTarget: Failed to lookup {0}", lookupType);
+                InternalLogger.Warn(ex, "AzureTableStorage: Failed to lookup {0}", lookupType);
                 return null;
             }
+        }
+
+        private DynamicTableEntity CreateEntity(LogEventInfo logEvent, string layoutMessage, string machineName, string partitionKey, [CanBeNull] string correlationId)
+        {
+            string id = correlationId ?? Guid.NewGuid().ToString();
+            string rowKey = $"{DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks:d19}:{id}";
+
+            string exceptionValue = null;
+            string stackTraceValue = null;
+            string innerExceptionValue = null;
+            if (logEvent.Exception != null)
+            {
+                var exception = logEvent.Exception;
+                var innerException = exception.InnerException;
+                if (exception is AggregateException aggregateException)
+                {
+                    var innerExceptions = aggregateException.Flatten();
+                    if (innerExceptions.InnerExceptions?.Count == 1)
+                    {
+                        exception = innerExceptions.InnerExceptions[0];
+                        innerException = null;
+                    }
+                    else
+                    {
+                        innerException = innerExceptions;
+                    }
+
+                    // Handle all Exceptions
+                    aggregateException.Handle(x => true);
+                }
+
+                exceptionValue = string.Concat(exception.Message, " - ", exception.GetType().ToString());
+                stackTraceValue = exception.StackTrace;
+                if (innerException != null)
+                {
+                    innerExceptionValue = innerException.ToString();
+                }
+            }
+
+            var properties = new Dictionary<string, EntityProperty>();
+            if (!string.IsNullOrEmpty(correlationId))
+            {
+                properties.Add("CorrelationId", new EntityProperty(correlationId));
+            }
+
+            properties.Add("LogTimeStamp", new EntityProperty(logEvent.TimeStamp));
+            properties.Add("Level", new EntityProperty(logEvent.Level.Name));
+            properties.Add("LoggerName", new EntityProperty(logEvent.LoggerName));
+            properties.Add("Message", new EntityProperty(logEvent.Message));
+            properties.Add("FullMessage", new EntityProperty(layoutMessage));
+            properties.Add("Exception", new EntityProperty(exceptionValue));
+            properties.Add("InnerException", new EntityProperty(innerExceptionValue));
+
+            if (IncludeStackTrace)
+            {
+                properties.Add("StackTrace", new EntityProperty(stackTraceValue));
+            }
+
+            properties.Add("MachineName", new EntityProperty(machineName));
+
+            return new DynamicTableEntity(partitionKey, rowKey, "*", properties);
         }
     }
 }

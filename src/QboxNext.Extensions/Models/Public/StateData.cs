@@ -7,16 +7,17 @@ namespace QboxNext.Extensions.Models.Public
 {
     public class StateData
     {
-        [NotNull] public string SerialNumber { get; set; }
-
-        [NotNull] public string ProductNumber { get; set; }
+        [NotNull]
+        public string SerialNumber { get; set; }
 
         public QboxMessageType MessageType { get; set; }
 
-        [CanBeNull] public string Message { get; set; }
+        [CanBeNull]
+        public string Message { get; set; }
 
         public MiniState State { get; set; }
 
-        [CanBeNull] public QboxStatus Status { get; set; }
+        [CanBeNull]
+        public QboxStatus Status { get; set; }
     }
 }

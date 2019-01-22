@@ -6,7 +6,7 @@ namespace NLog.Extensions.AzureTables
     public class NLogEntity : TableEntity
     {
         public string CorrelationId { get; set; }
-        public string LogTimeStamp { get; set; }
+        public DateTime LogTimeStamp { get; set; }
         public string Level { get; set; }
         public string LoggerName { get; set; }
         public string Message { get; set; }
@@ -16,14 +16,14 @@ namespace NLog.Extensions.AzureTables
         public string FullMessage { get; set; }
         public string MachineName { get; set; }
 
-        public NLogEntity(LogEventInfo logEvent, string correlationId, string layoutMessage, string machineName, string partitionKey, string logTimeStampFormat)
+        public NLogEntity(LogEventInfo logEvent, string correlationId, string layoutMessage, string machineName, string partitionKey)
         {
             CorrelationId = correlationId;
             FullMessage = layoutMessage;
             Level = logEvent.Level.Name;
             LoggerName = logEvent.LoggerName;
             Message = logEvent.Message;
-            LogTimeStamp = logEvent.TimeStamp.ToString(logTimeStampFormat);
+            LogTimeStamp = logEvent.TimeStamp;
             MachineName = machineName;
 
             if (logEvent.Exception != null)

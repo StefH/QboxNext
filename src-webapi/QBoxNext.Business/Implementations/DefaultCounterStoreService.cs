@@ -34,7 +34,6 @@ namespace QBoxNext.Business.Implementations
             {
                 CorrelationId = correlationId,
                 SerialNumber = counterData.SerialNumber,
-                ProductNumber = counterData.ProductNumber,
                 CounterId = counterData.CounterId,
                 LogTimeStamp = DateTime.UtcNow,
                 MeasureTime = counterData.MeasureTime,

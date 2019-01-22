@@ -87,11 +87,7 @@ namespace QboxNext.Extensions.Implementations
         /// <inheritdoc cref="IQboxNextDataHandler.HandleAsync()"/>
         public async Task<string> HandleAsync()
         {
-            var stateData = new StateData
-            {
-                SerialNumber = _context.Mini.SerialNumber,
-                ProductNumber = _context.Mini.Id
-            };
+            var stateData = new StateData { SerialNumber = _context.Mini.SerialNumber };
 
             try
             {
@@ -370,7 +366,6 @@ namespace QboxNext.Extensions.Implementations
             var counterData = new CounterData
             {
                 SerialNumber = _context.Mini.SerialNumber,
-                ProductNumber = _context.Mini.Id,
                 MeasureTime = parseResult.Model.MeasurementTime,
                 CounterId = payload.InternalNr,
                 PulseValue = payload.Value,

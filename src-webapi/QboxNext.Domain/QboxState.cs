@@ -12,9 +12,6 @@ namespace QboxNext.Domain
         [NotNull]
         public string SerialNumber { get; set; }
 
-        [NotNull]
-        public string ProductNumber { get; set; }
-
         public string MessageType { get; set; }
 
         [CanBeNull]

@@ -11,11 +11,7 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
         public string CorrelationId { get; set; }
 
         public DateTime LogTimeStamp { get; set; }
-
-        public string ProductNumber { get; set; }
-
-        public string SerialNumber { get; set; }
-
+        
         public DateTime MeasureTime { get; set; }
 
         public int CounterId { get; set; }
@@ -44,12 +40,10 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
         {
             Guard.NotNull(qboxMeasurement, nameof(qboxMeasurement));
 
-            PartitionKey = $"{qboxMeasurement.ProductNumber}:{qboxMeasurement.SerialNumber}";
+            PartitionKey = qboxMeasurement.SerialNumber;
             RowKey = $"{qboxMeasurement.LogTimeStamp.Ticks}:{qboxMeasurement.CounterId:D4}";
 
             CorrelationId = qboxMeasurement.CorrelationId;
-            ProductNumber = qboxMeasurement.ProductNumber;
-            SerialNumber = qboxMeasurement.SerialNumber;
             LogTimeStamp = qboxMeasurement.LogTimeStamp;
             MeasureTime = qboxMeasurement.MeasureTime;
             CounterId = qboxMeasurement.CounterId;

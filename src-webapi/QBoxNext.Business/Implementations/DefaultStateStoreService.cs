@@ -37,7 +37,6 @@ namespace QBoxNext.Business.Implementations
                 CorrelationId = correlationId,
                 LogTime = DateTime.UtcNow,
                 SerialNumber = stateData.SerialNumber,
-                ProductNumber = stateData.ProductNumber,
                 MessageType = stateData.MessageType.ToString(),
                 Message = stateData.Message,
                 State = stateData.State.ToString(),
