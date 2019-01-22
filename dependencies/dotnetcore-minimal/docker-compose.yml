@@ -1,0 +1,15 @@
+version: '3'
+services:
+  qserver:
+    build: .\QboxNext.Qserver
+    restart: always
+    ports:
+     - "80:5000"
+    volumes:
+#    Volume mount for Linux hosts
+#    - /var/qboxnextdata:/var/qboxnextdata
+
+#    Volume mount for Windows hosts
+     - d:/qboxnextdata:/var/qboxnextdata 
+
+ 
