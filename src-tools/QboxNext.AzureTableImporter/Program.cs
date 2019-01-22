@@ -61,6 +61,8 @@ namespace QboxNext.AzureTableImporter
             var service = serviceProvider.GetService<ICounterStoreService>();
 
             RunAsync(logger, service, path).GetAwaiter().GetResult();
+
+            Console.WriteLine("Done");
         }
 
         private static async Task RunAsync(ILogger logger, ICounterStoreService service, string path)
@@ -80,7 +82,7 @@ namespace QboxNext.AzureTableImporter
             var l = sorted.Last();
             logger.LogInformation($"First: {f} and Last = {l}");
 
-            var groupedByMeasureTime = sorted.GroupBy(x => x.MeasureTime);
+            var groupedByMeasureTime = sorted.GroupBy(x => x.MeasureTime).ToList();
 
             foreach (var grp in groupedByMeasureTime)
             {
