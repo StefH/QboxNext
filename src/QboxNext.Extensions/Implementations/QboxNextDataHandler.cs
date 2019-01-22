@@ -87,16 +87,18 @@ namespace QboxNext.Extensions.Implementations
         /// <inheritdoc cref="IQboxNextDataHandler.HandleAsync()"/>
         public async Task<string> HandleAsync()
         {
-            var stateData = new StateData { SerialNumber = _context.Mini.SerialNumber };
-
             try
             {
-                _logger.LogInformation("sn: {0} | input: {1} | lastUrl: {2}", stateData.SerialNumber, _context.Message, _context.Mini.QboxStatus.Url);
+                _logger.LogInformation("sn: {0} | input: {1} | lastUrl: {2}", _context.Mini.SerialNumber, _context.Message, _context.Mini.QboxStatus.Url);
 
-                stateData.MessageType = QboxMessageType.Request;
-                stateData.Message = _context.Message;
-                stateData.State = _context.Mini.State;
-                stateData.Status = _context.Mini.QboxStatus;
+                var stateData = new StateData
+                {
+                    SerialNumber = _context.Mini.SerialNumber,
+                    MessageType = QboxMessageType.Request,
+                    Message = _context.Message,
+                    State = _context.Mini.State,
+                    Status = _context.Mini.QboxStatus
+                };
                 await _stateStoreService.StoreAsync(_correlationId, stateData);
 
                 var parser = _parserFactory.GetParser(_context.Message);
@@ -161,11 +163,15 @@ namespace QboxNext.Extensions.Implementations
                 {
                     if (_result is ErrorParseResult errorParseResult)
                     {
-                        stateData.MessageType = QboxMessageType.Error;
-                        stateData.Message = errorParseResult.Error;
-                        stateData.State = _context.Mini.State;
-                        stateData.Status = _context.Mini.QboxStatus;
-                        await _stateStoreService.StoreAsync(_correlationId, stateData);
+                        var stateDataError = new StateData
+                        {
+                            SerialNumber = _context.Mini.SerialNumber,
+                            MessageType = QboxMessageType.Error,
+                            Message = errorParseResult.Error,
+                            State = _context.Mini.State,
+                            Status = _context.Mini.QboxStatus
+                        };
+                        await _stateStoreService.StoreAsync(_correlationId, stateDataError);
                     }
 
                     // We could not handle the message normally, but if we don't answer at all, the Qbox will just retransmit the message.
@@ -177,11 +183,15 @@ namespace QboxNext.Extensions.Implementations
 
                 string resultWithEnvelope = _result.GetMessageWithEnvelope();
 
-                stateData.MessageType = QboxMessageType.Response;
-                stateData.Message = resultWithEnvelope;
-                stateData.State = _context.Mini.State;
-                stateData.Status = _context.Mini.QboxStatus;
-                await _stateStoreService.StoreAsync(_correlationId, stateData);
+                var stateDataResponse = new StateData
+                {
+                    SerialNumber = _context.Mini.SerialNumber,
+                    MessageType = QboxMessageType.Response,
+                    Message = resultWithEnvelope,
+                    State = _context.Mini.State,
+                    Status = _context.Mini.QboxStatus
+                };
+                await _stateStoreService.StoreAsync(_correlationId, stateDataResponse);
 
                 return resultWithEnvelope;
             }
@@ -194,13 +204,17 @@ namespace QboxNext.Extensions.Implementations
                     _context.Mini.QboxStatus.LastErrorMessage = exception.Message;
                 }
 
-                stateData.MessageType = QboxMessageType.Exception;
-                stateData.Message = null;
-                stateData.State = _context.Mini?.State ?? MiniState.Waiting;
-                stateData.Status = _context.Mini?.QboxStatus;
-                await _stateStoreService.StoreAsync(_correlationId, stateData);
+                var stateDataException = new StateData
+                {
+                    SerialNumber = _context.Mini?.SerialNumber ?? "N/A",
+                    MessageType = QboxMessageType.Exception,
+                    Message = null,
+                    State = _context.Mini?.State ?? MiniState.Waiting,
+                    Status = _context.Mini?.QboxStatus
+                };
+                await _stateStoreService.StoreAsync(_correlationId, stateDataException);
 
-                _logger.LogError(exception, $"sn: {stateData.SerialNumber}");
+                _logger.LogError(exception, $"sn: {stateDataException.SerialNumber}");
 
                 throw;
             }
@@ -247,6 +261,7 @@ namespace QboxNext.Extensions.Implementations
                 _logger.LogError(info.exception, $"Error storing Payload '{info.details}'");
             }
         }
+
         private void BuildResult(ResponseType inResponseType)
         {
             // sequence number of the message received
