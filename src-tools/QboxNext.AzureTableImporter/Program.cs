@@ -15,6 +15,8 @@ namespace QboxNext.AzureTableImporter
     {
         static void Main(string[] args)
         {
+            string path = args[0];
+
             // Create ServiceCollection
             var services = new ServiceCollection();
 
@@ -23,9 +25,10 @@ namespace QboxNext.AzureTableImporter
             {
                 options.ServerTimeout = 60;
                 options.ConnectionString = "UseDevelopmentStorage=true;";
-                options.MeasurementsTableName = "QboxMeasurementsImport2421";
+                options.MeasurementsTableName = "QboxMeasurementsImport"; // + int.Parse(Path.GetFileNameWithoutExtension(path).Substring(14));
                 options.StatesTableName = "QboxStatesNotUsed";
             });
+
 
             // Add logging & services
             services.AddLogging(builder =>
@@ -51,7 +54,7 @@ namespace QboxNext.AzureTableImporter
             // Resolve service via DI
             var service = serviceProvider.GetService<ICounterStoreService>();
 
-            RunAsync(logger, service, args[0]).GetAwaiter().GetResult();
+            RunAsync(logger, service, path).GetAwaiter().GetResult();
         }
 
         private static async Task RunAsync(ILogger logger, ICounterStoreService service, string path)
