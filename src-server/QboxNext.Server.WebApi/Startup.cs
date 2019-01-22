@@ -5,9 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using NLog;
+using NLog.Extensions.AzureTables;
 using QboxNext.Logging;
 using QboxNext.Server.Infrastructure.Azure.Options;
 using QBoxNext.Server.Business.DependencyInjection;
+using System.Linq;
 
 namespace QboxNext.Server.WebApi
 {
@@ -35,8 +39,16 @@ namespace QboxNext.Server.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory, IOptions<AzureTableStorageOptions> options)
         {
+            // Update the ConnectionString from the TableStorageTarget
+            if (LogManager.Configuration.AllTargets.FirstOrDefault(t => t is TableStorageTarget) is TableStorageTarget target)
+            {
+                target.ConnectionString = options.Value.ConnectionString;
+                LogManager.ReconfigExistingLoggers();
+            }
+
+            // TODO : this needs to be in place until correct DI is added to QboxNext
             QboxNextLogProvider.LoggerFactory = logFactory;
 
             app.UseCorrelationId(new CorrelationIdOptions
