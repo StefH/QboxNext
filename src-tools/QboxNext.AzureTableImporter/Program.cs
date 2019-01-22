@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using QboxNext.Extensions.Interfaces.Public;
+using QboxNext.Extensions.Models.Public;
 using QboxNext.Infrastructure.Azure.Options;
 using QboxNext.Logging;
 using QboxNext.Qserver.Core.Utils;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace QboxNext.AzureTableImporter
 {
@@ -21,7 +23,7 @@ namespace QboxNext.AzureTableImporter
             {
                 options.ServerTimeout = 60;
                 options.ConnectionString = "UseDevelopmentStorage=true;";
-                options.MeasurementsTableName = "QboxMeasurementsImport";
+                options.MeasurementsTableName = "QboxMeasurementsImport2421";
                 options.StatesTableName = "QboxStatesNotUsed";
             });
 
@@ -49,11 +51,20 @@ namespace QboxNext.AzureTableImporter
             // Resolve service via DI
             var service = serviceProvider.GetService<ICounterStoreService>();
 
-            Run(logger, service, args[0]);
+            RunAsync(logger, service, args[0]).GetAwaiter().GetResult();
         }
 
-        private static void Run(ILogger logger, ICounterStoreService service, string path)
+        private static async Task RunAsync(ILogger logger, ICounterStoreService service, string path)
         {
+            string sn = Path.GetFileNameWithoutExtension(path).Substring(0, 13);
+            int counterId = int.Parse(Path.GetFileNameWithoutExtension(path).Substring(14));
+
+            var x = new CounterData
+            {
+                SerialNumber = sn,
+                CounterId = counterId
+            };
+
             using (var reader = new BinaryReader(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read)))
             {
                 DateTime startOfFile = DateTime.FromBinary(reader.ReadInt64()).Truncate(TimeSpan.FromMinutes(1));
@@ -64,6 +75,7 @@ namespace QboxNext.AzureTableImporter
                 logger.LogInformation("EndOfFile:   {0}", endOfFile);
                 logger.LogInformation("ID:          {0}", id);
 
+                ulong rawPrevious = 0;
                 long length = reader.BaseStream.Length;
                 DateTime currentTimestamp = startOfFile;
                 while (reader.BaseStream.Position < length)
@@ -73,20 +85,16 @@ namespace QboxNext.AzureTableImporter
                     ulong money = reader.ReadUInt64();
                     int quality = reader.ReadUInt16();
 
-                    //System.Console.Write(currentTimestamp.ToString("yyyy-MM-dd HH:mm : "));
-                    if (raw == ulong.MaxValue && kWh == 0 && money == 0 && quality == 0)
+                    if (raw != rawPrevious && raw < ulong.MaxValue)
                     {
-                        // System.Console.WriteLine("empty slot");
+                        logger.LogInformation($"{currentTimestamp:yyyy-MM-dd HH:mm} | {raw,10}");
+
+                        x.PulseValue = raw;
+                        x.MeasureTime = currentTimestamp;
+                        await service.StoreAsync(Guid.NewGuid().ToString(), x);
                     }
-                    else
-                    {
-                        if (raw < ulong.MaxValue)
-                        {
-                            logger.LogInformation($"{currentTimestamp:yyyy-MM-dd HH:mm} | {raw,10} | {kWh,10} | {money,10} | {quality,5}");
-                        }
-                        //var rawDisplay = raw == ulong.MaxValue ? "<none>" : raw.ToString(CultureInfo.InvariantCulture);
-                        //System.Console.WriteLine("{0,10}, {1,10}, {2,10}, {3,5}", rawDisplay, kWh, money, quality);
-                    }
+
+                    rawPrevious = raw;
 
                     currentTimestamp = currentTimestamp.AddMinutes(1);
                 }

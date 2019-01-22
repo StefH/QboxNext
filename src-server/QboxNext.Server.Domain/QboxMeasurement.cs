@@ -17,7 +17,5 @@ namespace QboxNext.Domain
         public DateTime MeasureTime { get; set; }
 
         public ulong PulseValue { get; set; }
-
-        public decimal PulsesPerUnit { get; set; }
     }
 }

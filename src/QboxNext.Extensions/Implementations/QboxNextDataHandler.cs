@@ -368,8 +368,7 @@ namespace QboxNext.Extensions.Implementations
                 SerialNumber = _context.Mini.SerialNumber,
                 MeasureTime = parseResult.Model.MeasurementTime,
                 CounterId = payload.InternalNr,
-                PulseValue = payload.Value,
-                PulsesPerUnit = counter.CounterSensorMappings.First().Formule
+                PulseValue = payload.Value
             };
             await _counterService.StoreAsync(_correlationId, counterData);
 

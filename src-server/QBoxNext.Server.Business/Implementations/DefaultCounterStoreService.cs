@@ -37,8 +37,7 @@ namespace QBoxNext.Business.Implementations
                 CounterId = counterData.CounterId,
                 LogTimeStamp = DateTime.UtcNow,
                 MeasureTime = counterData.MeasureTime,
-                PulseValue = counterData.PulseValue,
-                PulsesPerUnit = counterData.PulsesPerUnit
+                PulseValue = counterData.PulseValue
             };
 
             await _dataStoreService.StoreAsync(measurement);
