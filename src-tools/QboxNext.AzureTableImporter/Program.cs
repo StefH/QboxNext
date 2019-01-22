@@ -18,6 +18,7 @@ namespace QboxNext.AzureTableImporter
     {
         /// <summary>
         /// args[0] should be like 'C:\Users\***\Qbox\Qbox_xx-xx-xxx-xxx\xx-xx-xxx-xxx_0000'
+        /// args[1] can be the connectionString
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
@@ -31,7 +32,7 @@ namespace QboxNext.AzureTableImporter
             services.Configure<AzureTableStorageOptions>(options =>
             {
                 options.ServerTimeout = 60;
-                options.ConnectionString = "UseDevelopmentStorage=true;";
+                options.ConnectionString = args[1] ?? "UseDevelopmentStorage=true;";
                 options.MeasurementsTableName = "QboxMeasurementsImport";
                 options.StatesTableName = "QboxStatesNotUsed";
             });
@@ -82,7 +83,7 @@ namespace QboxNext.AzureTableImporter
             var l = sorted.Last();
             logger.LogInformation($"First: {f} and Last = {l}");
 
-            var groupedByMeasureTime = sorted.GroupBy(x => x.MeasureTime).ToList();
+            var groupedByMeasureTime = sorted.GroupBy(x => x.MeasureTime).Take(100).ToList();
 
             foreach (var grp in groupedByMeasureTime)
             {
