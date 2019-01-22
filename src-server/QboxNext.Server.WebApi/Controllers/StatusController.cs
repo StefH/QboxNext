@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 
-namespace QboxNext.WebApi.Controllers
+namespace QboxNext.Server.WebApi.Controllers
 {
     [ApiController]
     public class StatusController : ControllerBase

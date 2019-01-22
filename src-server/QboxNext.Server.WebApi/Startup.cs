@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using QboxNext.Infrastructure.Azure.Options;
 using QboxNext.Logging;
+using QboxNext.Server.Infrastructure.Azure.Options;
+using QBoxNext.Server.Business.DependencyInjection;
 
-namespace QboxNext.WebApi
+namespace QboxNext.Server.WebApi
 {
     public class Startup
     {

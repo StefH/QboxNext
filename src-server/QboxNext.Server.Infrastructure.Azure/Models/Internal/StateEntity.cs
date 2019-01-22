@@ -1,11 +1,11 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.WindowsAzure.Storage.Table;
-using QboxNext.Common.Validation;
-using QboxNext.Domain;
+using QboxNext.Server.Common.Validation;
+using QboxNext.Server.Domain;
 using System;
 using System.Linq;
 
-namespace QboxNext.Infrastructure.Azure.Models.Internal
+namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
 {
     public class StateEntity : TableEntity
     {

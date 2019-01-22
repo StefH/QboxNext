@@ -1,13 +1,13 @@
 ﻿using JetBrains.Annotations;
 using QboxNext.Core.Utils;
-using QboxNext.Domain;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
-using QboxNext.Infrastructure.Azure.Interfaces.Public;
+using QboxNext.Server.Domain;
+using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using System;
 using System.Threading.Tasks;
 
-namespace QBoxNext.Business.Implementations
+namespace QBoxNext.Server.Business.Implementations
 {
     internal class DefaultCounterStoreService : ICounterStoreService
     {

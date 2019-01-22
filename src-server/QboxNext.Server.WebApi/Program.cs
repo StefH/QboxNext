@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
-using System;
 
-namespace QboxNext.WebApi
+namespace QboxNext.Server.WebApi
 {
     public class Program
     {

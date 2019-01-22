@@ -1,14 +1,14 @@
-﻿using CorrelationId;
+﻿using System.IO;
+using System.Threading.Tasks;
+using CorrelationId;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
-using System.IO;
-using System.Threading.Tasks;
 
-namespace QboxNext.WebApi.Controllers
+namespace QboxNext.Server.WebApi.Controllers
 {
     [ApiController]
     public class DeviceController : ControllerBase

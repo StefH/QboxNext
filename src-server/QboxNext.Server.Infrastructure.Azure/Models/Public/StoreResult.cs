@@ -1,4 +1,4 @@
-﻿namespace QboxNext.Infrastructure.Azure.Models.Public
+﻿namespace QboxNext.Server.Infrastructure.Azure.Models.Public
 {
     public class StoreResult
     {

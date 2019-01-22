@@ -3,17 +3,17 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using QboxNext.Common.Extensions;
-using QboxNext.Common.Validation;
-using QboxNext.Domain;
-using QboxNext.Infrastructure.Azure.Interfaces.Public;
-using QboxNext.Infrastructure.Azure.Models.Internal;
-using QboxNext.Infrastructure.Azure.Models.Public;
-using QboxNext.Infrastructure.Azure.Options;
+using QboxNext.Server.Common.Extensions;
+using QboxNext.Server.Common.Validation;
+using QboxNext.Server.Domain;
+using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
+using QboxNext.Server.Infrastructure.Azure.Models.Internal;
+using QboxNext.Server.Infrastructure.Azure.Models.Public;
+using QboxNext.Server.Infrastructure.Azure.Options;
 using System;
 using System.Threading.Tasks;
 
-namespace QboxNext.Infrastructure.Azure.Implementations
+namespace QboxNext.Server.Infrastructure.Azure.Implementations
 {
     internal class DataStoreService : IDataStoreService
     {
@@ -52,7 +52,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
 
             var insertOperation = TableOperation.Insert(entity);
 
-            _logger.LogInformation($"Inserting measurement for entity '{entity.RowKey}' into Azure Table '{_measurementsTable.Name}'");
+            _logger.LogInformation($"Inserting measurement for '{qboxMeasurement.SerialNumber}' with key '{entity.RowKey}' into Azure Table '{_measurementsTable.Name}'");
             var result = await _measurementsTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout);
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
@@ -66,7 +66,7 @@ namespace QboxNext.Infrastructure.Azure.Implementations
 
             var insertOperation = TableOperation.Insert(entity);
 
-            _logger.LogInformation($"Inserting state for entity '{entity.RowKey}' into Azure Table '{_statesTable.Name}'");
+            _logger.LogInformation($"Inserting state for '{qboxState.SerialNumber}' with key '{entity.RowKey}' into Azure Table '{_statesTable.Name}'");
             var result = await _statesTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout);
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };

@@ -1,17 +1,17 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.WindowsAzure.Storage.Table;
-using QboxNext.Common.Validation;
-using QboxNext.Domain;
+using QboxNext.Server.Common.Validation;
+using QboxNext.Server.Domain;
 using System;
 
-namespace QboxNext.Infrastructure.Azure.Models.Internal
+namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
 {
     public class MeasurementEntity : TableEntity
     {
         public string CorrelationId { get; set; }
 
         public DateTime LogTimeStamp { get; set; }
-        
+
         public DateTime MeasureTime { get; set; }
 
         public int CounterId { get; set; }

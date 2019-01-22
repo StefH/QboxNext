@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace QboxNext.Common.Extensions
+namespace QboxNext.Server.Common.Extensions
 {
     public static class TaskExtensions
     {

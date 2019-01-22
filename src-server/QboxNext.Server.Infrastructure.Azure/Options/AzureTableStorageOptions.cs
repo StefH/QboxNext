@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace QboxNext.Infrastructure.Azure.Options
+namespace QboxNext.Server.Infrastructure.Azure.Options
 {
     public class AzureTableStorageOptions
     {

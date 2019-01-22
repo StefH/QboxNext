@@ -1,7 +1,7 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System;
 
-namespace QboxNext.Domain
+namespace QboxNext.Server.Domain
 {
     public class QboxMeasurement
     {

@@ -9,7 +9,7 @@ using System.Linq;
 using JetBrains.Annotations;
 
 // Copied from https://github.com/aspnet/EntityFramework/blob/dev/src/Shared/Check.cs
-namespace QboxNext.Common.Validation
+namespace QboxNext.Server.Common.Validation
 {
     [ExcludeFromCodeCoverage]
     [DebuggerStepThrough]

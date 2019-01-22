@@ -2,12 +2,13 @@
 using Microsoft.Extensions.Logging;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
-using QboxNext.Infrastructure.Azure.Options;
 using QboxNext.Logging;
 using QboxNext.Qserver.Core.Utils;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using QboxNext.Server.Infrastructure.Azure.Options;
+using QBoxNext.Server.Business.DependencyInjection;
 
 namespace QboxNext.AzureTableImporter
 {

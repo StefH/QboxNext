@@ -1,9 +1,9 @@
-﻿using JetBrains.Annotations;
-using QboxNext.Domain;
-using QboxNext.Infrastructure.Azure.Models.Public;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using JetBrains.Annotations;
+using QboxNext.Server.Domain;
+using QboxNext.Server.Infrastructure.Azure.Models.Public;
 
-namespace QboxNext.Infrastructure.Azure.Interfaces.Public
+namespace QboxNext.Server.Infrastructure.Azure.Interfaces.Public
 {
     public interface IDataStoreService
     {
