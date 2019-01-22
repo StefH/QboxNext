@@ -76,7 +76,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
             Guard.NotNull(qboxState, nameof(qboxState));
 
             PartitionKey = qboxState.SerialNumber;
-            RowKey = $"{qboxState.LogTime.Ticks}:{qboxState.MessageType}";
+            RowKey = $"{DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks:d19}:{qboxState.MessageType}";
 
             CorrelationId = qboxState.CorrelationId;
             LogTimeStamp = qboxState.LogTime;

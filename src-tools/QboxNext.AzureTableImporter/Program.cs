@@ -41,7 +41,7 @@ namespace QboxNext.AzureTableImporter
             services.AddLogging(builder =>
             {
                 builder.SetMinimumLevel(LogLevel.Trace);
-                // builder.AddConsole();
+                builder.AddConsole();
                 builder.AddDebug();
             });
             services.AddBusiness();
@@ -68,6 +68,7 @@ namespace QboxNext.AzureTableImporter
 
         private static async Task RunAsync(ILogger logger, ICounterStoreService service, string path)
         {
+            int round = 5;
             string sn = Path.GetFileNameWithoutExtension(path).Substring(0, 13);
             string[] counterIds = { "0181", "0182", "0281", "0282", "2421" };
 
@@ -75,22 +76,56 @@ namespace QboxNext.AzureTableImporter
             foreach (var counterId in counterIds)
             {
                 var result = ReadFile(logger, path + counterId + ".qbx", sn, int.Parse(counterId));
+
                 list.Add(counterId, result);
             }
 
-            var sorted = list.Values.SelectMany(v => v).OrderBy(k => k.MeasureTime).ToList();
-            var f = sorted.First();
-            var l = sorted.Last();
+            var values = list.Values.SelectMany(v => v).ToList();
+            var f = values.First();
+            var l = values.Last();
             logger.LogInformation($"First: {f} and Last = {l}");
 
-            var groupedByMeasureTime = sorted.GroupBy(x => x.MeasureTime).Take(100).ToList();
+            var grouped = from v in values
+                          group v by new
+                          {
+                              v.SerialNumber,
+                              v.CounterId,
+                              MeasureTimeRounded = new DateTime(v.MeasureTime.Year, v.MeasureTime.Month, v.MeasureTime.Day, v.MeasureTime.Hour, (v.MeasureTime.Minute / round) * round, 0)
+                          }
+                          into g
+                          select new CounterData
+                          {
+                              SerialNumber = g.Key.SerialNumber,
+                              CounterId = g.Key.CounterId,
+                              MeasureTime = g.Key.MeasureTimeRounded,
+                              PulseValue = g.Max(s => s.PulseValue)
+                          };
 
-            foreach (var grp in groupedByMeasureTime)
+            var sorted = grouped.OrderBy(k => k.MeasureTime).ToList();
+            var sortedAndGrouped = sorted.GroupBy(s => s.MeasureTime).ToList();
+
+            Console.WriteLine($"sorted           Count = {sorted.Count}");
+            Console.WriteLine($"sortedAndGrouped Count = {sortedAndGrouped.Count}");
+
+            int i = 0;
+            var batch = new List<(string guid, CounterData counterData)>();
+            foreach (var grp in sortedAndGrouped)
             {
                 string guid = Guid.NewGuid().ToString();
                 foreach (var x in grp)
                 {
-                    await service.StoreAsync(guid, x);
+                    if (batch.Count < 100)
+                    {
+                        batch.Add((guid, x));
+                    }
+                    else
+                    {
+                        i = i + 100;
+                        Console.WriteLine($"{100.0 * i / sorted.Count:F}%");
+
+                        await service.StoreAsync(batch);
+                        batch.Clear();
+                    }
                 }
             }
         }
@@ -126,7 +161,7 @@ namespace QboxNext.AzureTableImporter
                         {
                             SerialNumber = sn,
                             CounterId = counterId,
-                            PulseValue = raw,
+                            PulseValue = Convert.ToInt32(raw),
                             MeasureTime = currentTimestamp
                         };
                         result.Add(counterData);

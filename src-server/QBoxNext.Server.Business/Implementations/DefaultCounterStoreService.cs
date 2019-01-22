@@ -5,6 +5,7 @@ using QboxNext.Extensions.Models.Public;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace QBoxNext.Server.Business.Implementations
@@ -41,6 +42,28 @@ namespace QBoxNext.Server.Business.Implementations
             };
 
             await _dataStoreService.StoreAsync(measurement);
+        }
+
+        public async Task StoreAsync(IList<(string correlationId, CounterData counterData)> counters)
+        {
+            Guard.IsNotNull(counters, nameof(counters));
+
+            var measurements = new List<QboxMeasurement>();
+            foreach (var counter in counters)
+            {
+                var measurement = new QboxMeasurement
+                {
+                    CorrelationId = counter.correlationId,
+                    SerialNumber = counter.counterData.SerialNumber,
+                    CounterId = counter.counterData.CounterId,
+                    LogTimeStamp = DateTime.UtcNow,
+                    MeasureTime = counter.counterData.MeasureTime,
+                    PulseValue = counter.counterData.PulseValue
+                };
+                measurements.Add(measurement);
+            }
+
+            await _dataStoreService.StoreAsync(measurements);
         }
     }
 }

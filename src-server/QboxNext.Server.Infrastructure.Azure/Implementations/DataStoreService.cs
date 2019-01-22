@@ -11,6 +11,8 @@ using QboxNext.Server.Infrastructure.Azure.Models.Internal;
 using QboxNext.Server.Infrastructure.Azure.Models.Public;
 using QboxNext.Server.Infrastructure.Azure.Options;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QboxNext.Server.Infrastructure.Azure.Implementations
@@ -56,6 +58,31 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             var result = await _measurementsTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout);
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
+        }
+
+        public async Task<IList<StoreResult>> StoreAsync(IList<QboxMeasurement> qboxMeasurements)
+        {
+            Guard.NotNull(qboxMeasurements, nameof(qboxMeasurements));
+            Guard.Condition(qboxMeasurements, q => q.Count <= 100, nameof(qboxMeasurements));
+
+            var entities = qboxMeasurements.Select(qboxMeasurement => new MeasurementEntity(qboxMeasurement)).ToList();
+            var batch = new TableBatchOperation();
+            foreach (var entity in entities)
+            {
+                batch.Insert(entity);
+            }
+
+            try
+            {
+                var results = await _measurementsTable.ExecuteBatchAsync(batch).TimeoutAfter(_serverTimeout);
+
+                return results.Select(result => new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag }).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<StoreResult> StoreAsync(QboxState qboxState)

@@ -39,7 +39,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
             Guard.NotNull(qboxMeasurement, nameof(qboxMeasurement));
 
             PartitionKey = qboxMeasurement.SerialNumber;
-            RowKey = $"{qboxMeasurement.LogTimeStamp.Ticks}:{qboxMeasurement.CounterId:D4}";
+            RowKey = $"{DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks:d19}:{qboxMeasurement.CounterId:D4}";
 
             CorrelationId = qboxMeasurement.CorrelationId;
             LogTimeStamp = qboxMeasurement.LogTimeStamp;

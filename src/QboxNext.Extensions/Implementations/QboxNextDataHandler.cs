@@ -383,7 +383,7 @@ namespace QboxNext.Extensions.Implementations
                 SerialNumber = _context.Mini.SerialNumber,
                 MeasureTime = parseResult.Model.MeasurementTime,
                 CounterId = payload.InternalNr,
-                PulseValue = payload.Value
+                PulseValue = Convert.ToInt32(payload.Value)
             };
             await _counterService.StoreAsync(_correlationId, counterData);
 
