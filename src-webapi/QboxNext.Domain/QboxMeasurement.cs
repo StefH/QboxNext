@@ -11,9 +11,8 @@ namespace QboxNext.Domain
 
         public int CounterId { get; set; }
 
-        [NotNull] public string SerialNumber { get; set; }
-
-        [NotNull] public string ProductNumber { get; set; }
+        [NotNull]
+        public string SerialNumber { get; set; }
 
         public DateTime MeasureTime { get; set; }
 

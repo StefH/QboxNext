@@ -19,7 +19,6 @@ namespace QboxNext.Extensions.Implementations
 
             var mini = new MiniPoco
             {
-                Id = productNumber, // TODO : HACK
                 SerialNumber = serialNumber,
                 Counters = new List<CounterPoco>
                 {

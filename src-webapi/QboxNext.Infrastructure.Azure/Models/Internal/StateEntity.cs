@@ -13,10 +13,6 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
 
         public DateTime LogTimeStamp { get; set; }
 
-        public string ProductNumber { get; set; }
-
-        public string SerialNumber { get; set; }
-
         public string MessageType { get; set; }
 
         public string Message { get; set; }
@@ -79,12 +75,10 @@ namespace QboxNext.Infrastructure.Azure.Models.Internal
         {
             Guard.NotNull(qboxState, nameof(qboxState));
 
-            PartitionKey = $"{qboxState.ProductNumber}:{qboxState.SerialNumber}";
+            PartitionKey = qboxState.SerialNumber;
             RowKey = $"{qboxState.LogTime.Ticks}:{qboxState.MessageType}";
 
             CorrelationId = qboxState.CorrelationId;
-            ProductNumber = qboxState.ProductNumber;
-            SerialNumber = qboxState.SerialNumber;
             LogTimeStamp = qboxState.LogTime;
             MessageType = qboxState.MessageType;
             Message = qboxState.Message;

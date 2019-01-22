@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using QboxNext.Logging;
-using QboxNext.Qboxes.Parsing.Factories;
+using QboxNext.Qboxes.Parsing.Extensions;
 using QboxNext.Qserver.Classes;
 using QboxNext.Qserver.Core.DataStore;
 using QboxNext.Qserver.Core.Factories;
@@ -28,6 +28,8 @@ namespace QboxNext.Qserver
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IQboxDataDumpContextFactory>(new QboxDataDumpContextFactory());
+
+            services.AddParsers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,7 +37,6 @@ namespace QboxNext.Qserver
         {
             QboxNextLogProvider.LoggerFactory = logFactory;
 
-            ParserFactory.RegisterAllParsers();
             StorageProviderFactory.Register(StorageProvider.kWhStorage, typeof(kWhStorage));
             ClientRepositories.Queue = new MemoryQueue<string>();
 

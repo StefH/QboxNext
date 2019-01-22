@@ -711,7 +711,7 @@ namespace QboxNext.Qserver.Core.DataStore
             var filename = String.IsNullOrEmpty(StorageId) ?
                 $"{SerialNumber}_{Counter:00000000}.{Extension}" :
                 $"{StorageId}.{Extension}";
-            var result = Path.Combine(GetDirectory(), filename);
+            var result = Path.GetFullPath(Path.Combine(GetDirectory(), filename));
             return result;
         }
 

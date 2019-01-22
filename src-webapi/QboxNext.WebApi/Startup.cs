@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using QboxNext.Infrastructure.Azure.Options;
 using QboxNext.Logging;
-using QboxNext.Qboxes.Parsing.Factories;
 
 namespace QboxNext.WebApi
 {
@@ -26,8 +25,9 @@ namespace QboxNext.WebApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Add External services
-            services.AddCorrelationId();
-            services.AddBusiness();
+            services
+                .AddBusiness()
+                .AddCorrelationId();
 
             // Configure
             services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
@@ -37,9 +37,6 @@ namespace QboxNext.WebApi
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory)
         {
             QboxNextLogProvider.LoggerFactory = logFactory;
-
-            // TODO: move to QboxNext.Extensions
-            ParserFactory.RegisterAllParsers();
 
             app.UseCorrelationId(new CorrelationIdOptions
             {

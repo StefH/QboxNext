@@ -12,9 +12,11 @@ using QboxNext.Qserver.Core.Utils;
 
 namespace QboxNext.Qserver.Core.DataStore
 {
+    [TestFixture]
+    [NonParallelizable]
     public class KWhStorageTest
     {
-        private const string BaseDir = @".\Temp\KWhStorageTest";
+        private const string BaseDir = @"./Temp/KWhStorageTest";
 
         [SetUp]
         public void SetUp()
@@ -47,7 +49,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 target.SetValue(measureTime, 5, 5, 5);
             }
             // assert
-            Assert.IsTrue(File.Exists(BaseDir + "\\Qbox_Serial\\Serial_00000001.qbx"));
+            Assert.IsTrue(File.Exists(GetTestPath("Qbox_Serial/Serial_00000001.qbx")));
         }
 
 
@@ -67,7 +69,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 target.SetValue(measureTime, 5, 5, 5);
             }
             // assert
-            Assert.IsTrue(File.Exists(BaseDir + "\\Qbox_Serial\\MyStorageid-counterid.qbx"));
+            Assert.IsTrue(File.Exists(GetTestPath("Qbox_Serial/MyStorageid-counterid.qbx")));
         }
 
 
@@ -78,6 +80,7 @@ namespace QboxNext.Qserver.Core.DataStore
         public void SetValueShouldWriteTheRecordToFileAtOffsetTest()
         {
             // arrange
+            string testPath = GetTestPath("Qbox_Serial/Serial_00000001.qbx");
             const int counter = 1;
 
             var measureTime = DateTime.Now;
@@ -90,9 +93,9 @@ namespace QboxNext.Qserver.Core.DataStore
 
             // assert
 
-            Assert.IsTrue(File.Exists(BaseDir + "\\Qbox_Serial\\Serial_00000001.qbx"));
+            Assert.IsTrue(File.Exists(testPath));
             const int offset = 32;
-            using (var reader = new BinaryReader(File.OpenRead(BaseDir + "\\Qbox_Serial\\Serial_00000001.qbx")))
+            using (var reader = new BinaryReader(File.OpenRead(testPath)))
             {
                 reader.BaseStream.Seek(offset, SeekOrigin.Begin);
                 Assert.AreEqual(25, reader.ReadUInt64());
@@ -595,7 +598,7 @@ namespace QboxNext.Qserver.Core.DataStore
             using (var storageProvider = new kWhStorage("12-13-001-075", BaseDir, 1, Precision.Wh))
             {
                 // assert
-                const string fileName = BaseDir + "\\Qbox_12-13-001-075\\12-13-001-075_00000001.qbx";
+                string fileName = GetTestPath("Qbox_12-13-001-075/12-13-001-075_00000001.qbx");
                 Assert.IsTrue(File.Exists(fileName));
                 for (int i = 0; i < 10; i++)
                 {
@@ -934,6 +937,11 @@ namespace QboxNext.Qserver.Core.DataStore
                 var record = storage.FindPrevious(baseTimestamp.AddMinutes(1));
                 Assert.AreEqual(baseTimestamp.TruncateToMinute(), record.Time);
             }
+        }
+
+        private static string GetTestPath(string relativePath)
+        {
+            return Path.GetFullPath(Path.Combine(BaseDir, relativePath));
         }
     }
 }

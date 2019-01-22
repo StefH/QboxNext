@@ -16,7 +16,6 @@ namespace QboxNext.Qservice
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            StorageProviderFactory.Register(StorageProvider.kWhStorage, typeof(kWhStorage));
         }
 
         public IConfiguration Configuration { get; }
@@ -36,6 +35,8 @@ namespace QboxNext.Qservice
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory)
         {
             QboxNextLogProvider.LoggerFactory = logFactory;
+
+            StorageProviderFactory.Register(StorageProvider.kWhStorage, typeof(kWhStorage));
 
             if (env.IsDevelopment())
             {

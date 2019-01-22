@@ -19,7 +19,6 @@ namespace QBoxNext.Business.Implementations
         /// Initializes a new instance of the <see cref="DefaultStateStoreService"/> class.
         /// </summary>
         /// <param name="dataStoreService">The data store service.</param>
-        /// <param name="logger">The logger.</param>
         public DefaultStateStoreService([NotNull] IDataStoreService dataStoreService)
         {
             Guard.IsNotNull(dataStoreService, nameof(dataStoreService));
@@ -38,7 +37,6 @@ namespace QBoxNext.Business.Implementations
                 CorrelationId = correlationId,
                 LogTime = DateTime.UtcNow,
                 SerialNumber = stateData.SerialNumber,
-                ProductNumber = stateData.ProductNumber,
                 MessageType = stateData.MessageType.ToString(),
                 Message = stateData.Message,
                 State = stateData.State.ToString(),
