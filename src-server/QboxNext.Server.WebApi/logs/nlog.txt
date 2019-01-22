@@ -1,0 +1,61 @@
+2019-01-21 20:02:56.7933 Error Parsing configuration from C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\src-webapi\QboxNext.WebApi\bin\Debug\netcoreapp2.1\nlog.config failed. Exception: NLog.NLogConfigurationException: Exception when parsing C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\src-webapi\QboxNext.WebApi\bin\Debug\netcoreapp2.1\nlog.config.  ---> NLog.NLogConfigurationException: Cannot access the constructor of type: NLog.Extensions.AzureTables.TableStorageTarget. Is the required permission granted? ---> System.MissingMethodException: No parameterless constructor defined for this object.
+   at System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean wrapExceptions, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor)
+   at System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean wrapExceptions, Boolean skipCheckThis, Boolean fillCache)
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic, Boolean wrapExceptions)
+   at NLog.Internal.FactoryHelper.CreateInstance(Type t)
+   --- End of inner exception stack trace ---
+   at NLog.Internal.FactoryHelper.CreateInstance(Type t)
+   at NLog.Config.Factory`2.TryCreateInstance(String itemName, TBaseType& result)
+   at NLog.Config.Factory`2.CreateInstance(String name)
+   at NLog.Config.XmlLoggingConfiguration.ParseTargetsElement(NLogXmlElement targetsElement)
+   at NLog.Config.XmlLoggingConfiguration.ParseNLogElement(NLogXmlElement nlogElement, String filePath, Boolean autoReloadDefault)
+   at NLog.Config.XmlLoggingConfiguration.Initialize(XmlReader reader, String fileName, Boolean ignoreErrors)
+   --- End of inner exception stack trace ---
+2019-01-21 20:03:08.6229 Error Parsing configuration from C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\src-webapi\QboxNext.WebApi\bin\Debug\netcoreapp2.1\nlog.config failed. Exception: NLog.NLogConfigurationException: Exception when parsing C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\src-webapi\QboxNext.WebApi\bin\Debug\netcoreapp2.1\nlog.config.  ---> NLog.NLogConfigurationException: Cannot access the constructor of type: NLog.Extensions.AzureTables.TableStorageTarget. Is the required permission granted? ---> System.MissingMethodException: No parameterless constructor defined for this object.
+   at System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean wrapExceptions, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor)
+   at System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean wrapExceptions, Boolean skipCheckThis, Boolean fillCache)
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic, Boolean wrapExceptions)
+   at NLog.Internal.FactoryHelper.CreateInstance(Type t)
+   --- End of inner exception stack trace ---
+   at NLog.Internal.FactoryHelper.CreateInstance(Type t)
+   at NLog.Config.Factory`2.TryCreateInstance(String itemName, TBaseType& result)
+   at NLog.Config.Factory`2.CreateInstance(String name)
+   at NLog.Config.XmlLoggingConfiguration.ParseTargetsElement(NLogXmlElement targetsElement)
+   at NLog.Config.XmlLoggingConfiguration.ParseNLogElement(NLogXmlElement nlogElement, String filePath, Boolean autoReloadDefault)
+   at NLog.Config.XmlLoggingConfiguration.Initialize(XmlReader reader, String fileName, Boolean ignoreErrors)
+   --- End of inner exception stack trace ---
+2019-01-21 20:06:32.8572 Error Parsing configuration from C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\src-webapi\QboxNext.WebApi\bin\Debug\netcoreapp2.1\nlog.config failed. Exception: NLog.NLogConfigurationException: Exception when parsing C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\src-webapi\QboxNext.WebApi\bin\Debug\netcoreapp2.1\nlog.config.  ---> NLog.NLogConfigurationException: Cannot access the constructor of type: NLog.Extensions.AzureTables.TableStorageTarget. Is the required permission granted? ---> System.MissingMethodException: No parameterless constructor defined for this object.
+   at System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean wrapExceptions, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor)
+   at System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean wrapExceptions, Boolean skipCheckThis, Boolean fillCache)
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic, Boolean wrapExceptions)
+   at NLog.Internal.FactoryHelper.CreateInstance(Type t)
+   --- End of inner exception stack trace ---
+   at NLog.Internal.FactoryHelper.CreateInstance(Type t)
+   at NLog.Config.Factory`2.TryCreateInstance(String itemName, TBaseType& result)
+   at NLog.Config.Factory`2.CreateInstance(String name)
+   at NLog.Config.XmlLoggingConfiguration.ParseTargetsElement(NLogXmlElement targetsElement)
+   at NLog.Config.XmlLoggingConfiguration.ParseNLogElement(NLogXmlElement nlogElement, String filePath, Boolean autoReloadDefault)
+   at NLog.Config.XmlLoggingConfiguration.Initialize(XmlReader reader, String fileName, Boolean ignoreErrors)
+   --- End of inner exception stack trace ---
+2019-01-21 20:42:24.7724 Error Error has been raised. Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at NLog.Extensions.AzureTables.TableStorageTarget.Write(LogEventInfo logEvent) in C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\TableStorageTarget.cs:line 129
+   at NLog.Targets.Target.Write(AsyncLogEventInfo logEvent)
+2019-01-21 20:42:25.9024 Error AsyncWrapper(Name=AzureTable): Error in lazy writer timer procedure. Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at NLog.Extensions.AzureTables.TableStorageTarget.Write(LogEventInfo logEvent) in C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\TableStorageTarget.cs:line 129
+   at NLog.Targets.Target.Write(AsyncLogEventInfo logEvent)
+   at NLog.Targets.Target.Write(IList`1 logEvents)
+   at NLog.Extensions.AzureTables.TableStorageTarget.Write(IList`1 logEvents) in C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\TableStorageTarget.cs:line 153
+   at NLog.Targets.Target.WriteAsyncThreadSafe(IList`1 logEvents)
+   at NLog.Targets.Target.WriteAsyncLogEvents(IList`1 logEvents)
+   at NLog.Targets.Wrappers.AsyncTargetWrapper.WriteEventsInQueue(Int32 batchSize, String reason)
+   at NLog.Targets.Wrappers.AsyncTargetWrapper.ProcessPendingEvents(Object state)
+2019-01-21 20:42:27.1573 Error Error has been raised. Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at NLog.Extensions.AzureTables.TableStorageTarget.Write(IList`1 logEvents) in C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\TableStorageTarget.cs:line 165
+   at NLog.Targets.Target.WriteAsyncThreadSafe(IList`1 logEvents)
+   at NLog.Targets.Target.WriteAsyncLogEvents(IList`1 logEvents)
+2019-01-21 20:42:27.1573 Error AsyncWrapper(Name=AzureTable): Error in lazy writer timer procedure. Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at NLog.Extensions.AzureTables.TableStorageTarget.Write(IList`1 logEvents) in C:\Users\StefHeyenrath\Documents\GitHub\QboxNext\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\TableStorageTarget.cs:line 165
+   at NLog.Targets.Target.WriteAsyncThreadSafe(IList`1 logEvents)
+   at NLog.Targets.Target.WriteAsyncLogEvents(IList`1 logEvents)
+   at NLog.Targets.Wrappers.AsyncTargetWrapper.WriteEventsInQueue(Int32 batchSize, String reason)
+   at NLog.Targets.Wrappers.AsyncTargetWrapper.ProcessPendingEvents(Object state)

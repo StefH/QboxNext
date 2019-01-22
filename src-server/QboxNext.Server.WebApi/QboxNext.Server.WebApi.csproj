@@ -27,8 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\NLog.Extensions.AzureTables.csproj" />
-    <ProjectReference Include="..\QBoxNext.Business\QBoxNext.Business.csproj" />
-    <ProjectReference Include="..\QboxNext.Infrastructure.Azure\QboxNext.Infrastructure.Azure.csproj" />
+    <ProjectReference Include="..\QBoxNext.Server.Business\QBoxNext.Server.Business.csproj" />
+    <ProjectReference Include="..\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />
   </ItemGroup>
 
 </Project>
