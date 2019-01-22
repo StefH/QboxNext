@@ -336,3 +336,4 @@ ASALocalRun/
 /src-docker/QboxNext.Server.WebApi.Docker/logs/nlog.txt
 /src-webapi/QboxNext.Server.WebApi/logs/nlog.txt
 src-docker/QboxNext\.WebApi\.Docker/logs/nlog\.txt
+/src-server/QboxNext.Server.WebApi/logs/nlog.txt
