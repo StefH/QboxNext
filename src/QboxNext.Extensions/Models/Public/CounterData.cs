@@ -12,8 +12,6 @@ namespace QboxNext.Extensions.Models.Public
 
         public int CounterId { get; set; }
 
-        public ulong PulseValue { get; set; }
-
-        public decimal PulsesPerUnit { get; set; }
+        public int PulseValue { get; set; }
     }
 }

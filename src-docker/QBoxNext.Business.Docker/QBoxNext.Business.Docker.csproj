@@ -7,26 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Extensions\ServiceCollectionExtensions.cs" Link="Extensions\ServiceCollectionExtensions.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\DefaultCounterStoreService.cs" Link="Implementations\DefaultCounterStoreService.cs" />
-    <Compile Include="..\..\src-webapi\QBoxNext.Business\Implementations\DefaultStateStoreService.cs" Link="Implementations\DefaultStateStoreService.cs" />
+    <Compile Include="..\..\src-server\QBoxNext.Server.Business\DependencyInjection\ServiceCollectionExtensions.cs" Link="DependencyInjection\ServiceCollectionExtensions.cs" />
+    <Compile Include="..\..\src-server\QBoxNext.Server.Business\Implementations\DefaultCounterStoreService.cs" Link="Implementations\DefaultCounterStoreService.cs" />
+    <Compile Include="..\..\src-server\QBoxNext.Server.Business\Implementations\DefaultStateStoreService.cs" Link="Implementations\DefaultStateStoreService.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
+    <Folder Include="DependencyInjection\" />
     <Folder Include="Implementations\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Models\" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <PackageReference Include="QboxNext.Extensions" Version="1.0.2" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src-webapi\QboxNext.Common\QboxNext.Common.csproj" />
-    <ProjectReference Include="..\..\src-webapi\QboxNext.Domain\QboxNext.Domain.csproj" />
-    <ProjectReference Include="..\..\src-webapi\QboxNext.Infrastructure.Azure\QboxNext.Infrastructure.Azure.csproj" />
+    <ProjectReference Include="..\..\src-server\QboxNext.Server.Common\QboxNext.Server.Common.csproj" />
+    <ProjectReference Include="..\..\src-server\QboxNext.Server.Domain\QboxNext.Server.Domain.csproj" />
+    <ProjectReference Include="..\..\src-server\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />
+    <ProjectReference Include="..\..\src\QboxNext.Extensions\QboxNext.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

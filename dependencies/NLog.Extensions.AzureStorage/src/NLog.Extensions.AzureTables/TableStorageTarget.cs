@@ -30,7 +30,17 @@ namespace NLog.Extensions.AzureTables
         [PublicAPI]
         [NotNull]
         [RequiredParameter]
-        public string ConnectionString { get; set; } = "UseDevelopmentStorage=true;";
+        public string ConnectionString
+        {
+            get => _connectionString;
+
+            set
+            {
+                _connectionString = value;
+                CreateClient();
+            }
+        }
+        private string _connectionString;
 
         [PublicAPI]
         [RequiredParameter]
@@ -62,14 +72,19 @@ namespace NLog.Extensions.AzureTables
 
             _machineName = GetMachineName();
 
+            CreateClient();
+        }
+
+        private void CreateClient()
+        {
             try
             {
-                _client = CloudStorageAccount.Parse(ConnectionString).CreateCloudTableClient();
+                _client = CloudStorageAccount.Parse(_connectionString).CreateCloudTableClient();
                 InternalLogger.Trace("AzureTableStorageTarget - Initialized");
             }
             catch (Exception ex)
             {
-                InternalLogger.Error(ex, "AzureTableStorageTarget(Name={0}): Failed to create TableClient with connectionString={1}.", Name, ConnectionString);
+                InternalLogger.Error(ex, "AzureTableStorageTarget(Name={0}): Failed to create TableClient with connectionString={1}.", Name, _connectionString);
                 throw;
             }
         }

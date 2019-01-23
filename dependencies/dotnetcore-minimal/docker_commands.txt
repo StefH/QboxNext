@@ -1,0 +1,21 @@
+Publishing a project (for Release) so that it can be copied and ran in the container:
+
+	dotnet publish QboxNext.Qserver.csproj -c Release
+
+Building a Docker image using a Dockerfile in current folder:
+
+	sudo docker build -t "qserver" . 
+
+Running the image you just built:
+
+	sudo docker run -p 8888:5000 qserver --restart=always
+
+Listing all Docker containers
+	
+	sudo docker container ps -a
+
+Removing all exited containers
+
+	sudo docker container prune
+
+
