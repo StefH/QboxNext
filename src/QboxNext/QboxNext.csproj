@@ -41,11 +41,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Logging\obj\**\*.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Logging\**\*.cs" />
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Model\obj\**\*.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Model\**\*.cs" />
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\obj\**\*.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\**\*.cs" />
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\obj\**\*.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\**\*.cs" />
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Qserver.Core\obj\**\*.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qserver.Core\**\*.cs" />
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Logging\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Logging\**\*.cs" />
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Model\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Model\**\*.cs" />
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\**\*.cs" />
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\**\*.cs" />
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Qserver.Core\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qserver.Core\**\*.cs" />
   </ItemGroup>
 
 </Project>

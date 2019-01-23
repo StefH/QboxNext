@@ -9,12 +9,12 @@ variables:
   tag: '1.0.0'
 
 steps:
-#- task: DotNetCoreCLI@2
-#  displayName: 'Restore and Build'
-#  inputs:
-#    command: build
-#    projects: '$(buildProjects)'
-#    arguments: '--configuration $(BuildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: 'Restore and Build'
+  inputs:
+    command: build
+    projects: '$(buildProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
 
 #- task: DotNetCoreCLI@2
 #  displayName: Test
@@ -38,6 +38,7 @@ steps:
 
 - script: docker tag $(DOCKER_ID)/$(imageName):latest $(DOCKER_ID)/$(imageName):$(tag)
   displayName: 'Tag Docker image [$(imageName):$(tag)]'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
 
 # https://stackoverflow.com/questions/51489359/docker-using-password-via-the-cli-is-insecure-use-password-stdin
 - script: |
@@ -45,6 +46,7 @@ steps:
     docker push $(DOCKER_ID)/$(imageName):latest
     docker push $(DOCKER_ID)/$(imageName):$(tag)
   displayName: 'Push Docker images [$(imageName):latest and $(imageName):$(tag)]'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
 
 #- task: PublishBuildArtifacts@1
 #  displayName: 'Publish Artifact'
