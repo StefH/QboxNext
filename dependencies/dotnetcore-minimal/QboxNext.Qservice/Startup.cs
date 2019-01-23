@@ -8,6 +8,7 @@ using QboxNext.Logging;
 using QboxNext.Qserver.Core.DataStore;
 using QboxNext.Qserver.Core.Factories;
 using QboxNext.Qserver.Core.Interfaces;
+using QboxNext.Qservice.Mvc;
 
 namespace QboxNext.Qservice
 {
@@ -23,7 +24,9 @@ namespace QboxNext.Qservice
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
+            services
+                .AddCors()
+                .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options =>
                 {
@@ -42,6 +45,8 @@ namespace QboxNext.Qservice
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCorsFromConfig();
 
             app.UseMvc();
         }

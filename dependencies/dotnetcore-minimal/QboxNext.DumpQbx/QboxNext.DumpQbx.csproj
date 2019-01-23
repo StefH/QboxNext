@@ -3,15 +3,25 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QboxNext.Core\QboxNext.Core.csproj" />
+    <ProjectReference Include="..\QboxNext.ConsoleApp.Core\QboxNext.ConsoleApp.Core.csproj" />
     <ProjectReference Include="..\QboxNext.Qserver.Core\QboxNext.Qserver.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.Development.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+      <CopyToOutputDirectory Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="hostsettings.json">
+      <CopyToOutputDirectory Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

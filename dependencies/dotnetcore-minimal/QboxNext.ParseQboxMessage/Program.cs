@@ -1,67 +1,51 @@
-﻿using System;
+﻿using System.Threading.Tasks;
+using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using QboxNext.Core.CommandLine;
-using QboxNext.Core.Utils;
+using QboxNext.ConsoleApp;
+using QboxNext.ConsoleApp.Loggers;
 using QboxNext.Logging;
-using QboxNext.Qboxes.Parsing;
 using QboxNext.Qboxes.Parsing.Extensions;
-using QboxNext.Qboxes.Parsing.Protocols;
 
 namespace QboxNext.ParseQboxMessage
 {
-    class Program
+    internal static class Program
     {
-        [Option("m", "message", Required = true, HelpText = "Qbox message")]
-        public string Message { get; set; }
-
-        public static IServiceProvider ApplicationServiceProvider { get; private set; }
-
-        static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            // Setup static logger factory
-            ILoggerFactory loggerFactory = QboxNextLogProvider.LoggerFactory = new LoggerFactory();
-
-            ApplicationServiceProvider = new ServiceCollection()
-                .AddSingleton(loggerFactory)
-                .AddLogging()
-                .AddParsers()
-                .BuildServiceProvider();
-
-            var program = new Program();
-            var settings = new CommandLineParserSettings { IgnoreUnknownArguments = true, CaseSensitive = false };
-            ICommandLineParser parser = new CommandLineParser(settings);
-            if (parser.ParseArguments(args, program, System.Console.Error))
+            var parser = new Parser(settings =>
             {
-                program.Run();
-            }
-            else
+                settings.IgnoreUnknownArguments = true;
+                settings.CaseSensitive = false;
+                settings.AutoHelp = true;
+            });
+
+            IHost host = new ConsoleHostBuilder(args)
+                .ParseArguments<CommandLineOptions>(parser)
+                .ConfigureServices((context, services) =>
+                {
+                    services
+                        .AddParsers()
+                        .AddHostedService<ConsoleRunner>();
+                })
+                .ConfigureLogging((context, logging) =>
+                {
+                    logging
+                        .ClearProviders()
+                        .AddSimpleConsole();
+                })
+                // Listen for CTRL+C or SIGTERM.
+                .UseConsoleLifetime()
+                .Build();
+
+            // Setup static logger factory.
+            QboxNextLogProvider.LoggerFactory = host.Services.GetRequiredService<ILoggerFactory>();
+
+            using (host)
             {
-                System.Console.WriteLine("Usage: QboxNext.ParseQboxMessage --message=<message>");
+                await host.StartWithArgumentsAsync<CommandLineOptions>();
             }
-        }
-
-        private void Run()
-        {
-            System.Console.WriteLine(ParseString(Message));
-        }
-
-        private string ParseString(string inMessage)
-        {
-            var parserFactory = ApplicationServiceProvider.GetRequiredService<IParserFactory>();
-            inMessage = inMessage.WithoutStxEtxEnvelope().Trim();
-            var parser = parserFactory.GetParser(inMessage);
-            var result = parser.Parse(inMessage) as BaseParseResult;
-            // todo: evaluate
-            // It's not possible to determine if hex is a request or response value, check is now based on ErrorParseResult
-            if (result is ErrorParseResult)
-            {
-                parser = ApplicationServiceProvider.GetRequiredService<MiniResponse>();
-                result = parser.Parse(inMessage) as BaseParseResult;
-            }
-
-            return JsonConvert.SerializeObject(result, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
         }
     }
 }

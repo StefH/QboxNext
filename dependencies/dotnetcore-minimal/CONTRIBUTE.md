@@ -6,7 +6,7 @@ Thanks for showing interest to contribute to QboxNext.
 
 Before submitting a PR, make sure that:
 
-- The code conforms to our [coding style](CONTRIBUTE.md).
+- The code conforms to our [coding style](CODING-STYLE.md).
 - The commit(s) are rebased onto master. We may ask you to do that again if other PR's are merged before yours.
 - Proper code coverage is provided.
 - The build passes.

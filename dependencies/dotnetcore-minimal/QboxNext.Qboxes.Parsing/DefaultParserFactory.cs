@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using QboxNext.Qboxes.Parsing.Protocols;
 
@@ -34,7 +34,7 @@ namespace QboxNext.Qboxes.Parsing
             return GetParser(parserInfo.Type);
         }
         
-        private IMessageParser GetParser(Type parserType)
+        public IMessageParser GetParser(Type parserType)
         {
             return _serviceProvider.GetRequiredService(parserType) as IMessageParser;
         }
