@@ -24,9 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src-webapi\QboxNext.Common\QboxNext.Common.csproj" />
-    <ProjectReference Include="..\..\src-webapi\QboxNext.Infrastructure.Azure\QboxNext.Infrastructure.Azure.csproj" />
-    <ProjectReference Include="..\QBoxNext.Business.Docker\QBoxNext.Business.Docker.csproj" />
+    <ProjectReference Include="..\..\src-tools\QboxNext.AzureTableImporter\QboxNext.Server.AzureTableImporter.csproj" />
+    <ProjectReference Include="..\..\src-server\QboxNext.Server.Common\QboxNext.Server.Common.csproj" />
+    <ProjectReference Include="..\..\src-server\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />
+    <ProjectReference Include="..\QBoxNext.Server.Business.Docker\QBoxNext.Server.Business.Docker.csproj" />
   </ItemGroup>
 
   <ItemGroup>
