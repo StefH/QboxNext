@@ -1,0 +1,55 @@
+pool:
+  vmImage: 'ubuntu-16.04'
+
+variables:
+  buildConfiguration: 'Release'
+  buildProjects: '**/QboxNext.Server.WebApi.csproj'
+#  testProjects: '**/tests/**/*.csproj'
+  imageName: 'qboxnext-webapi'
+  tag: '1.0.0'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Restore and Build'
+  inputs:
+    command: build
+    projects: '$(buildProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+#- task: DotNetCoreCLI@2
+#  displayName: Test
+#  inputs:
+#    command: test
+#    projects: '$(testProjects)'
+#    arguments: '--configuration $(BuildConfiguration)'
+
+#- task: DotNetCoreCLI@2
+#  displayName: Publish
+#  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
+#  inputs:
+#    command: publish
+#    projects: $(buildProjects)
+#    publishWebProjects: True
+#    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+#    zipAfterPublish: True
+
+- script: docker build -t $(DOCKER_ID)/$(imageName) -f ./src-server/QboxNext.Server.WebApi/Dockerfile .
+  displayName: Build Docker image
+
+- script: docker tag $(DOCKER_ID)/$(imageName):latest $(DOCKER_ID)/$(imageName):$(tag)
+  displayName: 'Tag Docker image [$(imageName):$(tag)]'
+  condition: and(succeeded(), eq('$(BUILD_DOCKER)', 'yes'))
+
+# https://stackoverflow.com/questions/51489359/docker-using-password-via-the-cli-is-insecure-use-password-stdin
+- script: |
+    echo "$(DOCKER_PWD)" | docker login --username $(DOCKER_ID) --password-stdin
+    docker push $(DOCKER_ID)/$(imageName):latest
+    docker push $(DOCKER_ID)/$(imageName):$(tag)
+  displayName: 'Push Docker images [$(imageName):latest and $(imageName):$(tag)]'
+  condition: and(succeeded(), eq('$(BUILD_DOCKER)', 'yes'))
+
+#- task: PublishBuildArtifacts@1
+#  displayName: 'Publish Artifact'
+#  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
+#  inputs:
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'

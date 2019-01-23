@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AF60A9C5-549D-46BC-B782-7B7AD1C207D0}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
 		CHANGELOG.md = CHANGELOG.md
 		Directory.Build.props = Directory.Build.props
 		GitHubReleaseNotes.txt = GitHubReleaseNotes.txt
@@ -23,13 +24,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Qboxes.Parsing", "dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\QboxNext.Qboxes.Parsing.csproj", "{1C3D8877-4932-44F6-A821-170681E3AB3D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext", "src\QboxNext\QboxNext.csproj", "{D3804229-91F4-4502-9595-39884E5A01AD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1C3D8877-4932-44F6-A821-170681E3AB3D} = {1C3D8877-4932-44F6-A821-170681E3AB3D}
-		{FCB62C95-E281-4106-A431-37C7219536D5} = {FCB62C95-E281-4106-A431-37C7219536D5}
-		{23039BE0-17B9-44E3-A80A-F47E330573C1} = {23039BE0-17B9-44E3-A80A-F47E330573C1}
-		{553FB0E0-DCAA-46F1-85EF-23E1C2263B00} = {553FB0E0-DCAA-46F1-85EF-23E1C2263B00}
-		{A60261EA-34F4-4075-87A2-675FD80F79DC} = {A60261EA-34F4-4075-87A2-675FD80F79DC}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-server", "src-server", "{94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}"
 EndProject
@@ -68,6 +62,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Server.WebApi", "src-server\QboxNext.Server.WebApi\QboxNext.Server.WebApi.csproj", "{9F0D6C68-CCDB-4D50-BBDF-F882A57802AE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.AzureTableImporter", "src-tools\QboxNext.AzureTableImporter\QboxNext.AzureTableImporter.csproj", "{C168E306-97E8-41CC-9E52-90F26C484538}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.ConsoleApp.Core", "dependencies\dotnetcore-minimal\QboxNext.ConsoleApp.Core\QboxNext.ConsoleApp.Core.csproj", "{4D581BA1-4EB4-476D-8D89-CD74B8C697CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,6 +151,10 @@ Global
 		{C168E306-97E8-41CC-9E52-90F26C484538}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C168E306-97E8-41CC-9E52-90F26C484538}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C168E306-97E8-41CC-9E52-90F26C484538}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D581BA1-4EB4-476D-8D89-CD74B8C697CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D581BA1-4EB4-476D-8D89-CD74B8C697CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D581BA1-4EB4-476D-8D89-CD74B8C697CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D581BA1-4EB4-476D-8D89-CD74B8C697CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -180,6 +180,7 @@ Global
 		{D245B6B7-60D9-433F-A71C-1153FDD48FB2} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 		{9F0D6C68-CCDB-4D50-BBDF-F882A57802AE} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 		{C168E306-97E8-41CC-9E52-90F26C484538} = {50677B50-5B0D-422E-834F-9F1A93632D1F}
+		{4D581BA1-4EB4-476D-8D89-CD74B8C697CA} = {E04D98D6-6C1E-4E41-AB15-3C8CA6BC9F8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A6ED5AF-7B32-444B-887A-ABF343EE609C}

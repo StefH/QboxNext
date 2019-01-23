@@ -5,19 +5,24 @@ EXPOSE 443
 
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
-COPY ["src-server/QboxNext.Server.WebApi/QboxNext.Server.WebApi.csproj", "src-server/QboxNext.Server.WebApi/"]
-COPY ["src-server/QBoxNext.Server.Business/QBoxNext.Server.Business.csproj", "src-server/QBoxNext.Server.Business/"]
-COPY ["src-server/QboxNext.Server.Domain/QboxNext.Server.Domain.csproj", "src-server/QboxNext.Server.Domain/"]
-COPY ["src-server/QboxNext.Server.Common/QboxNext.Server.Common.csproj", "src-server/QboxNext.Server.Common/"]
-COPY ["src/QboxNext/QboxNext.csproj", "src/QboxNext/"]
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Qboxes.Parsing/QboxNext.Qboxes.Parsing.csproj", "dependencies/dotnetcore-minimal/QboxNext.Qboxes.Parsing/"]
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Logging/QboxNext.Logging.csproj", "dependencies/dotnetcore-minimal/QboxNext.Logging/"]
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Qserver.Core/QboxNext.Qserver.Core.csproj", "dependencies/dotnetcore-minimal/QboxNext.Qserver.Core/"]
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Core/QboxNext.Core.csproj", "dependencies/dotnetcore-minimal/QboxNext.Core/"]
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Model/QboxNext.Model.csproj", "dependencies/dotnetcore-minimal/QboxNext.Model/"]
-COPY ["src-server/QboxNext.Server.Infrastructure.Azure/QboxNext.Server.Infrastructure.Azure.csproj", "src-server/QboxNext.Server.Infrastructure.Azure/"]
-COPY ["src/QboxNext.Extensions/QboxNext.Extensions.csproj", "src/QboxNext.Extensions/"]
+
 COPY ["dependencies/NLog.Extensions.AzureStorage/src/NLog.Extensions.AzureTables/NLog.Extensions.AzureTables.csproj", "dependencies/NLog.Extensions.AzureStorage/src/NLog.Extensions.AzureTables/"]
+
+COPY ["src/QboxNext/QboxNext.csproj", "src/QboxNext/"]
+
+COPY ["src/QboxNext.Extensions/QboxNext.Extensions.csproj", "src/QboxNext.Extensions/"]
+
+COPY ["src-server/QboxNext.Server.Infrastructure.Azure/QboxNext.Server.Infrastructure.Azure.csproj", "src-server/QboxNext.Server.Infrastructure.Azure/"]
+COPY ["src-server/QboxNext.Server.WebApi/QboxNext.Server.WebApi.csproj", "src-server/QboxNext.Server.WebApi/"]
+COPY ["src-server/QBoxNext.Server.Business/QBoxNext.Server.Business.csproj", "src-server/QBoxNext.Server.Business/"]
+COPY ["src-server/QboxNext.Server.Domain/QboxNext.Server.Domain.csproj", "src-server/QboxNext.Server.Domain/"]
+COPY ["src-server/QboxNext.Server.Common/QboxNext.Server.Common.csproj", "src-server/QboxNext.Server.Common/"]
+
 RUN dotnet restore "src-server/QboxNext.Server.WebApi/QboxNext.Server.WebApi.csproj"
 COPY . .
 WORKDIR "/src/src-server/QboxNext.Server.WebApi"
