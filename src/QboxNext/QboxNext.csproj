@@ -48,20 +48,4 @@
     <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Qserver.Core\obj\**\*.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qserver.Core\**\*.cs" />
   </ItemGroup>
 
-  <!--<ItemGroup>
-    <Compile Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Model\obj\$(Configuration)\netcoreapp2.1\NuGet\8ED1AE52454947B26EC2CE4EE9B78109FB82B1D7\LibLog\5.0.4\*.cs" Link="Logging.QBoxes.Model\*.cs" />
-    <Compile Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Model\obj\$(Configuration)\netcoreapp2.1\NuGet\8ED1AE52454947B26EC2CE4EE9B78109FB82B1D7\LibLog\5.0.4\LogProviders\*.cs" Link="Logging.QBoxes.Model\LogProviders\*.cs" />
-    <Compile Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\obj\$(Configuration)\netcoreapp2.1\NuGet\741A19C19ABFAC15F00175A44639E04EB8FFBEB1\LibLog\5.0.4\*.cs" Link="Logging.QboxNext.Core\*.cs" />
-    <Compile Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\obj\$(Configuration)\netcoreapp2.1\NuGet\741A19C19ABFAC15F00175A44639E04EB8FFBEB1\LibLog\5.0.4\LogProviders\*.cs" Link="Logging.QboxNext.Core\LogProviders\*.cs" />
-    <Compile Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\obj\$(Configuration)\netcoreapp2.1\NuGet\97D72B49C162339BCD9CBFDE1E2259197AFE9F35\LibLog\5.0.4\*.cs" Link="Logging.QboxNext.Qboxes.Parsing\*.cs" />
-    <Compile Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\obj\$(Configuration)\netcoreapp2.1\NuGet\97D72B49C162339BCD9CBFDE1E2259197AFE9F35\LibLog\5.0.4\LogProviders\*.cs" Link="Logging.QboxNext.Qboxes.Parsing\LogProviders\*.cs" />
-  </ItemGroup>-->
-
-  <!--<ItemGroup>
-    <Folder Include="Logging.QBoxes.Model\" />
-    <Folder Include="Logging.QboxNext.Core\" />
-    <Folder Include="Logging.QboxNext.Qboxes.Parsing\" />
-    <Folder Include="Logging.QboxNext.QServer.Core\" />
-  </ItemGroup>-->
-
 </Project>
