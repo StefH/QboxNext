@@ -15,10 +15,10 @@ namespace QboxNext.Server.Infrastructure.Azure.Interfaces.Public
         Task<StoreResult> StoreAsync([NotNull] QboxMeasurement qboxMeasurement);
 
         /// <summary>
-        /// Stores the specified measurement in Azure Tables.
+        /// Stores the specified measurements as a Batch operation in Azure Tables.
         /// </summary>
         /// <param name="qboxMeasurements">The measurements (max 100).</param>
-        Task<IList<StoreResult>> StoreAsync([NotNull] IList<QboxMeasurement> qboxMeasurements);
+        Task<IList<StoreResult>> StoreBatchAsync([NotNull] IList<QboxMeasurement> qboxMeasurements);
 
         /// <summary>
         /// Stores the specified state in Azure Tables.

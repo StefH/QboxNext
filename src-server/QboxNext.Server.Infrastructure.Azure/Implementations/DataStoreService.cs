@@ -54,16 +54,29 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             var insertOperation = TableOperation.Insert(entity);
 
-            _logger.LogInformation($"Inserting measurement for '{qboxMeasurement.SerialNumber}' with key '{entity.RowKey}' into Azure Table '{_measurementsTable.Name}'");
+            _logger.LogInformation($"Inserting measurement for '{qboxMeasurement.SerialNumber}' with RowKey '{entity.RowKey}' into Azure Table '{_measurementsTable.Name}'");
             var result = await _measurementsTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout);
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
         }
 
-        public async Task<IList<StoreResult>> StoreAsync(IList<QboxMeasurement> qboxMeasurements)
+        /// <inheritdoc cref="IDataStoreService.StoreBatchAsync(IList{QboxMeasurement})"/>
+        public async Task<IList<StoreResult>> StoreBatchAsync(IList<QboxMeasurement> qboxMeasurements)
         {
             Guard.NotNull(qboxMeasurements, nameof(qboxMeasurements));
             Guard.Condition(qboxMeasurements, q => q.Count <= 100, nameof(qboxMeasurements));
+
+            if (qboxMeasurements.Count == 0)
+            {
+                return new[] { new StoreResult { HttpStatusCode = 204 } };
+            }
+
+            if (qboxMeasurements.Count == 1)
+            {
+                return new[] { await StoreAsync(qboxMeasurements.First()) };
+            }
+
+            string serialNumber = qboxMeasurements.First().SerialNumber; // SerialNumber should be same for all, else Batch Fails
 
             var entities = qboxMeasurements.Select(qboxMeasurement => new MeasurementEntity(qboxMeasurement)).ToList();
             var batch = new TableBatchOperation();
@@ -72,17 +85,10 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 batch.Insert(entity);
             }
 
-            try
-            {
-                var results = await _measurementsTable.ExecuteBatchAsync(batch).TimeoutAfter(_serverTimeout);
+            _logger.LogInformation($"Inserting {qboxMeasurements.Count} measurement(s) for '{serialNumber}' into Azure Table '{_measurementsTable.Name}'");
+            var results = await _measurementsTable.ExecuteBatchAsync(batch).TimeoutAfter(_serverTimeout);
 
-                return results.Select(result => new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag }).ToList();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return results.Select(result => new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag }).ToList();
         }
 
         public async Task<StoreResult> StoreAsync(QboxState qboxState)
@@ -93,7 +99,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             var insertOperation = TableOperation.Insert(entity);
 
-            _logger.LogInformation($"Inserting state for '{qboxState.SerialNumber}' with key '{entity.RowKey}' into Azure Table '{_statesTable.Name}'");
+            _logger.LogInformation($"Inserting state for '{qboxState.SerialNumber}' with RowKey '{entity.RowKey}' into Azure Table '{_statesTable.Name}'");
             var result = await _statesTable.ExecuteAsync(insertOperation).TimeoutAfter(_serverTimeout);
 
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
