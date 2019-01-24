@@ -22,10 +22,13 @@ namespace NLog.Extensions.AzureTables
 
         private CloudTableClient _client;
         private CloudTable _table;
-        private string _machineName;
 
         // Delegates for bucket sorting
         private SortHelpers.KeySelector<AsyncLogEventInfo, TablePartitionKey> _getTablePartitionNameDelegate;
+
+        [PublicAPI]
+        [NotNull]
+        public string MachineName { get; set; }
 
         [PublicAPI]
         [NotNull]
@@ -70,7 +73,10 @@ namespace NLog.Extensions.AzureTables
         {
             base.InitializeTarget();
 
-            _machineName = GetMachineName();
+            if (string.IsNullOrEmpty(MachineName))
+            {
+                MachineName = GetMachineName();
+            }
 
             CreateClient();
         }
@@ -110,7 +116,7 @@ namespace NLog.Extensions.AzureTables
 
                 string correlationId = CorrelationId != null ? RenderLogEvent(CorrelationId, logEvent) : null;
                 string layoutMessage = RenderLogEvent(Layout, logEvent);
-                var entity = CreateEntity(logEvent, layoutMessage, _machineName, logEvent.LoggerName, correlationId);
+                var entity = CreateEntity(logEvent, layoutMessage, MachineName, logEvent.LoggerName, correlationId);
                 var insertOperation = TableOperation.Insert(entity);
                 TableExecute(_table, insertOperation);
             }
@@ -161,7 +167,7 @@ namespace NLog.Extensions.AzureTables
                     {
                         string correlationId = CorrelationId != null ? RenderLogEvent(CorrelationId, asyncLogEventInfo.LogEvent) : null;
                         string layoutMessage = RenderLogEvent(Layout, asyncLogEventInfo.LogEvent);
-                        var entity = CreateEntity(asyncLogEventInfo.LogEvent, layoutMessage, _machineName, partitionBucket.Key.PartitionId, correlationId);
+                        var entity = CreateEntity(asyncLogEventInfo.LogEvent, layoutMessage, MachineName, partitionBucket.Key.PartitionId, correlationId);
                         batch.Insert(entity);
                         if (batch.Count == 100)
                         {
