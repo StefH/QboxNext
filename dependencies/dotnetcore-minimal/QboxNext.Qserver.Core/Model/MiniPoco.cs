@@ -37,48 +37,51 @@ namespace QboxNext.Qserver.Core.Model
         public IEnumerable<CounterPoco> Counters { get; set; }
 
 
-		/// <summary>
-		/// Prepare the counters so they can be used.
-		/// </summary>
-		/// <remarks>
-		/// We need to set the QboxSerial because that will be part of the key used to store the last value.
-		/// </remarks>
-		public void PrepareCounters()
-		{
-			foreach (var counter in Counters)
-				counter.QboxSerial = SerialNumber;
-		}
+        /// <summary>
+        /// Prepare the counters so they can be used.
+        /// </summary>
+        /// <remarks>
+        /// We need to set the QboxSerial because that will be part of the key used to store the last value.
+        /// </remarks>
+        public void PrepareCounters()
+        {
+            foreach (var counter in Counters)
+            {
+                counter.QboxSerial = SerialNumber;
+                counter.ComposeStorageId();
+            }
+        }
 
 
         /// <summary>
         /// Introduced in A34
         /// </summary>
         public IEnumerable<ClientQboxPoco> Clients { get; set; }
-        
+
 
         public DeviceMeterType MeterType { get; set; }
         public DeviceMeterType SecondaryMeterType { get; set; }
 
 
-		/// <summary>
-		/// Check if inMeterType is present in the Qbox topology.
-		/// </summary>
-	    public bool IsMeterTypePresent(DeviceMeterType inMeterType)
-	    {
-		    if (MeterType == inMeterType)
-			    return true;
+        /// <summary>
+        /// Check if inMeterType is present in the Qbox topology.
+        /// </summary>
+        public bool IsMeterTypePresent(DeviceMeterType inMeterType)
+        {
+            if (MeterType == inMeterType)
+                return true;
 
-		    foreach (var client in Clients)
-		    {
-			    if (client.MeterType == inMeterType)
-				    return true;
-		    }
+            foreach (var client in Clients)
+            {
+                if (client.MeterType == inMeterType)
+                    return true;
+            }
 
-		    return false;
-	    }
+            return false;
+        }
 
 
-	    public bool AutoAnswer { get; set; }
+        public bool AutoAnswer { get; set; }
 
 
         /// <summary>
@@ -125,13 +128,13 @@ namespace QboxNext.Qserver.Core.Model
         }
 
 
-		/// <summary>
-		/// Remove all cached last values of the counters.
-		/// </summary>
-	    public void RemoveLastValues()
-	    {
-			foreach (var counterPoco in Counters)
-				counterPoco.RemoveLastValue();
-		}
+        /// <summary>
+        /// Remove all cached last values of the counters.
+        /// </summary>
+        public void RemoveLastValues()
+        {
+            foreach (var counterPoco in Counters)
+                counterPoco.RemoveLastValue();
+        }
     }
 }
