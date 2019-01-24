@@ -10,7 +10,7 @@ This project is based on https://bitbucket.org/qboxnext/dotnetcore-minimal all c
 
 
 ## QboxNext
-A new project includes all original c# code from [dotnetcore-minimal](https://bitbucket.org/qboxnext/dotnetcore-minimal) are a new NuGet is created.
+This project includes all original c# code from [dotnetcore-minimal](https://bitbucket.org/qboxnext/dotnetcore-minimal).
 See the [WIKI : QboxNext](https://github.com/StefH/QboxNext/wiki/QboxNext).
 
 ## QboxNext.Extensions

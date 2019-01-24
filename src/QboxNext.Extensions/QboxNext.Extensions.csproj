@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>QboxNext extensions with support for better Depencency Injection, Async and more.</Description>
+    <Description>QboxNext extensions with support for better Dependency Injection, Async and more.</Description>
     <AssemblyTitle>QboxNext.Extensions</AssemblyTitle>
     <Authors>Stef Heyenrath</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -9,12 +9,12 @@
     <PackageId>QboxNext.Extensions</PackageId>
     <PackageTags>qbox;qboxnext;qurrent;server;qboxextensions</PackageTags>
     <PackageReleaseNotes>See CHANGELOG.md</PackageReleaseNotes>
-    <!--<PackageIconUrl>https://raw.githubusercontent.com/WireMock-Net/WireMock.Net/master/WireMock.Net-Logo.png</PackageIconUrl>-->
+    <PackageIconUrl>https://raw.githubusercontent.com/stefh/QboxNext/master/resources/logo_128x128.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/stefh/QboxNext</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/stefh/QboxNext/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/stefh/QboxNext</RepositoryUrl>
-    <!--<ApplicationIcon>../../WireMock.Net-Logo.ico</ApplicationIcon>-->
+    <ApplicationIcon>../../resources/logo.ico</ApplicationIcon>
     <DebugType>full</DebugType>
     <IncludeSource>True</IncludeSource>
     <IncludeSymbols>True</IncludeSymbols>

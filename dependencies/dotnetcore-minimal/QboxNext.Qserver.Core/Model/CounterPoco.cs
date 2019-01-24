@@ -24,6 +24,22 @@ namespace QboxNext.Qserver.Core.Model
 
         public IEnumerable<CounterSensorMappingPoco> CounterSensorMappings { get; set; }
 
+        /// <summary>
+        /// See Counter.ComposeStorageid
+        /// </summary>
+        /// <remarks>
+        /// In the old situation the Storage ID would be computed by Counter (a database object) and copied (cached) in a CounterPoco.
+        /// Now that we don't use a database, we need a way to correctly compose the Storage ID here as well.
+        /// </remarks>
+        public void ComposeStorageId()
+        {
+            StorageId = String.Format("{0}_{1:00000000}{2}{3}",
+                QboxSerial,
+                CounterId,
+                GroupId == CounterSource.Host ? "" : "_" + GroupId.ToString(),
+                Secondary ? "_secondary" : "");
+        }
+
         //refactor: This is also implemented in the full counter object so maybe we should rethink this functionality
         /// <summary>
         /// Sets the value as received from the Qbox for the given measurement time.

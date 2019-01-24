@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.1.20</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
     <Description>QboxNext is a modified clone of Qplatform.</Description>
     <AssemblyTitle>QboxNext</AssemblyTitle>
     <Authors>Sebastiaan;Stef Heyenrath</Authors>
@@ -10,14 +10,14 @@
     <PackageId>QboxNext</PackageId>
     <PackageTags>qbox;qboxnext;qurrent;server</PackageTags>
     <PackageReleaseNotes>See CHANGELOG.md</PackageReleaseNotes>
-    <!--<PackageIconUrl>https://raw.githubusercontent.com/WireMock-Net/WireMock.Net/master/WireMock.Net-Logo.png</PackageIconUrl>-->
+    <PackageIconUrl>https://raw.githubusercontent.com/stefh/QboxNext/master/resources/logo_128x128.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/stefh/QboxNext</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/stefh/QboxNext/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/stefh/QboxNext</RepositoryUrl>
-    <!--<ApplicationIcon>../../WireMock.Net-Logo.ico</ApplicationIcon>-->
+    <ApplicationIcon>../../resources/logo.ico</ApplicationIcon>
     <DebugType>full</DebugType>
-    <IncludeSource>True</IncludeSource>
+    <!--<IncludeSource>True</IncludeSource>-->
     <IncludeSymbols>True</IncludeSymbols>
     <ProjectGuid>{D3804229-91F4-4502-9595-39884E5A01AD}</ProjectGuid>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
