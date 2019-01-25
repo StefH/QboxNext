@@ -35,7 +35,7 @@ namespace QboxNext.Server.WebApi
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.SetMinimumLevel(LogLevel.Trace);
+                    logging.SetMinimumLevel(LogLevel.Debug);
                 })
                 .UseNLog(); // NLog: setup NLog for Dependency injection
     }

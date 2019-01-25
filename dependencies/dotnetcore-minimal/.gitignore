@@ -251,3 +251,6 @@ ModelManifest.xml
 
 # Exclude test reports
 **/test-results/*
+
+# Launch settings in unit test projects
+*.Tests/**/launchSettings.json

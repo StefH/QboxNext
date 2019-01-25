@@ -1,12 +1,12 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using CorrelationId;
+﻿using CorrelationId;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace QboxNext.Server.WebApi.Controllers
 {
@@ -44,7 +44,7 @@ namespace QboxNext.Server.WebApi.Controllers
 
         // POST device/qbox
         // Example: /device/qbox/6618-1400-0200/15-46-002-442
-        [HttpPost("/device/qbox/{productNumber}/{serialNumber}")]
+        [HttpPost(@"/device/qbox/{productNumber:regex(^\d{{4}}-\d{{4}}-\d{{4}}$)}/{serialNumber:regex(^\d{{2}}-\d{{2}}-\d{{3}}-\d{{3}}$)}")]
         public async Task<ActionResult> PostAsync([NotNull] string productNumber, [NotNull] string serialNumber)
         {
             Guard.IsNotNullOrEmpty(productNumber, nameof(productNumber));

@@ -63,7 +63,7 @@ namespace QBoxNext.Server.Business.Implementations
                 measurements.Add(measurement);
             }
 
-            await _dataStoreService.StoreAsync(measurements);
+            await _dataStoreService.StoreBatchAsync(measurements);
         }
     }
 }

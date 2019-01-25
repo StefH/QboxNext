@@ -34,7 +34,7 @@ namespace QboxNext.Qservice
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:5002")
+                .UseUrls("http://0.0.0.0:5002")
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();

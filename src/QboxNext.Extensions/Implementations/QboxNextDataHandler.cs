@@ -236,17 +236,23 @@ namespace QboxNext.Extensions.Implementations
                 }
             }
 
-            // Loop all CounterPayloads and store each measurement
+            var counterDataList = new List<(string correlationId, CounterData counterData)>();
             foreach (var counterPayload in payloads.Where(p => p is CounterPayload).Cast<CounterPayload>())
             {
-                try
+
+                if (TryMapCounterPayload(counterPayload, out CounterData counterData))
                 {
-                    await StoreCounterPayloadAsync(counterPayload);
+                    counterDataList.Add((_correlationId, counterData));
                 }
-                catch (Exception ex)
-                {
-                    exceptionInformation.Enqueue(($"{counterPayload.GetType().Name} {counterPayload.InternalNr}", ex));
-                }
+            }
+
+            try
+            {
+                await _counterService.StoreAsync(counterDataList);
+            }
+            catch (Exception ex)
+            {
+                exceptionInformation.Enqueue((nameof(CounterPayload), ex));
             }
 
             // Only throw exception when all counters fail
@@ -267,8 +273,8 @@ namespace QboxNext.Extensions.Implementations
             // sequence number of the message received
             _result.Write((byte)_result.SequenceNr);
 
-            // time in seconds from 1-1-2007
-            var seconds = Convert.ToInt32(DateTime.Now.Subtract(Epoch).TotalSeconds);
+            // time in seconds since 1-1-2007
+            int seconds = Convert.ToInt32(DateTime.Now.Subtract(Epoch).TotalSeconds);
             _result.Write(seconds);
 
             _result.Write(_context.Mini.Offset);
@@ -340,29 +346,31 @@ namespace QboxNext.Extensions.Implementations
             return _context.Mini.Counters.SingleOrDefault(s => s.CounterId == payload.InternalNr);
         }
 
-        private async Task StoreCounterPayloadAsync(CounterPayload payload)
+        private bool TryMapCounterPayload(CounterPayload payload, out CounterData counterData)
         {
+            counterData = null;
+
             if (payload.Value == ulong.MaxValue)
             {
-                return;
+                return false;
             }
 
             if (payload is R21CounterPayload counterPayload && !counterPayload.IsValid)
             {
                 _logger.LogInformation("Invalid value for counter {0} / {1}", counterPayload.InternalNr, _context.Mini.SerialNumber);
-                return;
+                return false;
             }
 
             if (ClientNotConnected())
             {
                 // No connection with client, payload is last measured value and not the real value. First real value will be spread out over missing values
                 _logger.LogDebug("No connection with client, data not saved");
-                return;
+                return false;
             }
 
             if (!MapCounterId(payload, _context.Mini))
             {
-                return;
+                return false;
             }
 
             // store the data in the payload into the corresponding counter
@@ -370,24 +378,25 @@ namespace QboxNext.Extensions.Implementations
             if (counter == null)
             {
                 _logger.LogWarning($"Received value for unknown counter: {payload.InternalNr} / {_context.Mini.SerialNumber}");
-                return; //todo: investigate if exception would be better 
+                return false; //todo: investigate if exception would be better 
             }
 
             if (!(_result is MiniParseResult parseResult))
             {
-                return;
+                return false;
             }
 
-            var counterData = new CounterData
+            _context.Mini.QboxStatus.LastDataReceived = DateTime.UtcNow;
+
+            counterData = new CounterData
             {
                 SerialNumber = _context.Mini.SerialNumber,
                 MeasureTime = parseResult.Model.MeasurementTime,
                 CounterId = payload.InternalNr,
                 PulseValue = Convert.ToInt32(payload.Value)
             };
-            await _counterService.StoreAsync(_correlationId, counterData);
 
-            _context.Mini.QboxStatus.LastDataReceived = DateTime.UtcNow;
+            return true;
         }
 
         #region Implementation of IVisitor
