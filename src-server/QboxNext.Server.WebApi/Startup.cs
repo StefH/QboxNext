@@ -1,4 +1,5 @@
 ﻿using CorrelationId;
+using Exceptionless;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using NLog;
 using NLog.Extensions.AzureTables;
 using QboxNext.Logging;
 using QboxNext.Server.Infrastructure.Azure.Options;
+using QboxNext.Server.WebApi.Options;
 using QBoxNext.Server.Business.DependencyInjection;
 using System.Linq;
 
@@ -42,15 +44,26 @@ namespace QboxNext.Server.WebApi
 
             // Configure
             services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
+            services.Configure<AppOptions>(Configuration.GetSection("AzureTableStorageOptions"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory, IOptions<AzureTableStorageOptions> options)
+        public void Configure(
+            IApplicationBuilder app,
+            ILoggerFactory logFactory,
+            IOptions<AzureTableStorageOptions> azureTableStorageOptions,
+            IOptions<AppOptions> appOptions
+        )
         {
+            if (!string.IsNullOrEmpty(appOptions.Value.ExceptionLessApiKey))
+            {
+                app.UseExceptionless(appOptions.Value.ExceptionLessApiKey);
+            }
+
             // Update the ConnectionString from the TableStorageTarget
             if (LogManager.Configuration.AllTargets.FirstOrDefault(t => t is TableStorageTarget) is TableStorageTarget target)
             {
-                target.ConnectionString = options.Value.ConnectionString;
+                target.ConnectionString = azureTableStorageOptions.Value.ConnectionString;
                 LogManager.ReconfigExistingLoggers();
             }
 
