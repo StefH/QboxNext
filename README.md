@@ -1,5 +1,5 @@
 # QboxNext
-This project is based on [qboxnext](https://bitbucket.org/qboxnext/dotnetcore-minimal) and all credits for the original source go to Sebastiaan and the team.
+This project is based on [qboxnext](https://bitbucket.org/qboxnext/qboxnext) and all credits for the original source go to Sebastiaan and the team.
 
 
 ## Info
