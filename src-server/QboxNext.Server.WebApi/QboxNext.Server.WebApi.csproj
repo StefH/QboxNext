@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
-    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -24,6 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="CorrelationId" Version="2.1.0" />
+    <PackageReference Include="Exceptionless.AspNetCore" Version="4.3.2018" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.1.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
