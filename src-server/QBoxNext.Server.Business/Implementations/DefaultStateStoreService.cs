@@ -40,7 +40,9 @@ namespace QBoxNext.Server.Business.Implementations
                 MessageType = stateData.MessageType.ToString(),
                 Message = stateData.Message,
                 State = stateData.State.ToString(),
-                FirmwareVersion = stateData.Status?.FirmwareVersion
+                FirmwareVersion = stateData.Status?.FirmwareVersion,
+                LastIpAddress = stateData.Status?.LastIpAddress.Key,
+                LastIpAddressUpdate = stateData.Status?.LastIpAddress.Value
             };
 
             // Copy all 'Last...' values
