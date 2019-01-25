@@ -40,7 +40,7 @@ steps:
 
 - script: docker tag $(DOCKER_ID)/$(imageName):latest $(DOCKER_ID)/$(imageName):$(tag)
   displayName: 'Tag Docker image [$(imageName):$(tag)]'
-  condition: and(succeeded(), variables.buildDocker, 'yes'))
+  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
 # https://stackoverflow.com/questions/51489359/docker-using-password-via-the-cli-is-insecure-use-password-stdin
 - script: |
@@ -48,7 +48,7 @@ steps:
     docker push $(DOCKER_ID)/$(imageName):latest
     docker push $(DOCKER_ID)/$(imageName):$(tag)
   displayName: 'Push Docker images [$(imageName):latest and $(imageName):$(tag)]'
-  condition: and(succeeded(), variables.buildDocker, 'yes'))
+  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
 #- task: PublishBuildArtifacts@1
 #  displayName: 'Publish Artifact'
