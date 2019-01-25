@@ -44,7 +44,7 @@ namespace QboxNext.Server.WebApi
 
             // Configure
             services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
-            services.Configure<AppOptions>(Configuration.GetSection("AzureTableStorageOptions"));
+            services.Configure<AppOptions>(Configuration.GetSection("App"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,11 +55,6 @@ namespace QboxNext.Server.WebApi
             IOptions<AppOptions> appOptions
         )
         {
-            if (!string.IsNullOrEmpty(appOptions.Value.ExceptionLessApiKey))
-            {
-                app.UseExceptionless(appOptions.Value.ExceptionLessApiKey);
-            }
-
             // Update the ConnectionString from the TableStorageTarget
             if (LogManager.Configuration.AllTargets.FirstOrDefault(t => t is TableStorageTarget) is TableStorageTarget target)
             {
@@ -69,6 +64,13 @@ namespace QboxNext.Server.WebApi
 
             // TODO : this needs to be in place until correct DI is added to QboxNext
             QboxNextLogProvider.LoggerFactory = logFactory;
+
+            // Exceptionless
+            if (!string.IsNullOrEmpty(appOptions.Value.ExceptionlessApiKey))
+            {
+                logFactory.CreateLogger("Startup").LogInformation("Using Exceptionless");
+                app.UseExceptionless(appOptions.Value.ExceptionlessApiKey);
+            }
 
             app.UseCorrelationId(new CorrelationIdOptions
             {

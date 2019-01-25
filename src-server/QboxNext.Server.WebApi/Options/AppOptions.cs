@@ -2,6 +2,6 @@
 {
     public class AppOptions
     {
-        public string ExceptionLessApiKey { get; set; }
+        public string ExceptionlessApiKey { get; set; }
     }
 }
