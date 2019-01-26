@@ -1,5 +1,4 @@
 ﻿using CorrelationId;
-using Exceptionless;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -64,13 +63,6 @@ namespace QboxNext.Server.WebApi
 
             // TODO : this needs to be in place until correct DI is added to QboxNext
             QboxNextLogProvider.LoggerFactory = logFactory;
-
-            // Exceptionless
-            if (!string.IsNullOrEmpty(appOptions.Value.ExceptionlessApiKey))
-            {
-                logFactory.CreateLogger("Startup").LogInformation("Using Exceptionless");
-                app.UseExceptionless(appOptions.Value.ExceptionlessApiKey);
-            }
 
             app.UseCorrelationId(new CorrelationIdOptions
             {
