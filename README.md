@@ -16,7 +16,7 @@ This project is based on [qboxnext](https://bitbucket.org/qboxnext/qboxnext) and
 ## Projects
 
 #### QboxNext
-This project includes all original c# code from [dotnetcore-minimal](https://bitbucket.org/qboxnext/dotnetcore-minimal).
+This project includes all original c# code from [qboxnext](https://bitbucket.org/qboxnext/qboxnext).
 See the [WIKI : QboxNext](https://github.com/StefH/QboxNext/wiki/QboxNext).
 
 #### QboxNext.Extensions
@@ -24,7 +24,7 @@ This is an extension project which uses the code from QboxNext.
 See the [WIKI : QboxNext.Extensions](https://github.com/StefH/QboxNext/wiki/QboxNext.Extensions).
 
 #### Example Project
-See the [WIKI : Example Project](https://github.com/StefH/https://github.com/StefH/QboxNext/wiki/Example-Project).
+See the [WIKI : Example Project](https://github.com/StefH/QboxNext/wiki/Example-Project).
 
 #### Use Case Overview
 See the [WIKI : Overview](https://github.com/StefH/QboxNext/wiki/Overview).
