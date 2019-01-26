@@ -89,8 +89,6 @@ namespace QboxNext.Extensions.Implementations
         {
             try
             {
-                _logger.LogInformation("sn: {0} | input: {1} | lastUrl: {2}", _context.Mini.SerialNumber, _context.Message, _context.Mini.QboxStatus.Url);
-
                 var stateData = new StateData
                 {
                     SerialNumber = _context.Mini.SerialNumber,
@@ -357,7 +355,7 @@ namespace QboxNext.Extensions.Implementations
 
             if (payload is R21CounterPayload counterPayload && !counterPayload.IsValid)
             {
-                _logger.LogInformation("Invalid value for counter {0} / {1}", counterPayload.InternalNr, _context.Mini.SerialNumber);
+                _logger.LogInformation("Invalid value for counter {InternalNr} / {SerialNumber}", counterPayload.InternalNr, _context.Mini.SerialNumber);
                 return false;
             }
 
@@ -472,7 +470,7 @@ namespace QboxNext.Extensions.Implementations
                                                                                           c.SecondaryMeterType != DeviceMeterType.SO_Pulse).ToList();
                 if (clientsWithUnsupportedSecondaryMeterTypes.Count > 0)
                 {
-                    _logger.LogError("Qbox {0} has counter for unsupported secondary meter type {1}", inMini.SerialNumber,
+                    _logger.LogError("Qbox {SerialNumber} has counter for unsupported secondary meter type {SecondaryMeterType}", inMini.SerialNumber,
                             clientsWithUnsupportedSecondaryMeterTypes[0].SecondaryMeterType);
                     return false;
                 }
