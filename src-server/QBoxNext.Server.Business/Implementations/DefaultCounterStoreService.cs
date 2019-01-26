@@ -12,17 +12,17 @@ namespace QBoxNext.Server.Business.Implementations
 {
     internal class DefaultCounterStoreService : ICounterStoreService
     {
-        private readonly IDataStoreService _dataStoreService;
+        private readonly IAzureTablesService _azureTablesService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultCounterStoreService"/> class.
         /// </summary>
-        /// <param name="dataStoreService">The measurement store service.</param>
-        public DefaultCounterStoreService([NotNull] IDataStoreService dataStoreService)
+        /// <param name="azureTablesService">The measurement store service.</param>
+        public DefaultCounterStoreService([NotNull] IAzureTablesService azureTablesService)
         {
-            Guard.IsNotNull(dataStoreService, nameof(dataStoreService));
+            Guard.IsNotNull(azureTablesService, nameof(azureTablesService));
 
-            _dataStoreService = dataStoreService;
+            _azureTablesService = azureTablesService;
         }
 
         /// <inheritdoc cref="ICounterStoreService.StoreAsync(string, CounterData)"/>
@@ -41,7 +41,7 @@ namespace QBoxNext.Server.Business.Implementations
                 PulseValue = counterData.PulseValue
             };
 
-            await _dataStoreService.StoreAsync(measurement);
+            await _azureTablesService.StoreAsync(measurement);
         }
 
         public async Task StoreAsync(IList<(string correlationId, CounterData counterData)> counters)
@@ -63,7 +63,7 @@ namespace QBoxNext.Server.Business.Implementations
                 measurements.Add(measurement);
             }
 
-            await _dataStoreService.StoreBatchAsync(measurements);
+            await _azureTablesService.StoreBatchAsync(measurements);
         }
     }
 }

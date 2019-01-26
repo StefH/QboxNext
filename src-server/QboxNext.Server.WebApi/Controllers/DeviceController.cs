@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
+using QBoxNext.Server.Business.Interfaces.Public;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -13,29 +14,26 @@ namespace QboxNext.Server.WebApi.Controllers
     [ApiController]
     public class DeviceController : ControllerBase
     {
-        private readonly ILogger<DeviceController> _logger;
+        private readonly IRegistrationService _registrationService;
         private readonly IQboxDataDumpContextFactory _qboxDataDumpContextFactory;
         private readonly IQboxNextDataHandlerFactory _qboxNextDataHandlerFactory;
         private readonly ICorrelationContextAccessor _correlationContext;
+        private readonly ILogger<DeviceController> _logger;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DeviceController"/> class.
-        /// </summary>
-        /// <param name="qboxDataDataDumpContextFactory">The qbox data data dump context factory.</param>
-        /// <param name="qboxNextDataHandlerFactory">The qbox next data handler factory.</param>
-        /// <param name="correlationContext">The correlation context.</param>
-        /// <param name="logger">The logger.</param>
         public DeviceController(
+            [NotNull] IRegistrationService registrationService,
             [NotNull] IQboxDataDumpContextFactory qboxDataDataDumpContextFactory,
             [NotNull] IQboxNextDataHandlerFactory qboxNextDataHandlerFactory,
             [NotNull] ICorrelationContextAccessor correlationContext,
             [NotNull] ILogger<DeviceController> logger)
         {
+            Guard.IsNotNull(registrationService, nameof(registrationService));
             Guard.IsNotNull(qboxDataDataDumpContextFactory, nameof(qboxDataDataDumpContextFactory));
             Guard.IsNotNull(qboxNextDataHandlerFactory, nameof(qboxNextDataHandlerFactory));
             Guard.IsNotNull(correlationContext, nameof(correlationContext));
             Guard.IsNotNull(logger, nameof(logger));
 
+            _registrationService = registrationService;
             _qboxDataDumpContextFactory = qboxDataDataDumpContextFactory;
             _qboxNextDataHandlerFactory = qboxNextDataHandlerFactory;
             _correlationContext = correlationContext;
@@ -51,6 +49,11 @@ namespace QboxNext.Server.WebApi.Controllers
             Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
 
             _logger.LogInformation($"PostAsync /device/qbox/{productNumber}/{serialNumber}");
+
+            if (!await _registrationService.IsValidRegistrationAsync(serialNumber))
+            {
+                return BadRequest();
+            }
 
             // Create QboxContext
             var context = await MapQboxContextAsync(productNumber, serialNumber);

@@ -13,17 +13,17 @@ namespace QBoxNext.Server.Business.Implementations
 {
     internal class DefaultStateStoreService : IStateStoreService
     {
-        private readonly IDataStoreService _dataStoreService;
+        private readonly IAzureTablesService _azureTablesService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultStateStoreService"/> class.
         /// </summary>
-        /// <param name="dataStoreService">The data store service.</param>
-        public DefaultStateStoreService([NotNull] IDataStoreService dataStoreService)
+        /// <param name="azureTablesService">The data store service.</param>
+        public DefaultStateStoreService([NotNull] IAzureTablesService azureTablesService)
         {
-            Guard.IsNotNull(dataStoreService, nameof(dataStoreService));
+            Guard.IsNotNull(azureTablesService, nameof(azureTablesService));
 
-            _dataStoreService = dataStoreService;
+            _azureTablesService = azureTablesService;
         }
 
         /// <inheritdoc cref="IStateStoreService.StoreAsync(string, StateData)"/>
@@ -64,7 +64,7 @@ namespace QBoxNext.Server.Business.Implementations
                 }
             }
 
-            await _dataStoreService.StoreAsync(state);
+            await _azureTablesService.StoreAsync(state);
         }
     }
 }

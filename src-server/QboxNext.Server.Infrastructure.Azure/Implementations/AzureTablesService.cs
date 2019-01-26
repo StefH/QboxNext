@@ -17,19 +17,20 @@ using System.Threading.Tasks;
 
 namespace QboxNext.Server.Infrastructure.Azure.Implementations
 {
-    internal class DataStoreService : IDataStoreService
+    internal class AzureTablesService : IAzureTablesService
     {
-        private readonly ILogger<DataStoreService> _logger;
+        private readonly ILogger<AzureTablesService> _logger;
         private readonly CloudTable _measurementsTable;
         private readonly CloudTable _statesTable;
+        private readonly CloudTable _registrationsTable;
         private readonly TimeSpan _serverTimeout;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataStoreService"/> class.
+        /// Initializes a new instance of the <see cref="AzureTablesService"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public DataStoreService([NotNull] IOptions<AzureTableStorageOptions> options, [NotNull] ILogger<DataStoreService> logger)
+        public AzureTablesService([NotNull] IOptions<AzureTableStorageOptions> options, [NotNull] ILogger<AzureTablesService> logger)
         {
             Guard.NotNull(options, nameof(options));
             Guard.NotNull(logger, nameof(logger));
@@ -43,9 +44,25 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             // Get reference to the tables
             _measurementsTable = client.GetTableReference(options.Value.MeasurementsTableName);
             _statesTable = client.GetTableReference(options.Value.StatesTableName);
+            _registrationsTable = client.GetTableReference(options.Value.RegistrationsTableName);
         }
 
-        /// <inheritdoc cref="IDataStoreService.StoreAsync(QboxMeasurement)"/>
+        /// <inheritdoc cref="IAzureTablesService.IsValidRegistrationAsync(string)"/>
+        public async Task<bool> IsValidRegistrationAsync(string serialNumber)
+        {
+            if (string.IsNullOrEmpty(serialNumber))
+            {
+                return false;
+            }
+
+            var retrieve = TableOperation.Retrieve(serialNumber, serialNumber);
+
+            var retrieveResult = await _registrationsTable.ExecuteAsync(retrieve);
+
+            return retrieveResult?.Result != null;
+        }
+
+        /// <inheritdoc cref="IAzureTablesService.StoreAsync(QboxMeasurement)"/>
         public async Task<StoreResult> StoreAsync(QboxMeasurement qboxMeasurement)
         {
             Guard.NotNull(qboxMeasurement, nameof(qboxMeasurement));
@@ -60,7 +77,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             return new StoreResult { HttpStatusCode = result.HttpStatusCode, Etag = result.Etag };
         }
 
-        /// <inheritdoc cref="IDataStoreService.StoreBatchAsync(IList{QboxMeasurement})"/>
+        /// <inheritdoc cref="IAzureTablesService.StoreBatchAsync(IList{QboxMeasurement})"/>
         public async Task<IList<StoreResult>> StoreBatchAsync(IList<QboxMeasurement> qboxMeasurements)
         {
             Guard.NotNull(qboxMeasurements, nameof(qboxMeasurements));

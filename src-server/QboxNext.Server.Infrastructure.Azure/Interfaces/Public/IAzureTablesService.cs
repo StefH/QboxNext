@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QboxNext.Server.Infrastructure.Azure.Interfaces.Public
 {
-    public interface IDataStoreService
+    public interface IAzureTablesService
     {
         /// <summary>
         /// Stores the specified measurement in Azure Tables.
@@ -25,5 +25,12 @@ namespace QboxNext.Server.Infrastructure.Azure.Interfaces.Public
         /// </summary>
         /// <param name="qboxState">The state.</param>
         Task<StoreResult> StoreAsync([NotNull] QboxState qboxState);
+
+        /// <summary>
+        /// Checks if the SerialNumber is a valid registration.
+        /// </summary>
+        /// <param name="serialNumber"></param>
+        /// <returns>true/false</returns>
+        Task<bool> IsValidRegistrationAsync([CanBeNull] string serialNumber);
     }
 }
