@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>9437ff56-8a8c-421d-a810-9db5bc56d74d</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <ApplicationInsightsResourceId>/subscriptions/2de19637-27a3-42a8-812f-2c2a7f7f935c/resourcegroups/qboxnext-resourcegroup/providers/microsoft.insights/components/qboxnext-application-insights</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/2de19637-27a3-42a8-812f-2c2a7f7f935c/resourcegroups/qboxnext-resourcegroup/providers/microsoft.insights/components/qboxnext-application-insights</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="CorrelationId" Version="2.1.0" />
-    <PackageReference Include="Exceptionless.AspNetCore" Version="4.3.2018" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.1.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
@@ -33,6 +35,10 @@
     <ProjectReference Include="..\..\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\NLog.Extensions.AzureTables.csproj" />
     <ProjectReference Include="..\QBoxNext.Server.Business\QBoxNext.Server.Business.csproj" />
     <ProjectReference Include="..\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>
