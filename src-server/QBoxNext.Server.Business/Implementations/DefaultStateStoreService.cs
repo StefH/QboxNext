@@ -7,6 +7,7 @@ using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace QBoxNext.Server.Business.Implementations
@@ -38,12 +39,24 @@ namespace QBoxNext.Server.Business.Implementations
                 LogTime = DateTime.UtcNow,
                 SerialNumber = stateData.SerialNumber,
                 MessageType = stateData.MessageType.ToString(),
-                Message = stateData.Message,
                 State = stateData.State.ToString(),
                 FirmwareVersion = stateData.Status?.FirmwareVersion,
                 LastIpAddress = stateData.Status?.LastIpAddress.Key,
                 LastIpAddressUpdate = stateData.Status?.LastIpAddress.Value
             };
+
+            if (stateData.Message != null)
+            {
+                if (stateData.Message.AsSpan(0, 10).ToArray().All(char.IsLetterOrDigit))
+                {
+                    state.Message = stateData.Message;
+                }
+                else
+                {
+                    // Convert to Base64 string
+                    state.Message = $"Base64 byte[] {Convert.ToBase64String(Encoding.UTF8.GetBytes(stateData.Message))}";
+                }
+            }
 
             // Copy all 'Last...' values
             if (stateData.Status != null)
