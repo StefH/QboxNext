@@ -11,11 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="logs\nlog.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="logs\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
