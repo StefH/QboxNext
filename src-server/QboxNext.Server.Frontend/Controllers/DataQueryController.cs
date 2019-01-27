@@ -40,7 +40,7 @@ namespace QboxNext.Server.Frontend.Controllers
                 return BadRequest();
             }
 
-            _logger.LogInformation("Querying {SerialNumber} with {Query}", query.SerialNumber, JsonConvert.SerializeObject(query));
+            _logger.LogInformation("Querying with {Query}", JsonConvert.SerializeObject(query));
 
             var result = await _dataQueryService.QueryAsync(query);
 

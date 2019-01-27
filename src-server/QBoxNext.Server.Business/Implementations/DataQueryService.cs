@@ -23,7 +23,7 @@ namespace QBoxNext.Server.Business.Implementations
         {
             Guard.NotNull(query, nameof(query));
 
-            var result = await _azureTablesService.QueryDataAsync(query.SerialNumber, new[] { 0 }, query.From, query.To);
+            var result = await _azureTablesService.QueryDataAsync(query.SerialNumber, query.CounterIds, query.From, query.To, query.Resolution);
 
             return result;
         }

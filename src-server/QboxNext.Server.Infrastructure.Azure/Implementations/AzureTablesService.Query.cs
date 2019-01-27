@@ -6,6 +6,7 @@ using QboxNext.Server.Infrastructure.Azure.Models.Public;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using QboxNext.Server.Domain;
 
 
 namespace QboxNext.Server.Infrastructure.Azure.Implementations
@@ -27,35 +28,26 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             return retrieveResult?.Result != null;
         }
 
-        public async Task<QueryResult> QueryDataAsync(string serialNumber, int[] counterIds, DateTime? from, DateTime? to)
+        public async Task<QueryResult> QueryDataAsync(string serialNumber, int[] counterIds, DateTime from, DateTime to, QueryResolution resolution)
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
-            // Create a query: in this example I use the DynamicTableEntity class
-            //var query = _measurementsTable.CreateQuery<DynamicTableEntity>()
-            //    .Where(d => d.PartitionKey == "partition1"
-            //                && d.Timestamp >= startDate && d.Timestamp <= endDate);
-
-            //// Execute the query
-            //var result = query.ToList();
-
-
             string partitionKeyFilter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, serialNumber);
             string counterIdFilter = TableQuery.GenerateFilterConditionForInt("CounterId", QueryComparisons.NotEqual, 0);
-            string fromFilter = TableQuery.GenerateFilterConditionForDate("MeasureTime", QueryComparisons.GreaterThanOrEqual, new DateTime(2019, 1, 1));
-            string toFilter = TableQuery.GenerateFilterConditionForDate("MeasureTime", QueryComparisons.LessThan, new DateTime(2019, 1, 31));
+            string fromFilter = TableQuery.GenerateFilterConditionForDate("MeasureTime", QueryComparisons.GreaterThanOrEqual, from);
+            string toFilter = TableQuery.GenerateFilterConditionForDate("MeasureTime", QueryComparisons.LessThan, to);
 
             string combinedFilterKeyAndCounter = TableQuery.CombineFilters(partitionKeyFilter, TableOperators.And, counterIdFilter);
             string combinedDateFilter = TableQuery.CombineFilters(fromFilter, TableOperators.And, toFilter);
 
             string combined = TableQuery.CombineFilters(combinedFilterKeyAndCounter, TableOperators.And, combinedDateFilter);
 
-
             var projectionQuery = new TableQuery<MeasurementEntity>()
                 .Select(new[] { "MeasureTime", "CounterId", "PulseValue" })
                 .Where(combined);
 
-            var tableQuerySegment = await _measurementsTable.ExecuteQuerySegmentedAsync(projectionQuery, null);
+            var token = new TableContinuationToken();
+            var tableQuerySegment = await _measurementsTable.ExecuteQuerySegmentedAsync(projectionQuery, token);
 
             var values = tableQuerySegment.Results.Select(me => new CounterDataValue
             {

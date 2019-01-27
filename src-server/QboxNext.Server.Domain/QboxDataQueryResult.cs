@@ -5,10 +5,8 @@ namespace QboxNext.Server.Domain
 {
     public class QboxDataQueryResult
     {
-        public int MinValue { get; set; }
+        public IDictionary<int, DateTime> DateSet { get; set; }
 
-        public int MaxValue { get; set; }
-
-        public IDictionary<DateTime, int> Set { get; set; }
+        public IDictionary<int, int> ValueSet { get; set; }
     }
 }
