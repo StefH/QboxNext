@@ -32,7 +32,7 @@ namespace QboxNext.AzureTableImporter
             services.Configure<AzureTableStorageOptions>(options =>
             {
                 options.ServerTimeout = 60;
-                options.ConnectionString = args[1] ?? "UseDevelopmentStorage=true;";
+                options.ConnectionString = args[1] ?? "UseDevelopmentStorage=true;"; 
                 options.MeasurementsTableName = "QboxMeasurements";
                 options.StatesTableName = "not-used";
                 options.RegistrationsTableName = "not-used";
@@ -48,8 +48,6 @@ namespace QboxNext.AzureTableImporter
             services.AddBusiness();
 
             var serviceProvider = services.BuildServiceProvider();
-
-            // Resolve ILoggerFactory and ILogger via DI
 
             // Setup static logger factory
             var factory = serviceProvider.GetService<ILoggerFactory>();
@@ -69,7 +67,7 @@ namespace QboxNext.AzureTableImporter
 
         private static async Task RunAsync(ILogger logger, ICounterStoreService service, string path)
         {
-            int round = 5;
+            int roundAtMinutes = 5;
             string sn = Path.GetFileNameWithoutExtension(path).Substring(0, 13);
             string[] counterIds = { "0181", "0182", "0281", "0282", "2421" };
 
@@ -81,6 +79,7 @@ namespace QboxNext.AzureTableImporter
                 list.Add(counterId, result);
             }
 
+            int batchValue = 1000;
             var values = list.Values.SelectMany(v => v).ToList();
             var f = values.First();
             var l = values.Last();
@@ -91,9 +90,10 @@ namespace QboxNext.AzureTableImporter
                           {
                               v.SerialNumber,
                               v.CounterId,
-                              MeasureTimeRounded = new DateTime(v.MeasureTime.Year, v.MeasureTime.Month, v.MeasureTime.Day, v.MeasureTime.Hour, (v.MeasureTime.Minute / round) * round, 0)
+                              MeasureTimeRounded = new DateTime(v.MeasureTime.Year, v.MeasureTime.Month, v.MeasureTime.Day, v.MeasureTime.Hour, (v.MeasureTime.Minute / roundAtMinutes) * roundAtMinutes, 0)
+                              //MeasureTimeRounded = new DateTime(v.MeasureTime.Year, v.MeasureTime.Month, v.MeasureTime.Day, v.MeasureTime.Hour, 0, 0)
                           }
-                          into g
+                into g
                           select new CounterData
                           {
                               SerialNumber = g.Key.SerialNumber,
@@ -105,6 +105,7 @@ namespace QboxNext.AzureTableImporter
             var sorted = grouped.OrderBy(k => k.MeasureTime).ToList();
             var sortedAndGrouped = sorted.GroupBy(s => s.MeasureTime).ToList();
 
+            Console.WriteLine($"values           Count = {values.Count}");
             Console.WriteLine($"sorted           Count = {sorted.Count}");
             Console.WriteLine($"sortedAndGrouped Count = {sortedAndGrouped.Count}");
 
@@ -115,14 +116,14 @@ namespace QboxNext.AzureTableImporter
                 string guid = Guid.NewGuid().ToString();
                 foreach (var x in grp)
                 {
-                    if (batch.Count < 100)
+                    if (batch.Count < batchValue)
                     {
                         batch.Add((guid, x));
                     }
                     else
                     {
                         i = i + 100;
-                        Console.WriteLine($"{100.0 * i / sorted.Count:F}%");
+                        Console.WriteLine($"{1.0 * batchValue * i / sorted.Count:F}%");
 
                         await service.StoreAsync(batch);
                         batch.Clear();
@@ -144,7 +145,7 @@ namespace QboxNext.AzureTableImporter
                 logger.LogInformation("EndOfFile:   {0}", endOfFile);
                 logger.LogInformation("ID:          {0}", id);
 
-                ulong rawPrevious = 0;
+                // ulong rawPrevious = 0;
                 long length = reader.BaseStream.Length;
                 DateTime currentTimestamp = startOfFile;
                 while (reader.BaseStream.Position < length)
@@ -154,7 +155,7 @@ namespace QboxNext.AzureTableImporter
                     ulong money = reader.ReadUInt64();
                     int quality = reader.ReadUInt16();
 
-                    if (raw != rawPrevious && raw < ulong.MaxValue)
+                    if (raw < ulong.MaxValue) // raw != rawPrevious && 
                     {
                         // logger.LogInformation($"{currentTimestamp:yyyy-MM-dd HH:mm} | {raw,10}");
 
@@ -163,12 +164,12 @@ namespace QboxNext.AzureTableImporter
                             SerialNumber = sn,
                             CounterId = counterId,
                             PulseValue = Convert.ToInt32(raw),
-                            MeasureTime = currentTimestamp
+                            MeasureTime = currentTimestamp.ToUniversalTime()
                         };
                         result.Add(counterData);
                     }
 
-                    rawPrevious = raw;
+                    // rawPrevious = raw;
 
                     currentTimestamp = currentTimestamp.AddMinutes(1);
                 }

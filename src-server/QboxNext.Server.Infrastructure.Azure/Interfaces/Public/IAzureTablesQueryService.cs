@@ -1,8 +1,9 @@
 ﻿using JetBrains.Annotations;
+using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Models.Public;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using QboxNext.Server.Domain;
 
 namespace QboxNext.Server.Infrastructure.Azure.Interfaces.Public
 {
@@ -15,6 +16,6 @@ namespace QboxNext.Server.Infrastructure.Azure.Interfaces.Public
         /// <returns>true/false</returns>
         Task<bool> IsValidRegistrationAsync([CanBeNull] string serialNumber);
 
-        Task<QueryResult> QueryDataAsync([NotNull] string serialNumber, [NotNull] int[] counterIds, DateTime from, DateTime to, QueryResolution resolution);
+        Task<PagedQueryResult<CounterDataValue>> QueryDataAsync([NotNull] string serialNumber, [NotNull] IList<int> counterIds, DateTime from, DateTime to, QueryResolution resolution);
     }
 }

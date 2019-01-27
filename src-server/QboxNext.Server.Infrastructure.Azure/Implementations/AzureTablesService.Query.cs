@@ -1,13 +1,12 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
-using QboxNext.Server.Common.Validation;
+﻿using QboxNext.Server.Common.Validation;
+using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
-using QboxNext.Server.Infrastructure.Azure.Models.Internal;
 using QboxNext.Server.Infrastructure.Azure.Models.Public;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using QboxNext.Server.Domain;
-
+using WindowsAzure.Table.Extensions;
 
 namespace QboxNext.Server.Infrastructure.Azure.Implementations
 {
@@ -21,45 +20,62 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 return false;
             }
 
-            var retrieve = TableOperation.Retrieve(serialNumber, serialNumber);
-
-            var retrieveResult = await _registrationsTable.ExecuteAsync(retrieve);
-
-            return retrieveResult?.Result != null;
+            return await _registrationTableSet.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber) != null;
         }
 
-        public async Task<QueryResult> QueryDataAsync(string serialNumber, int[] counterIds, DateTime from, DateTime to, QueryResolution resolution)
+        /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, IList{int}, DateTime, DateTime, QueryResolution)"/>
+        public async Task<PagedQueryResult<CounterDataValue>> QueryDataAsync(string serialNumber, IList<int> counterIds, DateTime from, DateTime to, QueryResolution resolution)
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
-            string partitionKeyFilter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, serialNumber);
-            string counterIdFilter = TableQuery.GenerateFilterConditionForInt("CounterId", QueryComparisons.NotEqual, 0);
-            string fromFilter = TableQuery.GenerateFilterConditionForDate("MeasureTime", QueryComparisons.GreaterThanOrEqual, from);
-            string toFilter = TableQuery.GenerateFilterConditionForDate("MeasureTime", QueryComparisons.LessThan, to);
+            var entities = await _measurementTableSet
+                .Where(m =>
+                    m.SerialNumber == serialNumber &&
+                    counterIds.Contains(m.CounterId) &&
+                    m.MeasureTime >= from.ToUniversalTime() &&
+                    m.MeasureTime < to.ToUniversalTime()
+                ).
+                Select(entity => new CounterDataValue
+                {
+                    CounterId = entity.CounterId,
+                    MeasureTime = entity.MeasureTime,
+                    PulseValue = entity.PulseValue
+                })
+                .ToListAsync();
 
-            string combinedFilterKeyAndCounter = TableQuery.CombineFilters(partitionKeyFilter, TableOperators.And, counterIdFilter);
-            string combinedDateFilter = TableQuery.CombineFilters(fromFilter, TableOperators.And, toFilter);
+            var grouped = from entity in entities
+                          group entity by new
+                          {
+                              entity.CounterId,
+                              MeasureTimeRounded = Get(entity.MeasureTime, resolution)
+                          }
+                into g
+                          select new CounterDataValue
+                          {
+                              CounterId = g.Key.CounterId,
+                              MeasureTime = g.Key.MeasureTimeRounded,
+                              PulseValue = g.Max(s => s.PulseValue)
+                          };
 
-            string combined = TableQuery.CombineFilters(combinedFilterKeyAndCounter, TableOperators.And, combinedDateFilter);
+            var sorted = grouped.OrderBy(cv => cv.MeasureTime).ThenBy(cv => cv.CounterId).ToList();
 
-            var projectionQuery = new TableQuery<MeasurementEntity>()
-                .Select(new[] { "MeasureTime", "CounterId", "PulseValue" })
-                .Where(combined);
-
-            var token = new TableContinuationToken();
-            var tableQuerySegment = await _measurementsTable.ExecuteQuerySegmentedAsync(projectionQuery, token);
-
-            var values = tableQuerySegment.Results.Select(me => new CounterDataValue
+            return new PagedQueryResult<CounterDataValue>
             {
-                CounterId = me.CounterId,
-                MeasureTime = me.MeasureTime,
-                PulseValue = me.PulseValue
-            }).ToList();
-
-            return new QueryResult
-            {
-                Values = values
+                Items = sorted,
+                Count = sorted.Count
             };
+        }
+
+        private DateTime Get(DateTime measureTime, QueryResolution resolution)
+        {
+            switch (resolution)
+            {
+                case QueryResolution.Hour:
+                    return new DateTime(measureTime.Year, measureTime.Month, measureTime.Day, measureTime.Hour, 0, 0);
+
+                default:
+                    throw new NotSupportedException();
+            }
         }
     }
 }

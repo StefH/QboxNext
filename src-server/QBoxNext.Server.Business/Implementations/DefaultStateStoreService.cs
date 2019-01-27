@@ -47,7 +47,7 @@ namespace QBoxNext.Server.Business.Implementations
 
             if (stateData.Message != null)
             {
-                if (stateData.Message.AsSpan(0, 10).ToArray().All(char.IsLetterOrDigit))
+                if (stateData.Message.AsSpan(1, 10).ToArray().All(char.IsLetterOrDigit))
                 {
                     state.Message = stateData.Message;
                 }

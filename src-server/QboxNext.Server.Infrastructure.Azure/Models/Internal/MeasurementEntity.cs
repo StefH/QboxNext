@@ -1,13 +1,19 @@
 ﻿using JetBrains.Annotations;
-using Microsoft.WindowsAzure.Storage.Table;
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using System;
+using WindowsAzure.Table.Attributes;
 
 namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
 {
-    public class MeasurementEntity : TableEntity
+    public class MeasurementEntity
     {
+        [PartitionKey]
+        public string SerialNumber { get; set; }
+
+        [RowKey]
+        public string RowKey { get; set; }
+
         public string CorrelationId { get; set; }
 
         public DateTime LogTimeStamp { get; set; }
@@ -18,13 +24,6 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
 
         public double PulseValue { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MeasurementEntity"/> class.
-        ///
-        /// Needed because:
-        /// error CS0310: 'MeasurementEntity' must be a non-abstract type with a public parameterless constructor in order to use it as
-        /// parameter 'TElement' in the generic type or method 'CloudTable.ExecuteQuery{TElement}(TableQuery{TElement}, TableRequestOptions, OperationContext)'
-        /// </summary>
         public MeasurementEntity()
         {
             // This is needed.
@@ -38,7 +37,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
         {
             Guard.NotNull(qboxMeasurement, nameof(qboxMeasurement));
 
-            PartitionKey = qboxMeasurement.SerialNumber;
+            SerialNumber = qboxMeasurement.SerialNumber;
             RowKey = $"{DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks:d19}:{qboxMeasurement.CounterId:D4}";
 
             CorrelationId = qboxMeasurement.CorrelationId;

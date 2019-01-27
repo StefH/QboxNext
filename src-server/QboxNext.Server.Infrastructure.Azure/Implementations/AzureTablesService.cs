@@ -2,20 +2,21 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
+using QboxNext.Server.Infrastructure.Azure.Models.Internal;
 using QboxNext.Server.Infrastructure.Azure.Options;
 using System;
+using WindowsAzure.Table;
 
 namespace QboxNext.Server.Infrastructure.Azure.Implementations
 {
     internal partial class AzureTablesService : IAzureTablesService
     {
         private readonly ILogger<AzureTablesService> _logger;
-        private readonly CloudTable _measurementsTable;
-        private readonly CloudTable _statesTable;
-        private readonly CloudTable _registrationsTable;
+        private readonly TableSet<RegistrationEntity> _registrationTableSet;
+        private readonly TableSet<MeasurementEntity> _measurementTableSet;
+        private readonly TableSet<StateEntity> _stateTableSet;
         private readonly TimeSpan _serverTimeout;
 
         /// <summary>
@@ -34,10 +35,12 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             // Create CloudTableClient
             var client = CloudStorageAccount.Parse(options.Value.ConnectionString).CreateCloudTableClient();
 
-            // Get reference to the tables
-            _measurementsTable = client.GetTableReference(options.Value.MeasurementsTableName);
-            _statesTable = client.GetTableReference(options.Value.StatesTableName);
-            _registrationsTable = client.GetTableReference(options.Value.RegistrationsTableName);
+            // Create table sets
+            _registrationTableSet = new TableSet<RegistrationEntity>(client, options.Value.RegistrationsTableName);
+
+            _stateTableSet = new TableSet<StateEntity>(client, options.Value.StatesTableName);
+
+            _measurementTableSet = new TableSet<MeasurementEntity>(client, options.Value.MeasurementsTableName);
         }
     }
 }
