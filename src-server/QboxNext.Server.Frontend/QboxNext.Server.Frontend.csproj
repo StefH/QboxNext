@@ -2,10 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>9437ff56-8a8c-421d-a810-9db5bc56d74d</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <ApplicationInsightsResourceId>/subscriptions/2de19637-27a3-42a8-812f-2c2a7f7f935c/resourcegroups/qboxnext-resourcegroup/providers/microsoft.insights/components/qboxnext-application-insights</ApplicationInsightsResourceId>
-    <ApplicationInsightsAnnotationResourceId>/subscriptions/2de19637-27a3-42a8-812f-2c2a7f7f935c/resourcegroups/qboxnext-resourcegroup/providers/microsoft.insights/components/qboxnext-application-insights</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="logs\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -33,8 +29,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\NLog.Extensions.AzureTables.csproj" />
-    <ProjectReference Include="..\QBoxNext.Server.Business\QBoxNext.Server.Business.csproj" />
-    <ProjectReference Include="..\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />
+    <ProjectReference Include="..\..\src-server\QBoxNext.Server.Business\QBoxNext.Server.Business.csproj" />
+    <ProjectReference Include="..\..\src-server\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

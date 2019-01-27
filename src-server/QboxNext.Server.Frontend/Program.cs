@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 
-namespace QboxNext.Server.WebApi
+namespace QboxNext.Frontend.WebApi
 {
     public class Program
     {

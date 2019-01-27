@@ -3,9 +3,9 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  buildProjects: '**/QboxNext.Server.WebApi.csproj'
+  buildProjects: '**/QboxNext.Server.DataReceiver.csproj'
 #  testProjects: '**/tests/**/*.csproj'
-  imageName: 'qboxnext-webapi'
+  imageName: 'qboxnext-datareceiver'
   tag: '1.0.0'
   buildDocker: $(BUILD_DOCKER)
 
@@ -34,7 +34,7 @@ steps:
 #    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 #    zipAfterPublish: True
 
-- script: docker build -t $(DOCKER_ID)/$(imageName) -f ./src-server/QboxNext.Server.WebApi/Dockerfile .
+- script: docker build -t $(DOCKER_ID)/$(imageName) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
   displayName: Build Docker image
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 

@@ -8,13 +8,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Extensions.AzureTables;
+using QboxNext.Frontend.WebApi.Options;
 using QboxNext.Logging;
 using QboxNext.Server.Infrastructure.Azure.Options;
-using QboxNext.Server.WebApi.Options;
 using QBoxNext.Server.Business.DependencyInjection;
 using System.Linq;
 
-namespace QboxNext.Server.WebApi
+namespace QboxNext.Frontend.WebApi
 {
     public class Startup
     {

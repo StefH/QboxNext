@@ -18,20 +18,20 @@ COPY ["src/QboxNext/QboxNext.csproj", "src/QboxNext/"]
 COPY ["src/QboxNext.Extensions/QboxNext.Extensions.csproj", "src/QboxNext.Extensions/"]
 
 COPY ["src-server/QboxNext.Server.Infrastructure.Azure/QboxNext.Server.Infrastructure.Azure.csproj", "src-server/QboxNext.Server.Infrastructure.Azure/"]
-COPY ["src-server/QboxNext.Server.WebApi/QboxNext.Server.WebApi.csproj", "src-server/QboxNext.Server.WebApi/"]
+COPY ["src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend.csproj", "src-server/QboxNext.Server.Frontend/"]
 COPY ["src-server/QBoxNext.Server.Business/QBoxNext.Server.Business.csproj", "src-server/QBoxNext.Server.Business/"]
 COPY ["src-server/QboxNext.Server.Domain/QboxNext.Server.Domain.csproj", "src-server/QboxNext.Server.Domain/"]
 COPY ["src-server/QboxNext.Server.Common/QboxNext.Server.Common.csproj", "src-server/QboxNext.Server.Common/"]
 
-RUN dotnet restore "src-server/QboxNext.Server.WebApi/QboxNext.Server.WebApi.csproj"
+RUN dotnet restore "src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend.csproj"
 COPY . .
-WORKDIR "/src/src-server/QboxNext.Server.WebApi"
-RUN dotnet build "QboxNext.Server.WebApi.csproj" -c Release -o /app
+WORKDIR "/src/src-server/QboxNext.Server.Frontend"
+RUN dotnet build "QboxNext.Server.Frontend.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "QboxNext.Server.WebApi.csproj" -c Release -o /app
+RUN dotnet publish "QboxNext.Server.Frontend.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "QboxNext.Server.WebApi.dll"]
+ENTRYPOINT ["dotnet", "QboxNext.Server.Frontend.dll"]

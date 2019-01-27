@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>9437ff56-8a8c-421d-a810-9db5bc56d74d</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
@@ -10,7 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Connected Services\" />
+    <None Remove="logs\nlog.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="logs\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
