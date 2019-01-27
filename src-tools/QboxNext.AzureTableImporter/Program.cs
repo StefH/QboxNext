@@ -33,8 +33,9 @@ namespace QboxNext.AzureTableImporter
             {
                 options.ServerTimeout = 60;
                 options.ConnectionString = args[1] ?? "UseDevelopmentStorage=true;";
-                options.MeasurementsTableName = "QboxMeasurementsImport";
-                options.StatesTableName = "QboxStatesNotUsed";
+                options.MeasurementsTableName = "QboxMeasurements";
+                options.StatesTableName = "not-used";
+                options.RegistrationsTableName = "not-used";
             });
 
             // Add logging & services
