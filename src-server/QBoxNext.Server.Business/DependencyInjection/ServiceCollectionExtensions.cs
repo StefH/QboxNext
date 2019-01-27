@@ -34,6 +34,7 @@ namespace QBoxNext.Server.Business.DependencyInjection
             services.AddScoped<ICounterStoreService, DefaultCounterStoreService>();
             services.AddScoped<IStateStoreService, DefaultStateStoreService>();
             services.AddScoped<IRegistrationService, DefaultRegistrationService>();
+            services.AddScoped<IDataQueryService, DataQueryService>();
 
             // Add External
             services.AddQboxNextExtensions();
