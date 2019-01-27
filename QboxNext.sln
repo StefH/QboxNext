@@ -65,7 +65,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Server.DataReceive
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Server.Frontend", "src-server\QboxNext.Server.Frontend\QboxNext.Server.Frontend.csproj", "{1F402F45-F533-4B98-B803-BFEC5839B1F9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "azure-functions", "azure-functions", "{586BBAB6-81B3-4D88-B26A-E1857DE9E000}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-azure-functions", "src-azure-functions", "{586BBAB6-81B3-4D88-B26A-E1857DE9E000}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
