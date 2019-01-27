@@ -7,23 +7,24 @@ using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace QBoxNext.Server.Business.Implementations
 {
     internal class DefaultStateStoreService : IStateStoreService
     {
-        private readonly IDataStoreService _dataStoreService;
+        private readonly IAzureTablesService _azureTablesService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultStateStoreService"/> class.
         /// </summary>
-        /// <param name="dataStoreService">The data store service.</param>
-        public DefaultStateStoreService([NotNull] IDataStoreService dataStoreService)
+        /// <param name="azureTablesService">The data store service.</param>
+        public DefaultStateStoreService([NotNull] IAzureTablesService azureTablesService)
         {
-            Guard.IsNotNull(dataStoreService, nameof(dataStoreService));
+            Guard.IsNotNull(azureTablesService, nameof(azureTablesService));
 
-            _dataStoreService = dataStoreService;
+            _azureTablesService = azureTablesService;
         }
 
         /// <inheritdoc cref="IStateStoreService.StoreAsync(string, StateData)"/>
@@ -38,12 +39,24 @@ namespace QBoxNext.Server.Business.Implementations
                 LogTime = DateTime.UtcNow,
                 SerialNumber = stateData.SerialNumber,
                 MessageType = stateData.MessageType.ToString(),
-                Message = stateData.Message,
                 State = stateData.State.ToString(),
                 FirmwareVersion = stateData.Status?.FirmwareVersion,
                 LastIpAddress = stateData.Status?.LastIpAddress.Key,
                 LastIpAddressUpdate = stateData.Status?.LastIpAddress.Value
             };
+
+            if (stateData.Message != null)
+            {
+                if (stateData.Message.AsSpan(0, 10).ToArray().All(char.IsLetterOrDigit))
+                {
+                    state.Message = stateData.Message;
+                }
+                else
+                {
+                    // Convert to Base64 string
+                    state.Message = $"Base64 byte[] {Convert.ToBase64String(Encoding.UTF8.GetBytes(stateData.Message))}";
+                }
+            }
 
             // Copy all 'Last...' values
             if (stateData.Status != null)
@@ -64,7 +77,7 @@ namespace QBoxNext.Server.Business.Implementations
                 }
             }
 
-            await _dataStoreService.StoreAsync(state);
+            await _azureTablesService.StoreAsync(state);
         }
     }
 }

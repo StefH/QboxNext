@@ -28,7 +28,7 @@ namespace QboxNext.Server.Infrastructure.Azure.DependencyInjection
 
         private static void AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IDataStoreService, DataStoreService>();
+            services.AddScoped<IAzureTablesService, AzureTablesService>();
         }
     }
 }
