@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace QboxNext.Server.WebApi.Controllers
+namespace QboxNext.Server.DataReceiver.Controllers
 {
     [ApiController]
     public class StatusController : ControllerBase

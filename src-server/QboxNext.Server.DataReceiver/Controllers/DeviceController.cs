@@ -9,7 +9,7 @@ using QBoxNext.Server.Business.Interfaces.Public;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace QboxNext.Server.WebApi.Controllers
+namespace QboxNext.Server.DataReceiver.Controllers
 {
     [ApiController]
     public class DeviceController : ControllerBase

@@ -1,4 +1,4 @@
-﻿namespace QboxNext.Server.WebApi.Options
+﻿namespace QboxNext.Server.DataReceiver.Options
 {
     public class AppOptions
     {
