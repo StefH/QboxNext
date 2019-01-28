@@ -15,6 +15,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QboxNext.Extensions.Utils;
 
 namespace QboxNext.Extensions.Implementations
 {
@@ -234,19 +235,18 @@ namespace QboxNext.Extensions.Implementations
                 }
             }
 
-            var counterDataList = new List<(string correlationId, CounterData counterData)>();
+            var counterDataList = new List<CounterData>();
             foreach (var counterPayload in payloads.Where(p => p is CounterPayload).Cast<CounterPayload>())
             {
-
                 if (TryMapCounterPayload(counterPayload, out CounterData counterData))
                 {
-                    counterDataList.Add((_correlationId, counterData));
+                    counterDataList.Add(counterData);
                 }
             }
 
             try
             {
-                await _counterService.StoreAsync(counterDataList);
+                await _counterService.StoreAsync(_correlationId, counterDataList);
             }
             catch (Exception ex)
             {
@@ -389,7 +389,7 @@ namespace QboxNext.Extensions.Implementations
             counterData = new CounterData
             {
                 SerialNumber = _context.Mini.SerialNumber,
-                MeasureTime = parseResult.Model.MeasurementTime,
+                MeasureTime = parseResult.Model.MeasurementTime.ToAmsterdam(), // Change to Dutch Timezone
                 CounterId = payload.InternalNr,
                 PulseValue = Convert.ToInt32(payload.Value)
             };

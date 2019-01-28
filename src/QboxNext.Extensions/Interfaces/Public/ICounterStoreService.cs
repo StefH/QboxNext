@@ -17,7 +17,8 @@ namespace QboxNext.Extensions.Interfaces.Public
         /// <summary>
         /// Stores multiple Counters.
         /// </summary>
-        /// <param name="counters">correlationId + counterData</param>
-        Task StoreAsync([NotNull] IList<(string correlationId, CounterData counterData)> counters);
+        /// <param name="correlationId">The correlation id.</param>
+        /// <param name="counters">The CounterData.</param>
+        Task StoreAsync([NotNull] string correlationId, [NotNull] IList<CounterData> counters);
     }
 }

@@ -13,10 +13,13 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 {
     internal partial class AzureTablesService : IAzureTablesService
     {
+        private const int MeasurementPartitionKeyStart = 100000000;
+        private static readonly long MaxTicks = DateTime.MaxValue.Ticks + 1;
+
         private readonly ILogger<AzureTablesService> _logger;
-        private readonly TableSet<RegistrationEntity> _registrationTableSet;
-        private readonly TableSet<MeasurementEntity> _measurementTableSet;
-        private readonly TableSet<StateEntity> _stateTableSet;
+        private readonly ITableSet<RegistrationEntity> _registrationTableSet;
+        private readonly ITableSet<MeasurementEntity> _measurementTableSet;
+        private readonly ITableSet<StateEntity> _stateTableSet;
         private readonly TimeSpan _serverTimeout;
 
         /// <summary>
@@ -37,9 +40,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             // Create table sets
             _registrationTableSet = new TableSet<RegistrationEntity>(client, options.Value.RegistrationsTableName);
-
             _stateTableSet = new TableSet<StateEntity>(client, options.Value.StatesTableName);
-
             _measurementTableSet = new TableSet<MeasurementEntity>(client, options.Value.MeasurementsTableName);
         }
     }

@@ -2,6 +2,7 @@
 {
     public enum QueryResolution
     {
+        QuarterOfHour,
         Hour,
         Day,
         Week,

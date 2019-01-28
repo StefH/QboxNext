@@ -1,7 +1,6 @@
 ﻿using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
-using QboxNext.Server.Infrastructure.Azure.Models.Public;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,54 +23,72 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
         }
 
         /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, IList{int}, DateTime, DateTime, QueryResolution)"/>
-        public async Task<PagedQueryResult<CounterDataValue>> QueryDataAsync(string serialNumber, IList<int> counterIds, DateTime from, DateTime to, QueryResolution resolution)
+        public async Task<PagedQueryResult<QboxCounterDataValue>> QueryDataAsync(string serialNumber, IList<int> counterIds, DateTime from, DateTime to, QueryResolution resolution)
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
+            string fromPartitionKey = GetPartitionKey(serialNumber, from);
+            string toPartitionKey = GetPartitionKey(serialNumber, to);
+            bool same = fromPartitionKey == toPartitionKey;
+
             var entities = await _measurementTableSet
-                .Where(m =>
-                    m.SerialNumber == serialNumber &&
-                    counterIds.Contains(m.CounterId) &&
-                    m.MeasureTime >= from.ToUniversalTime() &&
-                    m.MeasureTime < to.ToUniversalTime()
-                ).
-                Select(entity => new CounterDataValue
-                {
-                    CounterId = entity.CounterId,
-                    MeasureTime = entity.MeasureTime,
-                    PulseValue = entity.PulseValue
-                })
+                .Where(m => (same && m.PartitionKey == fromPartitionKey || !same && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) >= 0) &&
+                    m.MeasureTime >= from && m.MeasureTime < to
+                )
                 .ToListAsync();
 
-            var grouped = from entity in entities
-                          group entity by new
+            var items0181 = entities.Where(e => counterIds.Contains(181) && e.Counter0181 != null).Select(e => new QboxCounterDataValue { CounterId = 181, PulseValue = e.Counter0181.Value, MeasureTime = e.MeasureTime });
+            var items0182 = entities.Where(e => counterIds.Contains(182) && e.Counter0182 != null).Select(e => new QboxCounterDataValue { CounterId = 182, PulseValue = e.Counter0182.Value, MeasureTime = e.MeasureTime });
+            var items0281 = entities.Where(e => counterIds.Contains(281) && e.Counter0281 != null).Select(e => new QboxCounterDataValue { CounterId = 281, PulseValue = e.Counter0281.Value, MeasureTime = e.MeasureTime });
+            var items0282 = entities.Where(e => counterIds.Contains(182) && e.Counter0282 != null).Select(e => new QboxCounterDataValue { CounterId = 282, PulseValue = e.Counter0282.Value, MeasureTime = e.MeasureTime });
+            var items2421 = entities.Where(e => counterIds.Contains(2421) && e.Counter2421 != null).Select(e => new QboxCounterDataValue { CounterId = 2421, PulseValue = e.Counter2421.Value, MeasureTime = e.MeasureTime });
+
+            var values = items0181.Union(items0182).Union(items0281).Union(items0282).Union(items2421).ToList();
+
+            var grouped = from v in values
+                          group v by new
                           {
-                              entity.CounterId,
-                              MeasureTimeRounded = Get(entity.MeasureTime, resolution)
+                              v.CounterId,
+                              MeasureTimeRounded = Get(v.MeasureTime, resolution)
                           }
                 into g
-                          select new CounterDataValue
+                          select new QboxCounterDataValue
                           {
                               CounterId = g.Key.CounterId,
                               MeasureTime = g.Key.MeasureTimeRounded,
-                              PulseValue = g.Max(s => s.PulseValue)
+                              PulseValue = (int) g.Average(s => s.PulseValue)
                           };
 
-            var sorted = grouped.OrderBy(cv => cv.MeasureTime).ThenBy(cv => cv.CounterId).ToList();
+            var items = grouped.OrderBy(x => x.MeasureTime).ToList();
 
-            return new PagedQueryResult<CounterDataValue>
+            return new PagedQueryResult<QboxCounterDataValue>
             {
-                Items = sorted,
-                Count = sorted.Count
+                Items = items,
+                Count = items.Count
             };
         }
 
-        private DateTime Get(DateTime measureTime, QueryResolution resolution)
+        private static DateTime Get(DateTime measureTime, QueryResolution resolution)
         {
             switch (resolution)
             {
+                case QueryResolution.QuarterOfHour:
+                    return new DateTime(measureTime.Year, measureTime.Month, measureTime.Day, measureTime.Hour, measureTime.Minute / 15 * 15, 0);
+
                 case QueryResolution.Hour:
                     return new DateTime(measureTime.Year, measureTime.Month, measureTime.Day, measureTime.Hour, 0, 0);
+
+                case QueryResolution.Day:
+                    return new DateTime(measureTime.Year, measureTime.Month, measureTime.Day, 0, 0, 0);
+
+                case QueryResolution.Week:
+                    return new DateTime(measureTime.Year, measureTime.Month, measureTime.Day / 7 * 7, 0, 0, 0);
+
+                case QueryResolution.Month:
+                    return new DateTime(measureTime.Year, measureTime.Month, 0, 0, 0, 0);
+
+                case QueryResolution.Year:
+                    return new DateTime(measureTime.Year, 0, 0, 0, 0, 0);
 
                 default:
                     throw new NotSupportedException();
