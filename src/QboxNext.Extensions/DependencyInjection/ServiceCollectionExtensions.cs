@@ -39,7 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IQboxMessagesLogger, QboxMessagesNullLogger>();
             services.AddScoped<IQboxDataDumpContextFactory, QboxDataDumpContextFactory>();
             services.AddScoped<IQboxNextDataHandlerFactory, QboxNextDataHandlerFactory>();
-            services.AddSingleton<IMiniFactory, MiniFactory>();
+            services.AddSingleton<IQboxMiniFactory, QboxMiniFactory>();
         }
     }
 }

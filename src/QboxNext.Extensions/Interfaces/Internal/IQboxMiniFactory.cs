@@ -2,7 +2,7 @@
 
 namespace QboxNext.Extensions.Interfaces.Internal
 {
-    interface IMiniFactory
+    interface IQboxMiniFactory
     {
         /// <summary>
         /// Creates a <see cref="Mini"/>.

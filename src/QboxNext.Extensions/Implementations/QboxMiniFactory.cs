@@ -6,9 +6,9 @@ using QboxNext.Model.Utils;
 
 namespace QboxNext.Extensions.Implementations
 {
-    internal class MiniFactory : IMiniFactory
+    internal class QboxMiniFactory : IQboxMiniFactory
     {
-        /// <inheritdoc cref="IMiniFactory.Create(string)"/>
+        /// <inheritdoc cref="IQboxMiniFactory.Create(string)"/>
         public Mini Create(string serialNumber)
         {
             Guard.IsNotNullOrEmpty(serialNumber, nameof(serialNumber));
