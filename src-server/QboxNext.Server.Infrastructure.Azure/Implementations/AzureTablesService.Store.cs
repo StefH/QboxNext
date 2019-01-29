@@ -43,11 +43,11 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             into g
                             select new MeasurementEntity
                             {
-                                SerialNumber = g.Key.SerialNumber,
                                 PartitionKey = GetPartitionKey(g.Key.SerialNumber, g.Key.MeasureTime),
-                                RowKey = GetRowKey(g.Key.MeasureTime, g.FirstOrDefault()?.CorrelationId),
+                                RowKey = GetRowKey(g.Key.MeasureTime),
+                                SerialNumber = g.Key.SerialNumber,
                                 MeasureTime = g.Key.MeasureTime,
-                                CorrelationId = g.FirstOrDefault()?.CorrelationId,
+                                CorrelationId = g.First().CorrelationId,
                                 Counter0181 = g.FirstOrDefault(c => c.CounterId == 181)?.PulseValue,
                                 Counter0182 = g.FirstOrDefault(c => c.CounterId == 182)?.PulseValue,
                                 Counter0281 = g.FirstOrDefault(c => c.CounterId == 281)?.PulseValue,
@@ -58,7 +58,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             string serialNumber = qboxMeasurements.First().SerialNumber;
 
-            _logger.LogInformation($"Inserting {entities.Count} measurements for '{serialNumber}' into Azure Table '{nameof(_measurementTableSet)}'");
+            _logger.LogInformation($"Inserting {entities.Count} measurement(s) for '{serialNumber}' into Azure Table '{nameof(_measurementTableSet)}'");
 
             return await _measurementTableSet.AddOrUpdateAsync(entities).TimeoutAfter(_serverTimeout) != null;
         }
@@ -78,9 +78,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             return $"{serialNumber}:{MeasurementPartitionKeyStart - measureTime.Year * 10000 - measureTime.Month * 100 - measureTime.Day}";
         }
 
-        private static string GetRowKey(DateTime measureTime, string guid)
+        private static string GetRowKey(DateTime measureTime)
         {
-            return $"{MaxTicks - measureTime.Ticks:d19}:{guid}";
+            return $"{MaxTicks - measureTime.Ticks:d19}";
         }
     }
 }

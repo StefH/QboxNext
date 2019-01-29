@@ -1,4 +1,5 @@
 ﻿using CorrelationId;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using QboxNext.Server.DataReceiver.Options;
 using QboxNext.Server.Infrastructure.Azure.Options;
 using QBoxNext.Server.Business.DependencyInjection;
 using System.Linq;
+using QboxNext.Server.DataReceiver.Telemetry;
 
 namespace QboxNext.Server.DataReceiver
 {
@@ -35,6 +37,10 @@ namespace QboxNext.Server.DataReceiver
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // https://github.com/Microsoft/ApplicationInsights-aspnetcore/wiki/Custom-Configuration
+            services.AddSingleton<ITelemetryInitializer, QboxNextTelemetryInitializer>();
+            services.AddApplicationInsightsTelemetry();
 
             // Add External services
             services

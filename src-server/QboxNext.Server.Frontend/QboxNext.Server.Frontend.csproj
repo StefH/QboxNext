@@ -21,9 +21,9 @@
 
   <ItemGroup>
     <PackageReference Include="CorrelationId" Version="2.1.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.2" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
   </ItemGroup>
 
