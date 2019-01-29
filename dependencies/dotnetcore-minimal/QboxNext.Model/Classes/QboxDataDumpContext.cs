@@ -1,6 +1,6 @@
 ﻿using System;
 using QboxNext.Core.Utils;
-using QboxNext.Qserver.Core.Model;
+using QboxNext.Model.Qboxes;
 
 namespace QboxNext.Model.Classes
 {
@@ -8,7 +8,7 @@ namespace QboxNext.Model.Classes
     {        
         public string Message { get; private set; }
         public int Length { get; private set; }
-        public MiniPoco Mini { get; private set; }
+        public Mini Mini { get; private set; }
         public string Error { get; set; }
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace QboxNext.Model.Classes
         /// <param name="externalIp">The external ip from which the dump was initiated</param>
         /// <param name="mini">The mini the dump is made from</param>
         /// <param name="error">An optional error message to show if the retrieval or binding of the Mini, MiniPoco or decryption of the message was incorrect.</param>
-        public QboxDataDumpContext(string message, int length, string lastSeenAtUrl, string externalIp, MiniPoco mini, string error = null)
+        public QboxDataDumpContext(string message, int length, string lastSeenAtUrl, string externalIp, Mini mini, string error = null)
         {            
             Guard.IsNotNullOrEmpty(lastSeenAtUrl, "last seen url is missing");
             Guard.IsNotNullOrEmpty(externalIp, "External Ip is missing");

@@ -1,15 +1,15 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using NLog;
-using QboxNext.Core.Log;
+using Microsoft.Extensions.Logging;
+using QboxNext.Logging;
 
 namespace QboxNext.Core.Encryption
 {
     public class QboxRijndael
     {
-        protected static Logger Log = QboxNextLogFactory.GetLogger("Qserver");
+        protected static ILogger Logger = QboxNextLogProvider.CreateLogger("QboxRijndael");
 
         protected byte[] Key;
         protected byte[] Iv;
@@ -30,7 +30,7 @@ namespace QboxNext.Core.Encryption
         /// <returns>Byte array that holds the encryped version of the aBytes parameter</returns>
         public byte[] Encrypt(byte[] aBytes)
         {
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
             // Reset the lenght of the string to exact blocks of 16 bytes
             var length = aBytes.Length;
             var add = 0;
@@ -43,11 +43,11 @@ namespace QboxNext.Core.Encryption
                 bytes[length + i] = 32;
             }
 
-            Log.Debug("Number of bytes added: " + add);
+            Logger.LogDebug("Number of bytes added: " + add);
 
             _encrypted = QboxNextRijndael.Encrypt(bytes, Key, Iv, 256);
 
-            Log.Trace("Return");
+            Logger.LogTrace("Return");
             return _encrypted;
         }
 
@@ -65,7 +65,7 @@ namespace QboxNext.Core.Encryption
             if (length % 16 != 0)
                 add = 16 - (length % 16);
 
-            Log.Debug("Number of bytes to add: " + add);
+            Logger.LogDebug("Number of bytes to add: " + add);
 
             string text = aText.PadRight(add + length, ' ');
             _decrypted = Encoding.UTF8.GetBytes(text);

@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using QboxNext.Core.Dto;
+using QboxNext.Model.Qboxes;
 using QboxNext.Qboxes.Parsing.Protocols;
-using QboxNext.Qserver.Core.Model;
 
 namespace QboxNext.Extensions.Models.Public
 {

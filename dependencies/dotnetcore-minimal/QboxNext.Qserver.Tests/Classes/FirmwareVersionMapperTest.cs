@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
-using QboxNext.Qserver.Classes;
+﻿using NUnit.Framework;
 
-namespace QboxNext.Server.Classes
+namespace QboxNext.Qserver.Classes
 {
     public class FirmwareVersionMapperTest
     {

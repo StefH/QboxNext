@@ -37,9 +37,9 @@ namespace QboxNext.Qservice.Classes
         /// <summary>
         /// Build the C# result that can be used to generate the Json result for GetSeries.
         /// </summary>
-        public IList<Serie> RetrieveForAccount(string inQboxSerial, DateTime inFromUtc, DateTime inToUtc, SeriesResolution inResolution)
+        public IList<Serie> RetrieveForAccount(Mini mini, DateTime inFromUtc, DateTime inToUtc, SeriesResolution inResolution)
         {
-            var valueSeries = RetrieveSerieValuesForAccount(inQboxSerial, inFromUtc, inToUtc, inResolution);
+            var valueSeries = RetrieveSerieValuesForAccount(mini, inFromUtc, inToUtc, inResolution);
             return Mapper.Map<IEnumerable<ValueSerie>, IList<Serie>>(valueSeries);
         }
 
@@ -47,9 +47,15 @@ namespace QboxNext.Qservice.Classes
         /// <summary>
         /// Build the C# result that can be used to generate the Json result for GetSeries.
         /// </summary>
-        private IEnumerable<ValueSerie> RetrieveSerieValuesForAccount(string inQboxSerial, DateTime inFromUtc, DateTime inToUtc, SeriesResolution inResolution)
+        private IEnumerable<ValueSerie> RetrieveSerieValuesForAccount(Mini mini, DateTime inFromUtc, DateTime inToUtc, SeriesResolution inResolution)
         {
-            var parameters = new RetrieveSeriesParameters { QboxSerial = inQboxSerial, FromUtc = inFromUtc, ToUtc = inToUtc, Resolution = inResolution };
+            var parameters = new RetrieveSeriesParameters
+            {
+                Mini = mini,
+                FromUtc = inFromUtc,
+                ToUtc = inToUtc,
+                Resolution = inResolution
+            };
             List<ValueSerie> resultSeries = RetrieveQboxSeries(parameters);
             // If there is generation, it can be that there are odd negative consumption numbers, these will be set to 0.
             if (resultSeries.Any(s => s.EnergyType == DeviceEnergyType.Generation) && resultSeries.Any(s => s.EnergyType == DeviceEnergyType.Consumption))
@@ -194,7 +200,7 @@ namespace QboxNext.Qservice.Classes
             var fromNl = DateTimeUtils.UtcDateTimeToNl(parameters.FromUtc);
             var toNl = DateTimeUtils.UtcDateTimeToNl(parameters.ToUtc);
 
-            var mini = CreateMini(parameters.QboxSerial);
+            var mini = parameters.Mini;
 
             try
             {
@@ -296,144 +302,6 @@ namespace QboxNext.Qservice.Classes
                 Log.Trace(JsonUtils.ObjectToJsonString(countersSeriesValue));
 
             return countersSeriesValue;
-        }
-
-        private static Mini CreateMini(string qboxSerial)
-        {
-            // SAM: previously the Qbox metadata was read from Redis. For now we take a huge shortcut and
-            // only support Qbox Duo with smart meter EG with S0.
-            // This code is tied to a similar construct in Qserver (QboxDataDumpContextFactory.Mini).
-            var qbox = new Qbox
-            {
-                SerialNumber = qboxSerial,
-                Precision = Precision.mWh,
-                DataStore = new DataStore
-                {
-                    Path = QboxNext.Core.Config.DataStorePath
-                }
-            };
-            var mini = new Mini
-            {
-                Counters = new List<Counter>()
-                {
-                    new Counter
-                    {
-                        CounterId = 181,
-                        GroupId = CounterSource.Client0,
-                        CounterDeviceMappings = new List<CounterDeviceMapping>
-                        {
-                            new CounterDeviceMapping
-                            {
-                                Device = new Device
-                                {
-                                    EnergyType = DeviceEnergyType.Consumption
-                                },
-                                PeriodeBegin = new DateTime(2012, 1, 1),
-                                PeriodeEind = new DateTime(9999, 1, 1)
-                            }
-                        },
-                        Qbox = qbox
-                    },
-                    new Counter
-                    {
-                        CounterId = 182,
-                        GroupId = CounterSource.Client0,
-                        CounterDeviceMappings = new List<CounterDeviceMapping>
-                        {
-                            new CounterDeviceMapping
-                            {
-                                Device = new Device
-                                {
-                                    EnergyType = DeviceEnergyType.Consumption
-                                },
-                                PeriodeBegin = new DateTime(2012, 1, 1),
-                                PeriodeEind = new DateTime(9999, 1, 1)
-                            }
-                        },
-                        Qbox = qbox
-                    },
-                    new Counter
-                    {
-                        CounterId = 281,
-                        GroupId = CounterSource.Client0,
-                        CounterDeviceMappings = new List<CounterDeviceMapping>
-                        {
-                            new CounterDeviceMapping
-                            {
-                                Device = new Device
-                                {
-                                    EnergyType = DeviceEnergyType.Generation
-                                },
-                                PeriodeBegin = new DateTime(2012, 1, 1),
-                                PeriodeEind = new DateTime(9999, 1, 1)
-                            }
-                        },
-                        Qbox = qbox
-                    },
-                    new Counter
-                    {
-                        CounterId = 282,
-                        GroupId = CounterSource.Client0,
-                        CounterDeviceMappings = new List<CounterDeviceMapping>
-                        {
-                            new CounterDeviceMapping
-                            {
-                                Device = new Device
-                                {
-                                    EnergyType = DeviceEnergyType.Generation
-                                },
-                                PeriodeBegin = new DateTime(2012, 1, 1),
-                                PeriodeEind = new DateTime(9999, 1, 1)
-                            }
-                        },
-                        Qbox = qbox
-                    },
-                    new Counter
-                    {
-                        CounterId = 2421,
-                        GroupId = CounterSource.Client0,
-                        CounterDeviceMappings = new List<CounterDeviceMapping>
-                        {
-                            new CounterDeviceMapping
-                            {
-                                Device = new Device
-                                {
-                                    EnergyType = DeviceEnergyType.Gas
-                                },
-                                PeriodeBegin = new DateTime(2012, 1, 1),
-                                PeriodeEind = new DateTime(9999, 1, 1)
-                            }
-                        },
-                        Qbox = qbox
-                    },
-                    new Counter
-                    {
-                        CounterId = 1,
-                        GroupId = CounterSource.Client0,
-                        Secondary = true,
-                        CounterDeviceMappings = new List<CounterDeviceMapping>
-                        {
-                            new CounterDeviceMapping
-                            {
-                                Device = new Device
-                                {
-                                    EnergyType = DeviceEnergyType.Generation
-                                },
-                                PeriodeBegin = new DateTime(2012, 1, 1),
-                                PeriodeEind = new DateTime(9999, 1, 1)
-                            }
-                        },
-                        Qbox = qbox
-                    }
-                }
-            };
-
-            foreach (var counter in mini.Counters)
-            {
-                counter.ComposeStorageid();
-            }
-
-            return mini;
         }
 
         private static void FixCounterSerieData(IList<SeriesValue> inSeriesValue, SeriesResolution inResolution, DateTime inFromDate)

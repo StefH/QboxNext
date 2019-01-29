@@ -4,18 +4,18 @@ using QboxNext.Core.Dto;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
+using QboxNext.Extensions.Utils;
 using QboxNext.Model.Classes;
+using QboxNext.Model.Qboxes;
 using QboxNext.Qboxes.Parsing;
 using QboxNext.Qboxes.Parsing.Elements;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
-using QboxNext.Qserver.Core.Model;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using QboxNext.Extensions.Utils;
 
 namespace QboxNext.Extensions.Implementations
 {
@@ -323,7 +323,7 @@ namespace QboxNext.Extensions.Implementations
             return false;
         }
 
-        private CounterPoco FindCounter(CounterPayload payload)
+        private Counter FindCounter(CounterPayload payload)
         {
             if (payload is CounterWithSourcePayload withSourcePayload)
             {
@@ -443,7 +443,7 @@ namespace QboxNext.Extensions.Implementations
         /// Change the InternalId (CounterId) of the payload to the value that will be used to store and retrieve the measurements.
         /// </summary>
         /// <returns>false if the mapping could not be done (for example when the secondary meter type of a duo is not an S0 meter).</returns>
-        private bool MapCounterId(CounterPayload ioPayload, MiniPoco inMini)
+        private bool MapCounterId(CounterPayload ioPayload, Mini inMini)
         {
             Dictionary<int, int> mapping = null;
 

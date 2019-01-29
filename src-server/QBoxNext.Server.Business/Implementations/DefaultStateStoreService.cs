@@ -2,7 +2,7 @@
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
-using QboxNext.Qserver.Core.Model;
+using QboxNext.Model.Qboxes;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using System;

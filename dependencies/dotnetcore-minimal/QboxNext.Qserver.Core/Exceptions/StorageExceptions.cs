@@ -1,17 +1,17 @@
 ﻿using System;
-using NLog;
-using QboxNext.Core.Log;
+using Microsoft.Extensions.Logging;
+using QboxNext.Logging;
 
 namespace QboxNext.Qserver.Core.Exceptions
 {
     public class StorageException : Exception
     {
-        private static readonly Logger Log = QboxNextLogFactory.GetLogger("Qserver");
+        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger("StorageException");
 
         public StorageException(string message)
             : base(message)
         {
-            Log.Error(message);
+            Logger.LogError(message);
         }
     }
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace QboxNext.Qserver.Tests
+namespace QboxNext.Qserver
 {
-    [Category("Integration")]
+    [Category("Smoke")]
     [TestFixture]
-    public class QserverIntegrationTests
+    public class QserverSmokeTests
     {
         private readonly string _qserverMessageEndpoint = "/device/qbox/6618-1400-0200/15-46-002-442";
         private HttpClient _httpClient;

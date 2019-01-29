@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using QboxNext.Core.Extensions;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
 using QboxNext.Extensions.Utils;
 using QboxNext.Logging;
-using QboxNext.Qserver.Core.Utils;
 using QboxNext.Server.Infrastructure.Azure.Options;
 using QBoxNext.Server.Business.DependencyInjection;
 using System;
@@ -109,7 +109,7 @@ namespace QboxNext.AzureTableImporter
             Console.WriteLine($"sorted           Count = {sorted.Count}");
             Console.WriteLine($"sortedAndGrouped Count = {sortedAndGrouped.Count}");
 
-            int i = 0;
+            int i = 1;
             var batch = new List<CounterData>();
             foreach (var grp in sortedAndGrouped)
             {

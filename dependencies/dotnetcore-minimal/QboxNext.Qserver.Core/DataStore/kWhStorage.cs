@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading;
-using NLog;
+using Microsoft.Extensions.Logging;
 using QboxNext.Core;
-using QboxNext.Core.Log;
+using QboxNext.Core.Extensions;
 using QboxNext.Core.Utils;
+using QboxNext.Logging;
 using QboxNext.Qserver.Core.Exceptions;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Statistics;
-using QboxNext.Qserver.Core.Utils;
 
 namespace QboxNext.Qserver.Core.DataStore
 {
@@ -121,11 +121,7 @@ namespace QboxNext.Qserver.Core.DataStore
 
         #region protected
 
-        /// <summary>
-        /// NLog file logger. Relayes the log messages to a log manager that will ultimatly write to a log
-        /// that has been created using the configuration files.
-        /// </summary>
-        protected static readonly Logger Log = QboxNextLogFactory.GetLogger("kWhStorage");
+        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger("kWhStorage");
 
         /// <summary>
         /// Auto implement property for the number of days that is used to create the file when initialized or expanded.
@@ -244,7 +240,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// <param name="nrOfDays">Initialized the number of days the file is initially created for and when a file expansion is made</param>
         private kWhStorage(string serialNumber, string filePath, int counter, Precision precision, DateTime referenceDate, string storageId = "", bool allowOverwrite = false, int nrOfDays = 7)
         {
-            Log.Trace("ctor");
+            Logger.LogTrace("ctor");
 
             Precision = precision;
             SerialNumber = serialNumber;
@@ -259,7 +255,7 @@ namespace QboxNext.Qserver.Core.DataStore
 
             _buffer = new kWhStorageBuffer(this);
 
-            Log.Debug("SerialNumber: {0}, filePath: {1}", serialNumber, GetFilePath());
+            Logger.LogDebug("SerialNumber: {0}, filePath: {1}", serialNumber, GetFilePath());
 
             if (!FileExists)
                 return;
@@ -327,8 +323,8 @@ namespace QboxNext.Qserver.Core.DataStore
         private void WriteSlot(BinaryWriter writer, Record record)
         {
 #if DEBUG
-            Log.Trace("Enter");
-            Log.Trace("Raw:{0} | Value:{1} | Money:{2} | Quality:{3}", record.Raw, record.KiloWattHour, record.Money, record.Quality);
+            Logger.LogTrace("Enter");
+            Logger.LogTrace("Raw:{0} | Value:{1} | Money:{2} | Quality:{3}", record.Raw, record.KiloWattHour, record.Money, record.Quality);
 #endif
             try
             {
@@ -343,12 +339,12 @@ namespace QboxNext.Qserver.Core.DataStore
             }
             catch (Exception e)
             {
-                Log.Error(e, string.Format("Error: {4} | Raw:{0} | Value:{1} | Money:{2} | Quality:{3}",
+                Logger.LogError(e, string.Format("Error: {4} | Raw:{0} | Value:{1} | Money:{2} | Quality:{3}",
                     record.Raw, record.KiloWattHour, record.Money, record.Quality, e.Message));
                 throw;
             }
 #if DEBUG
-            Log.Trace("Exit");
+            Logger.LogTrace("Exit");
 #endif
         }
 
@@ -373,7 +369,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// </summary>
         private void ReadHeader()
         {
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
 
             Reader.BaseStream.Seek(0, SeekOrigin.Begin);
             // Tijden in hele minuten
@@ -381,8 +377,8 @@ namespace QboxNext.Qserver.Core.DataStore
             _endOfFile = DateTime.FromBinary(Reader.ReadInt64()).TruncateToMinute();
             ID = new Guid(Reader.ReadBytes(16));
 
-            Log.Trace("{0} header start {1} end {2}, filesize {3}  calculated endtime {4}", GetFilePath(), _startOfFile, _endOfFile, Reader.BaseStream.Length, CalculatedEndTime);
-            Log.Trace("Exit");
+            Logger.LogTrace("{0} header start {1} end {2}, filesize {3}  calculated endtime {4}", GetFilePath(), _startOfFile, _endOfFile, Reader.BaseStream.Length, CalculatedEndTime);
+            Logger.LogTrace("Exit");
         }
 
         /// <summary>
@@ -416,14 +412,14 @@ namespace QboxNext.Qserver.Core.DataStore
             if (IsOffsetTooHigh(inOffset))
             {
                 var error = string.Format("Offset after end of file ({0}) - offset {1} [file is limited to {2} - {3}]", GetFilePath(), inOffset, CalculateOffset(StartOfFile), CalculateOffset(EndOfFile));
-                Log.Error(error);
+                Logger.LogError(error);
                 throw new InvalidOperationException(error);
             }
 
             if (IsOffsetTooLow(inOffset))
             {
                 var error = string.Format("Offset before start of file ({0}) - offset {1} [file is limited to {2} - {3}]", GetFilePath(), inOffset, CalculateOffset(StartOfFile), CalculateOffset(EndOfFile));
-                Log.Error(error);
+                Logger.LogError(error);
                 throw new InvalidOperationException(error);
             }
         }
@@ -517,7 +513,7 @@ namespace QboxNext.Qserver.Core.DataStore
             InitializeToZero(newEndTime - endTime);
             _endOfFile = newEndTime;
 
-            Log.Info("File extended till " + _endOfFile);
+            Logger.LogInformation("File extended till " + _endOfFile);
 
             WriteEndOfFile(_endOfFile.Value);
         }
@@ -576,7 +572,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// <returns>The distance between the two records in minutes</returns>
         private int FindPrevious(DateTime inMeasureTime, out Record outPrevious)
         {
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
             var distance = 1;
 
             Guard.IsTrue(inMeasureTime.Second == 0, "inMeasureTime should be truncated to 1 minute");
@@ -586,14 +582,14 @@ namespace QboxNext.Qserver.Core.DataStore
                 if (_buffer.IsValidSlot(timestamp))
                 {
                     outPrevious = _buffer.ReadSlot(timestamp);
-                    Log.Trace("Return: {0}, {1}, {2}, {3}, {4}", distance, outPrevious.Raw, outPrevious.KiloWattHour, outPrevious.Money, outPrevious.Quality);
+                    Logger.LogTrace("Return: {0}, {1}, {2}, {3}, {4}", distance, outPrevious.Raw, outPrevious.KiloWattHour, outPrevious.Money, outPrevious.Quality);
                     return distance;
                 }
                 distance++;
                 timestamp = timestamp.AddMinutes(-1);
             }
 
-            Log.Trace("Return: {0}, no previous value", distance);
+            Logger.LogTrace("Return: {0}, no previous value", distance);
             outPrevious = null;
             return distance;
         }
@@ -608,7 +604,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// <returns>A distance in minutes between the measuretime and the next record</returns>
         private int FindNext(DateTime measureTime, out Record next)
         {
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
 
             var distance = 0;
 
@@ -618,7 +614,7 @@ namespace QboxNext.Qserver.Core.DataStore
                     return distance;
                 distance++;
             }
-            Log.Trace("Return: {0}", distance);
+            Logger.LogTrace("Return: {0}", distance);
             return distance;
         }
 
@@ -774,10 +770,10 @@ namespace QboxNext.Qserver.Core.DataStore
             if (inBegin > inEnd)
                 throw new ArgumentOutOfRangeException("inBegin", "begin before end");
 
-            Log.Trace("GetRecords(begin = {0}, end = {1}, counter = {2}, path = {3}, refdate = {4})", inBegin, inEnd, Counter, GetFilePath(), ReferenceDate);
+            Logger.LogTrace("GetRecords(begin = {0}, end = {1}, counter = {2}, path = {3}, refdate = {4})", inBegin, inEnd, Counter, GetFilePath(), ReferenceDate);
             if (!FileExists)
             {
-                Log.Warn("File does not exist {0}", GetFilePath());
+                Logger.LogWarning("File does not exist {0}", GetFilePath());
                 return false;
             }
 
@@ -785,10 +781,10 @@ namespace QboxNext.Qserver.Core.DataStore
             Record previousLast = null;
             foreach (var currentSlot in ioSlots)
             {
-                Log.Trace("process slot {0} - {1}", currentSlot.Begin, currentSlot.End);
+                Logger.LogTrace("process slot {0} - {1}", currentSlot.Begin, currentSlot.End);
                 var beginTime = currentSlot.Begin < inBegin ? inBegin : currentSlot.Begin;
                 var endTime = currentSlot.End > inEnd ? inEnd : (currentSlot.End < beginTime ? beginTime : currentSlot.End);
-                Log.Trace("beginTime = {0}, endTime = {1}", beginTime, endTime);
+                Logger.LogTrace("beginTime = {0}, endTime = {1}", beginTime, endTime);
 
                 Record first;
                 // Optimization: use previous last value if the end of the previous slot is the start of the current slot,
@@ -806,7 +802,7 @@ namespace QboxNext.Qserver.Core.DataStore
                         continue;
                 }
 
-                Log.Trace("first = {0}", first != null ? first.Raw.ToString(CultureInfo.InvariantCulture) : "null");
+                Logger.LogTrace("first = {0}", first != null ? first.Raw.ToString(CultureInfo.InvariantCulture) : "null");
                 // todo (evalueren): als eerste waarde niet gevonden wordt heeft verder zoeken geen zin??!!
                 if (first == null)
                     break;
@@ -814,7 +810,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 var lastAllowedTimestamp = ReferenceDate < EndOfFile ? ReferenceDate : EndOfFile;
                 var last = endTime > lastAllowedTimestamp ? GetClosestValue(lastAllowedTimestamp, false) : GetValue(endTime);
 
-                Log.Trace("last = {0}", last != null ? last.Raw.ToString() : "null");
+                Logger.LogTrace("last = {0}", last != null ? last.Raw.ToString() : "null");
                 // Bij dag of maand resolution zoeken naar dichtsbijzijnde waarde indien first en last geen waarde heeft (qplat-73)
                 if (first.Time <= endTime && first.IsValidMeasurement && (last == null || !last.IsValidMeasurement) && ((currentSlot.End - currentSlot.Begin).TotalDays >= 1.0))
                     last = GetClosestValue(endTime, false);
@@ -823,7 +819,7 @@ namespace QboxNext.Qserver.Core.DataStore
                     (first.IsValidMeasurement) && (last.IsValidMeasurement))
                 {
                     var delta = CalculateDelta(first, last, inUnit);
-                    Log.Trace("delta = {0}", delta);
+                    Logger.LogTrace("delta = {0}", delta);
                     currentSlot.Value = Convert.ToDecimal(inNegate ? delta * -1m : delta);
                     if (endTime > EndOfFile)
                     {
@@ -835,12 +831,12 @@ namespace QboxNext.Qserver.Core.DataStore
                 previousLast = last;
             }
 
-            if (Log.IsDebugEnabled)
+            if (Logger.IsEnabled(LogLevel.Debug))
             {
                 foreach (var seriesValue in ioSlots)
-                    Log.Debug("{0} - {1} : {2}", seriesValue.Begin, seriesValue.End, seriesValue.Value);
+                    Logger.LogDebug("{0} - {1} : {2}", seriesValue.Begin, seriesValue.End, seriesValue.Value);
             }
-            Log.Trace("Exit");
+            Logger.LogTrace("Exit");
             return true;
         }
 
@@ -871,13 +867,13 @@ namespace QboxNext.Qserver.Core.DataStore
             {
                 if (measureTime < StartOfFile || measureTime >= EndOfFile || measureTime > ReferenceDate.AddMinutes(5))
                 {
-                    Log.Warn("measureTime {1} falls outside the file ({0}) s:{2} e:{3}", GetFilePath(), measureTime, StartOfFile, EndOfFile);
+                    Logger.LogWarning("measureTime {1} falls outside the file ({0}) s:{2} e:{3}", GetFilePath(), measureTime, StartOfFile, EndOfFile);
                     return null;
                 }
 
                 var result = ReadSlot(measureTime);
                 result.Time = measureTime;
-                Log.Trace("Read {0} for timestamp {1}", result.Raw, measureTime);
+                Logger.LogTrace("Read {0} for timestamp {1}", result.Raw, measureTime);
                 return result;
             }
             catch (Exception ex)
@@ -908,7 +904,7 @@ namespace QboxNext.Qserver.Core.DataStore
         {
             inMeasureTime = inMeasureTime.TruncateToMinute();
 
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
 
             if (!IsTimeAllowed(inMeasureTime))
                 return null;
@@ -939,18 +935,18 @@ namespace QboxNext.Qserver.Core.DataStore
                 }
                 else
                 {
-                    Log.Trace("distance: {0}", distance);
+                    Logger.LogTrace("distance: {0}", distance);
                     // calculate the qualityindex
                     var quality = distance == 0 ? (ushort)0 : Convert.ToUInt16(Math.Log10(distance) * 10000);
 
-                    Log.Trace("distance: {0}, quality: {1}, formulekWh: {2}", distance, quality, inPulsesPerUnit);
+                    Logger.LogTrace("distance: {0}, quality: {1}, formulekWh: {2}", distance, quality, inPulsesPerUnit);
 
                     var delta = inPulseValue < previous.Raw ? 0m : inPulseValue - previous.Raw;
                     var deltakWh = delta / inPulsesPerUnit;
                     var lastValue = previous.KiloWattHour;
                     var lastMoney = previous.Money;
 
-                    Log.Trace("delta: {0}, lastkWhValue: {1}, lastMoney: {2}", delta, lastValue, lastMoney);
+                    Logger.LogTrace("delta: {0}, lastkWhValue: {1}, lastMoney: {2}", delta, lastValue, lastMoney);
 
                     if (distance <= 1)
                     {
@@ -958,7 +954,7 @@ namespace QboxNext.Qserver.Core.DataStore
                         lastMoney += deltakWh * inEurocentsPerUnit;
 
                         current = new Record(inPulseValue, lastValue, lastMoney, quality);
-                        Log.Trace("distance = 0 >> raw:{0} | kWh: {1} | money: {2} | quality: {3}",
+                        Logger.LogTrace("distance = 0 >> raw:{0} | kWh: {1} | money: {2} | quality: {3}",
                             inPulseValue, current.KiloWattHour,
                                   current.Money, current.Quality);
 
@@ -994,7 +990,7 @@ namespace QboxNext.Qserver.Core.DataStore
                             lastMoney += valuekWh * inEurocentsPerUnit;
 
                             current = new Record(raw, lastValue, lastMoney, quality);
-                            Log.Trace("distance = {4} >>>>>> raw:{0} | kWh: {1} | money: {2} | quality: {3}", raw,
+                            Logger.LogTrace("distance = {4} >>>>>> raw:{0} | kWh: {1} | money: {2} | quality: {3}", raw,
                                       current.KiloWattHour, current.Money, current.Quality, distance);
 
                             WriteSlot(Writer, current);
@@ -1004,10 +1000,10 @@ namespace QboxNext.Qserver.Core.DataStore
             }
             else
             {
-                Log.Warn("Overwrite attempt: {0}", inMeasureTime);
+                Logger.LogWarning("Overwrite attempt: {0}", inMeasureTime);
             }
             Writer.Flush();
-            Log.Trace("Exit");
+            Logger.LogTrace("Exit");
             if (current != null)
                 current.Time = inMeasureTime;
             return current;
@@ -1023,7 +1019,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// <param name="inFrom">The starttime to to reinitialize the slots. This does not need to be the beginning of the file (StartOfFile)</param>
         public void ReinitializeSlots(DateTime inFrom)
         {
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
 
             try
             {
@@ -1036,14 +1032,14 @@ namespace QboxNext.Qserver.Core.DataStore
                 if (!IsOffsetValid(offset))
                     return;
 
-                Log.Debug("Total minutes: {0}, from: {1}, end of file: {2}", span.TotalMinutes, inFrom, EndOfFile);
+                Logger.LogDebug("Total minutes: {0}, from: {1}, end of file: {2}", span.TotalMinutes, inFrom, EndOfFile);
                 Writer.BaseStream.Seek(offset, SeekOrigin.Begin);
                 for (var i = 0; i < span.TotalMinutes; i++)
                     WriteSlot(Writer, new Record(ulong.MaxValue, 0, 0, 0));
             }
             finally
             {
-                Log.Trace("Exit");
+                Logger.LogTrace("Exit");
             }
         }
 
@@ -1177,7 +1173,7 @@ namespace QboxNext.Qserver.Core.DataStore
     /// </summary>
     public class SafeWriterWrapper : IDisposable
     {
-        private static readonly Logger Log = QboxNextLogFactory.GetLogger("SafeWriterWrapper");
+        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger("SafeWriterWrapper");
 
         protected SafeFileStream Stream { get; set; }
 
@@ -1192,14 +1188,14 @@ namespace QboxNext.Qserver.Core.DataStore
         /// <param name="filePath"></param>
         public SafeWriterWrapper(string filePath)
         {
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
 
             Stream = new SafeFileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
             if (!Stream.TryOpen(new TimeSpan(30000)))
-                Log.Error("Cannot open file: {0}", filePath);
+                Logger.LogError("Cannot open file: {0}", filePath);
             BinaryWriter = new BinaryWriter(Stream.UnderlyingStream);
 
-            Log.Trace("Exit");
+            Logger.LogTrace("Exit");
         }
 
         #region IDisposable
@@ -1221,14 +1217,14 @@ namespace QboxNext.Qserver.Core.DataStore
         /// <param name="disposing"></param>
         public void Dispose(bool disposing)
         {
-            Log.Trace("Enter");
+            Logger.LogTrace("Enter");
 
             if (BinaryWriter != null)
                 BinaryWriter.Dispose();
             if (Stream != null)
                 Stream.Dispose();
 
-            Log.Trace("Exit");
+            Logger.LogTrace("Exit");
         }
 
         /// <summary>
@@ -1252,7 +1248,7 @@ namespace QboxNext.Qserver.Core.DataStore
     /// </summary>
     public class SafeFileStream : IDisposable
     {
-        private static readonly Logger Log = LogManager.GetLogger("SafeFileStream");
+        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger("SafeFileStream");
 
         #region Private Members
         private Stream _mStream;
@@ -1324,7 +1320,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 }
                 catch (Exception ex)
                 {
-                    Log.Warn(ex, $"Can't open file: {ex.Message}\nWill retry after one second.");
+                    Logger.LogWarning(ex, $"Can't open file: {ex.Message}\nWill retry after one second.");
                     Thread.Sleep(1000);
                 }
             }
@@ -1355,13 +1351,13 @@ namespace QboxNext.Qserver.Core.DataStore
                 }
                 catch (Exception e)
                 {
-                    Log.Warn(e, $"Can't open file {_mPath}: {e.Message}\nWill retry after one second.");
+                    Logger.LogWarning(e, $"Can't open file {_mPath}: {e.Message}\nWill retry after one second.");
                     Thread.Sleep(1000);
                 }
             }
             while (DateTime.Now < deadline);
 
-            Log.Warn($"Could not open file {_mPath} for {_mFileMode}/{_mFileAccess}/{_mFileShare} after {span.TotalMilliseconds} milliseconds");
+            Logger.LogWarning($"Could not open file {_mPath} for {_mFileMode}/{_mFileAccess}/{_mFileShare} after {span.TotalMilliseconds} milliseconds");
             return false;
         }
 

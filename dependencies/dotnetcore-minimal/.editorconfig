@@ -280,7 +280,7 @@ indent_pars = outside
 # Alignments
 align_multiline_parameter = true
 align_first_arg_by_paren = false
-align_multiline_argument = true #check
+align_multiline_argument = false
 align_multiline_extends_list = true
 align_multiline_expression = false
 align_multiline_binary_expressions_chain = false #check

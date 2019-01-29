@@ -14,11 +14,11 @@ using QboxNext.Qservice.Classes;
 
 namespace QboxNext.Qservice.Tests
 {
-    [Category("Integration")]
+    [Category("Smoke")]
     [TestFixture]
-    public class QserviceIntegrationTests
+    public class QserviceSmokeTests
     {
-        private readonly string _qserviceMessageEndpoint = $"api/getseries?sn=15-46-002-442&from={DateTime.Today.AddDays(-1)}&to={DateTime.Today}";
+        private readonly string _qserviceMessageEndpoint = $"api/getseries?sn=15-46-002-442&from={DateTime.Today.AddDays(-1):yyyy-MM-dd}&to={DateTime.Today:yyyy-MM-dd}";
         private HttpClient _httpClient;
 
         [SetUp]

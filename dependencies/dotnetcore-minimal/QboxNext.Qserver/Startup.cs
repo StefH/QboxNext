@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using QboxNext.Logging;
+using QboxNext.Model.Classes;
+using QboxNext.Model.Interfaces;
+using QboxNext.Model.Qboxes;
 using QboxNext.Qboxes.Parsing.Extensions;
 using QboxNext.Qserver.Classes;
 using QboxNext.Qserver.Core.DataStore;
@@ -27,7 +30,9 @@ namespace QboxNext.Qserver
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddSingleton<IQboxDataDumpContextFactory>(new QboxDataDumpContextFactory());
+            QboxType qboxType = Configuration.GetValue("QboxType", QboxType.Duo);
+            services.AddSingleton<IMiniRetriever>(new ConfiguredMiniRetriever(qboxType));
+            services.AddSingleton<IQboxDataDumpContextFactory, QboxDataDumpContextFactory>();
 
             services.AddParsers();
         }

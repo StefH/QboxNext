@@ -13,19 +13,19 @@ namespace QboxNext.Extensions.Implementations
     internal class QboxDataDumpContextFactory : IQboxDataDumpContextFactory
     {
         private readonly ILogger<QboxDataDumpContextFactory> _logger;
-        private readonly IMiniPocoFactory _miniPocoFactory;
+        private readonly IMiniFactory _miniFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QboxDataDumpContextFactory"/> class.
         /// </summary>
-        /// <param name="miniPocoFactory">The mini poco factory.</param>
+        /// <param name="miniFactory">The mini poco factory.</param>
         /// <param name="logger">The logger.</param>
-        public QboxDataDumpContextFactory([NotNull] IMiniPocoFactory miniPocoFactory, [NotNull] ILogger<QboxDataDumpContextFactory> logger)
+        public QboxDataDumpContextFactory([NotNull] IMiniFactory miniFactory, [NotNull] ILogger<QboxDataDumpContextFactory> logger)
         {
-            Guard.IsNotNull(miniPocoFactory, nameof(miniPocoFactory));
+            Guard.IsNotNull(miniFactory, nameof(miniFactory));
             Guard.IsNotNull(logger, nameof(logger));
 
-            _miniPocoFactory = miniPocoFactory;
+            _miniFactory = miniFactory;
             _logger = logger;
         }
 
@@ -42,7 +42,7 @@ namespace QboxNext.Extensions.Implementations
                 var message = QboxMessageDecrypter.DecryptPlainOrEncryptedMessage(context.Message);
                 int length = context.Message.Length;
 
-                var mini = _miniPocoFactory.Create(context.SerialNumber, context.ProductNumber);
+                var mini = _miniFactory.Create(context.SerialNumber);
 
                 return new QboxDataDumpContext(message, length, lastSeenAtUrl, externalIp, mini);
             }

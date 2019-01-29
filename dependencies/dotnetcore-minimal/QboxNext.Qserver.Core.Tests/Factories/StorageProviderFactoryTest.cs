@@ -1,5 +1,7 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
+using QboxNext.Logging;
 using QboxNext.Qserver.Core.DataStore;
 using QboxNext.Qserver.Core.Exceptions;
 using QboxNext.Qserver.Core.Factories;
@@ -11,6 +13,13 @@ namespace QboxNext.Model.Factories
     [NonParallelizable]
     public class StorageProviderFactoryTest
     {
+        [SetUp]
+        public void Init()
+        {
+            // Setup static logger factory
+            QboxNextLogProvider.LoggerFactory = new LoggerFactory();
+        }
+
         [Test]
         public void WhenRegisteringStorageProviderItShouldReturnTheInstanceOnGetProviderTest()
         {

@@ -1,12 +1,12 @@
-﻿using QboxNext.Qboxes.Parsing.Elements;
+﻿using QboxNext.Model.Qboxes;
+using QboxNext.Qboxes.Parsing.Elements;
 using QboxNext.Qboxes.Parsing.Protocols;
-using QboxNext.Qserver.Core.Model;
 
 namespace QboxNext.Model.Utils
 {
 	public static class MiniPocoUtils
 	{
-		public static ClientMiniStatus GetClientMiniStatus(this MiniPoco mini, ClientQboxPoco client)
+		public static ClientMiniStatus GetClientMiniStatus(this Mini mini, ClientQbox client)
 		{
 			if (client == null)
 				return null;

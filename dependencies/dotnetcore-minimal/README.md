@@ -1,5 +1,7 @@
 # QboxNext
 
+[![Build Status](https://dev.azure.com/QboxNext2019/QboxNext/_apis/build/status/QboxNext?branchName=master)](https://dev.azure.com/QboxNext2019/QboxNext/_build/latest?definitionId=1?branchName=master)
+
 ## Introduction
 
 This repository is a modified clone of Qplatform.

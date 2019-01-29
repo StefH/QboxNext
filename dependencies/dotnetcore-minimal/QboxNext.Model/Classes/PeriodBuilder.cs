@@ -1,5 +1,5 @@
 ﻿using System;
-using QboxNext.Qserver.Core.Extensions;
+using QboxNext.Core.Extensions;
 
 namespace QboxNext.Model.Classes
 {

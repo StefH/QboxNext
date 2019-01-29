@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using QboxNext.Qboxes.Parsing.Protocols;
 
-namespace QboxNext.Qserver.Core.Model
+namespace QboxNext.Model.Qboxes
 {
     //key: pn/sn
 

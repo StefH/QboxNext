@@ -1,16 +1,13 @@
-using System;
-using NLog;
-using QboxNext.Core;
-using QboxNext.Core.Log;
+﻿using System;
 
-namespace QboxNext.Qserver.Core.Utils
+namespace QboxNext.Core.Extensions
 {
     /// <summary>
     /// Helper class om DateTime waarden af te ronden of te truncaten, voorbeelden:
     /// new DateTime(2010, 11, 4, 10, 28, 27).Round(TimeSpan.FromMinutes(1)); // rounds to 2010.11.04 10:28:00
     /// new DateTime(2010, 11, 4, 13, 28, 27).Round(TimeSpan.FromDays(1)); // rounds to 2010.11.05 00:00
     /// </summary>
-    public static class DateTimeRoundUtils
+    public static class DateTimeTruncateExtensions
     {
         public static TimeSpan Truncate(this TimeSpan time, TimeSpan roundingInterval)
         {
@@ -27,9 +24,9 @@ namespace QboxNext.Qserver.Core.Utils
         }
 
 
-	    public static DateTime TruncateToMinute(this DateTime inDateTime)
-	    {
-		    return new DateTime(inDateTime.Year, inDateTime.Month, inDateTime.Day, inDateTime.Hour, inDateTime.Minute, 0, inDateTime.Kind);
-	    }
+        public static DateTime TruncateToMinute(this DateTime inDateTime)
+        {
+            return new DateTime(inDateTime.Year, inDateTime.Month, inDateTime.Day, inDateTime.Hour, inDateTime.Minute, 0, inDateTime.Kind);
+        }
     }
 }

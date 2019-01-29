@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
-using QboxNext.Core.Log;
+using Microsoft.Extensions.Logging;
 using QboxNext.Core.Utils;
+using QboxNext.Model.Interfaces;
 using QboxNext.Qservice.Classes;
 
 namespace QboxNext.Qservice.Controllers
@@ -10,12 +10,15 @@ namespace QboxNext.Qservice.Controllers
     [ApiController]
     public class ApiController : ControllerBase
     {
-        private static readonly Logger Log = QboxNextLogFactory.GetLogger("ApiController");
+        private readonly ILogger<ApiController> _logger;
         private readonly ISeriesRetriever _seriesRetriever;
+        private readonly IMiniRetriever _miniRetriever;
 
-        public ApiController()
+        public ApiController(ILogger<ApiController> logger, IMiniRetriever miniRetriever)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _seriesRetriever = new SeriesRetriever();
+            _miniRetriever = miniRetriever ?? throw new ArgumentNullException(nameof(miniRetriever));
         }
 
         [HttpGet("/api/getseries")]
@@ -35,7 +38,8 @@ namespace QboxNext.Qservice.Controllers
             var actualResolution = resolution ?? DeriveResolution(from, to);
             var fromUtc = DateTimeUtils.NlDateTimeToUtc(from);
             var toUtc = DateTimeUtils.NlDateTimeToUtc(to);
-            var series = _seriesRetriever.RetrieveForAccount(sn, fromUtc, toUtc, actualResolution);
+            var mini = _miniRetriever.Retrieve(sn);
+            var series = _seriesRetriever.RetrieveForAccount(mini, fromUtc, toUtc, actualResolution);
             var response = new
             {
                 result = true,
@@ -55,7 +59,7 @@ namespace QboxNext.Qservice.Controllers
         private SeriesResolution DeriveResolution(DateTime from, DateTime to)
         {
             var span = to - from;
-            Log.Debug($"Series request span from and to: {span}");
+            _logger.LogDebug($"Series request span from and to: {span}");
             var firstDayToInclude = from;
             var lastDayToInclude = to.AddDays(-1);
             return span.TotalMinutes <= (int)SeriesResolution.Day ?

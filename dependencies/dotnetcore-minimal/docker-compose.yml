@@ -2,6 +2,7 @@ version: '3'
 services:
   qserver:
     build: QboxNext.Qserver
+    image: qboxnextteam/qserver
     restart: always
     ports:
      - "80:5000"
@@ -14,6 +15,7 @@ services:
 
   qservice:
     build: QboxNext.Qservice
+    image: qboxnextteam/qservice
     restart: always
     ports:
      - "5002:5002"
