@@ -1,6 +1,6 @@
 ﻿namespace QboxNext.Server.Domain
 {
-    public enum QueryResolution
+    public enum QboxQueryResolution
     {
         QuarterOfHour,
         Hour,

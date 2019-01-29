@@ -19,6 +19,6 @@ namespace QboxNext.Server.Domain
         public DateTime To { get; set; }
 
         [Required]
-        public QueryResolution Resolution { get; set; }
+        public QboxQueryResolution Resolution { get; set; }
     }
 }
