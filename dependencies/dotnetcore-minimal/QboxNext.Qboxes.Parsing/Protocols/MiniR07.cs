@@ -1,28 +1,33 @@
 ﻿using Microsoft.Extensions.Logging;
-using QboxNext.Logging;
 using QboxNext.Qboxes.Parsing.Elements;
 using QboxNext.Qboxes.Parsing.Exceptions;
 using System;
 using System.Linq;
+using QboxNext.Qboxes.Parsing.Protocols.SmartMeters;
 
 namespace QboxNext.Qboxes.Parsing.Protocols
 {
     public class MiniR07 : MiniParser
     {
-        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger<MiniR07>();
+        private readonly ILogger<MiniR07> _logger;
+
+        public MiniR07(ILogger<MiniR07> logger, IProtocolReaderFactory protocolReaderFactory, SmartMeterCounterParser smartMeterCounterParser) : base(logger, protocolReaderFactory, smartMeterCounterParser)
+        {
+            _logger = logger;
+        }
 
         protected override void DoParse()
         {
-            Logger.LogTrace("Enter");
+            _logger.LogTrace("Enter");
 
-            BaseParseResult.ProtocolNr = Parser.ParseByte();
-            BaseParseResult.SequenceNr = Parser.ParseByte();
+            BaseParseResult.ProtocolNr = Reader.ReadByte();
+            BaseParseResult.SequenceNr = Reader.ReadByte();
             var model = new Mini07ParseModel
             {
-                Status = new QboxMiniStatus(Parser.ParseByte()),
-                MeasurementTime = Parser.ParseTime(),
-                MeterType = (DeviceMeterType)Parser.ParseByte(),
-                PayloadIndicator = new PayloaderIndicator(Parser.ParseByte())
+                Status = new QboxMiniStatus(Reader.ReadByte()),
+                MeasurementTime = Reader.ReadDateTime(),
+                MeterType = (DeviceMeterType)Reader.ReadByte(),
+                PayloadIndicator = new PayloaderIndicator(Reader.ReadByte())
             };
 
             if (!Enum.IsDefined(typeof(DeviceMeterType), model.MeterType))
@@ -35,17 +40,17 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             var miniParseResult = BaseParseResult as MiniParseResult;
             if (miniParseResult != null) miniParseResult.Model = model;
 
-            Logger.LogTrace("Exit");
+            _logger.LogTrace("Exit");
         }
 
         private void ParsePayload(Mini07ParseModel model)
         {
-            Logger.LogTrace("Enter");
+            _logger.LogTrace("Enter");
             if (model.PayloadIndicator.ClientStatusPresent)
             {
                 ParseClientStatuses(model);
             }
-            Logger.LogDebug("DeviceSettingsPresent: {deviceSettingPresent}", model.PayloadIndicator.DeviceSettingPresent);
+            _logger.LogDebug("DeviceSettingsPresent: {deviceSettingPresent}", model.PayloadIndicator.DeviceSettingPresent);
             if (model.PayloadIndicator.DeviceSettingPresent)
             {
                 ParseDeviceSettings(model);
@@ -71,20 +76,20 @@ namespace QboxNext.Qboxes.Parsing.Protocols
                 }
             }
 
-            Logger.LogTrace("Exit");
+            _logger.LogTrace("Exit");
         }
 
         protected virtual void ParseCounters(Mini07ParseModel model)
         {
-            Logger.LogDebug("Nr of counters: {nrOfCounters}", model.PayloadIndicator.NrOfCounters);
+            _logger.LogDebug("Nr of counters: {nrOfCounters}", model.PayloadIndicator.NrOfCounters);
             for (var i = 0; i < model.PayloadIndicator.NrOfCounters; i++)
             {
                 try
                 {
                     model.Payloads.Add(new CounterPayload
                     {
-                        InternalNr = Parser.ParseByte(),
-                        Value = Parser.ParseUInt32()
+                        InternalNr = Reader.ReadByte(),
+                        Value = Reader.ReadUInt32()
                     });
                 }
                 catch (Exception ex)
@@ -99,12 +104,12 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             try
             {
                 // qplat-74: clientstatus R32
-                var NbrOfClientStatussen = Parser.ParseByte();
-                Logger.LogDebug("Nr of client statuses: {nbrOfClientStatussen}", NbrOfClientStatussen);
+                byte NbrOfClientStatussen = Reader.ReadByte();
+                _logger.LogDebug("Nr of client statuses: {nbrOfClientStatussen}", NbrOfClientStatussen);
                 for (byte client = 0; client < NbrOfClientStatussen; client++)
                 {
-                    var clientId = BaseParseResult.ProtocolNr >= MiniR21.ProtocolVersion ? Parser.ParseByte() : client;
-                    model.Payloads.Add(new ClientStatusPayload(model.MeasurementTime, clientId, Parser.ParseByte(), BaseParseResult.ProtocolNr));
+                    var clientId = BaseParseResult.ProtocolNr >= MiniR21.ProtocolVersion ? Reader.ReadByte() : client;
+                    model.Payloads.Add(new ClientStatusPayload(model.MeasurementTime, clientId, Reader.ReadByte(), BaseParseResult.ProtocolNr));
                 }
             }
             catch (Exception ex)
@@ -117,8 +122,8 @@ namespace QboxNext.Qboxes.Parsing.Protocols
         {
             try
             {
-                var setting = (DeviceSettingType)Parser.ParseByte();
-                foreach (var item in DeviceSettingsPayload.GetDeviceSettings(BaseParseResult.ProtocolNr, setting, Parser).ToList())
+                var setting = (DeviceSettingType)Reader.ReadByte();
+                foreach (var item in DeviceSettingsPayload.GetDeviceSettings(BaseParseResult.ProtocolNr, setting, Reader).ToList())
                     model.Payloads.Add(item);
             }
             catch (Exception ex)
@@ -138,17 +143,17 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             {
                 if (model == null) throw new ArgumentNullException("model");
 
-                var source = Parser.ReadToEnd();
+                var source = Reader.ReadToEnd();
                 if (string.IsNullOrEmpty(source))
                 {
-                    Logger.LogTrace("Nothing to parse (empty string), measurementTime: {measurementTime}", model.MeasurementTime);
+                    _logger.LogTrace("Nothing to parse (empty string), measurementTime: {measurementTime}", model.MeasurementTime);
                     return;
                 }
                 var value = source.Substring(40, 6);
                 model.Payloads.Add(new CounterPayload
                 {
                     InternalNr = 120,
-                    Value = Parser.Read24bits(value)
+                    Value = Read24bits(value)
                 });
             }
             catch (Exception ex)
@@ -163,11 +168,11 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             {
                 if (model == null) throw new ArgumentNullException("model");
 
-                var source = Parser.ReadToEnd();
+                var source = Reader.ReadToEnd();
                 var strings = source.Split(':');
                 if (string.IsNullOrEmpty(source))
                 {
-                    Logger.LogTrace("Nothing to parse (empty string), measurementTime: {measurementTime}", model.MeasurementTime);
+                    _logger.LogTrace("Nothing to parse (empty string), measurementTime: {measurementTime}", model.MeasurementTime);
                     return;
                 }
                 AddCounterPayload(model.Payloads, 181, strings.FirstOrDefault(s => s.Contains("1.8.1")), true);
@@ -190,6 +195,20 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             {
                 throw new Exception("Parsing smart meter", ex);
             }
+        }
+
+        private ulong Read24bits(string value)
+        {
+            _logger.LogTrace("Enter - value: {value}", value);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                return ulong.MaxValue;
+            }
+
+            byte[] buffer = HexEncoding.HexStringToByteArray(value + "0000000000"); // todo: fix this quick fix... array length not sufficient for ulong
+            //Array.Reverse(buffer);
+            return BitConverter.ToUInt64(buffer, 0);
         }
     }
 }

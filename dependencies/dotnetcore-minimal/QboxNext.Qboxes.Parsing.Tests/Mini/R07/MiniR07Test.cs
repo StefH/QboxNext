@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using QboxNext.Logging;
+using QboxNext.Qboxes.Parsing.Extensions;
 using QboxNext.Qboxes.Parsing.Protocols;
 
 namespace QboxNext.Qboxes.Parsing.Mini.R07
@@ -10,11 +12,20 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
     [TestFixture]
     public class MiniR07Test
     {
+        private MiniR07 _sut;
+
         [SetUp]
         public void Init()
         {
+            ServiceProvider services = new ServiceCollection()
+                .AddLogging()
+                .AddParsers()
+                .BuildServiceProvider();
+
             // Setup static logger factory
-            QboxNextLogProvider.LoggerFactory = new LoggerFactory();
+            QboxNextLogProvider.LoggerFactory = services.GetRequiredService<ILoggerFactory>();
+
+            _sut = services.GetRequiredService<MiniR07>();
         }
 
         [Test]
@@ -26,7 +37,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             //UnitOfWorkHelper.CurrentDataStore[DataStoreName.cLogger] = QboxLogger.GetConsoleLogger("test");
 
             // Act
-            var actual = new MiniR07().Parse(source);
+            var actual = _sut.Parse(source);
 
             // Assert
             Assert.IsNotNull(actual);
@@ -40,7 +51,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "0E13070B39778000410100000000";
 
             // Act
-            var actual = new MiniR07().Parse(source) as ErrorParseResult;
+            var actual = _sut.Parse(source) as ErrorParseResult;
 
             // Assert
             Assert.IsNotNull(actual);            
@@ -53,7 +64,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "01C6070A90AE200680/KMP5 KA6U001661160612 0-0:96.1.1(204B413655303031363631313630363132) 1-0:1.8.1(00118.701*kWh) 1-0:1.8.2(00000.000*kWh) 1-0:2.8.1(00000.000*kWh) 1-0:2.8.2(00000.000*kWh) 0-0:96.14.0(0001) 1-0:1.7.0(0000.11*kW) 1-0:2.7.0(0000.00*kW) 0-0:17.0.0(999*A) 0-0:96.3.10(1) 0-0:96.13.1() 0-0:96.13.0() !";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -68,7 +79,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "01C6070A90AE200680/KMP5 KA6U001661160612 0-0:96.1.1(204B413655303031363631313630363132) 1-0:1.8.1(8.2(00118.701*kWh) 1-0:1.8.2(00000.000*kWh) 1-0:2.8.1(00000.000*kWh) 1-0:2.8.2(00000.000*kWh) 0-0:96.14.0(0001) 1-0:1.7.0(0000.11*kW) 1-0:2.7.0(0000.00*kW) 0-0:17.0.0(999*A) 0-0:96.3.10(1) 0-0:96.13.1() 0-0:96.13.0() !";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -84,7 +95,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const int protocolNr = 1;            
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -101,7 +112,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "01C6070A90AE200680/KMP5 KA6U001661160612 0-0:96.1.1(204B413655303031363631313630363132) 1-0:1.8.1(00118.701*kWh) 1-0:1.8.2(00000.000*kWh) 1-0:2.8.1(00000.000*kWh) 1-0:2.8.2(00000.000*kWh) 0-0:96.14.0(0001) 1-0:1.7.0(0000.11*kW) 1-0:2.7.0(0000.00*kW) 0-0:17.0.0(999*A) 0-0:96.3.10(1) 0-0:96.13.1() 0-0:96.13.0() !";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -123,7 +134,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             var expected = new DateTime(2007, 1, 1).AddSeconds(177253920);
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -142,7 +153,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "01C6070A90AE200680/KMP5 KA6U001661160612 0-0:96.1.1(204B413655303031363631313630363132) 1-0:1.8.1(00118.701*kWh) 1-0:1.8.2(00000.000*kWh) 1-0:2.8.1(00000.000*kWh) 1-0:2.8.2(00000.000*kWh) 0-0:96.14.0(0001) 1-0:1.7.0(0000.11*kW) 1-0:2.7.0(0000.00*kW) 0-0:17.0.0(999*A) 0-0:96.3.10(1) 0-0:96.13.1() 0-0:96.13.0() !";
             
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -159,7 +170,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "01C6070A90AE200680/KMP5 KA6U001661160612 0-0:96.1.1(204B413655303031363631313630363132) 1-0:1.8.1(00118.701*kWh) 1-0:1.8.2(00000.000*kWh) 1-0:2.8.1(00000.000*kWh) 1-0:2.8.2(00000.000*kWh) 0-0:96.14.0(0001) 1-0:1.7.0(0000.11*kW) 1-0:2.7.0(0000.00*kW) 0-0:17.0.0(999*A) 0-0:96.3.10(1) 0-0:96.13.1() 0-0:96.13.0() !";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -177,7 +188,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "01C6070A90AE200680/KMP5 KA6U001661160612 0-0:96.1.1(204B413655303031363631313630363132) 1-0:1.8.1(00118.701*kWh) 1-0:1.8.2(00000.000*kWh) 1-0:2.8.1(00000.000*kWh) 1-0:2.8.2(00000.000*kWh) 0-0:96.14.0(0001) 1-0:1.7.0(0000.11*kW) 1-0:2.7.0(0000.00*kW) 0-0:17.0.0(999*A) 0-0:96.3.10(1) 0-0:96.13.1() 0-0:96.13.0() !";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -194,7 +205,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "01C6070A90AE2006400500000050";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -214,7 +225,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "0E06070B0B1E80024206088B01000000550300000000";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -236,7 +247,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "0E06070B0B1E80024206F88B01000000550300000000";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -266,7 +277,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             // 8 Counter payload
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -296,7 +307,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             // 8 Counter payload
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -317,7 +328,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "0F04070B1CCE6400410A06FFFF07FFFF08FFFF09FFFF0100000000";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -343,7 +354,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "0F04070B1CCE6400412821FFFF22FFFF23FFFF24FFFF25FFFF26FFFF27FFFF0100000000";// "0E06070B0B1E8002422801000001111101222201333301444401555501666601000000550300000000";
                                                        
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -369,7 +380,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             // Arrange, voorbeeld response uit qplat-53
             const string source = "0F2B070B1CCB94004132290FFF2A00002B0FFF2C00002D00002E00002F00003000003100000100000000";
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -395,7 +406,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = "01C6070A90AE200602010000ff1203000f0023";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -416,7 +427,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = @"0897070A9D77F00780/ISk5\2ME382-1003 0-0:96.1.1(4B414C37303035303632363737303131) 1-0:1.8.1(00996.884*kWh) 1-0:1.8.2(00910.201*kWh) 1-0:2.8.1(00000.000*kWh) 1-0:2.8.2(00000.000*kWh) 0-0:96.14.0(0001) 1-0:1.7.0(0000.64*kW) 1-0:2.7.0(0000.00*kW) 0-0:17.0.0(0999.00*kW) 0-0:96.3.10(1) 0-0:96.13.1() 0-0:96.13.0() 0-1:24.1.0(3) 0-1:96.1.0(3238303039303031313338303931393131) 0-1:24.3.0(120823060000)(00)(60)(1)(0-1:24.2.1)(m3) (00218.626) 0-1:24.4.0(1) !";
             
              // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -433,7 +444,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = @"0EAE070BD33A8C0680/ISk5\2MT382-1003    0-0:96.1.1(5A424556303035303933303339343132)  1-0:1.8.1(02108.875*kWh)  1-0:1.8.2(02557.269*kWh)  1-0:2.8.1(00000.000*kWh)  1-0:2.8.2(00000.002*kWh)  0-0:96.14.0(0001)  1-0:1.7.0(0001.08*kW)  1-0:2.7.0(0000.00*kW)  0-0:17.0.0(0999.00*kW)  0-0:96.3.10(1)  0-0:96.13.1()  0-0:96.13.0()  0-1:24.1.0(3)  0-1:96.1.0(3234313537303032393638303333313132)  0-1:24.3.0(130415050000)(00)(60)(1)(0-1:24.2.1)()  (00000000)  0-1:24.4.0(1)  0-2:24.1.0(3)  0-2:96.1.0(3234313537303032393637393734363132)  0-2:24.3.0(130415050000)(00)(60)(1)(0-2:24.2.1)(m3)  (04167.080)  0-2:24.4.0(1)  !";
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -450,7 +461,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = @"0978070AADE9F4098000001100B6F30000C401B2018A13E8000000B1005009003B443A000000007A";
 
             // act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // assert
             Assert.IsNotNull(actual);
@@ -467,7 +478,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             const string source = @"09E0050AB4A8D40980";
 
             // act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // assert
             Assert.IsNotNull(actual);
@@ -486,7 +497,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
             // The following byte “01” indicates that there is one Meterkast QBox ‘s status present, which is “1D”, in this case. 
 
             // Act
-            var actual = new MiniR07().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -504,7 +515,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
 		public void QboxDumpWithLEDMeterTypeAndSmartMeterIsPresentBitSetAndUnreliableTimestampTest()
 		{
 			var source = "28000500000000018248FB08013F30002000FB7420000000092F20001E2CA1000000080100000001082000001A30000000050500080193F500400138000000000000F52000112C9300000000750D000000B4FF200020001E2000D108B420000A1C002000C748";
-			Assert.IsTrue(new MiniR07().Parse(source) is ErrorParseResult);
+			Assert.IsTrue(_sut.Parse(source) is ErrorParseResult);
 		}
 
 
@@ -512,7 +523,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R07
 		public void QboxDumpWithTimestampInFeatureAndUnknownMeterType2Test()
 		{
 			var source = "2820052000FB482F0C2C11000000030008012D5F2020000004000000000000000000030020FF0D770000000002030000000000200001010020000801000000712C5F20000A1C";
-			Assert.IsTrue(new MiniR07().Parse(source) is ErrorParseResult);
+			Assert.IsTrue(_sut.Parse(source) is ErrorParseResult);
 		}
 
 
