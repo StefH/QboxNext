@@ -10,9 +10,6 @@ namespace QboxNext.Server.Domain
         public string SerialNumber { get; set; }
 
         [Required]
-        public int[] CounterIds { get; set; }
-
-        [Required]
         public DateTime From { get; set; }
 
         [Required]

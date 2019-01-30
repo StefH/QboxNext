@@ -1,12 +1,17 @@
 ﻿$(function () {
 
-    var request = {
+    var request1 = {
         "SerialNumber": "15-46-001-243",
-        "CounterIdsc": [181, 182, 281, 282, 2421],
-        "CounterIds": [281, 282],
         "From": "2018-10-06T00:00:00",
         "To": "2018-10-07T00:00:00",
         "Resolution": "Hour"
+    };
+
+    var request = {
+        "SerialNumber": "15-46-001-243",
+        "From": "2018-10-01T00:00:00",
+        "To": "2018-11-01T00:00:00",
+        "Resolution": "Day"
     };
 
     $.ajax({
