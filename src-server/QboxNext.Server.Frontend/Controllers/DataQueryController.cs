@@ -30,7 +30,7 @@ namespace QboxNext.Server.Frontend.Controllers
             _logger = logger;
         }
 
-        [HttpPost(@"/data")]
+        [HttpPost("/api/data")]
         public async Task<ActionResult> QueryAsync([NotNull, FromBody] QboxDataQuery query)
         {
             Guard.NotNull(query, nameof(query));

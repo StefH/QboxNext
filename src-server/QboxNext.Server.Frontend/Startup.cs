@@ -19,6 +19,8 @@ namespace QboxNext.Server.Frontend
 {
     public class Startup
     {
+        public bool UseSPA = false;
+
         public IConfigurationRoot Configuration { get; }
 
         public IHostingEnvironment HostingEnvironment { get; }
@@ -40,11 +42,14 @@ namespace QboxNext.Server.Frontend
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            if (UseSPA)
             {
-                configuration.RootPath = "ClientApp/dist";
-            });
+                // In production, the Angular files will be served from this directory
+                services.AddSpaStaticFiles(configuration =>
+                {
+                    configuration.RootPath = "ClientApp/dist";
+                });
+            }
 
             // Add External services
             services
@@ -90,18 +95,21 @@ namespace QboxNext.Server.Frontend
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseSpa(spa =>
+            if (UseSPA)
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                if (HostingEnvironment.IsDevelopment())
+                app.UseSpa(spa =>
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                    // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                    spa.Options.SourcePath = "ClientApp";
+
+                    if (HostingEnvironment.IsDevelopment())
+                    {
+                        spa.UseAngularCliServer(npmScript: "start");
+                    }
+                });
+            }
         }
     }
 }
