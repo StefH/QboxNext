@@ -10,17 +10,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="wwwroot\js\Data.js" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CorrelationId" Version="2.1.0" />
+    <PackageReference Include="DevExtreme.Web" Version="18.2.5" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.2" />
@@ -31,10 +29,6 @@
     <ProjectReference Include="..\..\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\NLog.Extensions.AzureTables.csproj" />
     <ProjectReference Include="..\..\src-server\QBoxNext.Server.Business\QBoxNext.Server.Business.csproj" />
     <ProjectReference Include="..\..\src-server\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

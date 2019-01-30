@@ -91,7 +91,8 @@ namespace QboxNext.AzureTableImporter
                           {
                               v.SerialNumber,
                               v.CounterId,
-                              MeasureTimeRounded = new DateTime(v.MeasureTime.Year, v.MeasureTime.Month, v.MeasureTime.Day, v.MeasureTime.Hour, (v.MeasureTime.Minute / roundAtMinutes) * roundAtMinutes, 0)
+                              // MeasureTimeRounded = new DateTime(v.MeasureTime.Year, v.MeasureTime.Month, v.MeasureTime.Day, v.MeasureTime.Hour, (v.MeasureTime.Minute / roundAtMinutes) * roundAtMinutes, 0)
+                              MeasureTimeRounded = v.MeasureTime.Truncate(TimeSpan.FromMinutes(5))
                           }
                 into g
                           select new CounterData
@@ -138,8 +139,8 @@ namespace QboxNext.AzureTableImporter
             var result = new List<CounterData>();
             using (var reader = new BinaryReader(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
             {
-                DateTime startOfFile = DateTime.FromBinary(reader.ReadInt64()).Truncate(TimeSpan.FromMinutes(1));
-                DateTime endOfFile = DateTime.FromBinary(reader.ReadInt64()).Truncate(TimeSpan.FromMinutes(1));
+                DateTime startOfFile = DateTime.FromBinary(reader.ReadInt64()).Truncate(TimeSpan.FromMinutes(1)).ToUniversalTime().AddHours(1);
+                DateTime endOfFile = DateTime.FromBinary(reader.ReadInt64()).Truncate(TimeSpan.FromMinutes(1)).ToUniversalTime().AddHours(1);
                 Guid id = new Guid(reader.ReadBytes(16));
 
                 logger.LogInformation("StartOfFile: {0}", startOfFile);
@@ -156,9 +157,9 @@ namespace QboxNext.AzureTableImporter
                     ulong money = reader.ReadUInt64();
                     int quality = reader.ReadUInt16();
 
-                    if (raw != rawPrevious && raw < ulong.MaxValue) // raw != rawPrevious && 
+                    if (raw < ulong.MaxValue) //  
                     {
-                        // logger.LogInformation($"{currentTimestamp:yyyy-MM-dd HH:mm} | {raw,10}");
+                        //logger.LogInformation($"{currentTimestamp:yyyy-MM-dd HH:mm} | {raw,10}");
 
                         var counterData = new CounterData
                         {
