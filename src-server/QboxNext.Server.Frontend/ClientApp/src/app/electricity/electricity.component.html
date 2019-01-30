@@ -1,0 +1,25 @@
+<dx-chart id="chart"
+          [dataSource]="dataSource"
+          title="Electriciteit"
+          [valueAxis]="[{ position: 'left', label: { customizeText: customizeLabelText} } ]">
+  <!--<dxo-argument-axis>
+    <dxo-label overlappingBehavior="stagger"></dxo-label>
+  </dxo-argument-axis>-->
+  <dxo-tooltip [enabled]="true"
+               [shared]="true"
+               [customizeTooltip]="customizeTooltip">
+  </dxo-tooltip>
+  <dxo-common-series-settings argumentField="label"
+                              type="bar"
+                              hoverMode="allArgumentPoints"
+                              selectionMode="allArgumentPoints">
+  </dxo-common-series-settings>
+  <dxi-series valueField="delta0181" name="Verbruik Laag (181)" color="#FFDD00"></dxi-series>
+  <dxi-series valueField="delta0182" name="Verbruik Hoog (281)" color="#FF8800"></dxi-series>
+  <dxi-series valueField="delta0281" name="Opwek Laag (281))" color="#00DDDD"></dxi-series>
+  <dxi-series valueField="delta0282" name="Opwek Hoog (282)" color="#00DD00"></dxi-series>
+  <dxi-series valueField="net" name="Netto" color="#DDDDDD"></dxi-series>
+  <dxo-legend verticalAlignment="top"
+              horizontalAlignment="center">
+  </dxo-legend>
+</dx-chart>
