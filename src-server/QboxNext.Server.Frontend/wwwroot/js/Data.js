@@ -1,13 +1,13 @@
 ﻿$(function () {
 
-    var request1 = {
+    var request = {
         "SerialNumber": "15-46-001-243",
-        "From": "2018-10-06T00:00:00",
-        "To": "2018-10-07T00:00:00",
+        "From": "2018-10-05T00:00:00",
+        "To": "2018-10-06T00:00:00",
         "Resolution": "Hour"
     };
 
-    var request = {
+    var request2 = {
         "SerialNumber": "15-46-001-243",
         "From": "2018-10-01T00:00:00",
         "To": "2018-11-01T00:00:00",
@@ -22,8 +22,19 @@
         dataType: "json",
         success: function (result) {
 
+            var dataSource = result.items.map(function (item, index) {
+                return {
+                    label: item.label,
+                    delta0181: item.delta0181,
+                    delta0182: item.delta0182,
+                    delta0281: item.delta0281,
+                    delta0282: item.delta0282,
+                    net: item.delta0181 + item.delta0182 + item.delta0281 + item.delta0282
+                };
+            });
+
             $("#chart").dxChart({
-                dataSource: result.items,
+                dataSource: dataSource,
                 title: "Energy " + request.From + " to " + request.To + " (" + result.count + ")",
                 tooltip: {
                     enabled: true,
@@ -77,6 +88,11 @@
                         name: "Opwek Hoog (282)",
                         color: "#00DD00"
                     },
+                    {
+                        valueField: "net",
+                        name: "Netto",
+                        color: "#DDDDDD"
+                    }
                 ],
                 legend: {
                     verticalAlignment: "top",
