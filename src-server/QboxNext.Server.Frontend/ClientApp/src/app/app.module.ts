@@ -7,23 +7,16 @@ import { ElectricityComponent } from './electricity/electricity.component';
 import { HomeComponent } from './home/home.component';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
-import { DxChartModule, DxDateBoxModule, DxSelectBoxModule } from 'devextreme-angular';
 import { FormsModule } from '@angular/forms';
-import { locale, loadMessages } from 'devextreme/localization';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DxChartModule, DxDateBoxModule, DxSelectBoxModule, DxLoadIndicatorModule } from 'devextreme-angular';
 
 import nlMessages from 'devextreme/localization/messages/nl.json';
 import supplemental from 'devextreme-cldr-data/supplemental.json';
 import nlCldrData from 'devextreme-cldr-data/nl.json';
 
-import Globalize from 'globalize';
-
-Globalize.load(
-  supplemental, nlCldrData
-);
-
-// Globalize.loadMessages('nlMessages');
-
-Globalize.locale('nl');
+import Globalize from 'globalize/message.js';
 
 @NgModule({
   declarations: [
@@ -38,23 +31,22 @@ Globalize.locale('nl');
     HttpModule,
     HttpClientModule,
     FormsModule,
+    NgbModule.forRoot(),
     DxChartModule,
     DxSelectBoxModule,
-    DxDateBoxModule
+    DxDateBoxModule,
+    DxLoadIndicatorModule
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor() {
-    // Globalize.load(
-    //   supplemental, nlCldrData
-    // );
+    Globalize.load(
+      supplemental, nlCldrData
+    );
 
-    // Globalize.loadMessages(nlMessages);
+    Globalize.loadMessages(nlMessages);
 
-    // Globalize.locale('nl');
-
-    // loadMessages(nlMessages);
-    // locale('nl');
+    Globalize.locale('nl');
   }
 }

@@ -27,8 +27,19 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     this.refreshGraph();
   }
 
+  get isLoadIndicatorVisible(): boolean {
+    return this.loadingStatus === DataLoadStatus.Started;
+  }
+
   public getTitle(): string {
-    return `Electriciteit (${moment(this.selectedFromDate).format('D MMMM YYYY')} tot ${moment(this.selectedToDate).format('D MMMM YYYY')})`;
+    const start = moment(this.selectedFromDate).format('D MMMM YYYY');
+    const end = moment(this.selectedToDate).format('D MMMM YYYY');
+
+    if (this.selectedResolution === 'QuarterOfHour' || this.selectedResolution === 'Hour') {
+      return `Electriciteit (${start})`;
+    }
+
+    return `Electriciteit (${start} tot ${end})`;
   }
 
   public refreshGraph(): void {
