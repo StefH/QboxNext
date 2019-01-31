@@ -1,5 +1,4 @@
-﻿using CorrelationId;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -53,8 +52,7 @@ namespace QboxNext.Server.Frontend
 
             // Add External services
             services
-                .AddBusiness()
-                .AddCorrelationId();
+                .AddBusiness();
 
             // Configure
             services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
@@ -79,21 +77,9 @@ namespace QboxNext.Server.Frontend
             // TODO : this needs to be in place until correct DI is added to QboxNext
             QboxNextLogProvider.LoggerFactory = logFactory;
 
-            app.UseCorrelationId(new CorrelationIdOptions
-            {
-                UpdateTraceIdentifier = true,
-                IncludeInResponse = true,
-                UseGuidForCorrelationId = true
-            });
-
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvc();
 
             if (UseSPA)
             {

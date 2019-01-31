@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DataService } from './services/data.service';
-import { PagedResult, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes } from '../common';
+import { DataService, PagedResult, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes } from '../common';
 import * as moment from 'moment';
 
 @Component({

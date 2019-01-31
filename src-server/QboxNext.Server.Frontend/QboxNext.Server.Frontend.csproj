@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\HomeController.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="nlog.config" />
   </ItemGroup>
 
@@ -25,8 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CorrelationId" Version="2.1.0" />
-    <PackageReference Include="DevExtreme.Web" Version="18.2.5" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.2" />
@@ -41,7 +35,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\common\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

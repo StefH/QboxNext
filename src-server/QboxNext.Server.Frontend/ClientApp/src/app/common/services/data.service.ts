@@ -4,7 +4,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { BaseService, PagedResult, CounterDataValue } from '../../common';
+import { BaseService } from './base.service';
+import { CounterDataValue, QboxPagedDataQueryResult } from '..';
+
 
 @Injectable()
 export class DataService extends BaseService<CounterDataValue> {
@@ -14,7 +16,7 @@ export class DataService extends BaseService<CounterDataValue> {
         super(http);
     }
 
-    public getData(resolution: string, from: Date, to: Date): Observable<PagedResult<CounterDataValue>> {
+    public getData(resolution: string, from: Date, to: Date): Observable<QboxPagedDataQueryResult<CounterDataValue>> {
 
         const request = {
             serialNumber: '15-46-001-243',
@@ -24,7 +26,7 @@ export class DataService extends BaseService<CounterDataValue> {
             resolution: resolution
         };
 
-        const result: Observable<PagedResult<CounterDataValue>> = this.post<PagedResult<CounterDataValue>>(this.baseUrl, request);
+        const result: Observable<QboxPagedDataQueryResult<CounterDataValue>> = this.post<QboxPagedDataQueryResult<CounterDataValue>>(this.baseUrl, request);
 
         return result.pipe(map(p => {
             p.items.forEach(i => {

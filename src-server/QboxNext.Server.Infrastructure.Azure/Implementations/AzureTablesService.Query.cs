@@ -25,7 +25,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
         }
 
         /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, DateTime, DateTime, QboxQueryResolution, int)"/>
-        public async Task<PagedQueryResult<QboxCounterDataValue>> QueryDataAsync(string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution, int addHours)
+        public async Task<QboxPagedDataQueryResult<QboxCounterDataValue>> QueryDataAsync(string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution, int addHours)
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
@@ -91,7 +91,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             var items = grouped.OrderBy(e => e.MeasureTime).ToList();
 
-            return new PagedQueryResult<QboxCounterDataValue>
+            return new QboxPagedDataQueryResult<QboxCounterDataValue>
             {
                 Items = items,
                 Count = items.Count
