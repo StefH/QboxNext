@@ -17,5 +17,8 @@ namespace QboxNext.Server.Domain
 
         [Required]
         public QboxQueryResolution Resolution { get; set; }
+
+        [Required]
+        public int AddHours { get; set; }
     }
 }

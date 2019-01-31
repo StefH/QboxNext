@@ -80,7 +80,7 @@ namespace QboxNext.AzureTableImporter
                 list.Add(counterId, result);
             }
 
-            int batchValue = 1000;
+            int batchValue = 12345;
             var values = list.Values.SelectMany(v => v).ToList();
             var f = values.First();
             var l = values.Last();
@@ -92,7 +92,7 @@ namespace QboxNext.AzureTableImporter
                               v.SerialNumber,
                               v.CounterId,
                               // MeasureTimeRounded = new DateTime(v.MeasureTime.Year, v.MeasureTime.Month, v.MeasureTime.Day, v.MeasureTime.Hour, (v.MeasureTime.Minute / roundAtMinutes) * roundAtMinutes, 0)
-                              MeasureTimeRounded = v.MeasureTime.Truncate(TimeSpan.FromMinutes(5))
+                              MeasureTimeRounded = v.MeasureTime.Truncate(TimeSpan.FromMinutes(roundAtMinutes))
                           }
                 into g
                           select new CounterData
@@ -139,8 +139,8 @@ namespace QboxNext.AzureTableImporter
             var result = new List<CounterData>();
             using (var reader = new BinaryReader(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
             {
-                DateTime startOfFile = DateTime.FromBinary(reader.ReadInt64()).Truncate(TimeSpan.FromMinutes(1)).ToUniversalTime().AddHours(1);
-                DateTime endOfFile = DateTime.FromBinary(reader.ReadInt64()).Truncate(TimeSpan.FromMinutes(1)).ToUniversalTime().AddHours(1);
+                DateTime startOfFile = DateTime.FromBinary(reader.ReadInt64()).Truncate(TimeSpan.FromMinutes(1)).ToUniversalTime();
+                DateTime endOfFile = DateTime.FromBinary(reader.ReadInt64()).Truncate(TimeSpan.FromMinutes(1)).ToUniversalTime();
                 Guid id = new Guid(reader.ReadBytes(16));
 
                 logger.LogInformation("StartOfFile: {0}", startOfFile);
@@ -166,7 +166,7 @@ namespace QboxNext.AzureTableImporter
                             SerialNumber = sn,
                             CounterId = counterId,
                             PulseValue = Convert.ToInt32(raw),
-                            MeasureTime = currentTimestamp.ToAmsterdam() // Change to Dutch Timezone
+                            MeasureTime = currentTimestamp // .ToAmsterdam().ToLocalTime() // Change to Dutch Timezone
                         };
                         result.Add(counterData);
                     }

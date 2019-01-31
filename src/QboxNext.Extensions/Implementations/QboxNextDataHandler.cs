@@ -389,7 +389,7 @@ namespace QboxNext.Extensions.Implementations
             counterData = new CounterData
             {
                 SerialNumber = _context.Mini.SerialNumber,
-                MeasureTime = parseResult.Model.MeasurementTime.ToAmsterdam(), // Change to Dutch Timezone
+                MeasureTime = parseResult.Model.MeasurementTime.ToUniversalTime(), // .ToAmsterdam(), // Change to Dutch Timezone
                 CounterId = payload.InternalNr,
                 PulseValue = Convert.ToInt32(payload.Value)
             };

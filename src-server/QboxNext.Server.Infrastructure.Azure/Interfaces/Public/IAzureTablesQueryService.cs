@@ -14,6 +14,6 @@ namespace QboxNext.Server.Infrastructure.Azure.Interfaces.Public
         /// <returns>true/false</returns>
         Task<bool> IsValidRegistrationAsync([CanBeNull] string serialNumber);
 
-        Task<PagedQueryResult<QboxCounterDataValue>> QueryDataAsync([NotNull] string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution);
+        Task<PagedQueryResult<QboxCounterDataValue>> QueryDataAsync([NotNull] string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution, int addHours);
     }
 }

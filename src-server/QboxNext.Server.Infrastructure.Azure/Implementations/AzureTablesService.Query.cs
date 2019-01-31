@@ -2,7 +2,9 @@
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
+using QboxNext.Server.Infrastructure.Azure.Models.Internal;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WindowsAzure.Table.Extensions;
@@ -22,25 +24,58 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             return await _registrationTableSet.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber) != null;
         }
 
-        /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, DateTime, DateTime, QboxQueryResolution)"/>
-        public async Task<PagedQueryResult<QboxCounterDataValue>> QueryDataAsync(string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution)
+        /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, DateTime, DateTime, QboxQueryResolution, int)"/>
+        public async Task<PagedQueryResult<QboxCounterDataValue>> QueryDataAsync(string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution, int addHours)
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
-            string fromPartitionKey = GetPartitionKey(serialNumber, from);
-            string toPartitionKey = GetPartitionKey(serialNumber, to);
-            bool same = fromPartitionKey == toPartitionKey;
+            List<MeasurementEntity> entities = new List<MeasurementEntity>();
+            //if (resolution == QboxQueryResolution.Month)
+            //{
+            //    for (DateTime date = from; date < to; date = date.AddMonths(1))
+            //    {
+            //        DateTime dateZero = date;
+            //        DateTime datePlusOneMonth = date.AddMonths(1);
+            //        string fromPartitionKeyMonth = GetPartitionKey(serialNumber, date);
+            //        string toPartitionKeyMonth = GetPartitionKey(serialNumber, datePlusOneMonth);
+            //        bool same = fromPartitionKeyMonth == toPartitionKeyMonth;
 
-            var entities = await _measurementTableSet
-                .Where(m => (same && m.PartitionKey == fromPartitionKey || !same && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) >= 0) &&
-                    m.MeasureTime >= from && m.MeasureTime < to
-                )
-                .ToListAsync();
+            //        var queryable = _measurementTableSet
+            //            .Where(m =>
+            //                (
+            //                    same && m.PartitionKey == fromPartitionKeyMonth ||
+            //                    !same && string.CompareOrdinal(m.PartitionKey, fromPartitionKeyMonth) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKeyMonth) >= 0) &&
+            //                m.MeasureTime >= dateZero && m.MeasureTime < datePlusOneMonth
+            //            );
+
+            //        var monthStart = await queryable.FirstOrDefaultAsync();
+
+            //        if (monthStart != null)
+            //        {
+            //            entities.Add(monthStart);
+            //        }
+            //    }
+            //}
+            //else
+            {
+                string fromPartitionKey = GetPartitionKey(serialNumber, from);
+                string toPartitionKey = GetPartitionKey(serialNumber, to);
+                bool same = fromPartitionKey == toPartitionKey;
+
+                entities = await _measurementTableSet
+                    .Where(m =>
+                    (
+                        same && m.PartitionKey == fromPartitionKey ||
+                        !same && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) >= 0) &&
+                        m.MeasureTime >= from && m.MeasureTime < to
+                    )
+                    .ToListAsync();
+            }
 
             var grouped = from v in entities
                           group v by new
                           {
-                              MeasureTimeRounded = Get(v.MeasureTime, resolution)
+                              MeasureTimeRounded = Get(v.MeasureTime, resolution).AddHours(addHours)
                           }
                 into g
                           select new QboxCounterDataValue
