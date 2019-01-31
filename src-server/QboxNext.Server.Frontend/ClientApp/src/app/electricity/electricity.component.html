@@ -1,27 +1,31 @@
 <div class="row">
-  <dx-select-box (onValueChanged)="refreshGraph()" width="200px" [dataSource]="resolutions" [(value)]="selectedResolution"></dx-select-box>
+    <div class="col-sm-6">
+      <dx-select-box (onValueChanged)="refreshGraph()" width="200px" [dataSource]="resolutions" [(value)]="selectedResolution"></dx-select-box>
+      <dx-date-box (onValueChanged)="refreshGraph()" width="200px" [min]="2000-01-01" [(value)]="selectedFromDate"></dx-date-box>
+    </div>
 
-  <dx-date-box (onValueChanged)="refreshGraph()" width="200px" [min]="2000-01-01" [(value)]="selectedFromDate"></dx-date-box>
+    <div class="col-sm-12">
+      <dx-chart id="chart"
+                [dataSource]="result.items"
+                [title]="getTitle()"
+                [valueAxis]="[{ showZero: true, position: 'left', label: { customizeText: customizeLabelText } } ]">
+        <dxo-tooltip [enabled]="true"
+                    [shared]="true"
+                    [customizeTooltip]="customizeTooltip">
+        </dxo-tooltip>
+        <dxo-common-series-settings argumentField="label"
+                                    type="bar"
+                                    hoverMode="allArgumentPoints"
+                                    selectionMode="allArgumentPoints">
+        </dxo-common-series-settings>
+        <dxi-series valueField="delta0181" name="Verbruik Laag (181)" color="#FFDD00"></dxi-series>
+        <dxi-series valueField="delta0182" name="Verbruik Hoog (281)" color="#FF8800"></dxi-series>
+        <dxi-series valueField="delta0281" name="Opwek Laag (281)" color="#00DDDD"></dxi-series>
+        <dxi-series valueField="delta0282" name="Opwek Hoog (282)" color="#00DD00"></dxi-series>
+        <dxi-series valueField="net" name="Netto" color="#AAAAAA"></dxi-series>
+        <dxo-legend verticalAlignment="top" horizontalAlignment="center">
+        </dxo-legend>
+        <dxo-export enabled="true"></dxo-export>
+      </dx-chart>
+  </div>
 </div>
-
-<dx-chart id="chart"
-          [dataSource]="result.items"
-          [title]="getTitle()"
-          [valueAxis]="[{ position: 'left', label: { customizeText: customizeLabelText} } ]">
-  <dxo-tooltip [enabled]="true"
-               [shared]="true"
-               [customizeTooltip]="customizeTooltip">
-  </dxo-tooltip>
-  <dxo-common-series-settings argumentField="label"
-                              type="bar"
-                              hoverMode="allArgumentPoints"
-                              selectionMode="allArgumentPoints">
-  </dxo-common-series-settings>
-  <dxi-series valueField="delta0181" name="Verbruik Laag (181)" color="#FFDD00"></dxi-series>
-  <dxi-series valueField="delta0182" name="Verbruik Hoog (281)" color="#FF8800"></dxi-series>
-  <dxi-series valueField="delta0281" name="Opwek Laag (281))" color="#00DDDD"></dxi-series>
-  <dxi-series valueField="delta0282" name="Opwek Hoog (282)" color="#00DD00"></dxi-series>
-  <dxi-series valueField="net" name="Netto" color="#DDDDDD"></dxi-series>
-  <dxo-legend verticalAlignment="top" horizontalAlignment="center">
-  </dxo-legend>
-</dx-chart>

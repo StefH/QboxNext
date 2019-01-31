@@ -75,17 +75,17 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
       html:
         `<div><div class=\'tooltip-header\'>${info.argumentText}</div>` +
         '  <div class=\'tooltip-body\'>' +
-        `    <div class=\'series-name\'>${info.points[0].seriesName}: </div><div class=\'value-text\'>${info.points[0].valueText}W </div>` +
-        `    <div class=\'series-name\'>${info.points[1].seriesName}: </div><div class=\'value-text\'>${info.points[1].valueText}W </div>` +
-        `    <div class=\'series-name\'>${info.points[2].seriesName}: </div><div class=\'value-text\'>${info.points[2].valueText}W </div>` +
-        `    <div class=\'series-name\'>${info.points[3].seriesName}: </div><div class=\'value-text\'>${info.points[3].valueText}W </div>` +
-        `    <div class=\'series-name\'>${info.points[4].seriesName}: </div><div class=\'value-text\'>${info.points[4].valueText}W </div>` +
+        `    <div class=\'series-name\'>${info.points[0].seriesName}</div><div class=\'value-text\'>${info.points[0].valueText}W </div>` +
+        `    <div class=\'series-name\'>${info.points[1].seriesName}</div><div class=\'value-text\'>${info.points[1].valueText}W </div>` +
+        `    <div class=\'series-name\'>${info.points[2].seriesName}</div><div class=\'value-text\'>${info.points[2].valueText}W </div>` +
+        `    <div class=\'series-name\'>${info.points[3].seriesName}</div><div class=\'value-text\'>${info.points[3].valueText}W </div>` +
+        `    <div class=\'series-name\'>${info.points[4].seriesName}</div><div class=\'value-text\'>${info.points[4].valueText}W </div>` +
         '  </div>' +
         '</div>'
     };
   }
 
   public customizeLabelText = (info: any) => {
-    return info.valueText + 'W';
+    return `${Math.abs(info.value) > 10000 ? info.valueText : info.value}W`;
   }
 }

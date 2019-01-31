@@ -80,10 +80,10 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                     return new DateTime(measureTime.Year, measureTime.Month, measureTime.Day / 7 * 7, 0, 0, 0, measureTime.Kind);
 
                 case QboxQueryResolution.Month:
-                    return new DateTime(measureTime.Year, measureTime.Month, 0, 0, 0, 0, measureTime.Kind);
+                    return new DateTime(measureTime.Year, measureTime.Month, 1, 0, 0, 0, measureTime.Kind);
 
                 case QboxQueryResolution.Year:
-                    return new DateTime(measureTime.Year, 0, 0, 0, 0, 0, measureTime.Kind);
+                    return new DateTime(measureTime.Year, 1, 1, 0, 0, 0, measureTime.Kind);
 
                 default:
                     throw new NotSupportedException();
