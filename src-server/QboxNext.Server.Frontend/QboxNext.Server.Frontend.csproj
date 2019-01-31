@@ -19,16 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ClientApp\src\assets\logo_32x32.png">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="wwwroot\js\Data.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +41,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\common\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
