@@ -12,12 +12,12 @@ import * as moment from 'moment';
 })
 export class ElectricityComponent extends BaseComponent implements OnInit {
 
-  public resolutions = ['QuarterOfHour', 'Hour', 'Day', 'Month'];
+  public resolutions = [{ id: 'QuarterOfHour', text: 'Kwartier' }, { id: 'Hour', text: 'Uur' }, { id: 'Day', text: 'Dag' }, { id: 'Month', text: 'Maand' }];
   public result: PagedResult<CounterDataValue>;
 
   public selectedFromDate = new Date('2018-10-01');
   public selectedToDate = new Date('2018-11-01');
-  public selectedResolution = 'Hour';
+  public selectedResolution = this.resolutions[1].id;
 
   constructor(private service: DataService) {
     super();
@@ -28,7 +28,7 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   }
 
   public getTitle(): string {
-    return `Electriciteit (${moment(this.selectedFromDate).format('YYYY-MM-DD')} to ${moment(this.selectedToDate).format('YYYY-MM-DD')})`;
+    return `Electriciteit (${moment(this.selectedFromDate).format('D MMMM YYYY')} tot ${moment(this.selectedToDate).format('D MMMM YYYY')})`;
   }
 
   public refreshGraph(): void {

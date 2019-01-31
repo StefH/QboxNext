@@ -1,29 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { Http, Headers, Response } from "@angular/http";
+import { Component, OnInit } from '@angular/core';
+
+import * as moment from 'moment';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = "QboxNext.Server.Frontend";
-
-  constructor(private http: Http) {}
-
-
+  title = 'QboxNext.Server.Frontend';
 
   ngOnInit() {
-    
-
-    //this.http
-    //  .get("https://localhost:44379/api/Claim", { headers: headers })
-    //  .subscribe(data => console.log(data));
-
-    console.log("----------------------------------------------------");
-
-    //this.http
-    //  .get("https://graph.microsoft.com/beta/me/", { headers: headers })
-    //  .subscribe(data => console.log(data));
+    moment.locale('nl');
   }
 }

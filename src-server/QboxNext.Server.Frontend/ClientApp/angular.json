@@ -28,7 +28,9 @@
               "node_modules/devextreme/dist/css/dx.light.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              
+            ]
           },
           "configurations": {
             "production": {

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-6">
-      <dx-select-box (onValueChanged)="refreshGraph()" width="200px" [dataSource]="resolutions" [(value)]="selectedResolution"></dx-select-box>
+      <dx-select-box (onValueChanged)="refreshGraph()" width="200px" [dataSource]="resolutions" valueExpr="id" displayExpr="text" [(value)]="selectedResolution"></dx-select-box>
       <dx-date-box (onValueChanged)="refreshGraph()" width="200px" [min]="2000-01-01" [(value)]="selectedFromDate"></dx-date-box>
     </div>
 
