@@ -26,13 +26,15 @@ export class DataService extends BaseService<CounterDataValue> {
             resolution: resolution
         };
 
-        const result: Observable<QboxPagedDataQueryResult<CounterDataValue>> = this.post<QboxPagedDataQueryResult<CounterDataValue>>(this.baseUrl, request);
+        return this.post<QboxPagedDataQueryResult<CounterDataValue>>(this.baseUrl, request);
 
-        return result.pipe(map(p => {
-            p.items.forEach(i => {
-                i.net = i.delta0181 + i.delta0182 + i.delta0281 + i.delta0282;
-            });
-            return p;
-        }));
+        // const result: Observable<QboxPagedDataQueryResult<CounterDataValue>> = this.post<QboxPagedDataQueryResult<CounterDataValue>>(this.baseUrl, request);
+
+        // return result.pipe(map(p => {
+        //     p.items.forEach(i => {
+        //         i.net = i.delta0181 + i.delta0182 + i.delta0281 + i.delta0282;
+        //     });
+        //     return p;
+        // }));
     }
 }

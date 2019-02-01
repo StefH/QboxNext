@@ -12,22 +12,28 @@ import * as moment from 'moment';
 export class ElectricityComponent extends BaseComponent implements OnInit {
 
   public resolutions = [{ id: 'QuarterOfHour', text: 'Kwartier' }, { id: 'Hour', text: 'Uur' }, { id: 'Day', text: 'Dag' }, { id: 'Month', text: 'Maand' }];
+  public resultFromServer: PagedResult<CounterDataValue>;
   public result: PagedResult<CounterDataValue>;
 
   public selectedFromDate = new Date('2018-10-01');
   public selectedToDate = new Date('2018-11-01');
   public selectedResolution = this.resolutions[1].id;
+  public check181 = true;
+  public check182 = true;
+  public check281 = true;
+  public check282 = true;
+  public checknet = true;
+
+  get isLoadIndicatorVisible(): boolean {
+    return this.loadingStatus === DataLoadStatus.Started;
+  }
 
   constructor(private service: DataService) {
     super();
   }
 
   public ngOnInit(): void {
-    this.refreshGraph();
-  }
-
-  get isLoadIndicatorVisible(): boolean {
-    return this.loadingStatus === DataLoadStatus.Started;
+    this.refreshChart(true);
   }
 
   public getTitle(): string {
@@ -41,9 +47,32 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     return `Electriciteit (${start} tot ${end})`;
   }
 
-  public refreshGraph(): void {
+  private filter(): void {
+    this.result = new PagedResult<CounterDataValue>({ count: this.resultFromServer.count });
+    this.resultFromServer.items.forEach(i => {
+
+      const newItem = new CounterDataValue({
+        label: i.label,
+        delta0181: i.delta0181,
+        delta0182: i.delta0182,
+        delta0281: i.delta0281,
+        delta0282: i.delta0282,
+        net: (this.check181 ? i.delta0181 : 0) + (this.check182 ? i.delta0182 : 0) + (this.check281 ? i.delta0281 : 0) + (this.check282 ? i.delta0282 : 0)
+      });
+
+      this.result.items.push(newItem);
+    });
+  }
+
+  public refreshChart(serverSide: boolean): void {
+
+    if (!serverSide) {
+      // just filter
+      return;
+    }
+
     this.loadingStatus = DataLoadStatus.Started;
-    this.result = new PagedResult<CounterDataValue>();
+    this.resultFromServer = new PagedResult<CounterDataValue>();
 
     const fromMoment = moment(this.selectedFromDate);
 
@@ -62,8 +91,10 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     this.subscription.add(this.service.getData(this.selectedResolution, this.selectedFromDate, this.selectedToDate)
       .subscribe(
         data => {
-          this.result = data;
+          this.resultFromServer = data;
           this.loadingStatus = DataLoadStatus.Finished;
+
+          this.filter();
         }, error => {
           switch (error.statusCode) {
             case HttpStatusCodes.NOT_FOUND:
@@ -96,6 +127,6 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   }
 
   public customizeLabelText = (info: any) => {
-    return `${Math.abs(info.value) > 10000 ? info.valueText : info.value}W`;
+    return `${Math.abs(info.value) >= 10000 ? info.valueText : info.value}W`;
   }
 }

@@ -21,7 +21,7 @@
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
     "@ng-bootstrap/ng-bootstrap": "^4.0.2",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.2.1",
     "core-js": "^2.5.4",
     "devextreme": "18.2",
     "devextreme-angular": "18.2",

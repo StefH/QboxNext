@@ -72,10 +72,10 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                     .ToListAsync();
             }
 
-            var grouped = from v in entities
-                          group v by new
+            var grouped = from e in entities
+                          group e by new
                           {
-                              MeasureTimeRounded = Get(v.MeasureTime, resolution).AddHours(addHours)
+                              MeasureTimeRounded = Get(e.MeasureTime, resolution).AddHours(addHours)
                           }
                 into g
                           select new QboxCounterDataValue
@@ -91,8 +91,20 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             var items = grouped.OrderBy(e => e.MeasureTime).ToList();
 
+            var extra = new QboxCounterDataValue
+            {
+                Label = "extra",
+                MeasureTime = DateTime.UtcNow,
+                Delta0181 = entities.Max(e => e.Counter0181) - entities.Min(e => e.Counter0181),
+                Delta0182 = entities.Max(e => e.Counter0182) - entities.Min(e => e.Counter0182),
+                Delta0281 = (entities.Max(e => e.Counter0281) - entities.Min(e => e.Counter0281)) * -1,
+                Delta0282 = (entities.Max(e => e.Counter0282) - entities.Min(e => e.Counter0282)) * -1,
+                Delta2421 = entities.Max(e => e.Counter2421) - entities.Min(e => e.Counter2421)
+            };
+
             return new QboxPagedDataQueryResult<QboxCounterDataValue>
             {
+                Extra = extra,
                 Items = items,
                 Count = items.Count
             };

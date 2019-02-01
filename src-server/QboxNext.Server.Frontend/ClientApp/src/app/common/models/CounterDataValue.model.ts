@@ -1,5 +1,5 @@
 
-export abstract class CounterDataValue {
+export class CounterDataValue {
     public label: string;
 
     public measureTime: Date;

@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DxChartModule, DxDateBoxModule, DxSelectBoxModule, DxLoadIndicatorModule } from 'devextreme-angular';
+import { DxChartModule, DxDateBoxModule, DxSelectBoxModule, DxLoadIndicatorModule, DxCheckBoxModule } from 'devextreme-angular';
 
 import nlMessages from 'devextreme/localization/messages/nl.json';
 import supplemental from 'devextreme-cldr-data/supplemental.json';
@@ -35,7 +35,8 @@ import Globalize from 'globalize/message.js';
     DxChartModule,
     DxSelectBoxModule,
     DxDateBoxModule,
-    DxLoadIndicatorModule
+    DxLoadIndicatorModule,
+    DxCheckBoxModule
   ],
   bootstrap: [AppComponent]
 })
