@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService, PagedResult, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes } from '../common';
+
 import * as moment from 'moment';
+import { DxChartComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-show-data',
@@ -10,10 +12,12 @@ import * as moment from 'moment';
   preserveWhitespaces: true
 })
 export class ElectricityComponent extends BaseComponent implements OnInit {
-
   public resolutions = [{ id: 'QuarterOfHour', text: 'Kwartier' }, { id: 'Hour', text: 'Uur' }, { id: 'Day', text: 'Dag' }, { id: 'Month', text: 'Maand' }];
-  public resultFromServer: PagedResult<CounterDataValue>;
-  public result: PagedResult<CounterDataValue>;
+
+  @ViewChild(DxChartComponent) chart: DxChartComponent;
+
+  public resultFromServer: PagedResult<CounterDataValue> = new PagedResult<CounterDataValue>();
+  public result: PagedResult<CounterDataValue> = new PagedResult<CounterDataValue>();
 
   public selectedFromDate = new Date('2018-10-01');
   public selectedToDate = new Date('2018-11-01');
@@ -23,9 +27,30 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   public check281 = true;
   public check282 = true;
   public checknet = true;
+  public checkall = true;
 
-  get isLoadIndicatorVisible(): boolean {
+  public get isLoadIndicatorVisible(): boolean {
     return this.loadingStatus === DataLoadStatus.Started;
+  }
+
+  public customizeTooltip(info: any): any {
+    const template = [
+      `<div><div class=\'tooltip-header\'>${info.argumentText}</div>`,
+      '<div class=\'tooltip-body\'>'
+    ];
+
+    for (let index = 0; index < info.points.length; index++) {
+      template.push(`<div class=\'series-name\'>${info.points[index].seriesName}</div><div class=\'value-text\'>${info.points[index].valueText}W </div>`);
+    }
+    template.push('</div></div>');
+
+    return {
+      html: template.join('\r\n')
+    };
+  }
+
+  public customizeLabelText = (info: any) => {
+    return `${Math.abs(info.value) >= 10000 ? info.valueText : info.value}W`;
   }
 
   constructor(private service: DataService) {
@@ -33,7 +58,28 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.updateChartSeries();
+
     this.refreshChart(true);
+  }
+
+  private updateChartSeries(): void {
+    this.chart.series = [];
+    if (this.check181) {
+      this.chart.series.push({ valueField: 'delta0181', name: 'Verbruik Laag (181)', color: '#FFDD00' });
+    }
+    if (this.check182) {
+      this.chart.series.push({ valueField: 'delta0182', name: 'Verbruik Hoog (182)', color: '#FF8800' });
+    }
+    if (this.check281) {
+      this.chart.series.push({ valueField: 'delta0281', name: 'Opwek Laag (281)', color: '#00DDDD' });
+    }
+    if (this.check282) {
+      this.chart.series.push({ valueField: 'delta0282', name: 'Opwek Hoog (282)', color: '#00DD00' });
+    }
+    if (this.checknet) {
+      this.chart.series.push({ valueField: 'net', name: 'Netto', color: '#AAAAAA' });
+    }
   }
 
   public getTitle(): string {
@@ -64,10 +110,37 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     });
   }
 
-  public refreshChart(serverSide: boolean): void {
+  public checkClicked(event: Event) {
+    // Only update chart if event is from a user-click
+    if (event) {
+      this.checkall = this.check181 && this.check182 && this.check281 && this.check282 && this.checknet;
 
+      this.refreshChart(false);
+    }
+  }
+
+  public checkAllClicked(event: Event): void {
+    // Only update if event is from a user-click
+    if (event) {
+      this.check181 = this.checkall;
+      this.check182 = this.checkall;
+      this.check281 = this.checkall;
+      this.check282 = this.checkall;
+      this.checknet = this.checkall;
+
+      this.refreshChart(false);
+    }
+  }
+
+  private refreshChart(serverSide: boolean): void {
     if (!serverSide) {
+
       // just filter
+      this.filter();
+
+      // and update series
+      this.updateChartSeries();
+
       return;
     }
 
@@ -109,24 +182,5 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
               this.error(error);
           }
         }));
-  }
-
-  public customizeTooltip(info: any): any {
-    return {
-      html:
-        `<div><div class=\'tooltip-header\'>${info.argumentText}</div>` +
-        '  <div class=\'tooltip-body\'>' +
-        `    <div class=\'series-name\'>${info.points[0].seriesName}</div><div class=\'value-text\'>${info.points[0].valueText}W </div>` +
-        `    <div class=\'series-name\'>${info.points[1].seriesName}</div><div class=\'value-text\'>${info.points[1].valueText}W </div>` +
-        `    <div class=\'series-name\'>${info.points[2].seriesName}</div><div class=\'value-text\'>${info.points[2].valueText}W </div>` +
-        `    <div class=\'series-name\'>${info.points[3].seriesName}</div><div class=\'value-text\'>${info.points[3].valueText}W </div>` +
-        `    <div class=\'series-name\'>${info.points[4].seriesName}</div><div class=\'value-text\'>${info.points[4].valueText}W </div>` +
-        '  </div>' +
-        '</div>'
-    };
-  }
-
-  public customizeLabelText = (info: any) => {
-    return `${Math.abs(info.value) >= 10000 ? info.valueText : info.value}W`;
   }
 }

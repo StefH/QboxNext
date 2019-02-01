@@ -14,23 +14,27 @@
     </div>
     <div class="row border px-2">
       <div class="col-sm-2">
-        <dx-check-box id="181" text="Verbruik Laag (181)" [(value)]="check181" (onValueChanged)="refreshChart(false)">
+        <dx-check-box id="all" text="Alles" [(value)]="checkall" (onValueChanged)="checkAllClicked($event.event)">
         </dx-check-box>
       </div>
       <div class="col-sm-2">
-        <dx-check-box id="182" text="Verbruik Hoog (182)" [(value)]="check182" (onValueChanged)="refreshChart(false)">
+        <dx-check-box id="181" text="Verbruik Laag (181)" [(value)]="check181" (onValueChanged)="checkClicked($event.event)">
         </dx-check-box>
       </div>
       <div class="col-sm-2">
-        <dx-check-box id="281" text="Opwek Laag (281)" [(value)]="check281" (onValueChanged)="refreshChart(false)">
+        <dx-check-box id="182" text="Verbruik Hoog (182)" [(value)]="check182" (onValueChanged)="checkClicked($event.event)">
         </dx-check-box>
       </div>
       <div class="col-sm-2">
-        <dx-check-box id="282" text="Opwek Hoog (282)" [(value)]="check282" (onValueChanged)="refreshChart(false)">
+        <dx-check-box id="281" text="Opwek Laag (281)" [(value)]="check281" (onValueChanged)="checkClicked($event.event)">
         </dx-check-box>
       </div>
       <div class="col-sm-2">
-        <dx-check-box id="net" text="Netto" [(value)]="checknet" (onValueChanged)="refreshChart()">
+        <dx-check-box id="282" text="Opwek Hoog (282)" [(value)]="check282" (onValueChanged)="checkClicked($event.event)">
+        </dx-check-box>
+      </div>
+      <div class="col-sm-2">
+        <dx-check-box id="net" text="Netto" [(value)]="checknet" (onValueChanged)="checkClicked($event.event)">
         </dx-check-box>
       </div>
     </div>
@@ -45,16 +49,16 @@
       </div>
 
       <div class="col-md-12">
-        <dx-chart id="chart" [dataSource]="result.items" [title]="getTitle()" [valueAxis]="[{ showZero: true, position: 'left', label: { customizeText: customizeLabelText } } ]">
+        <dx-chart #chart id="chart" [dataSource]="result.items" [title]="getTitle()" [valueAxis]="[{ showZero: true, position: 'left', label: { customizeText: customizeLabelText } } ]">
           <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip">
           </dxo-tooltip>
           <dxo-common-series-settings argumentField="label" type="bar" hoverMode="allArgumentPoints" selectionMode="allArgumentPoints">
           </dxo-common-series-settings>
-          <dxi-series valueField="delta0181" name="Verbruik Laag (181)" color="#FFDD00"></dxi-series>
+          <!-- <dxi-series valueField="delta0181" name="Verbruik Laag (181)" color="#FFDD00"></dxi-series>
           <dxi-series valueField="delta0182" name="Verbruik Hoog (182)" color="#FF8800"></dxi-series>
           <dxi-series valueField="delta0281" name="Opwek Laag (281)" color="#00DDDD"></dxi-series>
           <dxi-series valueField="delta0282" name="Opwek Hoog (282)" color="#00DD00"></dxi-series>
-          <dxi-series valueField="net" name="Netto" color="#AAAAAA"></dxi-series>
+          <dxi-series valueField="net" name="Netto" color="#AAAAAA"></dxi-series> -->
           <dxo-legend verticalAlignment="top" horizontalAlignment="center">
           </dxo-legend>
           <dxo-export enabled="true"></dxo-export>
