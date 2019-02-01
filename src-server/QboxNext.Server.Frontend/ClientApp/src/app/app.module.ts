@@ -17,13 +17,16 @@ import supplemental from 'devextreme-cldr-data/supplemental.json';
 import nlCldrData from 'devextreme-cldr-data/nl.json';
 
 import Globalize from 'globalize/message.js';
+import { GasComponent } from './gas/gas.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
+
+    HomeComponent,
     ElectricityComponent,
-    HomeComponent
+    GasComponent
   ],
   imports: [
     BrowserModule,

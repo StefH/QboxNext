@@ -1,18 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService, PagedResult, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes, ElectricityValueFormatter, TimeRangeHelper } from '../common';
+import { DataService, PagedResult, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes, GasValueFormatter, TimeRangeHelper } from '../common';
 
 import * as moment from 'moment';
 import { DxChartComponent } from 'devextreme-angular';
 
 @Component({
-  selector: 'app-show-data',
-  providers: [DataService, ElectricityValueFormatter, TimeRangeHelper],
-  templateUrl: './electricity.component.html',
-  styleUrls: ['./electricity.component.css'],
+  selector: 'app-show-gas',
+  providers: [DataService, GasValueFormatter, TimeRangeHelper],
+  templateUrl: './gas.component.html',
+  styleUrls: ['./gas.component.css'],
   preserveWhitespaces: true
 })
-export class ElectricityComponent extends BaseComponent implements OnInit {
-  public resolutions = [{ id: 'QuarterOfHour', text: 'Kwartier' }, { id: 'Hour', text: 'Uur' }, { id: 'Day', text: 'Dag' }, { id: 'Month', text: 'Maand' }];
+export class GasComponent extends BaseComponent implements OnInit {
+  public resolutions = [{ id: 'Hour', text: 'Uur' }, { id: 'Day', text: 'Dag' }, { id: 'Month', text: 'Maand' }];
 
   @ViewChild(DxChartComponent) chart: DxChartComponent;
 
@@ -21,15 +21,10 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
 
   public selectedFromDate = new Date('2018-10-01');
   public selectedToDate = new Date('2018-11-01');
-  public selectedResolution = this.resolutions[1].id;
-  public check181 = true;
-  public check182 = true;
-  public check281 = true;
-  public check282 = true;
-  public checknet = true;
-  public checkall = true;
+  public selectedResolution = this.resolutions[0].id;
+  public checkgas = true;
 
-  constructor(private service: DataService, private formatter: ElectricityValueFormatter, private timeRangeHelper: TimeRangeHelper) {
+  constructor(private service: DataService, private formatter: GasValueFormatter, private timeRangeHelper: TimeRangeHelper) {
     super();
   }
 
@@ -50,8 +45,8 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     ];
 
     for (let index = 0; index < info.points.length; index++) {
-      const valueAsString = new ElectricityValueFormatter().format(info.points[index].value, false);
-      template.push(`<div class=\'series-name\'>${info.points[index].seriesName}</div><div class=\'value-text\'>${valueAsString} </div>`);
+      const valueAsString = new GasValueFormatter().format(info.points[index].value);
+      template.push(`<div class=\'series-name\'>${info.points[index].seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
     }
     template.push('</div></div>');
 
@@ -66,20 +61,8 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
 
   private updateChartSeries(): void {
     this.chart.series = [];
-    if (this.check181) {
-      this.chart.series.push({ valueField: 'delta0181', name: 'Verbruik Laag (181)', color: '#FFDD00' });
-    }
-    if (this.check182) {
-      this.chart.series.push({ valueField: 'delta0182', name: 'Verbruik Hoog (182)', color: '#FF8800' });
-    }
-    if (this.check281) {
-      this.chart.series.push({ valueField: 'delta0281', name: 'Opwek Laag (281)', color: '#00DDDD' });
-    }
-    if (this.check282) {
-      this.chart.series.push({ valueField: 'delta0282', name: 'Opwek Hoog (282)', color: '#00DD00' });
-    }
-    if (this.checknet) {
-      this.chart.series.push({ valueField: 'net', name: 'Netto', color: '#AAAAAA' });
+    if (this.checkgas) {
+      this.chart.series.push({ valueField: 'delta2421', name: 'Gas (2421)', color: '#FFDD00' });
     }
   }
 
@@ -87,11 +70,7 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     const start = moment(this.selectedFromDate).format('D MMMM YYYY');
     const end = moment(this.selectedToDate).format('D MMMM YYYY');
 
-    if (this.selectedResolution === 'QuarterOfHour' || this.selectedResolution === 'Hour') {
-      return `Electriciteit (${start})`;
-    }
-
-    return `Electriciteit (${start} tot ${end})`;
+    return this.selectedResolution === 'Hour' ? `Gas (${start})` : `Gas (${start} tot ${end})`;
   }
 
   private filter(): void {
@@ -100,11 +79,7 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
 
       const newItem = new CounterDataValue({
         label: i.label,
-        delta0181: i.delta0181,
-        delta0182: i.delta0182,
-        delta0281: i.delta0281,
-        delta0282: i.delta0282,
-        net: (this.check181 ? i.delta0181 : 0) + (this.check182 ? i.delta0182 : 0) + (this.check281 ? i.delta0281 : 0) + (this.check282 ? i.delta0282 : 0)
+        delta2421: i.delta2421
       });
 
       this.result.items.push(newItem);
@@ -114,21 +89,6 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   public checkClicked(event: Event) {
     // Only update chart if event is from a user-click
     if (event) {
-      this.checkall = this.check181 && this.check182 && this.check281 && this.check282 && this.checknet;
-
-      this.refreshChart(false);
-    }
-  }
-
-  public checkAllClicked(event: Event): void {
-    // Only update if event is from a user-click
-    if (event) {
-      this.check181 = this.checkall;
-      this.check182 = this.checkall;
-      this.check281 = this.checkall;
-      this.check282 = this.checkall;
-      this.checknet = this.checkall;
-
       this.refreshChart(false);
     }
   }
