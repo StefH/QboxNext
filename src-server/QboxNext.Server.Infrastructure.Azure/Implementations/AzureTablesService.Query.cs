@@ -61,6 +61,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                           {
                               LabelText = GetLabelText(g.Key.MeasureTimeRounded, resolution),
                               LabelValue = GetLabelValue(g.Key.MeasureTimeRounded, resolution),
+                              MeasureTime = g.Key.MeasureTimeRounded,
                               Delta0181 = g.Max(x => x.Counter0181) - g.Min(x => x.Counter0181), // !g.Max(x => x.Counter0181).HasValue || !g.Min(x => x.Counter0181).HasValue ? null : 
                               Delta0182 = g.Max(x => x.Counter0182) - g.Min(x => x.Counter0182), // !g.Max(x => x.Counter0182).HasValue || !g.Min(x => x.Counter0182).HasValue ? null : 
                               Delta0281 = (g.Max(x => x.Counter0281) - g.Min(x => x.Counter0281)) * -1, // !g.Max(x => x.Counter0281).HasValue || !g.Min(x => x.Counter0281).HasValue ? null : 
@@ -68,12 +69,12 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                               Delta2421 = g.Max(x => x.Counter2421) - g.Min(x => x.Counter2421) // !g.Max(x => x.Counter2421).HasValue || !g.Min(x => x.Counter2421).HasValue ? null : 
                           };
 
-            var items = grouped.OrderBy(e => e.LabelValue).ToList();
+            var items = grouped.OrderBy(i => i.MeasureTime).ToList();
 
             var extra = new QboxCounterDataValue
             {
                 LabelText = "extra",
-                // MeasureTime = DateTime.UtcNow,
+                MeasureTime = DateTime.UtcNow,
                 Delta0181 = entities.Max(e => e.Counter0181) - entities.Min(e => e.Counter0181),
                 Delta0182 = entities.Max(e => e.Counter0182) - entities.Min(e => e.Counter0182),
                 Delta0281 = (entities.Max(e => e.Counter0281) - entities.Min(e => e.Counter0281)) * -1,

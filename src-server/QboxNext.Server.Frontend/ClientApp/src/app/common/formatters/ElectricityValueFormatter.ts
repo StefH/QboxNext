@@ -7,11 +7,11 @@ export class ElectricityValueFormatter implements IValueFormatter {
             return `-`;
         }
 
-        if (value < 10000) {
+        if (Math.abs(value) < 10000) {
             return `${value} W`;
         }
 
-        if (value < 100000) {
+        if (Math.abs(value) < 100000) {
             return `${(value / 1000).toFixed(1)} KW`;
         }
 

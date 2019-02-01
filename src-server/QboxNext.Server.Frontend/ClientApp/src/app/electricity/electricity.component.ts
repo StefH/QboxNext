@@ -150,8 +150,9 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     this.result = new PagedResult<CounterDataValue>();
 
     const dates = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
+    this.selectedToDate = dates.toDate.toDate();
 
-    this.subscription.add(this.service.getData(this.selectedResolution, dates.fromDate.toDate(), dates.toDate.toDate())
+    this.subscription.add(this.service.getData(this.selectedResolution, dates.fromDate.toDate(), this.selectedToDate)
       .subscribe(
         data => {
           this.resultFromServer = data;

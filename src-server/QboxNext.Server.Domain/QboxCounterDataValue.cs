@@ -8,6 +8,8 @@ namespace QboxNext.Server.Domain
 
         public int LabelValue { get; set; }
 
+        public DateTime MeasureTime { get; set; }
+
         //public int CounterId { get; set; }
 
         //public int AveragePulseValue { get; set; }
