@@ -14,6 +14,7 @@
     <ProjectReference Include="..\QboxNext.ConsoleApp.Core\QboxNext.ConsoleApp.Core.csproj" />
     <ProjectReference Include="..\QboxNext.Core\QboxNext.Core.csproj" />
     <ProjectReference Include="..\QboxNext.Qboxes.Parsing\QboxNext.Qboxes.Parsing.csproj" />
+    <ProjectReference Include="..\QboxNext.Simulation\QboxNext.Simulation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

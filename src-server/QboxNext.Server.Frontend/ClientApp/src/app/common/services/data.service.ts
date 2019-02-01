@@ -19,8 +19,8 @@ export class DataService extends BaseService<CounterDataValue> {
 
         const request = {
             serialNumber: '15-46-001-243',
-            from: from,
-            to: to,
+            from: from.toISOString().split('T')[0],
+            to: to.toISOString().split('T')[0],
             addHours: 1,
             resolution: resolution
         };

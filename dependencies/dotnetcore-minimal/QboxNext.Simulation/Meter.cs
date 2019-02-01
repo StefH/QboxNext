@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace QboxNext.Core.Simulation
+namespace QboxNext.Simulation
 {
 	public enum MeterType
 	{

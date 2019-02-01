@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-
-namespace QboxNext.Core.Simulation
+namespace QboxNext.Simulation
 {
 	/// <summary>
 	/// Base class for counter value generators.

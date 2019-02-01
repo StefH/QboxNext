@@ -32,11 +32,12 @@
         <dx-chart #chart id="chart" [dataSource]="result.items" [title]="getTitle()" [valueAxis]="[{ showZero: true, position: 'left', label: { customizeText: customizeLabelText } } ]">
           <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip">
           </dxo-tooltip>
-          <dxo-common-series-settings argumentField="label" type="bar" hoverMode="allArgumentPoints" selectionMode="allArgumentPoints">
+          <dxo-common-series-settings argumentField="labelText" type="bar" hoverMode="allArgumentPoints" selectionMode="allArgumentPoints">
           </dxo-common-series-settings>
           <dxo-legend verticalAlignment="top" horizontalAlignment="center">
           </dxo-legend>
           <dxo-export enabled="true"></dxo-export>
+          <!-- <dxo-loading-indicator [show]="true"></dxo-loading-indicator> -->
         </dx-chart>
       </div>
     </div>

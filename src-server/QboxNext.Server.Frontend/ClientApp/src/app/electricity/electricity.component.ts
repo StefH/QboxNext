@@ -99,7 +99,8 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     this.resultFromServer.items.forEach(i => {
 
       const newItem = new CounterDataValue({
-        label: i.label,
+        labelText: i.labelText,
+        labelValue: i.labelValue,
         delta0181: i.delta0181,
         delta0182: i.delta0182,
         delta0281: i.delta0281,
@@ -148,9 +149,9 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     this.loadingStatus = DataLoadStatus.Started;
     this.result = new PagedResult<CounterDataValue>();
 
-    this.selectedToDate = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
+    const dates = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
 
-    this.subscription.add(this.service.getData(this.selectedResolution, this.selectedFromDate, this.selectedToDate)
+    this.subscription.add(this.service.getData(this.selectedResolution, dates.fromDate.toDate(), dates.toDate.toDate())
       .subscribe(
         data => {
           this.resultFromServer = data;

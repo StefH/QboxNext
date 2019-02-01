@@ -2,9 +2,8 @@
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
-using QboxNext.Server.Infrastructure.Azure.Models.Internal;
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using WindowsAzure.Table.Extensions;
@@ -29,72 +28,52 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
-            List<MeasurementEntity> entities = new List<MeasurementEntity>();
-            //if (resolution == QboxQueryResolution.Month)
-            //{
-            //    for (DateTime date = from; date < to; date = date.AddMonths(1))
-            //    {
-            //        DateTime dateZero = date;
-            //        DateTime datePlusOneMonth = date.AddMonths(1);
-            //        string fromPartitionKeyMonth = GetPartitionKey(serialNumber, date);
-            //        string toPartitionKeyMonth = GetPartitionKey(serialNumber, datePlusOneMonth);
-            //        bool same = fromPartitionKeyMonth == toPartitionKeyMonth;
+            string fromPartitionKey = GetPartitionKey(serialNumber, from);
+            string toPartitionKey = GetPartitionKey(serialNumber, to);
+            bool same = fromPartitionKey == toPartitionKey;
 
-            //        var queryable = _measurementTableSet
-            //            .Where(m =>
-            //                (
-            //                    same && m.PartitionKey == fromPartitionKeyMonth ||
-            //                    !same && string.CompareOrdinal(m.PartitionKey, fromPartitionKeyMonth) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKeyMonth) >= 0) &&
-            //                m.MeasureTime >= dateZero && m.MeasureTime < datePlusOneMonth
-            //            );
+            var entities = await _measurementTableSet
+                .Where(m =>
+                (
+                    same && m.PartitionKey == fromPartitionKey ||
+                    !same && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) >= 0) &&
+                    m.MeasureTime >= from && m.MeasureTime <= to
+                )
+                .ToListAsync();
 
-            //        var monthStart = await queryable.FirstOrDefaultAsync();
 
-            //        if (monthStart != null)
-            //        {
-            //            entities.Add(monthStart);
-            //        }
-            //    }
-            //}
-            //else
+            var sorted = entities.OrderBy(e => e.MeasureTime).ToArray();
+            for (int i = 1; i < sorted.Length; i++)
             {
-                string fromPartitionKey = GetPartitionKey(serialNumber, from);
-                string toPartitionKey = GetPartitionKey(serialNumber, to);
-                bool same = fromPartitionKey == toPartitionKey;
-
-                entities = await _measurementTableSet
-                    .Where(m =>
-                    (
-                        same && m.PartitionKey == fromPartitionKey ||
-                        !same && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) >= 0) &&
-                        m.MeasureTime >= from && m.MeasureTime < to
-                    )
-                    .ToListAsync();
+                if (sorted[i].MeasureTime.Hour != 20 && sorted[i].MeasureTime.Hour != 6) // Hack for Hoog-Laag
+                {
+                    sorted[i].MeasureTime = sorted[i].MeasureTime.AddSeconds(-1);
+                }
             }
 
             var grouped = from e in entities
                           group e by new
                           {
-                              MeasureTimeRounded = Get(e.MeasureTime, resolution).AddHours(addHours)
+                              MeasureTimeRounded = Get(e.MeasureTime.AddHours(addHours), resolution)
                           }
                 into g
                           select new QboxCounterDataValue
                           {
-                              MeasureTime = g.Key.MeasureTimeRounded,
-                              Label = GetLabel(g.Key.MeasureTimeRounded, resolution),
-                              Delta0181 = !g.Max(x => x.Counter0181).HasValue || !g.Min(x => x.Counter0181).HasValue ? null : g.Max(x => x.Counter0181) - g.Min(x => x.Counter0181),
-                              Delta0182 = !g.Max(x => x.Counter0182).HasValue || !g.Min(x => x.Counter0182).HasValue ? null : g.Max(x => x.Counter0182) - g.Min(x => x.Counter0182),
-                              Delta0281 = !g.Max(x => x.Counter0281).HasValue || !g.Min(x => x.Counter0281).HasValue ? null : (g.Max(x => x.Counter0281) - g.Min(x => x.Counter0281)) * -1,
-                              Delta0282 = !g.Max(x => x.Counter0282).HasValue || !g.Min(x => x.Counter0282).HasValue ? null : (g.Max(x => x.Counter0282) - g.Min(x => x.Counter0282)) * -1,
-                              Delta2421 = !g.Max(x => x.Counter2421).HasValue || !g.Min(x => x.Counter2421).HasValue ? null : g.Max(x => x.Counter2421) - g.Min(x => x.Counter2421)
+                              LabelText = GetLabelText(g.Key.MeasureTimeRounded, resolution),
+                              LabelValue = GetLabelValue(g.Key.MeasureTimeRounded, resolution),
+                              Delta0181 = g.Max(x => x.Counter0181) - g.Min(x => x.Counter0181), // !g.Max(x => x.Counter0181).HasValue || !g.Min(x => x.Counter0181).HasValue ? null : 
+                              Delta0182 = g.Max(x => x.Counter0182) - g.Min(x => x.Counter0182), // !g.Max(x => x.Counter0182).HasValue || !g.Min(x => x.Counter0182).HasValue ? null : 
+                              Delta0281 = (g.Max(x => x.Counter0281) - g.Min(x => x.Counter0281)) * -1, // !g.Max(x => x.Counter0281).HasValue || !g.Min(x => x.Counter0281).HasValue ? null : 
+                              Delta0282 = (g.Max(x => x.Counter0282) - g.Min(x => x.Counter0282)) * -1, // !g.Max(x => x.Counter0282).HasValue || !g.Min(x => x.Counter0282).HasValue ? null : 
+                              Delta2421 = g.Max(x => x.Counter2421) - g.Min(x => x.Counter2421) // !g.Max(x => x.Counter2421).HasValue || !g.Min(x => x.Counter2421).HasValue ? null : 
                           };
 
-            var items = grouped.OrderBy(e => e.MeasureTime).ToList();
+            var items = grouped.OrderBy(e => e.LabelValue).ToList();
 
             var extra = new QboxCounterDataValue
             {
-                Label = "extra",
-                MeasureTime = DateTime.UtcNow,
+                LabelText = "extra",
+                // MeasureTime = DateTime.UtcNow,
                 Delta0181 = entities.Max(e => e.Counter0181) - entities.Min(e => e.Counter0181),
                 Delta0182 = entities.Max(e => e.Counter0182) - entities.Min(e => e.Counter0182),
                 Delta0281 = (entities.Max(e => e.Counter0281) - entities.Min(e => e.Counter0281)) * -1,
@@ -123,9 +102,6 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 case QboxQueryResolution.Day:
                     return new DateTime(measureTime.Year, measureTime.Month, measureTime.Day, 0, 0, 0, measureTime.Kind);
 
-                case QboxQueryResolution.Week:
-                    return new DateTime(measureTime.Year, measureTime.Month, measureTime.Day / 7 * 7, 0, 0, 0, measureTime.Kind);
-
                 case QboxQueryResolution.Month:
                     return new DateTime(measureTime.Year, measureTime.Month, 1, 0, 0, 0, measureTime.Kind);
 
@@ -137,27 +113,53 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             }
         }
 
-        private static string GetLabel(DateTime measureTime, QboxQueryResolution resolution)
+        private static string GetLabelText(DateTime measureTime, QboxQueryResolution resolution)
         {
             switch (resolution)
             {
                 case QboxQueryResolution.QuarterOfHour:
-                    return measureTime.ToString("HH:mm");
+                    if (measureTime.Hour != 20 && measureTime.Hour != 6)
+                    {
+                        return measureTime.AddSeconds(1).ToString("HH:mm");
+                    }
+                    else
+                    {
+                        return measureTime.ToString("HH:mm");
+                    }
 
                 case QboxQueryResolution.Hour:
-                    return measureTime.ToString("HH");
+                    return measureTime.ToString("HH u");
 
                 case QboxQueryResolution.Day:
-                    return measureTime.ToString("dd");
-
-                case QboxQueryResolution.Week:
-                    return $"{measureTime.Day / 7}";
+                    return measureTime.Day.ToString();
 
                 case QboxQueryResolution.Month:
-                    return measureTime.ToString("MM");
+                    return measureTime.ToString("MMM", new CultureInfo("nl-NL"));
 
                 case QboxQueryResolution.Year:
                     return measureTime.ToString("yyyy");
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        private static int GetLabelValue(DateTime measureTime, QboxQueryResolution resolution)
+        {
+            switch (resolution)
+            {
+                case QboxQueryResolution.QuarterOfHour:
+                case QboxQueryResolution.Hour:
+                    return measureTime.Hour;
+
+                case QboxQueryResolution.Day:
+                    return measureTime.Day;
+
+                case QboxQueryResolution.Month:
+                    return measureTime.Month;
+
+                case QboxQueryResolution.Year:
+                    return measureTime.Year;
 
                 default:
                     throw new NotSupportedException();

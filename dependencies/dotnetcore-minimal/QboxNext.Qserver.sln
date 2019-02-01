@@ -43,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Qserver.Tests", "Q
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Qservice.Tests", "QboxNext.Qservice.Tests\QboxNext.Qservice.Tests.csproj", "{C1A1EE22-5A96-490B-A5EC-B8A9DCE41B88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QboxNext.Core.Tests", "QboxNext.Core.Tests\QboxNext.Core.Tests.csproj", "{310A8958-9D10-4BC6-AB84-10284DFE54DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Core.Tests", "QboxNext.Core.Tests\QboxNext.Core.Tests.csproj", "{310A8958-9D10-4BC6-AB84-10284DFE54DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QboxNext.Simulation", "QboxNext.Simulation\QboxNext.Simulation.csproj", "{8E16DC6D-4861-4670-BA90-69344DF3E4F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,10 @@ Global
 		{310A8958-9D10-4BC6-AB84-10284DFE54DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{310A8958-9D10-4BC6-AB84-10284DFE54DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{310A8958-9D10-4BC6-AB84-10284DFE54DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E16DC6D-4861-4670-BA90-69344DF3E4F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E16DC6D-4861-4670-BA90-69344DF3E4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E16DC6D-4861-4670-BA90-69344DF3E4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E16DC6D-4861-4670-BA90-69344DF3E4F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace QboxNext.Core.Simulation
+namespace QboxNext.Simulation
 {
 	/// <summary>
 	/// Shape of the energy usage.

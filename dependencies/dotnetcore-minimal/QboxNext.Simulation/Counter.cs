@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace QboxNext.Core.Simulation
+namespace QboxNext.Simulation
 {
 	/// <summary>
 	/// Counter implements a single counter consisting of an internal ID and a value, updated every minute.

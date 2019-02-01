@@ -5,7 +5,6 @@
         QuarterOfHour,
         Hour,
         Day,
-        Week,
         Month,
         Year
     }

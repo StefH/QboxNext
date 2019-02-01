@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using QboxNext.Logging;
 
-namespace QboxNext.Core.Simulation
+namespace QboxNext.Simulation
 {
     /// <summary>
     /// PatternParser is used to parse the pattern parameter of the command line.

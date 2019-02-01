@@ -4,9 +4,9 @@ namespace QboxNext.Server.Domain
 {
     public class QboxCounterDataValue
     {
-        public string Label { get; set; }
+        public string LabelText { get; set; }
 
-        public DateTime MeasureTime { get; set; }
+        public int LabelValue { get; set; }
 
         //public int CounterId { get; set; }
 

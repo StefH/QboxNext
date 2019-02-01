@@ -55,9 +55,7 @@ export class GasComponent extends BaseComponent implements OnInit {
     };
   }
 
-  public customizeLabelText = (info: any) => {
-    return this.formatter.format(info.value);
-  }
+  public customizeLabelText = (info: any) => this.formatter.format(info.value);
 
   private updateChartSeries(): void {
     this.chart.series = [];
@@ -70,20 +68,24 @@ export class GasComponent extends BaseComponent implements OnInit {
     const start = moment(this.selectedFromDate).format('D MMMM YYYY');
     const end = moment(this.selectedToDate).format('D MMMM YYYY');
 
-    return this.selectedResolution === 'Hour' ? `Gas (${start})` : `Gas (${start} tot ${end})`;
+    if (this.selectedResolution === 'QuarterOfHour' || this.selectedResolution === 'Hour') {
+      return `Gas (${start})`;
+    }
+
+    return `Gas (${start} tot ${end})`;
   }
 
   private filter(): void {
-    this.result = new PagedResult<CounterDataValue>({ count: this.resultFromServer.count });
-    this.resultFromServer.items.forEach(i => {
-
-      const newItem = new CounterDataValue({
-        label: i.label,
+    const clientResult = new PagedResult<CounterDataValue>({
+      count: this.resultFromServer.count,
+      items: this.resultFromServer.items.map(i => new CounterDataValue({
+        labelText: i.labelText,
+        labelValue: i.labelValue,
         delta2421: i.delta2421
-      });
-
-      this.result.items.push(newItem);
+      }))
     });
+
+    this.result = clientResult;
   }
 
   public checkClicked(event: Event) {
@@ -108,15 +110,16 @@ export class GasComponent extends BaseComponent implements OnInit {
     this.loadingStatus = DataLoadStatus.Started;
     this.result = new PagedResult<CounterDataValue>();
 
-    this.selectedToDate = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
+    const dates = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
 
-    this.subscription.add(this.service.getData(this.selectedResolution, this.selectedFromDate, this.selectedToDate)
+    this.subscription.add(this.service.getData(this.selectedResolution, dates.fromDate.toDate(), dates.toDate.toDate())
       .subscribe(
         data => {
           this.resultFromServer = data;
           this.loadingStatus = DataLoadStatus.Finished;
 
           this.filter();
+          this.updateChartSeries();
         }, error => {
           switch (error.statusCode) {
             case HttpStatusCodes.NOT_FOUND:

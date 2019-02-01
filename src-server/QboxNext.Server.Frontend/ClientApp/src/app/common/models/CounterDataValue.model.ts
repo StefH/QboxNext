@@ -1,8 +1,8 @@
 
 export class CounterDataValue {
-    public label: string;
+    public labelText: string;
 
-    public measureTime: Date;
+    public labelValue: number;
 
     public delta0181: number;
 

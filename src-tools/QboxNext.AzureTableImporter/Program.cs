@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using QboxNext.Core.Extensions;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
-using QboxNext.Extensions.Utils;
 using QboxNext.Logging;
 using QboxNext.Server.Infrastructure.Azure.Options;
 using QBoxNext.Server.Business.DependencyInjection;
@@ -91,7 +90,6 @@ namespace QboxNext.AzureTableImporter
                           {
                               v.SerialNumber,
                               v.CounterId,
-                              // MeasureTimeRounded = new DateTime(v.MeasureTime.Year, v.MeasureTime.Month, v.MeasureTime.Day, v.MeasureTime.Hour, (v.MeasureTime.Minute / roundAtMinutes) * roundAtMinutes, 0)
                               MeasureTimeRounded = v.MeasureTime.Truncate(TimeSpan.FromMinutes(roundAtMinutes))
                           }
                 into g
@@ -100,7 +98,7 @@ namespace QboxNext.AzureTableImporter
                               SerialNumber = g.Key.SerialNumber,
                               CounterId = g.Key.CounterId,
                               MeasureTime = g.Key.MeasureTimeRounded,
-                              PulseValue = (int)g.Average(s => s.PulseValue)
+                              PulseValue = g.Max(s => s.PulseValue)
                           };
 
             var sorted = grouped.OrderBy(k => k.MeasureTime).ToList();

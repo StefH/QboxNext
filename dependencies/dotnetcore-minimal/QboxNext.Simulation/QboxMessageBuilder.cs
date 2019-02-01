@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace QboxNext.Core.Simulation
+namespace QboxNext.Simulation
 {
 	public enum QboxState
     {    
