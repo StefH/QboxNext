@@ -20,14 +20,14 @@ namespace QboxNext.Server.Domain
 
         //public int Delta { get; set; }
 
-        public int? Delta0181 { get; set; }
+        public double? Delta0181 { get; set; }
 
-        public int? Delta0182 { get; set; }
+        public double? Delta0182 { get; set; }
 
-        public int? Delta0281 { get; set; }
+        public double? Delta0281 { get; set; }
 
-        public int? Delta0282 { get; set; }
+        public double? Delta0282 { get; set; }
 
-        public int? Delta2421 { get; set; }
+        public double? Delta2421 { get; set; }
     }
 }
