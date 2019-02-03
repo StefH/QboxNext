@@ -24,11 +24,17 @@
 <div class="row">
   <div class="col-md-12">
     <div class="row">
-      <div class="col-md-12 center" *ngIf="isLoadIndicatorVisible">
-        <dx-load-indicator id="loadingIndicator"></dx-load-indicator>
+      <div class="col-md-2" style="margin-top: 100px;">
+        <div class="tooltip-header">Totaal</div>
+        <div class="tooltip-body" *ngIf="!isLoadIndicatorVisible">
+          <div class="series-name">Gas (2421)</div><div class="value-text" [innerHTML]="totalGas"></div>
+        </div>
+        <div *ngIf="isLoadIndicatorVisible">
+          <dx-load-indicator id="loadingIndicator"></dx-load-indicator>
+        </div>
       </div>
 
-      <div class="col-md-12">
+      <div class="col-md-10">
         <dx-chart #chart id="chart" [dataSource]="result.items" [title]="getTitle()" [valueAxis]="[{ showZero: true, position: 'left', label: { customizeText: customizeLabelText } } ]">
           <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip">
           </dxo-tooltip>

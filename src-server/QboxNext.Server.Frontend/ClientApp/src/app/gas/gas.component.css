@@ -3,15 +3,19 @@
 }
 
 ::ng-deep .tooltip-header {
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   font-size: 14px;
   font-weight: 500;
-  padding-bottom: 5px;
+  padding-bottom: 3px;
+  padding: 0px;
+  margin: 0px;
   border-bottom: 1px solid #c5c5c5;
 }
 
 ::ng-deep .tooltip-body {
-  width: 120px;
+  width: 110px;
+  padding: 0px;
+  margin: 0px;
 }
 
 ::ng-deep .tooltip-body .series-name {
@@ -20,12 +24,13 @@
   opacity: 0.6;
   display: inline-block;
   line-height: 1.5;
-  padding-right: 10px;
-  width: 70px;
+  padding: 0px;
+  width: 65px;
 }
 
 ::ng-deep .tooltip-body .value-text {
   display: inline-block;
+  font-size: 12px;
   line-height: 1.5;
-  width: 50px;
+  width: 45x;
 }

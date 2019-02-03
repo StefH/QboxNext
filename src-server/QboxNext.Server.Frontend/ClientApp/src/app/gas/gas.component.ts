@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService, PagedResult, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes, GasValueFormatter, TimeRangeHelper } from '../common';
+import { DataService, PagedResult, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes, GasValueFormatter, TimeRangeHelper, QboxPagedDataQueryResult } from '../common';
 
 import * as moment from 'moment';
 import { DxChartComponent } from 'devextreme-angular';
@@ -16,13 +16,14 @@ export class GasComponent extends BaseComponent implements OnInit {
 
   @ViewChild(DxChartComponent) chart: DxChartComponent;
 
-  public resultFromServer: PagedResult<CounterDataValue> = new PagedResult<CounterDataValue>();
-  public result: PagedResult<CounterDataValue> = new PagedResult<CounterDataValue>();
+  private resultFromServer = new QboxPagedDataQueryResult<CounterDataValue>();
+  public result = new QboxPagedDataQueryResult<CounterDataValue>();
 
   public selectedFromDate = new Date('2018-10-01');
   public selectedToDate = new Date('2018-11-01');
   public selectedResolution = this.resolutions[0].id;
   public checkgas = true;
+  public totalGas: string;
 
   constructor(private service: DataService, private formatter: GasValueFormatter, private timeRangeHelper: TimeRangeHelper) {
     super();
@@ -76,8 +77,9 @@ export class GasComponent extends BaseComponent implements OnInit {
   }
 
   private filter(): void {
-    const clientResult = new PagedResult<CounterDataValue>({
+    const clientResult = new QboxPagedDataQueryResult<CounterDataValue>({
       count: this.resultFromServer.count,
+      overview: this.resultFromServer.overview,
       items: this.resultFromServer.items.map(i => new CounterDataValue({
         labelText: i.labelText,
         labelValue: i.labelValue,
@@ -85,6 +87,7 @@ export class GasComponent extends BaseComponent implements OnInit {
       }))
     });
 
+    this.totalGas = this.formatter.format(clientResult.overview.delta2421);
     this.result = clientResult;
   }
 
@@ -108,7 +111,7 @@ export class GasComponent extends BaseComponent implements OnInit {
     }
 
     this.loadingStatus = DataLoadStatus.Started;
-    this.result = new PagedResult<CounterDataValue>();
+    this.result = new QboxPagedDataQueryResult<CounterDataValue>();
 
     const dates = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
     this.selectedToDate = dates.toDate.toDate();
