@@ -10,11 +10,14 @@
       <div class="col-sm-6 form-group form-inline">
         <label>Tijd</label>
         <dx-date-box class="ml-2" (onValueChanged)="refreshChart(true)" width="100px" [min]="2000-01-01" [(value)]="selectedFromDate"></dx-date-box>
+        <!-- <a href="#" aria-label="Next">
+          <span class="fa fa-step-forward text-black"></span>
+        </a> -->
       </div>
     </div>
     <div class="row border px-2">
       <div class="col-sm-2">
-        <dx-check-box id="181" text="Gas (2421)" [(value)]="checkgas" (onValueChanged)="checkClicked($event.event)">
+        <dx-check-box id="gas" text="Gas (2421)" [(value)]="checkgas" (onValueChanged)="checkClicked($event.event)">
         </dx-check-box>
       </div>
     </div>
