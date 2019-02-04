@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace QboxNext.Server.Frontend.Controllers
 {
+    [Authorize(QboxNextPolicies.ReadData)]
     [ApiController]
     public class DataQueryController : ControllerBase
     {

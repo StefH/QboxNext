@@ -12,7 +12,6 @@ using NLog.Extensions.AzureTables;
 using QboxNext.Logging;
 using QboxNext.Server.DataReceiver.Options;
 using QboxNext.Server.Infrastructure.Azure.Options;
-using QBoxNext.Server.Business.DependencyInjection;
 using System.Linq;
 using QboxNext.Server.DataReceiver.Telemetry;
 

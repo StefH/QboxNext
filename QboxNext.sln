@@ -65,6 +65,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-azure-functions", "src-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Server.Frontend", "src-server\QboxNext.Server.Frontend\QboxNext.Server.Frontend.csproj", "{949DD250-28BA-4A3F-82EA-812CEE30A402}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Server.Auth0", "src-server\QboxNext.Server.Auth0\QboxNext.Server.Auth0.csproj", "{0494CD2A-53CD-465F-BCB3-DB06210DA184}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +153,10 @@ Global
 		{949DD250-28BA-4A3F-82EA-812CEE30A402}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{949DD250-28BA-4A3F-82EA-812CEE30A402}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{949DD250-28BA-4A3F-82EA-812CEE30A402}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0494CD2A-53CD-465F-BCB3-DB06210DA184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0494CD2A-53CD-465F-BCB3-DB06210DA184}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0494CD2A-53CD-465F-BCB3-DB06210DA184}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0494CD2A-53CD-465F-BCB3-DB06210DA184}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -176,6 +182,7 @@ Global
 		{4D581BA1-4EB4-476D-8D89-CD74B8C697CA} = {E04D98D6-6C1E-4E41-AB15-3C8CA6BC9F8D}
 		{2DD906F8-3ED8-40ED-883A-245B9A7E517B} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 		{949DD250-28BA-4A3F-82EA-812CEE30A402} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
+		{0494CD2A-53CD-465F-BCB3-DB06210DA184} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A6ED5AF-7B32-444B-887A-ABF343EE609C}

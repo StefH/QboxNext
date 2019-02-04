@@ -31,6 +31,7 @@
     <ProjectReference Include="..\..\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\NLog.Extensions.AzureTables.csproj" />
     <ProjectReference Include="..\..\src-server\QBoxNext.Server.Business\QBoxNext.Server.Business.csproj" />
     <ProjectReference Include="..\..\src-server\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />
+    <ProjectReference Include="..\QboxNext.Server.Auth0\QboxNext.Server.Auth0.csproj" />
   </ItemGroup>
 
   <ItemGroup>
