@@ -4,6 +4,7 @@ using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Server.Infrastructure.Azure.DependencyInjection;
 using QBoxNext.Server.Business.Implementations;
+using QBoxNext.Server.Business.Interfaces.Internal;
 using QBoxNext.Server.Business.Interfaces.Public;
 
 // ReSharper disable once CheckNamespace
@@ -31,6 +32,8 @@ namespace QBoxNext.Server.Business.DependencyInjection
         private static void AddServices(this IServiceCollection services)
         {
             // Internal
+            services.AddSingleton<IQboxCounterDataCache, QboxCounterDataCache>();
+
             services.AddScoped<ICounterStoreService, DefaultCounterStoreService>();
             services.AddScoped<IStateStoreService, DefaultStateStoreService>();
             services.AddScoped<IRegistrationService, DefaultRegistrationService>();

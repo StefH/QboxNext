@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes, ElectricityValueFormatter, TimeRangeHelper, QboxPagedDataQueryResult } from '../common';
+import { DataService, QboxCounterData, BaseComponent, DataLoadStatus, HttpStatusCodes, ElectricityValueFormatter, TimeRangeHelper, QboxPagedDataQueryResult } from '../common';
 
 import * as moment from 'moment';
 import { DxChartComponent } from 'devextreme-angular';
@@ -16,8 +16,8 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
 
   @ViewChild(DxChartComponent) chart: DxChartComponent;
 
-  public resultFromServer = new QboxPagedDataQueryResult<CounterDataValue>();
-  public result = new QboxPagedDataQueryResult<CounterDataValue>();
+  public resultFromServer = new QboxPagedDataQueryResult<QboxCounterData>();
+  public result = new QboxPagedDataQueryResult<QboxCounterData>();
 
   public selectedFromDate = new Date('2018-10-01');
   public selectedToDate = new Date('2018-11-01');
@@ -104,19 +104,21 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   }
 
   private filter(): void {
-    const mapCounterDataValue = (i: CounterDataValue) => {
-      return new CounterDataValue({
+    const mapCounterDataValue = (i: QboxCounterData) => {
+      return new QboxCounterData({
         labelText: i.labelText,
         labelValue: i.labelValue,
         delta0181: i.delta0181,
         delta0182: i.delta0182,
         delta0281: i.delta0281,
         delta0282: i.delta0282,
-        net: (this.check181 ? i.delta0181 : 0) + (this.check182 ? i.delta0182 : 0) + (this.check281 ? i.delta0281 : 0) + (this.check282 ? i.delta0282 : 0)
+        net: !(this.check181 && this.check182 && this.check281 && this.check282) ?
+          i.delta0181 + i.delta0182 + i.delta0281 + i.delta0282 :
+          (this.check181 ? i.delta0181 : 0) + (this.check182 ? i.delta0182 : 0) + (this.check281 ? i.delta0281 : 0) + (this.check282 ? i.delta0282 : 0)
       });
     };
 
-    const clientResult = new QboxPagedDataQueryResult<CounterDataValue>({
+    const clientResult = new QboxPagedDataQueryResult<QboxCounterData>({
       count: this.resultFromServer.count,
       overview: mapCounterDataValue(this.resultFromServer.overview),
       items: this.resultFromServer.items.map(mapCounterDataValue)
@@ -160,7 +162,7 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     }
 
     this.loadingStatus = DataLoadStatus.Started;
-    this.result = new QboxPagedDataQueryResult<CounterDataValue>();
+    this.result = new QboxPagedDataQueryResult<QboxCounterData>();
 
     const dates = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
     this.selectedToDate = dates.toDate.toDate();

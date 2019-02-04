@@ -2,7 +2,7 @@
 
 namespace QboxNext.Server.Domain
 {
-    public class QboxCounterDataValue
+    public class QboxCounterData
     {
         public string LabelText { get; set; }
 

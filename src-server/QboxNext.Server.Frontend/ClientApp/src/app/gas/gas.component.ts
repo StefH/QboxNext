@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService, PagedResult, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes, GasValueFormatter, TimeRangeHelper, QboxPagedDataQueryResult } from '../common';
+import { DataService, QboxCounterData, BaseComponent, DataLoadStatus, HttpStatusCodes, GasValueFormatter, TimeRangeHelper, QboxPagedDataQueryResult } from '../common';
 
 import * as moment from 'moment';
 import { DxChartComponent } from 'devextreme-angular';
@@ -16,8 +16,8 @@ export class GasComponent extends BaseComponent implements OnInit {
 
   @ViewChild(DxChartComponent) chart: DxChartComponent;
 
-  private resultFromServer = new QboxPagedDataQueryResult<CounterDataValue>();
-  public result = new QboxPagedDataQueryResult<CounterDataValue>();
+  private resultFromServer = new QboxPagedDataQueryResult<QboxCounterData>();
+  public result = new QboxPagedDataQueryResult<QboxCounterData>();
 
   public selectedFromDate = new Date('2018-10-01');
   public selectedToDate = new Date('2018-11-01');
@@ -85,10 +85,10 @@ export class GasComponent extends BaseComponent implements OnInit {
   }
 
   private filter(): void {
-    const clientResult = new QboxPagedDataQueryResult<CounterDataValue>({
+    const clientResult = new QboxPagedDataQueryResult<QboxCounterData>({
       count: this.resultFromServer.count,
       overview: this.resultFromServer.overview,
-      items: this.resultFromServer.items.map(i => new CounterDataValue({
+      items: this.resultFromServer.items.map(i => new QboxCounterData({
         labelText: i.labelText,
         labelValue: i.labelValue,
         delta2421: i.delta2421
@@ -118,7 +118,7 @@ export class GasComponent extends BaseComponent implements OnInit {
     }
 
     this.loadingStatus = DataLoadStatus.Started;
-    this.result = new QboxPagedDataQueryResult<CounterDataValue>();
+    this.result = new QboxPagedDataQueryResult<QboxCounterData>();
 
     const dates = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
     this.selectedToDate = dates.toDate.toDate();

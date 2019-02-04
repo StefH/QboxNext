@@ -25,7 +25,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
         }
 
         /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, DateTime, DateTime, QboxQueryResolution, int)"/>
-        public async Task<QboxPagedDataQueryResult<QboxCounterDataValue>> QueryDataAsync(string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution, int addHours)
+        public async Task<QboxPagedDataQueryResult<QboxCounterData>> QueryDataAsync(string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution, int addHours)
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
@@ -47,17 +47,17 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             if (entities.Count == 0)
             {
-                return new QboxPagedDataQueryResult<QboxCounterDataValue>
+                return new QboxPagedDataQueryResult<QboxCounterData>
                 {
-                    Overview = new QboxCounterDataValue(),
-                    Items = new List<QboxCounterDataValue>(),
+                    Overview = new QboxCounterData(),
+                    Items = new List<QboxCounterData>(),
                     Count = 0
                 };
             }
 
             var entitiesSorted = entities.OrderBy(e => e.MeasureTime).ToList();
 
-            var deltas = entitiesSorted.Zip(entitiesSorted.Skip(1), (current, next) => new QboxCounterDataValue
+            var deltas = entitiesSorted.Zip(entitiesSorted.Skip(1), (current, next) => new QboxCounterData
             {
                 MeasureTime = next.MeasureTime,
                 Delta0181 = next.Counter0181 - current.Counter0181,
@@ -67,7 +67,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 Delta2421 = next.Counter2421 - current.Counter2421
             }).ToList();
 
-            deltas.Insert(0, new QboxCounterDataValue
+            deltas.Insert(0, new QboxCounterData
             {
                 MeasureTime = entitiesSorted[0].MeasureTime,
                 Delta0181 = 0,
@@ -83,7 +83,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                                          MeasureTimeRounded = Get(delta.MeasureTime, resolution)
                                      }
                 into g
-                                     select new QboxCounterDataValue
+                                     select new QboxCounterData
                                      {
                                          LabelText = GetLabelText(g.Key.MeasureTimeRounded, resolution),
                                          LabelValue = GetLabelValue(g.Key.MeasureTimeRounded, resolution),
@@ -97,7 +97,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             var items = groupedByTimeFrame.OrderBy(i => i.MeasureTime).ToList();
 
-            var overview = new QboxCounterDataValue
+            var overview = new QboxCounterData
             {
                 LabelText = "overview",
                 MeasureTime = DateTime.UtcNow,
@@ -108,7 +108,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 Delta2421 = entities.Max(e => e.Counter2421) - entities.Min(e => e.Counter2421)
             };
 
-            return new QboxPagedDataQueryResult<QboxCounterDataValue>
+            return new QboxPagedDataQueryResult<QboxCounterData>
             {
                 Overview = overview,
                 Items = items,

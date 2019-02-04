@@ -1,5 +1,5 @@
 
-export class CounterDataValue {
+export class QboxCounterData {
     public labelText: string;
 
     public labelValue: number;
@@ -16,7 +16,7 @@ export class CounterDataValue {
 
     public net: number;
 
-    public constructor(init?: Partial<CounterDataValue>) {
+    public constructor(init?: Partial<QboxCounterData>) {
         Object.assign(this, init);
     }
 }

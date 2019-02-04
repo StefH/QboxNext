@@ -2,6 +2,6 @@
 {
     public class QboxPagedDataQueryResult<TResult> : PagedQueryResult<TResult>
     {
-        public QboxCounterDataValue Overview { get; set; }
+        public QboxCounterData Overview { get; set; }
     }
 }
