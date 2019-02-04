@@ -4,18 +4,18 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BaseService } from './base.service';
-import { CounterDataValue, QboxPagedDataQueryResult } from '..';
+import { QboxCounterData, QboxPagedDataQueryResult } from '..';
 
 
 @Injectable()
-export class DataService extends BaseService<CounterDataValue> {
+export class DataService extends BaseService<QboxCounterData> {
     private baseUrl = '/api/data';
 
     constructor(private http: HttpClient) {
         super(http);
     }
 
-    public getData(resolution: string, from: Date, to: Date): Observable<QboxPagedDataQueryResult<CounterDataValue>> {
+    public getData(resolution: string, from: Date, to: Date): Observable<QboxPagedDataQueryResult<QboxCounterData>> {
 
         const request = {
             serialNumber: '15-46-001-243',
@@ -25,6 +25,6 @@ export class DataService extends BaseService<CounterDataValue> {
             resolution: resolution
         };
 
-        return this.post<QboxPagedDataQueryResult<CounterDataValue>>(this.baseUrl, request);
+        return this.post<QboxPagedDataQueryResult<QboxCounterData>>(this.baseUrl, request);
     }
 }

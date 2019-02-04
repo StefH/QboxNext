@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
+using QboxNext.Server.Domain.Utils;
 using QBoxNext.Server.Business.Interfaces.Internal;
 using System;
 using System.Threading.Tasks;
@@ -32,7 +33,10 @@ namespace QBoxNext.Server.Business.Implementations
                 return await getDataFunc();
             }
 
-            string key = GetKey(query);
+            var fromTruncated = query.Resolution.TruncateTime(query.From);
+            var toTruncated = query.Resolution.TruncateTime(query.To);
+
+            string key = GetKey(query.SerialNumber, fromTruncated, toTruncated, query.Resolution);
 
             if (!_cache.TryGetValue(key, out QboxPagedDataQueryResult<QboxCounterData> cacheEntry))
             {
@@ -52,9 +56,9 @@ namespace QBoxNext.Server.Business.Implementations
             return cacheEntry;
         }
 
-        private string GetKey(QboxDataQuery query)
+        private string GetKey(string serialNumber, DateTime fromTruncated, DateTime toTruncated, QboxQueryResolution resolution)
         {
-            return $"{query.SerialNumber}:{query.From.Ticks}:{query.To.Ticks}:{query.Resolution}";
+            return $"{serialNumber}:{fromTruncated.Ticks}:{toTruncated.Ticks}:{resolution}";
         }
     }
 }

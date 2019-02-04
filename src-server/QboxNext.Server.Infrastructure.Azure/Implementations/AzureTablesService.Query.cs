@@ -1,6 +1,6 @@
-﻿using QboxNext.Core.Extensions;
-using QboxNext.Server.Common.Validation;
+﻿using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
+using QboxNext.Server.Domain.Utils;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using System;
 using System.Collections.Generic;
@@ -80,7 +80,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             var groupedByTimeFrame = from delta in deltas
                                      group delta by new
                                      {
-                                         MeasureTimeRounded = Get(delta.MeasureTime, resolution)
+                                         MeasureTimeRounded = resolution.TruncateTime(delta.MeasureTime)
                                      }
                 into g
                                      select new QboxCounterData
@@ -114,30 +114,6 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 Items = items,
                 Count = items.Count
             };
-        }
-
-        private static DateTime Get(DateTime measureTime, QboxQueryResolution resolution)
-        {
-            switch (resolution)
-            {
-                case QboxQueryResolution.QuarterOfHour:
-                    return measureTime.Truncate(TimeSpan.FromMinutes(15));
-
-                case QboxQueryResolution.Hour:
-                    return new DateTime(measureTime.Year, measureTime.Month, measureTime.Day, measureTime.Hour, 0, 0, measureTime.Kind);
-
-                case QboxQueryResolution.Day:
-                    return new DateTime(measureTime.Year, measureTime.Month, measureTime.Day, 0, 0, 0, measureTime.Kind);
-
-                case QboxQueryResolution.Month:
-                    return new DateTime(measureTime.Year, measureTime.Month, 1, 0, 0, 0, measureTime.Kind);
-
-                case QboxQueryResolution.Year:
-                    return new DateTime(measureTime.Year, 1, 1, 0, 0, 0, measureTime.Kind);
-
-                default:
-                    throw new NotSupportedException();
-            }
         }
 
         private static string GetLabelText(DateTime measureTime, QboxQueryResolution resolution)
