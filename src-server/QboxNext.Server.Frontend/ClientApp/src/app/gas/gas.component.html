@@ -25,7 +25,10 @@
   <div class="col-md-12">
     <div class="row">
       <div class="col totaal-sidebar" style="margin-top: 50px;">
-        <div [innerHTML]="getOverview()"></div>
+        <div *ngIf="isLoadIndicatorVisible">
+          <dx-load-indicator></dx-load-indicator>
+        </div>
+          <div *ngIf="!isLoadIndicatorVisible" [innerHTML]="getOverview()"></div>
       </div>
 
       <div class="col-md-10">

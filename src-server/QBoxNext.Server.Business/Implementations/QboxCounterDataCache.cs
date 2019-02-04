@@ -16,7 +16,7 @@ namespace QBoxNext.Server.Business.Implementations
         {
             _cache = new MemoryCache(new MemoryCacheOptions
             {
-                SizeLimit = 1024
+                SizeLimit = 10000
             });
         }
 
@@ -27,16 +27,17 @@ namespace QBoxNext.Server.Business.Implementations
             Guard.NotNull(getDataFunc, nameof(getDataFunc));
 
             // If the date range contains 'now', always get fresh data
-            var now = DateTime.UtcNow;
-            if (now >= query.From && now < query.To)
-            {
-                return await getDataFunc();
-            }
+            //var now = DateTime.UtcNow;
+            //if (now >= query.From && now < query.To)
+            //{
+            //    return await getDataFunc();
+            //}
 
-            var fromTruncated = query.Resolution.TruncateTime(query.From);
-            var toTruncated = query.Resolution.TruncateTime(query.To);
+            var (start, end) = query.Resolution.GetTruncatedTimeFrame(query.From, query.To);
+            query.From = start;
+            query.To = end;
 
-            string key = GetKey(query.SerialNumber, fromTruncated, toTruncated, query.Resolution);
+            string key = GetKey(query.SerialNumber, start, end, query.Resolution);
 
             if (!_cache.TryGetValue(key, out QboxPagedDataQueryResult<QboxCounterData> cacheEntry))
             {

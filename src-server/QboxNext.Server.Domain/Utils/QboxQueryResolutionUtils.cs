@@ -27,5 +27,23 @@ namespace QboxNext.Server.Domain.Utils
                     throw new NotSupportedException();
             }
         }
+
+        public static (DateTime start, DateTime end) GetTruncatedTimeFrame(this QboxQueryResolution resolution, DateTime from, DateTime to)
+        {
+            switch (resolution)
+            {
+                case QboxQueryResolution.QuarterOfHour:
+                case QboxQueryResolution.Hour:
+                case QboxQueryResolution.Day:
+                    return (new DateTime(from.Year, from.Month, from.Day, 0, 0, 0, from.Kind), new DateTime(to.Year, to.Month, to.Day, 0, 0, 0, to.Kind));
+
+                case QboxQueryResolution.Month:
+                case QboxQueryResolution.Year:
+                    return (new DateTime(from.Year, from.Month, 1, 0, 0, 0, from.Kind), new DateTime(to.Year, to.Month, 1, 0, 0, 0, to.Kind));
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
     }
 }
