@@ -43,12 +43,12 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="row px-2">
-      <div class="col-md-12 center" *ngIf="isLoadIndicatorVisible">
-        <dx-load-indicator id="loadingIndicator"></dx-load-indicator>
+    <div class="row">
+      <div class="col totaal-sidebar" style="margin-top: 50px;">
+        <div [innerHTML]="getOverview()"></div>
       </div>
 
-      <div class="col-md-12">
+      <div class="col col-md-10">
         <dx-chart #chart id="chart" [dataSource]="result.items" [title]="getTitle()" [valueAxis]="[{ showZero: true, position: 'left', label: { customizeText: customizeLabelText } } ]">
           <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip">
           </dxo-tooltip>

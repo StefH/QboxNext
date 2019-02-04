@@ -23,7 +23,6 @@ export class GasComponent extends BaseComponent implements OnInit {
   public selectedToDate = new Date('2018-11-01');
   public selectedResolution = this.resolutions[0].id;
   public checkgas = true;
-  public totalGas: string;
 
   constructor(private service: DataService, private formatter: GasValueFormatter, private timeRangeHelper: TimeRangeHelper) {
     super();
@@ -40,20 +39,29 @@ export class GasComponent extends BaseComponent implements OnInit {
   }
 
   public customizeTooltip(info: any): any {
-    const template = [
-      `<div><div class=\'tooltip-header\'>${info.argumentText}</div>`,
-      '<div class=\'tooltip-body\'>'
-    ];
-
-    for (let index = 0; index < info.points.length; index++) {
-      const valueAsString = new GasValueFormatter().format(info.points[index].value);
-      template.push(`<div class=\'series-name\'>${info.points[index].seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
-    }
-    template.push('</div></div>');
+    const points = [];
+    info.points.forEach(point => {
+      const valueAsString = new GasValueFormatter().format(point.value);
+      points.push(`<div class=\'series-name\'>${point.seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
+    });
 
     return {
-      html: template.join('\r\n')
+      html: `<div><div class=\'tooltip-header\'>${info.argumentText}</div><div class=\'tooltip-body\'>${points.join('\r\n')}</div></div>`
     };
+  }
+
+  public getOverview(): string {
+    const info = {
+      argumentText: 'Totaal',
+      length: 1,
+      points: []
+    };
+
+    this.chart.series.forEach(serie => {
+      info.points.push({ seriesName: serie.name, value: this.result.overview ? this.result.overview[serie.valueField] : '' });
+    });
+
+    return this.customizeTooltip(info).html;
   }
 
   public customizeLabelText = (info: any) => this.formatter.format(info.value);
@@ -87,7 +95,6 @@ export class GasComponent extends BaseComponent implements OnInit {
       }))
     });
 
-    this.totalGas = this.formatter.format(clientResult.overview.delta2421);
     this.result = clientResult;
   }
 

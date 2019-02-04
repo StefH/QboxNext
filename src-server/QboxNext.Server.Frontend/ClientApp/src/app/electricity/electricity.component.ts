@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService, PagedResult, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes, ElectricityValueFormatter, TimeRangeHelper } from '../common';
+import { DataService, CounterDataValue, BaseComponent, DataLoadStatus, HttpStatusCodes, ElectricityValueFormatter, TimeRangeHelper, QboxPagedDataQueryResult } from '../common';
 
 import * as moment from 'moment';
 import { DxChartComponent } from 'devextreme-angular';
@@ -16,8 +16,8 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
 
   @ViewChild(DxChartComponent) chart: DxChartComponent;
 
-  public resultFromServer: PagedResult<CounterDataValue> = new PagedResult<CounterDataValue>();
-  public result: PagedResult<CounterDataValue> = new PagedResult<CounterDataValue>();
+  public resultFromServer = new QboxPagedDataQueryResult<CounterDataValue>();
+  public result = new QboxPagedDataQueryResult<CounterDataValue>();
 
   public selectedFromDate = new Date('2018-10-01');
   public selectedToDate = new Date('2018-11-01');
@@ -44,20 +44,29 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   }
 
   public customizeTooltip(info: any): any {
-    const template = [
-      `<div><div class=\'tooltip-header\'>${info.argumentText}</div>`,
-      '<div class=\'tooltip-body\'>'
-    ];
-
-    for (let index = 0; index < info.points.length; index++) {
-      const valueAsString = new ElectricityValueFormatter().format(info.points[index].value, false);
-      template.push(`<div class=\'series-name\'>${info.points[index].seriesName}</div><div class=\'value-text\'>${valueAsString} </div>`);
-    }
-    template.push('</div></div>');
+    const points = [];
+    info.points.forEach(point => {
+      const valueAsString = new ElectricityValueFormatter().format(point.value);
+      points.push(`<div class=\'series-name\'>${point.seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
+    });
 
     return {
-      html: template.join('\r\n')
+      html: `<div><div class=\'tooltip-header\'>${info.argumentText}</div><div class=\'tooltip-body\'>${points.join('\r\n')}</div></div>`
     };
+  }
+
+  public getOverview(): string {
+    const info = {
+      argumentText: 'Totaal',
+      length: 1,
+      points: []
+    };
+
+    this.chart.series.forEach(serie => {
+      info.points.push({ seriesName: serie.name, value: this.result.overview ? this.result.overview[serie.valueField] : '' });
+    });
+
+    return this.customizeTooltip(info).html;
   }
 
   public customizeLabelText = (info: any) => {
@@ -95,10 +104,8 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   }
 
   private filter(): void {
-    this.result = new PagedResult<CounterDataValue>({ count: this.resultFromServer.count });
-    this.resultFromServer.items.forEach(i => {
-
-      const newItem = new CounterDataValue({
+    const mapCounterDataValue = (i: CounterDataValue) => {
+      return new CounterDataValue({
         labelText: i.labelText,
         labelValue: i.labelValue,
         delta0181: i.delta0181,
@@ -107,9 +114,15 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
         delta0282: i.delta0282,
         net: (this.check181 ? i.delta0181 : 0) + (this.check182 ? i.delta0182 : 0) + (this.check281 ? i.delta0281 : 0) + (this.check282 ? i.delta0282 : 0)
       });
+    };
 
-      this.result.items.push(newItem);
+    const clientResult = new QboxPagedDataQueryResult<CounterDataValue>({
+      count: this.resultFromServer.count,
+      overview: mapCounterDataValue(this.resultFromServer.overview),
+      items: this.resultFromServer.items.map(mapCounterDataValue)
     });
+
+    this.result = clientResult;
   }
 
   public checkClicked(event: Event) {
@@ -147,7 +160,7 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     }
 
     this.loadingStatus = DataLoadStatus.Started;
-    this.result = new PagedResult<CounterDataValue>();
+    this.result = new QboxPagedDataQueryResult<CounterDataValue>();
 
     const dates = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
     this.selectedToDate = dates.toDate.toDate();

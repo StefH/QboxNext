@@ -13,7 +13,7 @@
 }
 
 ::ng-deep .tooltip-body {
-  width: 110px;
+  width: 200px;
   padding: 0px;
   margin: 0px;
 }
@@ -25,12 +25,12 @@
   display: inline-block;
   line-height: 1.5;
   padding: 0px;
-  width: 65px;
+  width: 140px;
 }
 
 ::ng-deep .tooltip-body .value-text {
   display: inline-block;
   font-size: 12px;
   line-height: 1.5;
-  width: 45x;
+  width: 60x;
 }
