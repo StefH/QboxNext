@@ -16,6 +16,14 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/gas">Gas</a>
       </li>
+
+      <li *ngIf="!isAuthenticated">
+        <a class="nav-link" routerLink="#" (click)="login()"><i>Inloggen</i></a>
+      </li>
+
+      <li *ngIf="isAuthenticated">
+        <a class="nav-link" routerLink="#" (click)="logout()"><i>Uitloggen</i></a>
+      </li>
     </ul>
   </div>
 </nav>

@@ -3,11 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ElectricityComponent } from './electricity/electricity.component';
 import { GasComponent } from './gas/gas.component';
+import { AuthenticationGuard } from './authentication';
+import { CallbackComponent } from './callback/callback.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'electricity', component: ElectricityComponent },
-  { path: 'gas', component: GasComponent }
+  { path: 'callback', component: CallbackComponent },
+  { path: 'electricity', component: ElectricityComponent, canActivate: [AuthenticationGuard] },
+  { path: 'gas', component: GasComponent, canActivate: [AuthenticationGuard]  }
 ];
 
 @NgModule({

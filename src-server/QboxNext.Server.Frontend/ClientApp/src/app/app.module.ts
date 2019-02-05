@@ -6,7 +6,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { ElectricityComponent } from './electricity/electricity.component';
 import { HomeComponent } from './home/home.component';
 import { HttpModule } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -18,11 +18,20 @@ import nlCldrData from 'devextreme-cldr-data/nl.json';
 
 import Globalize from 'globalize/message.js';
 import { GasComponent } from './gas/gas.component';
+import { AuthenticationService, AuthenticationGuard, AuthorizationInterceptor } from './authentication';
+import { CallbackComponent } from './callback/callback.component';
+
+// Application wide providers/services
+const APP_PROVIDERS = [
+  AuthenticationGuard,
+  AuthenticationService
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
+    CallbackComponent,
 
     HomeComponent,
     ElectricityComponent,
@@ -34,12 +43,22 @@ import { GasComponent } from './gas/gas.component';
     HttpModule,
     HttpClientModule,
     FormsModule,
+
+    // 3rd party
     NgbModule.forRoot(),
     DxChartModule,
     DxSelectBoxModule,
     DxDateBoxModule,
     DxLoadIndicatorModule,
     DxCheckBoxModule
+  ],
+  providers: [ // expose our Services and Providers/Services into Angular's dependency injection
+    APP_PROVIDERS,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthorizationInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

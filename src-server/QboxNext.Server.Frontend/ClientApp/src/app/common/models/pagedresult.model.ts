@@ -1,5 +1,5 @@
 
-export class PagedResult<T>  {
+export abstract class PagedResult<T>  {
 
     public count = 0;
 

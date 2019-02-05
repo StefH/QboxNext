@@ -18,7 +18,6 @@ export class DataService extends BaseService<QboxCounterData> {
     public getData(resolution: string, from: Date, to: Date): Observable<QboxPagedDataQueryResult<QboxCounterData>> {
 
         const request = {
-            serialNumber: '15-46-001-243',
             from: from.toISOString().split('T')[0],
             to: to.toISOString().split('T')[0],
             addHours: 1,
