@@ -11,14 +11,18 @@ using NLog;
 using NLog.Extensions.AzureTables;
 using QboxNext.Logging;
 using QboxNext.Server.DataReceiver.Options;
+using QboxNext.Server.DataReceiver.Telemetry;
 using QboxNext.Server.Infrastructure.Azure.Options;
 using System.Linq;
-using QboxNext.Server.DataReceiver.Telemetry;
 
 namespace QboxNext.Server.DataReceiver
 {
     public class Startup
     {
+        public IConfigurationRoot Configuration { get; }
+
+        public IHostingEnvironment Environment { get; }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -28,9 +32,14 @@ namespace QboxNext.Server.DataReceiver
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
-        }
 
-        public IConfigurationRoot Configuration { get; }
+            if (env.IsDevelopment())
+            {
+                builder.AddApplicationInsightsSettings(developerMode: true);
+            }
+
+            Environment = env;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
