@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ElectricityComponent } from './electricity/electricity.component';
 import { HomeComponent } from './home/home.component';
-import { HttpModule } from '@angular/http';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
@@ -42,19 +41,19 @@ const APP_PROVIDERS = [
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpModule,
     HttpClientModule,
     FormsModule,
 
     // 3rd party
-    NgbModule.forRoot(),
+    NgbModule,
     DxChartModule,
     DxSelectBoxModule,
     DxDateBoxModule,
     DxLoadIndicatorModule,
     DxCheckBoxModule
   ],
-  providers: [ // expose our Services and Providers/Services into Angular's dependency injection
+  providers: [
+    // expose our Services and Providers/Services into Angular's dependency injection
     APP_PROVIDERS,
     {
       provide: HTTP_INTERCEPTORS,

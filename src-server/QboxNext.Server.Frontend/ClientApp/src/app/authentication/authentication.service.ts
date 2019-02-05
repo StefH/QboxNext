@@ -14,17 +14,25 @@ import { WINDOW } from '../common';
 export class AuthenticationService {
     private LOGINMODEL_KEY = 'login';
 
-    private readonly auth0: WebAuth;
+    private _auth0: WebAuth = undefined;
 
-    constructor(private sessionStorageService: SessionStorageService, public router: Router, @Inject(WINDOW) private window: Window) {
-        this.auth0 = new WebAuth({
-            clientID: 'zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu',
-            domain: 'stef-heyenrath.eu.auth0.com',
-            responseType: 'token id_token',
-            audience: 'https://qboxnext.web.nl',
-            redirectUri: `${window.location.href}callback`,
-            scope: 'openid'
-        });
+    // Use lazy loading...
+    private get auth0(): WebAuth {
+        if (!this._auth0) {
+            this._auth0 = new WebAuth({
+                clientID: 'zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu',
+                domain: 'stef-heyenrath.eu.auth0.com',
+                responseType: 'token id_token',
+                audience: 'https://qboxnext.web.nl',
+                redirectUri: `${window.location.href}callback`,
+                scope: 'openid'
+            });
+        }
+
+        return this._auth0;
+    }
+
+    constructor(private sessionStorageService: SessionStorageService, private router: Router, @Inject(WINDOW) private window: Window) {
     }
 
     public login(): void {
@@ -32,6 +40,10 @@ export class AuthenticationService {
     }
 
     public handleAuthentication(): void {
+        // if (!this.auth0) {
+        //     return;
+        // }
+
         this.auth0.parseHash((err: Auth0Error | null, authResult: Auth0DecodedHash) => {
             if (authResult && authResult.accessToken && authResult.idToken) {
                 this.setSession(authResult);
