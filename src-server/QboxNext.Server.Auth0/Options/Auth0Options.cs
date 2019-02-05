@@ -2,33 +2,49 @@
 
 namespace QboxNext.Server.Auth0.Options
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Auth0Options
     {
         /// <summary>
-        /// Gets the Audience (https://abc.eu.auth0.com/api/v2/)
+        /// The JWT authority = Domain (https://abc.eu.auth0.com/)
+        /// </summary>
+        public string JwtAuthority { get; set; }
+
+        /// <summary>
+        /// The JWT authority (https://abc)
+        /// </summary>
+        public string JwtAudience { get; set; }
+
+        /// <summary>
+        /// The Audience (https://abc.eu.auth0.com/api/v2/)
         /// </summary>
         public string Audience { get; set; }
 
-        /// <summary>
-        /// Gets the API identifier (https://abc)
-        /// </summary>
-        public string ApiIdentifier { get; set; }
+        ///// <summary>
+        ///// The API identifier (https://abc)
+        ///// </summary>
+        //public string ApiIdentifier { get; set; }
 
         /// <summary>
-        /// Gets the ClientId
+        /// The ClientId
         /// </summary>
         public string ClientId { get; set; }
 
         /// <summary>
-        /// Gets the ClientSecret
+        /// The ClientSecret
         /// </summary>
         public string ClientSecret { get; set; }
 
         /// <summary>
-        /// Gets the Domain (https://abc.eu.auth0.com)
+        /// The Domain (https://abc.eu.auth0.com)
         /// </summary>
         public string Domain { get; set; }
 
+        /// <summary>
+        /// The Policies
+        /// </summary>
         public List<string> Policies { get; set; }
     }
 }

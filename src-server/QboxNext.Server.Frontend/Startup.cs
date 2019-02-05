@@ -66,15 +66,16 @@ namespace QboxNext.Server.Frontend
             // Configure
             services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
             services.Configure<AppOptions>(Configuration.GetSection("App"));
-            services.Configure<Auth0Options>(Configuration.GetSection("Auth0Options"));
 
             // Auth0
             services.AddAuth0(options =>
             {
                 var section = Configuration.GetSection("Auth0Options");
 
+                options.JwtAuthority = section["JwtAuthority"];
+                options.JwtAudience = section["JwtAudience"];
+
                 options.Audience = section["Audience"];
-                options.ApiIdentifier = section["ApiIdentifier"];
                 options.ClientId = section["ClientId"];
                 options.ClientSecret = section["ClientSecret"];
                 options.Domain = section["Domain"];

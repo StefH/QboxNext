@@ -6,6 +6,6 @@ namespace QBoxNext.Server.Business.Interfaces.Public
 {
     public interface IDataQueryService
     {
-        Task<QboxPagedDataQueryResult<QboxCounterData>> QueryAsync([NotNull] QboxDataQuery query);
+        Task<QboxPagedDataQueryResult<QboxCounterData>> QueryAsync([NotNull] string serialNumber, [NotNull] QboxDataQuery query);
     }
 }

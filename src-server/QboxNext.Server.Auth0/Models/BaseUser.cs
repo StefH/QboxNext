@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace QboxNext.Server.Auth0.Models
 {
@@ -11,7 +12,7 @@ namespace QboxNext.Server.Auth0.Models
         /// Contains user meta data. The user has read-only access to this.
         /// </summary>
         [JsonProperty("app_metadata")]
-        public AppMetadata AppMetadata { get; set; }
+        public IDictionary<string, object> AppMetadata { get; set; }
 
         /// <summary>
         /// Gets or sets the user's email address.

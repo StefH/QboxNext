@@ -54,8 +54,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             }).AddJwtBearer(options =>
             {
-                options.Authority = auth0Options.Domain;
-                options.Audience = auth0Options.ApiIdentifier;
+                options.Authority = auth0Options.JwtAuthority;
+                options.Audience = auth0Options.JwtAudience;
             });
         }
 

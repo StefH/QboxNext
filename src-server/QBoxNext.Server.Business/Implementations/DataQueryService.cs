@@ -22,12 +22,13 @@ namespace QBoxNext.Server.Business.Implementations
             _cache = cache;
         }
 
-        /// <inheritdoc cref="IDataQueryService.QueryAsync(QboxDataQuery)"/>
-        public async Task<QboxPagedDataQueryResult<QboxCounterData>> QueryAsync(QboxDataQuery query)
+        /// <inheritdoc cref="IDataQueryService.QueryAsync(string, QboxDataQuery)"/>
+        public async Task<QboxPagedDataQueryResult<QboxCounterData>> QueryAsync(string serialNumber, QboxDataQuery query)
         {
+            Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
             Guard.NotNull(query, nameof(query));
 
-            return await _cache.GetOrCreateAsync(query, () => _azureTablesService.QueryDataAsync(query.SerialNumber, query.From, query.To, query.Resolution, query.AddHours));
+            return await _cache.GetOrCreateAsync(serialNumber, query, () => _azureTablesService.QueryDataAsync(serialNumber, query.From, query.To, query.Resolution, query.AddHours));
         }
     }
 }

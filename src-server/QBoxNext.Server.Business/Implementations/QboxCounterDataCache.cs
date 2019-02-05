@@ -20,9 +20,13 @@ namespace QBoxNext.Server.Business.Implementations
             });
         }
 
-        /// <inheritdoc cref="IQboxCounterDataCache.GetOrCreateAsync(QboxDataQuery, Func{Task{QboxPagedDataQueryResult{QboxCounterData}}})"/>
-        public async Task<QboxPagedDataQueryResult<QboxCounterData>> GetOrCreateAsync(QboxDataQuery query, Func<Task<QboxPagedDataQueryResult<QboxCounterData>>> getDataFunc)
+        /// <inheritdoc cref="IQboxCounterDataCache.GetOrCreateAsync(string, QboxDataQuery, Func{Task{QboxPagedDataQueryResult{QboxCounterData}}})"/>
+        public async Task<QboxPagedDataQueryResult<QboxCounterData>> GetOrCreateAsync(
+            string serialNumber,
+            QboxDataQuery query,
+            Func<Task<QboxPagedDataQueryResult<QboxCounterData>>> getDataFunc)
         {
+            Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
             Guard.NotNull(query, nameof(query));
             Guard.NotNull(getDataFunc, nameof(getDataFunc));
 
@@ -37,7 +41,7 @@ namespace QBoxNext.Server.Business.Implementations
             query.From = start;
             query.To = end;
 
-            string key = GetKey(query.SerialNumber, start, end, query.Resolution);
+            string key = GetKey(serialNumber, start, end, query.Resolution);
 
             if (!_cache.TryGetValue(key, out QboxPagedDataQueryResult<QboxCounterData> cacheEntry))
             {

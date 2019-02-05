@@ -121,7 +121,7 @@ namespace QboxNext.Server.Auth0.Authorization
         /// </summary>
         private void AddUserIdentityToContext(AuthorizationHandlerContext context, HasScopeRequirement requirement, User user)
         {
-            var identity = new QboxNextClaimsIdentity(context.User.Claims, user.FullName, user.AppMetadata);
+            var identity = new Auth0ClaimsIdentity(context.User.Claims, user.FullName, user.AppMetadata);
             context.User.AddIdentity(identity);
 
             context.Succeed(requirement);

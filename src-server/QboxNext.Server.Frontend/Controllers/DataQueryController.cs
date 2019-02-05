@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Linq;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -7,6 +8,7 @@ using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QBoxNext.Server.Business.Interfaces.Public;
 using System.Threading.Tasks;
+using QboxNext.Server.Auth0.Authorization;
 
 namespace QboxNext.Server.Frontend.Controllers
 {
@@ -37,14 +39,17 @@ namespace QboxNext.Server.Frontend.Controllers
         {
             Guard.NotNull(query, nameof(query));
 
-            if (!await _registrationService.IsValidRegistrationAsync(query.SerialNumber))
+            var claimsIdentity = (Auth0ClaimsIdentity) User.Identities.First(i => i is Auth0ClaimsIdentity);
+            string serialNumber = claimsIdentity.AppMetadata["qboxSerialNumber"].ToString();
+
+            if (!await _registrationService.IsValidRegistrationAsync(serialNumber))
             {
                 return BadRequest();
             }
 
-            _logger.LogInformation("Querying with {Query}", JsonConvert.SerializeObject(query));
+            _logger.LogInformation("Querying {SerialNumber} with {Query}", serialNumber, JsonConvert.SerializeObject(query));
 
-            var result = await _dataQueryService.QueryAsync(query);
+            var result = await _dataQueryService.QueryAsync(serialNumber, query);
 
             return Ok(result);
         }
