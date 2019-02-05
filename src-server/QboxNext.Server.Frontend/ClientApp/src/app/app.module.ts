@@ -20,11 +20,13 @@ import Globalize from 'globalize/message.js';
 import { GasComponent } from './gas/gas.component';
 import { AuthenticationService, AuthenticationGuard, AuthorizationInterceptor } from './authentication';
 import { CallbackComponent } from './callback/callback.component';
+import { WindowProvider } from './common';
 
 // Application wide providers/services
 const APP_PROVIDERS = [
   AuthenticationGuard,
-  AuthenticationService
+  AuthenticationService,
+  WindowProvider
 ];
 
 @NgModule({

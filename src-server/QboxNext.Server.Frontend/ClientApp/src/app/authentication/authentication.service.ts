@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginModel } from '../common/models';
-import { SessionStorageService } from '../common/services/session-storage.service';
 
 import { Auth0DecodedHash, Auth0Error, WebAuth } from 'auth0-js';
+
+import { LoginModel } from '../common/models';
+import { SessionStorageService } from '../common/services/session-storage.service';
+import { WINDOW } from '../common';
 
 
 @Injectable({
@@ -12,16 +14,17 @@ import { Auth0DecodedHash, Auth0Error, WebAuth } from 'auth0-js';
 export class AuthenticationService {
     private LOGINMODEL_KEY = 'login';
 
-    private auth0 = new WebAuth({
-        clientID: 'zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu',
-        domain: 'stef-heyenrath.eu.auth0.com',
-        responseType: 'token id_token',
-        audience: 'https://qboxnext.web.nl',
-        redirectUri: 'http://localhost:4200/callback',
-        scope: 'openid'
-    });
+    private readonly auth0: WebAuth;
 
-    constructor(private sessionStorageService: SessionStorageService, public router: Router) {
+    constructor(private sessionStorageService: SessionStorageService, public router: Router, @Inject(WINDOW) private window: Window) {
+        this.auth0 = new WebAuth({
+            clientID: 'zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu',
+            domain: 'stef-heyenrath.eu.auth0.com',
+            responseType: 'token id_token',
+            audience: 'https://qboxnext.web.nl',
+            redirectUri: `${window.location.href}callback`,
+            scope: 'openid'
+        });
     }
 
     public login(): void {
@@ -42,7 +45,6 @@ export class AuthenticationService {
     }
 
     private setSession(authResult: Auth0DecodedHash): void {
-        console.log(authResult);
         const model = new LoginModel({
             accessToken: authResult.accessToken,
             expiresAt: new Date().getTime() + (authResult.expiresIn || 0) * 1000,
