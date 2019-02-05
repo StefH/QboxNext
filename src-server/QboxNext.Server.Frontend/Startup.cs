@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CorrelationId;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,6 @@ using NLog.Extensions.AzureTables;
 using QboxNext.Logging;
 using QboxNext.Server.Frontend.Options;
 using QboxNext.Server.Infrastructure.Azure.Options;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -96,6 +96,13 @@ namespace QboxNext.Server.Frontend
 
             // TODO : this needs to be in place until correct DI is added to QboxNext
             QboxNextLogProvider.LoggerFactory = logFactory;
+
+            app.UseCorrelationId(new CorrelationIdOptions
+            {
+                UpdateTraceIdentifier = true,
+                IncludeInResponse = true,
+                UseGuidForCorrelationId = true
+            });
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

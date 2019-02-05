@@ -44,7 +44,7 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   }
 
   public customizeTooltip(info: any): any {
-    const points = [];
+    const points: any[] = [];
     info.points.forEach(point => {
       const valueAsString = new ElectricityValueFormatter().format(point.value);
       points.push(`<div class=\'series-name\'>${point.seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
@@ -56,7 +56,7 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   }
 
   public getOverview(): string {
-    const info = {
+    const info: any = {
       argumentText: 'Totaal',
       length: 1,
       points: []

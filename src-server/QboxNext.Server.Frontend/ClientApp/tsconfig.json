@@ -12,6 +12,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "strictNullChecks": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
@@ -21,18 +22,6 @@
       "dom"
     ],
     "paths": {
-      "globalize": [
-        "node_modules/globalize/dist/globalize"
-      ],
-      "globalize/*": [
-        "node_modules/globalize/dist/globalize/*"
-      ],
-      "cldr": [
-        "node_modules/cldrjs/dist/cldr"
-      ],
-      "cldr/*": [
-        "node_modules/cldrjs/dist/cldr/*"
-      ],
       "jszip": [
         "node_modules/jszip/dist/jszip.min.js"
       ]

@@ -14,7 +14,7 @@ import { WINDOW } from '../common';
 export class AuthenticationService {
     private LOGINMODEL_KEY = 'login';
 
-    private _auth0: WebAuth = undefined;
+    private _auth0: WebAuth | null = null;
 
     // Use lazy loading...
     private get auth0(): WebAuth {
@@ -40,10 +40,6 @@ export class AuthenticationService {
     }
 
     public handleAuthentication(): void {
-        // if (!this.auth0) {
-        //     return;
-        // }
-
         this.auth0.parseHash((err: Auth0Error | null, authResult: Auth0DecodedHash) => {
             if (authResult && authResult.accessToken && authResult.idToken) {
                 this.setSession(authResult);

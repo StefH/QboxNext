@@ -9,7 +9,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DxChartModule, DxDateBoxModule, DxSelectBoxModule, DxLoadIndicatorModule, DxCheckBoxModule } from 'devextreme-angular';
+import { DxChartModule } from 'devextreme-angular/ui/chart';
+import { DxDateBoxModule } from 'devextreme-angular/ui/date-box';
+import { DxSelectBoxModule } from 'devextreme-angular/ui/select-box';
+import { DxLoadIndicatorModule } from 'devextreme-angular/ui/load-indicator';
+import { DxCheckBoxModule } from 'devextreme-angular/ui/check-box';
 
 // import nlMessages from 'devextreme/localization/messages/nl.json';
 // import supplemental from 'devextreme-cldr-data/supplemental.json';
