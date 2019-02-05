@@ -11,7 +11,6 @@ using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Extensions.AzureTables;
 using QboxNext.Logging;
-using QboxNext.Server.Auth0.Options;
 using QboxNext.Server.Frontend.Options;
 using QboxNext.Server.Infrastructure.Azure.Options;
 using System.Collections.Generic;
