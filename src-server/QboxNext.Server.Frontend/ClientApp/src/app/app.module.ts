@@ -12,11 +12,11 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DxChartModule, DxDateBoxModule, DxSelectBoxModule, DxLoadIndicatorModule, DxCheckBoxModule } from 'devextreme-angular';
 
-import nlMessages from 'devextreme/localization/messages/nl.json';
-import supplemental from 'devextreme-cldr-data/supplemental.json';
-import nlCldrData from 'devextreme-cldr-data/nl.json';
+// import nlMessages from 'devextreme/localization/messages/nl.json';
+// import supplemental from 'devextreme-cldr-data/supplemental.json';
+// import nlCldrData from 'devextreme-cldr-data/nl.json';
 
-import Globalize from 'globalize/message.js';
+// import Globalize from 'globalize/message.js';
 import { GasComponent } from './gas/gas.component';
 import { AuthenticationService, AuthenticationGuard, AuthorizationInterceptor } from './authentication';
 import { CallbackComponent } from './callback/callback.component';
@@ -66,12 +66,12 @@ const APP_PROVIDERS = [
 })
 export class AppModule {
   constructor() {
-    Globalize.load(
-      supplemental, nlCldrData
-    );
+    // Globalize.load(
+    //   supplemental, nlCldrData
+    // );
 
-    Globalize.loadMessages(nlMessages);
+    // Globalize.loadMessages(nlMessages);
 
-    Globalize.locale('nl');
+    // Globalize.locale('nl');
   }
 }

@@ -13,6 +13,7 @@ using NLog.Extensions.AzureTables;
 using QboxNext.Logging;
 using QboxNext.Server.Frontend.Options;
 using QboxNext.Server.Infrastructure.Azure.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,8 +21,6 @@ namespace QboxNext.Server.Frontend
 {
     public class Startup
     {
-        public bool UseSPA = false;
-
         public IConfigurationRoot Configuration { get; }
 
         public IHostingEnvironment HostingEnvironment { get; }
@@ -50,14 +49,11 @@ namespace QboxNext.Server.Frontend
                 config.Filters.Add(new AuthorizeFilter(policy));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            if (UseSPA)
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
             {
-                // In production, the Angular files will be served from this directory
-                services.AddSpaStaticFiles(configuration =>
-                {
-                    configuration.RootPath = "ClientApp/dist";
-                });
-            }
+                configuration.RootPath = "ClientApp/dist";
+            });
 
             // Add External services
             services
@@ -102,27 +98,23 @@ namespace QboxNext.Server.Frontend
             QboxNextLogProvider.LoggerFactory = logFactory;
 
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             // Add the authentication middleware to the middleware pipeline
             app.UseAuthentication();
 
             app.UseMvc();
 
-            if (UseSPA)
+            app.UseSpa(spa =>
             {
-                app.UseSpa(spa =>
+                // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
+                spa.Options.SourcePath = "ClientApp";
+
+                if (HostingEnvironment.IsDevelopment())
                 {
-                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                    // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                    spa.Options.SourcePath = "ClientApp";
-
-                    if (HostingEnvironment.IsDevelopment())
-                    {
-                        spa.UseAngularCliServer(npmScript: "start");
-                    }
-                });
-            }
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
         }
     }
 }

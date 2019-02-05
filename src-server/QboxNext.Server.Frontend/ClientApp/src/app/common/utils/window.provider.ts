@@ -6,5 +6,7 @@ export const WINDOW = new InjectionToken<Window>('window');
 
 export const WindowProvider: FactoryProvider = {
     provide: WINDOW,
-    useFactory: () => window
+    useFactory() {
+        return window;
+    }
 };

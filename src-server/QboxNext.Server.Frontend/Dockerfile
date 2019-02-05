@@ -5,6 +5,7 @@ EXPOSE 443
 
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
+
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Qboxes.Parsing/QboxNext.Qboxes.Parsing.csproj", "dependencies/dotnetcore-minimal/QboxNext.Qboxes.Parsing/"]
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Logging/QboxNext.Logging.csproj", "dependencies/dotnetcore-minimal/QboxNext.Logging/"]
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Qserver.Core/QboxNext.Qserver.Core.csproj", "dependencies/dotnetcore-minimal/QboxNext.Qserver.Core/"]
@@ -14,16 +15,17 @@ COPY ["dependencies/dotnetcore-minimal/QboxNext.Model/QboxNext.Model.csproj", "d
 COPY ["dependencies/NLog.Extensions.AzureStorage/src/NLog.Extensions.AzureTables/NLog.Extensions.AzureTables.csproj", "dependencies/NLog.Extensions.AzureStorage/src/NLog.Extensions.AzureTables/"]
 
 COPY ["src/QboxNext/QboxNext.csproj", "src/QboxNext/"]
-
 COPY ["src/QboxNext.Extensions/QboxNext.Extensions.csproj", "src/QboxNext.Extensions/"]
 
 COPY ["src-server/QboxNext.Server.Infrastructure.Azure/QboxNext.Server.Infrastructure.Azure.csproj", "src-server/QboxNext.Server.Infrastructure.Azure/"]
-COPY ["src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend.csproj", "src-server/QboxNext.Server.Frontend/"]
 COPY ["src-server/QBoxNext.Server.Business/QBoxNext.Server.Business.csproj", "src-server/QBoxNext.Server.Business/"]
 COPY ["src-server/QboxNext.Server.Domain/QboxNext.Server.Domain.csproj", "src-server/QboxNext.Server.Domain/"]
 COPY ["src-server/QboxNext.Server.Common/QboxNext.Server.Common.csproj", "src-server/QboxNext.Server.Common/"]
 
+COPY ["src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend.csproj", "src-server/QboxNext.Server.Frontend/"]
+
 RUN dotnet restore "src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend.csproj"
+
 COPY . .
 WORKDIR "/src/src-server/QboxNext.Server.Frontend"
 RUN dotnet build "QboxNext.Server.Frontend.csproj" -c Release -o /app
@@ -31,7 +33,34 @@ RUN dotnet build "QboxNext.Server.Frontend.csproj" -c Release -o /app
 FROM build AS publish
 RUN dotnet publish "QboxNext.Server.Frontend.csproj" -c Release -o /app
 
+# --- Angular build:start
+FROM node as nodebuilder
+
+# set working directory
+RUN mkdir /usr/src/app
+WORKDIR /usr/src/app
+
+# add `/usr/src/app/node_modules/.bin` to $PATH
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
+
+# install and cache app dependencies
+COPY src-server/QboxNext.Server.Frontend/ClientApp/package.json /usr/src/app/package.json
+RUN npm install
+# RUN npm install -g @angular/cli@1.7.0 --unsafe
+
+# add app
+COPY src-server/QboxNext.Server.Frontend/ClientApp/. /usr/src/app
+
+RUN npm run build
+# --- Angular build:end
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+
+# --- Angular copy:start
+RUN mkdir -p /app/ClientApp/dist
+COPY --from=nodebuilder /usr/src/app/dist/ClientApp/. /app/ClientApp/dist/
+# --- Angular copy:end
+
 ENTRYPOINT ["dotnet", "QboxNext.Server.Frontend.dll"]

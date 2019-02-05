@@ -149,7 +149,7 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     }
   }
 
-  private refreshChart(serverSide: boolean): void {
+  public refreshChart(serverSide: boolean): void {
     if (!serverSide) {
 
       // just filter
