@@ -41,6 +41,7 @@ namespace QboxNext.Server.Frontend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Configure MVC AuthorizeFilter
             services.AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder()
