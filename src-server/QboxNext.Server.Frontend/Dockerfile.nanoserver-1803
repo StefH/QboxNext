@@ -1,5 +1,5 @@
 # --- Angular build:start
-FROM node as nodebuilder
+FROM stefanscherer/node-windows as nodebuilder
 
 # set working directory
 RUN mkdir -p /usr/src/app
