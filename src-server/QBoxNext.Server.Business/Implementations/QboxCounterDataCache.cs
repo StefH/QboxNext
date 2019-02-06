@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using JetBrains.Annotations;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Domain.Utils;
@@ -10,10 +13,14 @@ namespace QBoxNext.Server.Business.Implementations
 {
     internal class QboxCounterDataCache : IQboxCounterDataCache
     {
+        private readonly ILogger<QboxCounterDataCache> _logger;
         private readonly MemoryCache _cache;
 
-        public QboxCounterDataCache()
+        public QboxCounterDataCache([NotNull] ILogger<QboxCounterDataCache> logger)
         {
+            Guard.NotNull(logger, nameof(logger));
+
+            _logger = logger;
             _cache = new MemoryCache(new MemoryCacheOptions
             {
                 SizeLimit = 10000
@@ -30,12 +37,12 @@ namespace QBoxNext.Server.Business.Implementations
             Guard.NotNull(query, nameof(query));
             Guard.NotNull(getDataFunc, nameof(getDataFunc));
 
-            // If the date range contains 'now', always get fresh data
-            //var now = DateTime.UtcNow;
-            //if (now >= query.From && now < query.To)
-            //{
-            //    return await getDataFunc();
-            //}
+            if (IsRealTime(query))
+            {
+                _logger.LogInformation("Query {Query} is a realtime query.", JsonConvert.SerializeObject(query));
+
+                return await getDataFunc();
+            }
 
             var (start, end) = query.Resolution.GetTruncatedTimeFrame(query.From, query.To);
             query.From = start;
@@ -64,6 +71,13 @@ namespace QBoxNext.Server.Business.Implementations
         private string GetKey(string serialNumber, DateTime fromTruncated, DateTime toTruncated, QboxQueryResolution resolution)
         {
             return $"{serialNumber}:{fromTruncated.Ticks}:{toTruncated.Ticks}:{resolution}";
+        }
+
+        private static bool IsRealTime(QboxDataQuery query)
+        {
+            return
+                query.From == DateTime.Today &&
+                (query.Resolution == QboxQueryResolution.QuarterOfHour || query.Resolution == QboxQueryResolution.Hour);
         }
     }
 }

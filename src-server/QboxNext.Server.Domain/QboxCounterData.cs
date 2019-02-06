@@ -10,14 +10,14 @@ namespace QboxNext.Server.Domain
 
         public DateTime MeasureTime { get; set; }
 
-        public int? Delta0181 { get; set; }
+        public int Delta0181 { get; set; }
 
-        public int? Delta0182 { get; set; }
+        public int Delta0182 { get; set; }
 
-        public int? Delta0281 { get; set; }
+        public int Delta0281 { get; set; }
 
-        public int? Delta0282 { get; set; }
+        public int Delta0282 { get; set; }
 
-        public int? Delta2421 { get; set; }
+        public int Delta2421 { get; set; }
     }
 }

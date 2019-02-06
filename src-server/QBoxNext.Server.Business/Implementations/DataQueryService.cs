@@ -4,7 +4,6 @@ using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using QBoxNext.Server.Business.Interfaces.Internal;
 using QBoxNext.Server.Business.Interfaces.Public;
-using System;
 using System.Threading.Tasks;
 
 namespace QBoxNext.Server.Business.Implementations
@@ -29,22 +28,7 @@ namespace QBoxNext.Server.Business.Implementations
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
             Guard.NotNull(query, nameof(query));
 
-            Task<QboxPagedDataQueryResult<QboxCounterData>> GetData() =>
-                _azureTablesService.QueryDataAsync(serialNumber, query.From, query.To, query.Resolution, query.AddHours);
-
-            if (IsRealTime(query))
-            {
-                return await GetData();
-            }
-
-            return await _cache.GetOrCreateAsync(serialNumber, query, GetData);
-        }
-
-        private static bool IsRealTime(QboxDataQuery query)
-        {
-            return
-                query.From == DateTime.Today && query.To == DateTime.Today &&
-                (query.Resolution == QboxQueryResolution.QuarterOfHour || query.Resolution == QboxQueryResolution.Hour);
+            return await _cache.GetOrCreateAsync(serialNumber, query, () => _azureTablesService.QueryDataAsync(serialNumber, query.From, query.To, query.Resolution, query.AddHours));
         }
     }
 }

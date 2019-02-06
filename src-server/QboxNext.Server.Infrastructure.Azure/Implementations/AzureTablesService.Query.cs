@@ -60,11 +60,11 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             var deltas = entitiesSorted.Zip(entitiesSorted.Skip(1), (current, next) => new QboxCounterData
             {
                 MeasureTime = next.MeasureTime,
-                Delta0181 = next.Counter0181 - current.Counter0181,
-                Delta0182 = next.Counter0182 - current.Counter0182,
-                Delta0281 = next.Counter0281 - current.Counter0281,
-                Delta0282 = next.Counter0282 - current.Counter0282,
-                Delta2421 = next.Counter2421 - current.Counter2421
+                Delta0181 = next.Counter0181 - current.Counter0181 ?? 0,
+                Delta0182 = next.Counter0182 - current.Counter0182 ?? 0,
+                Delta0281 = next.Counter0281 - current.Counter0281 ?? 0,
+                Delta0282 = next.Counter0282 - current.Counter0282 ?? 0,
+                Delta2421 = next.Counter2421 - current.Counter2421 ?? 0,
             }).ToList();
 
             deltas.Insert(0, new QboxCounterData
@@ -101,11 +101,11 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             {
                 LabelText = "overview",
                 MeasureTime = DateTime.UtcNow,
-                Delta0181 = entities.Max(e => e.Counter0181) - entities.Min(e => e.Counter0181),
-                Delta0182 = entities.Max(e => e.Counter0182) - entities.Min(e => e.Counter0182),
-                Delta0281 = (entities.Max(e => e.Counter0281) - entities.Min(e => e.Counter0281)) * -1,
-                Delta0282 = (entities.Max(e => e.Counter0282) - entities.Min(e => e.Counter0282)) * -1,
-                Delta2421 = entities.Max(e => e.Counter2421) - entities.Min(e => e.Counter2421)
+                Delta0181 = entities.Max(e => e.Counter0181) - entities.Min(e => e.Counter0181) ?? 0,
+                Delta0182 = entities.Max(e => e.Counter0182) - entities.Min(e => e.Counter0182) ?? 0,
+                Delta0281 = (entities.Max(e => e.Counter0281) - entities.Min(e => e.Counter0281) ?? 0) * -1,
+                Delta0282 = (entities.Max(e => e.Counter0282) - entities.Min(e => e.Counter0282) ?? 0) * -1,
+                Delta2421 = entities.Max(e => e.Counter2421) - entities.Min(e => e.Counter2421) ?? 0
             };
 
             return new QboxPagedDataQueryResult<QboxCounterData>
