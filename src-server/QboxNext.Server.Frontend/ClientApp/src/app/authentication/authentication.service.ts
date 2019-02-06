@@ -6,7 +6,7 @@ import { nameof } from 'ts-simple-nameof';
 
 import { LoginModel } from '../common/models';
 import { SessionStorageService } from '../common/services/session-storage.service';
-import { WINDOW } from '../common';
+import { WINDOW } from '../common/utils';
 
 
 @Injectable({

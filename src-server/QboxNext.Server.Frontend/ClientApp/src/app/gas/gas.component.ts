@@ -4,9 +4,13 @@ import * as moment from 'moment';
 import { DxChartComponent } from 'devextreme-angular';
 import { nameof } from 'ts-simple-nameof';
 
-import { DataService, QboxCounterData, BaseComponent, DataLoadStatus, HttpStatusCodes, GasValueFormatter, TimeRangeHelper, QboxPagedDataQueryResult } from '../common';
+import { DataService, TimeRangeHelper } from '../common/services';
 import { SessionStorageService } from '../common/services';
-import { ApplicationData } from '../common/models';
+import { ApplicationData, QboxCounterData, QboxPagedDataQueryResult } from '../common/models';
+import { GasValueFormatter } from '../common/formatters';
+import { BaseComponent } from '../common/components';
+import { DataLoadStatus } from '../common/enums';
+import { HttpStatusCodes } from '../common/constants';
 
 
 @Component({

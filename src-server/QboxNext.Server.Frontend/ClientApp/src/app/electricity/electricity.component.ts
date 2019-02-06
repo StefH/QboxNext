@@ -1,8 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService, QboxCounterData, BaseComponent, DataLoadStatus, HttpStatusCodes, ElectricityValueFormatter, TimeRangeHelper, QboxPagedDataQueryResult } from '../common';
 
 import * as moment from 'moment';
+import { nameof } from 'ts-simple-nameof';
 import { DxChartComponent } from 'devextreme-angular';
+
+import { DataService, TimeRangeHelper } from '../common/services';
+import { SessionStorageService } from '../common/services';
+import { ApplicationData, QboxCounterData, QboxPagedDataQueryResult } from '../common/models';
+import { ElectricityValueFormatter } from '../common/formatters';
+import { BaseComponent } from '../common/components';
+import { DataLoadStatus } from '../common/enums';
+import { HttpStatusCodes } from '../common/constants';
 
 @Component({
   selector: 'app-show-data',
@@ -14,26 +22,30 @@ import { DxChartComponent } from 'devextreme-angular';
 export class ElectricityComponent extends BaseComponent implements OnInit {
   public resolutions = [{ id: 'QuarterOfHour', text: 'Kwartier' }, { id: 'Hour', text: 'Uur' }, { id: 'Day', text: 'Dag' }, { id: 'Month', text: 'Maand' }];
 
-  @ViewChild(DxChartComponent) chart: DxChartComponent;
+  @ViewChild(DxChartComponent)
+  private chart: DxChartComponent;
+  private resultFromServer = new QboxPagedDataQueryResult<QboxCounterData>();
+  private appData: ApplicationData;
 
-  public resultFromServer = new QboxPagedDataQueryResult<QboxCounterData>();
   public result = new QboxPagedDataQueryResult<QboxCounterData>();
 
-  public selectedFromDate = new Date('2018-10-01');
-  public selectedToDate = new Date('2018-11-01');
-  public selectedResolution = this.resolutions[1].id;
-  public check181 = true;
-  public check182 = true;
-  public check281 = true;
-  public check282 = true;
-  public checknet = true;
-  public checkall = true;
+  public selectedFromDate: Date;
+  public selectedToDate: Date;
+  public selectedResolutionId: string;
+  public check181: boolean;
+  public check182: boolean;
+  public check281: boolean;
+  public check282: boolean;
+  public checknet: boolean;
+  public checkall: boolean;
 
-  constructor(private service: DataService, private formatter: ElectricityValueFormatter, private timeRangeHelper: TimeRangeHelper) {
+  constructor(private service: DataService, private formatter: ElectricityValueFormatter, private timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
     super();
   }
 
   public ngOnInit(): void {
+    this.readAppData();
+
     this.updateChartSeries();
 
     this.refreshChart(true);
@@ -96,7 +108,7 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     const start = moment(this.selectedFromDate).format('D MMMM YYYY');
     const end = moment(this.selectedToDate).format('D MMMM YYYY');
 
-    if (this.selectedResolution === 'QuarterOfHour' || this.selectedResolution === 'Hour') {
+    if (this.selectedResolutionId === 'QuarterOfHour' || this.selectedResolutionId === 'Hour') {
       return `Electriciteit (${start})`;
     }
 
@@ -164,16 +176,19 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     this.loadingStatus = DataLoadStatus.Started;
     this.result = new QboxPagedDataQueryResult<QboxCounterData>();
 
-    const dates = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
+    const dates = this.timeRangeHelper.getToDate(this.selectedResolutionId, this.selectedFromDate);
     this.selectedToDate = dates.toDate.toDate();
 
-    this.subscription.add(this.service.getData(this.selectedResolution, dates.fromDate.toDate(), this.selectedToDate)
+    this.subscription.add(this.service.getData(this.selectedResolutionId, dates.fromDate.toDate(), this.selectedToDate)
       .subscribe(
         data => {
           this.resultFromServer = data;
           this.loadingStatus = DataLoadStatus.Finished;
 
           this.filter();
+          this.updateChartSeries();
+
+          this.saveAppData();
         }, error => {
           switch (error.statusCode) {
             case HttpStatusCodes.NOT_FOUND:
@@ -188,5 +203,31 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
               this.error(error);
           }
         }));
+  }
+
+  private readAppData(): void {
+    this.appData = this.sessionStorageService.get<ApplicationData>(nameof(ApplicationData)) || new ApplicationData();
+    this.selectedFromDate = this.appData.electricitySelectedFromDate || new Date('2018-10-01');
+    this.selectedToDate = this.appData.electricitySelectedToDate || new Date('2018-11-01');
+    this.selectedResolutionId = this.appData.electricitySelectedResolutionId || this.resolutions[1].id;
+    this.check181 = this.appData.check181 || true;
+    this.check182 = this.appData.check182 || true;
+    this.check281 = this.appData.check281 || true;
+    this.check282 = this.appData.check282 || true;
+    this.checknet = this.appData.checknet || true;
+    this.checkall = this.appData.checkall || true;
+  }
+
+  private saveAppData(): void {
+    this.appData.electricitySelectedFromDate = this.selectedFromDate;
+    this.appData.electricitySelectedToDate = this.selectedToDate;
+    this.appData.electricitySelectedResolutionId = this.selectedResolutionId;
+    this.appData.check181 = this.check181;
+    this.appData.check182 = this.check182;
+    this.appData.check281 = this.check281;
+    this.appData.check282 = this.check282;
+    this.appData.checknet = this.checknet;
+    this.appData.checkall = this.checkall;
+    this.sessionStorageService.set(nameof(ApplicationData), this.appData);
   }
 }

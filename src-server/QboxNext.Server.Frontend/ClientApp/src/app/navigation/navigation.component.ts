@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
 import { AuthenticationService } from '../authentication';
-import { LoginModel } from '../common';
+import { LoginModel } from '../common/models';
 
 @Component({
   selector: 'app-navigation',

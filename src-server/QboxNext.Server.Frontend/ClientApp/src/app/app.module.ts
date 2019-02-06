@@ -23,7 +23,7 @@ import { DxCheckBoxModule } from 'devextreme-angular/ui/check-box';
 import { GasComponent } from './gas/gas.component';
 import { AuthenticationService, AuthenticationGuard, AuthorizationInterceptor } from './authentication';
 import { CallbackComponent } from './callback/callback.component';
-import { WindowProvider } from './common';
+import { WindowProvider } from './common/utils';
 
 // Application wide providers/services
 const APP_PROVIDERS = [

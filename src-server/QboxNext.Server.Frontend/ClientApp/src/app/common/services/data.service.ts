@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BaseService } from './base.service';
-import { QboxCounterData, QboxPagedDataQueryResult } from '..';
+import { QboxCounterData, QboxPagedDataQueryResult } from '../models';
 
 
 @Injectable()
