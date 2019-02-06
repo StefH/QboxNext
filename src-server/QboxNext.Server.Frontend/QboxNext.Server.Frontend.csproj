@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="AspNetCore.Security.Auth0" Version="1.0.0-preview-01" />-->
+    <PackageReference Include="AspNetCore.Security.Auth0" Version="1.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.2" />
@@ -57,7 +57,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\AspNetCore.Security.Auth0\src\AspNetCore.Security.Auth0\AspNetCore.Security.Auth0.csproj" />
     <ProjectReference Include="..\..\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\NLog.Extensions.AzureTables.csproj" />
     <ProjectReference Include="..\..\src-server\QBoxNext.Server.Business\QBoxNext.Server.Business.csproj" />
     <ProjectReference Include="..\..\src-server\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />
