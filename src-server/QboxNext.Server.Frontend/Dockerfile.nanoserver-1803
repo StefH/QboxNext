@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 
 # install and cache app dependencies
 COPY src-server/QboxNext.Server.Frontend/ClientApp/package.json /usr/src/app/package.json
-RUN npm install --silent
+RUN npm install
 
 # add app
 COPY src-server/QboxNext.Server.Frontend/ClientApp/. /usr/src/app
