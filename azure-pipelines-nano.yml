@@ -5,7 +5,8 @@ variables:
   buildConfiguration: 'Release'
   buildProjectDataReceiver: '**/QboxNext.Server.DataReceiver.csproj'
   buildProjectFrontend: '**/QboxNext.Server.Frontend.csproj'
-  imageName: 'qboxnext-datareceiver'
+  imageNameDataReceiver: 'qboxnext-datareceiver-nanoserver-1803'
+  imageNameFrontend: 'qboxnext-frontend-nanoserver-1803'
   tag: '1.0.0'
   buildDocker: $(BUILD_DOCKER)
 
@@ -36,20 +37,20 @@ steps:
 #    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 #    zipAfterPublish: True
 
-- script: docker build -t $(DOCKER_ID)/$(imageName) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
-  displayName: Build Docker image
+- script: docker build -t $(DOCKER_ID)/$(imageNameFrontend) -f ./src-server/QboxNext.Server.Frontend/Dockerfile.nanoserver-1803 .
+  displayName: 'Build Docker image [$(imageNameFrontend)]''
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
-- script: docker tag $(DOCKER_ID)/$(imageName):latest $(DOCKER_ID)/$(imageName):$(tag)
-  displayName: 'Tag Docker image [$(imageName):$(tag)]'
+- script: docker tag $(DOCKER_ID)/$(imageNameFrontend):latest $(DOCKER_ID)/$(imageNameFrontend):$(tag)
+  displayName: 'Tag Docker image [$(imageNameFrontend):$(tag)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
 # https://stackoverflow.com/questions/51489359/docker-using-password-via-the-cli-is-insecure-use-password-stdin
 - script: |
     echo "$(DOCKER_PWD)" | docker login --username $(DOCKER_ID) --password-stdin
-    docker push $(DOCKER_ID)/$(imageName):latest
-    docker push $(DOCKER_ID)/$(imageName):$(tag)
-  displayName: 'Push Docker images [$(imageName):latest and $(imageName):$(tag)]'
+    docker push $(DOCKER_ID)/$(imageNameFrontend):latest
+    docker push $(DOCKER_ID)/$(imageNameFrontend):$(tag)
+  displayName: 'Push Docker images [$(imageNameDataReceiver) and $(imageNameFrontend)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
 #- task: PublishBuildArtifacts@1
