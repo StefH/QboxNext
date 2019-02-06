@@ -6,33 +6,41 @@ import { PartialParamConstructor } from '../interfaces';
 })
 export class SessionStorageService {
 
-    // set session item
-    public set(prop: string, value: any): void {
-        sessionStorage.setItem(prop, JSON.stringify(value));
+    // set session item by propertyName
+    public set(propertyName: string, value: any): void {
+        sessionStorage.setItem(propertyName, JSON.stringify(new SessionValue({ value: value })));
     }
 
-    // get session item
-    public get<T>(prop: string, ctor?: PartialParamConstructor<T>): T | null {
-        const itemValue = sessionStorage.getItem(prop);
+    // get session item by propertyName
+    public get<T>(propertyName: string, ctor?: PartialParamConstructor<T>): T | null {
+        const itemValue = sessionStorage.getItem(propertyName);
         if (itemValue == null) {
             return null;
         }
 
-        const value: T = JSON.parse(itemValue);
-        return ctor ? new ctor(value) : value;
+        const wrapper: SessionValue<T> = JSON.parse(itemValue);
+        return ctor ? new ctor(wrapper.value) : wrapper.value;
     }
 
     // delete session item
-    public delete(prop: string): void {
-        sessionStorage.removeItem(prop);
+    public delete(propertyName: string): void {
+        sessionStorage.removeItem(propertyName);
     }
 
     // clear session item or items
-    public clear(prop: string | null): void {
-        if (prop) {
-            sessionStorage.removeItem(prop);
+    public clear(propertyName: string | null): void {
+        if (propertyName) {
+            sessionStorage.removeItem(propertyName);
         }
 
         sessionStorage.clear();
+    }
+}
+
+export class SessionValue<T> {
+    public value: T;
+
+    public constructor(init?: Partial<SessionValue<T>>) {
+        Object.assign(this, init);
     }
 }

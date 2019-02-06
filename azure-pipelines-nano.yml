@@ -45,9 +45,14 @@ steps:
   displayName: 'Tag Docker image [$(imageNameFrontend):$(tag)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
+# for vs2017-win2016 only !
 # https://stackoverflow.com/questions/51489359/docker-using-password-via-the-cli-is-insecure-use-password-stdin
+# https://github.com/Microsoft/azure-pipelines-tasks/issues/6480#issuecomment-453765536
+# echo | set /p="$(DOCKER_PWD)" | docker login --username $(DOCKER_ID) --password-stdin
+
+# For win1803 ; just use --password
 - script: |
-    echo "$(DOCKER_PWD)" | docker login --username $(DOCKER_ID) --password-stdin
+    docker login --username $(DOCKER_ID) --password $(DOCKER_PWD)
     docker push $(DOCKER_ID)/$(imageNameFrontend):latest
     docker push $(DOCKER_ID)/$(imageNameFrontend):$(tag)
   displayName: 'Push Docker images [$(imageNameDataReceiver) and $(imageNameFrontend)]'

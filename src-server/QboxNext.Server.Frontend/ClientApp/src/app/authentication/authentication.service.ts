@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Auth0DecodedHash, Auth0Error, WebAuth } from 'auth0-js';
+import { nameof } from 'ts-simple-nameof';
 
 import { LoginModel } from '../common/models';
 import { SessionStorageService } from '../common/services/session-storage.service';
@@ -12,8 +13,6 @@ import { WINDOW } from '../common';
     providedIn: 'root'
 })
 export class AuthenticationService {
-    private LOGINMODEL_KEY = 'login';
-
     private _auth0: WebAuth | null = null;
 
     // Use lazy loading...
@@ -71,11 +70,11 @@ export class AuthenticationService {
     }
 
     public getLoginModel(): LoginModel | null {
-        return this.sessionStorageService.get(this.LOGINMODEL_KEY, LoginModel);
+        return this.sessionStorageService.get(nameof(LoginModel), LoginModel);
     }
 
     public clearLoginModel(): void {
-        this.sessionStorageService.clear(this.LOGINMODEL_KEY);
+        this.sessionStorageService.clear(nameof(LoginModel));
     }
 
     public isAuthenticated(): boolean {
@@ -84,6 +83,6 @@ export class AuthenticationService {
     }
 
     private setLoginModel(loginModel: LoginModel): void {
-        this.sessionStorageService.set(this.LOGINMODEL_KEY, loginModel);
+        this.sessionStorageService.set(nameof(LoginModel), loginModel);
     }
 }

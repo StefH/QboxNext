@@ -1,8 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService, QboxCounterData, BaseComponent, DataLoadStatus, HttpStatusCodes, GasValueFormatter, TimeRangeHelper, QboxPagedDataQueryResult } from '../common';
 
 import * as moment from 'moment';
 import { DxChartComponent } from 'devextreme-angular';
+import { nameof } from 'ts-simple-nameof';
+
+import { DataService, QboxCounterData, BaseComponent, DataLoadStatus, HttpStatusCodes, GasValueFormatter, TimeRangeHelper, QboxPagedDataQueryResult } from '../common';
+import { SessionStorageService } from '../common/services';
+import { ApplicationData } from '../common/models';
+
 
 @Component({
   selector: 'app-show-gas',
@@ -14,21 +19,27 @@ import { DxChartComponent } from 'devextreme-angular';
 export class GasComponent extends BaseComponent implements OnInit {
   public resolutions = [{ id: 'Hour', text: 'Uur' }, { id: 'Day', text: 'Dag' }, { id: 'Month', text: 'Maand' }];
 
-  @ViewChild(DxChartComponent) chart: DxChartComponent;
-
+  @ViewChild(DxChartComponent)
+  private chart: DxChartComponent;
   private resultFromServer = new QboxPagedDataQueryResult<QboxCounterData>();
-  public result = new QboxPagedDataQueryResult<QboxCounterData>();
+  private appData: ApplicationData;
 
-  public selectedFromDate = new Date('2018-10-01');
-  public selectedToDate = new Date('2018-11-01');
-  public selectedResolution = this.resolutions[0].id;
+  public result = new QboxPagedDataQueryResult<QboxCounterData>();
+  public selectedFromDate: Date;
+  public selectedToDate: Date;
+  public selectedResolutionId: string;
   public checkgas = true;
 
-  constructor(private service: DataService, private formatter: GasValueFormatter, private timeRangeHelper: TimeRangeHelper) {
+  constructor(private service: DataService, private formatter: GasValueFormatter, private timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
     super();
   }
 
   public ngOnInit(): void {
+    this.appData = this.sessionStorageService.get<ApplicationData>(nameof(ApplicationData)) || new ApplicationData();
+    this.selectedFromDate = this.appData.gasSelectedFromDate || new Date('2018-10-01');
+    this.selectedToDate = this.appData.gasSelectedToDate || new Date('2018-11-01');
+    this.selectedResolutionId = this.appData.gasSelectedResolutionId || this.resolutions[0].id;
+
     this.updateChartSeries();
 
     this.refreshChart(true);
@@ -77,7 +88,7 @@ export class GasComponent extends BaseComponent implements OnInit {
     const start = moment(this.selectedFromDate).format('D MMMM YYYY');
     const end = moment(this.selectedToDate).format('D MMMM YYYY');
 
-    if (this.selectedResolution === 'QuarterOfHour' || this.selectedResolution === 'Hour') {
+    if (this.selectedResolutionId === 'QuarterOfHour' || this.selectedResolutionId === 'Hour') {
       return `Gas (${start})`;
     }
 
@@ -120,10 +131,10 @@ export class GasComponent extends BaseComponent implements OnInit {
     this.loadingStatus = DataLoadStatus.Started;
     this.result = new QboxPagedDataQueryResult<QboxCounterData>();
 
-    const dates = this.timeRangeHelper.getToDate(this.selectedResolution, this.selectedFromDate);
+    const dates = this.timeRangeHelper.getToDate(this.selectedResolutionId, this.selectedFromDate);
     this.selectedToDate = dates.toDate.toDate();
 
-    this.subscription.add(this.service.getData(this.selectedResolution, dates.fromDate.toDate(), this.selectedToDate)
+    this.subscription.add(this.service.getData(this.selectedResolutionId, dates.fromDate.toDate(), this.selectedToDate)
       .subscribe(
         data => {
           this.resultFromServer = data;
@@ -131,6 +142,12 @@ export class GasComponent extends BaseComponent implements OnInit {
 
           this.filter();
           this.updateChartSeries();
+
+          // Save settings
+          this.appData.gasSelectedFromDate = this.selectedFromDate;
+          this.appData.gasSelectedToDate = this.selectedToDate;
+          this.appData.gasSelectedResolutionId = this.selectedResolutionId;
+          this.sessionStorageService.set(nameof(ApplicationData), this.appData);
         }, error => {
           switch (error.statusCode) {
             case HttpStatusCodes.NOT_FOUND:

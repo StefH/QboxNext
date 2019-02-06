@@ -1,5 +1,5 @@
 /**
-* Interface to create a new generic type `T` based on anoptional Partial object.
+* Interface to create a new generic type `T` based on an optional Partial object.
 */
 export interface PartialParamConstructor<T> {
 
