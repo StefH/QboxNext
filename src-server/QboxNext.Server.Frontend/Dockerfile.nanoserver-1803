@@ -1,16 +1,16 @@
 # --- Angular build:start
-FROM stefanscherer/node-windows as nodebuilder
+FROM stefanscherer/node-windows:10.15.0 as nodebuilder
 
 # set working directory
-RUN mkdir -p /usr/src/app
+# RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 
 # add `/usr/src/app/node_modules/.bin` to $PATH
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
+# ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY src-server/QboxNext.Server.Frontend/ClientApp/package.json /usr/src/app/package.json
-RUN npm install
+RUN npm install --silent
 
 # add app
 COPY src-server/QboxNext.Server.Frontend/ClientApp/. /usr/src/app

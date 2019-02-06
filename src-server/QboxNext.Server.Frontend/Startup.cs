@@ -57,7 +57,8 @@ namespace QboxNext.Server.Frontend
 
             // Add External services
             services
-                .AddBusiness();
+                .AddBusiness()
+                .AddCorrelationId();
 
             // Configure
             services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
