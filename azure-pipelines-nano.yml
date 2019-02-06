@@ -11,14 +11,14 @@ variables:
   buildDocker: $(BUILD_DOCKER)
 
 steps:
-- task: DotNetCoreCLI@2
-  displayName: 'Restore and Build'
-  inputs:
-    command: build
-    projects: |
-      $(buildProjectDataReceiver)
-      $(buildProjectFrontend)
-    arguments: '--configuration $(BuildConfiguration)'
+#- task: DotNetCoreCLI@2
+#  displayName: 'Restore and Build'
+  #inputs:
+   # command: build
+    #projects: |
+#      $(buildProjectDataReceiver)
+#      $(buildProjectFrontend)
+    #arguments: '--configuration $(BuildConfiguration)'
 
 #- task: DotNetCoreCLI@2
 #  displayName: Test
