@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Core.Tests", "Qbox
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QboxNext.Simulation", "QboxNext.Simulation\QboxNext.Simulation.csproj", "{8E16DC6D-4861-4670-BA90-69344DF3E4F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QboxNext.Storage.Abstractions", "QboxNext.Storage.Abstractions\QboxNext.Storage.Abstractions.csproj", "{7F5D1E8D-F1D3-4DAD-A3F7-FE2BD86EBC72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{8E16DC6D-4861-4670-BA90-69344DF3E4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E16DC6D-4861-4670-BA90-69344DF3E4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E16DC6D-4861-4670-BA90-69344DF3E4F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F5D1E8D-F1D3-4DAD-A3F7-FE2BD86EBC72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F5D1E8D-F1D3-4DAD-A3F7-FE2BD86EBC72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F5D1E8D-F1D3-4DAD-A3F7-FE2BD86EBC72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F5D1E8D-F1D3-4DAD-A3F7-FE2BD86EBC72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

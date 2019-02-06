@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Storage.Abstractions\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Storage.Abstractions\**\*.cs" />
     <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Logging\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Logging\**\*.cs" />
     <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Model\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Model\**\*.cs" />
     <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\**\*.cs" />

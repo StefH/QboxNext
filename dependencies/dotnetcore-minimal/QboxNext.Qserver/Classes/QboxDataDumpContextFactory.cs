@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using QboxNext.Core.Encryption;
 using QboxNext.Model.Classes;
 using QboxNext.Model.Interfaces;
+using QboxNext.Storage;
 
 namespace QboxNext.Qserver.Classes
 {
@@ -13,11 +14,13 @@ namespace QboxNext.Qserver.Classes
     {
         private readonly ILogger<QboxDataDumpContextFactory> _logger;
         private readonly IMiniRetriever _miniRetriever;
+        private readonly IStorageProviderFactory _storageProviderFactory;
 
-        public QboxDataDumpContextFactory(ILogger<QboxDataDumpContextFactory> logger, IMiniRetriever miniRetriever)
+        public QboxDataDumpContextFactory(ILogger<QboxDataDumpContextFactory> logger, IMiniRetriever miniRetriever, IStorageProviderFactory storageProviderFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _miniRetriever = miniRetriever ?? throw new ArgumentNullException(nameof(miniRetriever));
+            _storageProviderFactory = storageProviderFactory ?? throw new ArgumentNullException(nameof(storageProviderFactory));
         }
 
         /// <summary>
@@ -43,7 +46,7 @@ namespace QboxNext.Qserver.Classes
 
                 if (mini != null)
                 {
-                    mini.SetStorageProvider();
+                    mini.SetStorageProvider(_storageProviderFactory);
                     var message = QboxMessageDecrypter.DecryptPlainOrEncryptedMessage(bytes);
                     return new QboxDataDumpContext(message, length, lastSeenAtUrl, externalIp, mini, error: null);
                 }

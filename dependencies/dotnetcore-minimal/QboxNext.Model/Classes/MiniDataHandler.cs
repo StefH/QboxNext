@@ -10,7 +10,6 @@ using QboxNext.Qboxes.Parsing;
 using QboxNext.Qboxes.Parsing.Elements;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
-using QboxNext.Qserver.Core.Model;
 
 namespace QboxNext.Model.Classes
 {

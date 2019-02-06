@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using QboxNext.Core.Dto;
 using QboxNext.Model.Qboxes;
 using QboxNext.Qboxes.Parsing.Protocols;
-using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Model;
+using QboxNext.Storage;
 
 namespace QboxNext.Model.Utils
 {
@@ -123,11 +123,7 @@ namespace QboxNext.Model.Utils
             return new Qbox
             {
                 SerialNumber = qboxSerial,
-                Precision = Precision.mWh,
-                DataStore = new DataStore
-                {
-                    Path = QboxNext.Core.Config.DataStorePath
-                }
+                Precision = Precision.mWh
             };
         }
 
@@ -136,7 +132,6 @@ namespace QboxNext.Model.Utils
             var mini = new Mini()
             {
                 SerialNumber = qboxSerial,
-                DataStorePath = QboxNext.Core.Config.DataStorePath,
                 Precision = Precision.mWh,
                 AutoAnswer = true,
                 MeterType = _qboxType == QboxType.Mono ? DeviceMeterType.Smart_Meter_EG : DeviceMeterType.NO_Meter,

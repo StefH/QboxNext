@@ -37,6 +37,14 @@ steps:
 #    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 #    zipAfterPublish: True
 
+- script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile.nanoserver-1803 .
+  displayName: 'Build Docker image [$(imageNameDataReceiver)]'
+  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
+
+- script: docker tag $(DOCKER_ID)/$(imageNameDataReceiver):latest $(DOCKER_ID)/$(imageNameDataReceiver):$(tag)
+  displayName: 'Tag Docker image [$(imageNameDataReceiver):$(tag)]'
+  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
+
 - script: docker build -t $(DOCKER_ID)/$(imageNameFrontend) -f ./src-server/QboxNext.Server.Frontend/Dockerfile.nanoserver-1803 .
   displayName: 'Build Docker image [$(imageNameFrontend)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
@@ -53,6 +61,8 @@ steps:
 # For win1803 ; just use --password
 - script: |
     docker login --username $(DOCKER_ID) --password $(DOCKER_PWD)
+    docker push $(DOCKER_ID)/$(imageNameDataReceiver):latest
+    docker push $(DOCKER_ID)/$(imageNameDataReceiver):$(tag)
     docker push $(DOCKER_ID)/$(imageNameFrontend):latest
     docker push $(DOCKER_ID)/$(imageNameFrontend):$(tag)
   displayName: 'Push Docker images [$(imageNameDataReceiver) and $(imageNameFrontend)]'

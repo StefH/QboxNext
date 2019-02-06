@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using QboxNext.Core.Dto;
-using QboxNext.Qserver.Core.Statistics;
+using QboxNext.Storage;
 
 namespace QboxNext.Qservice.Classes
 {

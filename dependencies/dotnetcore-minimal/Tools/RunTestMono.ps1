@@ -22,11 +22,16 @@ Start-Process dotnet -ArgumentList ".\QboxNext.SimulateQbox\bin\Debug\netcoreapp
 
 while ($true)
 {
+	Write-Output "Total today:"
 	$now = get-date
 	$today = get-date $now -format "yyyy-MM-dd"
 	$tomorrow = get-date (get-date).AddDays(1) -format "yyyy-MM-dd"
 	$response = (invoke-webrequest "http://localhost:5002/api/getseries?sn=00-00-000-001&from=$today&to=$tomorrow&resolution=day").content | convertfrom-json
 	$response.data | Where-Object { $_.energyType -eq "NetLow" } | Select-Object data | convertto-json
 
+	Write-Output "Live:"
+	$response = (invoke-webrequest "http://localhost:5002/api/getlivedata?sn=00-00-000-001").content | convertfrom-json
+	$response.data | Where-Object { $_.energyType -eq "NetLow" } | Select-Object power | convertto-json
+	
 	Start-Sleep -Second 10
 }

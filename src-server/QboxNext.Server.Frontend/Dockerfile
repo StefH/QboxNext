@@ -6,6 +6,7 @@ EXPOSE 443
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
 
+COPY ["dependencies/dotnetcore-minimal/QboxNext.Storage.Abstractions/QboxNext.Storage.Abstractions.csproj", "dependencies/dotnetcore-minimal/QboxNext.Storage.Abstractions/"]
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Qboxes.Parsing/QboxNext.Qboxes.Parsing.csproj", "dependencies/dotnetcore-minimal/QboxNext.Qboxes.Parsing/"]
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Logging/QboxNext.Logging.csproj", "dependencies/dotnetcore-minimal/QboxNext.Logging/"]
 COPY ["dependencies/dotnetcore-minimal/QboxNext.Qserver.Core/QboxNext.Qserver.Core.csproj", "dependencies/dotnetcore-minimal/QboxNext.Qserver.Core/"]

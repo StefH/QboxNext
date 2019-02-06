@@ -1,7 +1,6 @@
 ﻿using QboxNext.Qboxes.Parsing.Protocols;
-using QboxNext.Qserver.Core.Factories;
-using QboxNext.Qserver.Core.Interfaces;
 using System.Collections.Generic;
+using QboxNext.Storage;
 
 namespace QboxNext.Model.Qboxes
 {
@@ -16,9 +15,6 @@ namespace QboxNext.Model.Qboxes
         public DeviceMeterType SecondaryMeterType { get; set; }
 
         public IList<ClientQbox> Clients { get; set; }
-
-        /// <summary>Root directory of the data store, for example d:\QboxNextData</summary>
-        public string DataStorePath { get; set; }
 
         /// <summary>
         /// QboxStatus holds all the data that is needed to determine the health of the Qbox
@@ -43,13 +39,6 @@ namespace QboxNext.Model.Qboxes
         /// Should the Qbox receive the automatic responses? Like setting the meter type after a factory reset. Normally true.
         /// </summary>
         public bool AutoAnswer { get; set; }
-
-        /// <summary>
-        /// The Storage Provider is an Enum to identify which StorageProvider will store the data 
-        /// for the Mini's counters. This value is used by the CounterPoco class to retrieve the 
-        /// StorageProvider from the factory.
-        /// </summary>
-        public StorageProvider StorageProvider { get; set; }
 
         /// <summary>
         /// Holds last meter settings set in command-tab detail qbox form, settings are needed after ResetFactoryDefaults
@@ -89,13 +78,16 @@ namespace QboxNext.Model.Qboxes
             return false;
         }
 
-        public void SetStorageProvider()
+        public void SetStorageProvider(IStorageProviderFactory storageProviderFactory)
         {
             foreach (var counterPoco in Counters)
             {
-                counterPoco.StorageProvider = StorageProviderFactory.GetStorageProvider(
-                    false, StorageProvider, SerialNumber, DataStorePath,
-                    counterPoco.CounterId, Precision, counterPoco.StorageId);
+                counterPoco.StorageProvider = storageProviderFactory.GetStorageProvider(
+                    SerialNumber, 
+                    counterPoco.CounterId, 
+                    Precision, 
+                    counterPoco.StorageId
+                );
             }
         }
 

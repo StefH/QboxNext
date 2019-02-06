@@ -5,14 +5,11 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using NLog.Fluent;
 using QboxNext.Model.Qboxes;
-using QboxNext.Core;
 using QboxNext.Core.Dto;
 using QboxNext.Core.Utils;
 using QboxNext.Logging;
 using QboxNext.Qbiz.Dto;
-using QboxNext.Qboxes.Parsing.Protocols;
-using QboxNext.Qserver.Core.Interfaces;
-using QboxNext.Qserver.Core.Statistics;
+using QboxNext.Storage;
 
 namespace QboxNext.Qservice.Classes
 {
@@ -22,6 +19,7 @@ namespace QboxNext.Qservice.Classes
     public class SeriesRetriever : ISeriesRetriever
     {
         private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger<SeriesRetriever>();
+        private readonly IStorageProviderFactory _storageProviderFactory;
 
         private const int GenerationCounterId = 9999;
 
@@ -34,20 +32,15 @@ namespace QboxNext.Qservice.Classes
             );
         }
 
-        /// <summary>
-        /// Build the C# result that can be used to generate the Json result for GetSeries.
-        /// </summary>
-        public IList<Serie> RetrieveForAccount(Mini mini, DateTime inFromUtc, DateTime inToUtc, SeriesResolution inResolution)
+        public SeriesRetriever(IStorageProviderFactory storageProviderFactory)
         {
-            var valueSeries = RetrieveSerieValuesForAccount(mini, inFromUtc, inToUtc, inResolution);
-            return Mapper.Map<IEnumerable<ValueSerie>, IList<Serie>>(valueSeries);
+            _storageProviderFactory = storageProviderFactory ?? throw new ArgumentNullException(nameof(storageProviderFactory));
         }
 
-
         /// <summary>
         /// Build the C# result that can be used to generate the Json result for GetSeries.
         /// </summary>
-        private IEnumerable<ValueSerie> RetrieveSerieValuesForAccount(Mini mini, DateTime inFromUtc, DateTime inToUtc, SeriesResolution inResolution)
+        public IEnumerable<ValueSerie> RetrieveSerieValuesForAccount(Mini mini, DateTime inFromUtc, DateTime inToUtc, SeriesResolution inResolution)
         {
             var parameters = new RetrieveSeriesParameters
             {
@@ -194,7 +187,7 @@ namespace QboxNext.Qservice.Classes
         }
 
 
-        private static Dictionary<int, IList<SeriesValue>> GetSeriesAtCounterLevel(RetrieveSeriesParameters parameters)
+        private Dictionary<int, IList<SeriesValue>> GetSeriesAtCounterLevel(RetrieveSeriesParameters parameters)
         {
             var countersSeriesValue = new Dictionary<int, IList<SeriesValue>>();
             var fromNl = DateTimeUtils.UtcDateTimeToNl(parameters.FromUtc);
@@ -204,6 +197,10 @@ namespace QboxNext.Qservice.Classes
 
             try
             {
+                // In attempt to refactor out the tight coupling of provider/counter, for now we set
+                // provider here.
+                mini.SetStorageProvider(_storageProviderFactory);
+
                 foreach (var counter in mini.Counters)
                 {
                     try

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QboxNext.Storage.Abstractions\QboxNext.Storage.Abstractions.csproj" />
     <ProjectReference Include="..\QboxNext.Core\QboxNext.Core.csproj" />
     <ProjectReference Include="..\QboxNext.Logging\QboxNext.Logging.csproj" />
     <ProjectReference Include="..\QboxNext.Qboxes.Parsing\QboxNext.Qboxes.Parsing.csproj" />

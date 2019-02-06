@@ -7,7 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\QboxNext.Core\QboxNext.Core.csproj" />
     <ProjectReference Include="..\QboxNext.Logging\QboxNext.Logging.csproj" />
-    <ProjectReference Include="..\QboxNext.Qserver.Core\QboxNext.Qserver.Core.csproj" />
   </ItemGroup>
 
 </Project>

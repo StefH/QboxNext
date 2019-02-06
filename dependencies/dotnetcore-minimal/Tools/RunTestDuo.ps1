@@ -28,5 +28,9 @@ while ($true)
 	$response = (invoke-webrequest "http://localhost:5002/api/getseries?sn=00-00-000-000&from=$today&to=$tomorrow&resolution=day").content | convertfrom-json
 	$response.data | Where-Object { $_.energyType -eq "NetLow" } | Select-Object data | convertto-json
 
+	Write-Output "Live:"
+	$response = (invoke-webrequest "http://localhost:5002/api/getlivedata?sn=00-00-000-000").content | convertfrom-json
+	$response.data | Where-Object { $_.energyType -eq "NetLow" } | Select-Object power | convertto-json
+	
 	Start-Sleep -Second 10
 }
