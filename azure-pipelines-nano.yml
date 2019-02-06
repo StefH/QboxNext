@@ -1,13 +1,11 @@
 pool:
-  vmImage: 'ubuntu-16.04'
+  vmImage: 'win1803'
 
 variables:
   buildConfiguration: 'Release'
   buildProjectDataReceiver: '**/QboxNext.Server.DataReceiver.csproj'
   buildProjectFrontend: '**/QboxNext.Server.Frontend.csproj'
-#  testProjects: '**/tests/**/*.csproj'
-  imageNameDataReceiver: 'qboxnext-datareceiver'
-  imageNameFrontend: 'qboxnext-frontend'
+  imageName: 'qboxnext-datareceiver'
   tag: '1.0.0'
   buildDocker: $(BUILD_DOCKER)
 
@@ -38,30 +36,20 @@ steps:
 #    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 #    zipAfterPublish: True
 
-- script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
-  displayName: 'Build Docker image [$(imageNameDataReceiver)]'
+- script: docker build -t $(DOCKER_ID)/$(imageName) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
+  displayName: Build Docker image
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
-- script: docker tag $(DOCKER_ID)/$(imageNameDataReceiver):latest $(DOCKER_ID)/$(imageNameDataReceiver):$(tag)
-  displayName: 'Tag Docker image [$(imageNameDataReceiver):$(tag)]'
-  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
-
-- script: docker build -t $(DOCKER_ID)/$(imageNameFrontend) -f ./src-server/QboxNext.Server.Frontend/Dockerfile .
-  displayName: 'Build Docker image [$(imageNameFrontend)]'
-  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
-
-- script: docker tag $(DOCKER_ID)/$(imageNameFrontend):latest $(DOCKER_ID)/$(imageNameFrontend):$(tag)
-  displayName: 'Tag Docker image [$(imageNameFrontend):$(tag)]'
+- script: docker tag $(DOCKER_ID)/$(imageName):latest $(DOCKER_ID)/$(imageName):$(tag)
+  displayName: 'Tag Docker image [$(imageName):$(tag)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
 # https://stackoverflow.com/questions/51489359/docker-using-password-via-the-cli-is-insecure-use-password-stdin
 - script: |
     echo "$(DOCKER_PWD)" | docker login --username $(DOCKER_ID) --password-stdin
-    docker push $(DOCKER_ID)/$(imageNameDataReceiver):latest
-    docker push $(DOCKER_ID)/$(imageNameDataReceiver):$(tag)
-    docker push $(DOCKER_ID)/$(imageNameFrontend):latest
-    docker push $(DOCKER_ID)/$(imageNameFrontend):$(tag)
-  displayName: 'Push Docker images [$(imageNameDataReceiver) and $(imageNameFrontend)]'
+    docker push $(DOCKER_ID)/$(imageName):latest
+    docker push $(DOCKER_ID)/$(imageName):$(tag)
+  displayName: 'Push Docker images [$(imageName):latest and $(imageName):$(tag)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
 #- task: PublishBuildArtifacts@1

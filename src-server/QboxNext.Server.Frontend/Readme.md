@@ -23,6 +23,13 @@ docker push sheyenrath/qboxnext-frontend-nanoserver-1803:latest
 docker push sheyenrath/qboxnext-frontend-nanoserver-1803:1.0.2
 ```
 
+#### 4. Run
+
+``` cmd
+docker run -it --rm --env-file C:\Users\StefHeyenrath\Documents\GitHub\qboxnext-env.txt -p 4200:80 sheyenrath/qboxnext-frontend-nanoserver-1803:latest
+```
+
+
 ### Build Docker for "Linux"
 
 Go to the root from this project

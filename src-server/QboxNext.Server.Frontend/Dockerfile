@@ -46,7 +46,6 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 # install and cache app dependencies
 COPY src-server/QboxNext.Server.Frontend/ClientApp/package.json /usr/src/app/package.json
 RUN npm install
-# RUN npm install -g @angular/cli@1.7.0 --unsafe
 
 # add app
 COPY src-server/QboxNext.Server.Frontend/ClientApp/. /usr/src/app
