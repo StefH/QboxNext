@@ -38,7 +38,7 @@ steps:
 #    zipAfterPublish: True
 
 - script: docker build -t $(DOCKER_ID)/$(imageNameFrontend) -f ./src-server/QboxNext.Server.Frontend/Dockerfile.nanoserver-1803 .
-  displayName: 'Build Docker image [$(imageNameFrontend)]''
+  displayName: 'Build Docker image [$(imageNameFrontend)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
 - script: docker tag $(DOCKER_ID)/$(imageNameFrontend):latest $(DOCKER_ID)/$(imageNameFrontend):$(tag)
