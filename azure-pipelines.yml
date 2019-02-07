@@ -5,10 +5,13 @@ variables:
   buildConfiguration: 'Release'
   buildProjectDataReceiver: '**/QboxNext.Server.DataReceiver.csproj'
   buildProjectFrontend: '**/QboxNext.Server.Frontend.csproj'
+  npmProjectFrontend: './src-server/QboxNext.Server.Frontend/ClientApp'
 #  testProjects: '**/tests/**/*.csproj'
   imageNameDataReceiver: 'qboxnext-datareceiver'
   imageNameFrontend: 'qboxnext-frontend'
   tag: '1.0.0'
+  buildFrontend: $(BUILD_FRONTEND)
+  buildBackend: $(BUILD_BACKEND)
   buildDocker: $(BUILD_DOCKER)
 
 steps:
@@ -20,6 +23,7 @@ steps:
       $(buildProjectDataReceiver)
       $(buildProjectFrontend)
     arguments: '--configuration $(BuildConfiguration)'
+  condition: and(succeeded(), eq(variables.buildBackend, 'yes'))
 
 #- task: DotNetCoreCLI@2
 #  displayName: Test
