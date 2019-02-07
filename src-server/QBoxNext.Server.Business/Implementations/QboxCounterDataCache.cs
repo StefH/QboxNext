@@ -75,9 +75,7 @@ namespace QBoxNext.Server.Business.Implementations
 
         private static bool IsRealTime(QboxDataQuery query)
         {
-            return
-                query.From == DateTime.Today &&
-                (query.Resolution == QboxQueryResolution.QuarterOfHour || query.Resolution == QboxQueryResolution.Hour);
+            return query.From >= DateTime.UtcNow && DateTime.UtcNow < query.From;
         }
     }
 }
