@@ -26,7 +26,8 @@ steps:
   displayName: 'qboxnext-frontend: npm run build-prod'
   inputs:
     workingDir: $(npmProjectFrontend)
-    command: npm run build-prod
+    command: custom
+    customCommand: 'run build-prod'
   condition: and(succeeded(), eq(variables.buildFrontend, 'yes'))
 
 - task: DotNetCoreCLI@2
