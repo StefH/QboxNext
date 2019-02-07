@@ -15,6 +15,12 @@ variables:
   buildDocker: $(BUILD_DOCKER)
 
 steps:
+- task: Npm@1
+  displayName: 'qboxnext-frontend: npm install'
+  inputs:
+    workingDir: $(npmProjectFrontend)
+    command: install
+
 - task: DotNetCoreCLI@2
   displayName: 'Restore and Build'
   inputs:
