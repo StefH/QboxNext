@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\QboxNext.Extensions\QboxNext.Extensions.csproj" />
     <ProjectReference Include="..\..\src\QboxNext\QboxNext.csproj" />
+    <!--<ProjectReference Include="..\QboxNext.Server.Caching.AzureTableStorage\QboxNext.Server.Caching.AzureTableStorage.csproj" />-->
     <ProjectReference Include="..\QboxNext.Server.Common\QboxNext.Server.Common.csproj" />
     <ProjectReference Include="..\QboxNext.Server.Domain\QboxNext.Server.Domain.csproj" />
     <ProjectReference Include="..\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />

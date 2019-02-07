@@ -39,6 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // Add External
             services.AddQboxNextExtensions();
+            // services.AddDistributedAzureTableStorageCache();
             services.AddAzure();
         }
     }

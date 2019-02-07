@@ -63,6 +63,7 @@ namespace QboxNext.Server.Frontend
             // Configure
             services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
             services.Configure<AppOptions>(Configuration.GetSection("App"));
+            // services.Configure<AzureTableStorageCacheOptions>(Configuration.GetSection("AzureTableStorageCacheOptions"));
 
             // Auth0
             services.AddAuth0(options =>
