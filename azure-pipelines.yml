@@ -31,7 +31,7 @@ steps:
   condition: and(succeeded(), eq(variables.buildFrontend, 'yes'))
 
 - task: DotNetCoreCLI@2
-  displayName: 'Restore and Build'
+  displayName: 'DataReceiver & Frontend: Build'
   inputs:
     command: build
     projects: |
@@ -47,15 +47,17 @@ steps:
 #    projects: '$(testProjects)'
 #    arguments: '--configuration $(BuildConfiguration)'
 
-#- task: DotNetCoreCLI@2
-#  displayName: Publish
-#  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
-#  inputs:
-#    command: publish
-#    projects: $(buildProjects)
-#    publishWebProjects: True
-#    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-#    zipAfterPublish: True
+- task: DotNetCoreCLI@2
+  displayName: 'DataReceiver & Frontend: Publish'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
+  inputs:
+    command: publish
+    projects: |
+      $(buildProjectDataReceiver)
+      $(buildProjectFrontend)
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
 
 - script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
   displayName: 'Build Docker image [$(imageNameDataReceiver)]'
@@ -83,8 +85,8 @@ steps:
   displayName: 'Push Docker images [$(imageNameDataReceiver) and $(imageNameFrontend)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
-#- task: PublishBuildArtifacts@1
-#  displayName: 'Publish Artifact'
-#  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
-#  inputs:
-#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
