@@ -20,6 +20,14 @@ steps:
   inputs:
     workingDir: $(npmProjectFrontend)
     command: install
+  condition: and(succeeded(), eq(variables.buildFrontend, 'yes'))
+
+- task: Npm@1
+  displayName: 'qboxnext-frontend: npm run build-prod'
+  inputs:
+    workingDir: $(npmProjectFrontend)
+    command: run build-prod
+  condition: and(succeeded(), eq(variables.buildFrontend, 'yes'))
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore and Build'
