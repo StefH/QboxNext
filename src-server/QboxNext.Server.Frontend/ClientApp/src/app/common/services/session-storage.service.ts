@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
+
 import { PartialParamConstructor } from '../interfaces';
+
+export class SessionValue<T> {
+    public value: T;
+
+    public constructor(init?: Partial<SessionValue<T>>) {
+        Object.assign(this, init);
+    }
+}
 
 @Injectable({
     providedIn: 'root'
@@ -34,13 +43,5 @@ export class SessionStorageService {
         }
 
         sessionStorage.clear();
-    }
-}
-
-export class SessionValue<T> {
-    public value: T;
-
-    public constructor(init?: Partial<SessionValue<T>>) {
-        Object.assign(this, init);
     }
 }

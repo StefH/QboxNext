@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Auth0DecodedHash, Auth0Error, WebAuth } from 'auth0-js';
@@ -13,25 +13,18 @@ import { WINDOW } from '../common/utils';
     providedIn: 'root'
 })
 export class AuthenticationService {
-    private _auth0: WebAuth | null = null;
-
-    // Use lazy loading...
-    private get auth0(): WebAuth {
-        if (!this._auth0) {
-            this._auth0 = new WebAuth({
-                clientID: 'zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu',
-                domain: 'stef-heyenrath.eu.auth0.com',
-                responseType: 'token id_token',
-                audience: 'https://qboxnext.web.nl',
-                redirectUri: `${window.location.href}callback`,
-                scope: 'openid'
-            });
-        }
-
-        return this._auth0;
-    }
+    private readonly auth0: WebAuth;
 
     constructor(private sessionStorageService: SessionStorageService, private router: Router, @Inject(WINDOW) private window: Window) {
+
+        this.auth0 = new WebAuth({
+            clientID: 'zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu',
+            domain: 'stef-heyenrath.eu.auth0.com',
+            responseType: 'token id_token',
+            audience: 'https://qboxnext.web.nl',
+            redirectUri: `${this.window.location.origin}/callback`,
+            scope: 'openid'
+        });
     }
 
     public login(): void {

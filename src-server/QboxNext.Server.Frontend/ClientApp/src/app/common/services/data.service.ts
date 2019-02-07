@@ -3,9 +3,8 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { BaseService } from './base.service';
 import { QboxCounterData, QboxPagedDataQueryResult } from '../models';
-
+import { BaseService } from './base.service';
 
 @Injectable()
 export class DataService extends BaseService<QboxCounterData> {

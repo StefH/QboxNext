@@ -1,16 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+import { DxChartComponent } from 'devextreme-angular';
 import * as moment from 'moment';
 import { nameof } from 'ts-simple-nameof';
-import { DxChartComponent } from 'devextreme-angular';
 
+import { BaseComponent } from '../common/components';
+import { HttpStatusCodes } from '../common/constants';
+import { DataLoadStatus } from '../common/enums';
+import { ElectricityValueFormatter } from '../common/formatters';
+import { ApplicationData, QboxCounterData, QboxPagedDataQueryResult } from '../common/models';
 import { DataService, TimeRangeHelper } from '../common/services';
 import { SessionStorageService } from '../common/services';
-import { ApplicationData, QboxCounterData, QboxPagedDataQueryResult } from '../common/models';
-import { ElectricityValueFormatter } from '../common/formatters';
-import { BaseComponent } from '../common/components';
-import { DataLoadStatus } from '../common/enums';
-import { HttpStatusCodes } from '../common/constants';
 
 @Component({
   selector: 'app-show-data',

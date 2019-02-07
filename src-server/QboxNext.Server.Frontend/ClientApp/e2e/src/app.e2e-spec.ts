@@ -1,4 +1,5 @@
 import { AppPage } from './app.po';
+// tslint:disable-next-line:ordered-imports
 import { browser, logging } from 'protractor';
 
 describe('workspace-project App', () => {
