@@ -42,6 +42,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\QboxNext.Server.DataReceiver\Telemetry\QboxNextTelemetryInitializer.cs" Link="Telemetry\QboxNextTelemetryInitializer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -64,6 +68,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\common\" />
+    <Folder Include="Telemetry\" />
   </ItemGroup>
 
 </Project>

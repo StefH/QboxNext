@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Auth0DecodedHash, Auth0Error, WebAuth } from 'auth0-js';
@@ -6,23 +6,20 @@ import { nameof } from 'ts-simple-nameof';
 
 import { LoginModel } from '../common/models';
 import { SessionStorageService } from '../common/services/session-storage.service';
-import { WINDOW } from '../common/utils';
-
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenticationService {
-    private readonly auth0: WebAuth;
+    private auth0: WebAuth;
 
-    constructor(private sessionStorageService: SessionStorageService, private router: Router, @Inject(WINDOW) private window: Window) {
-
+    constructor(private sessionStorageService: SessionStorageService, private router: Router) {
         this.auth0 = new WebAuth({
             clientID: 'zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu',
             domain: 'stef-heyenrath.eu.auth0.com',
             responseType: 'token id_token',
             audience: 'https://qboxnext.web.nl',
-            redirectUri: `${this.window.location.origin}/callback`,
+            redirectUri: `${location.origin}/callback`,
             scope: 'openid'
         });
     }

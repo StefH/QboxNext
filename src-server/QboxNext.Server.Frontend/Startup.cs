@@ -1,4 +1,5 @@
 ﻿using CorrelationId;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Extensions.AzureTables;
 using QboxNext.Logging;
+using QboxNext.Server.DataReceiver.Telemetry;
 using QboxNext.Server.Frontend.Options;
 using QboxNext.Server.Infrastructure.Azure.Options;
 using System.Collections.Generic;
@@ -33,6 +35,11 @@ namespace QboxNext.Server.Frontend
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
+            if (env.IsDevelopment())
+            {
+                builder.AddApplicationInsightsSettings(developerMode: true);
+            }
+
             Configuration = builder.Build();
             HostingEnvironment = env;
         }
@@ -40,6 +47,10 @@ namespace QboxNext.Server.Frontend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // https://github.com/Microsoft/ApplicationInsights-aspnetcore/wiki/Custom-Configuration
+            services.AddSingleton<ITelemetryInitializer, QboxNextTelemetryInitializer>();
+            services.AddApplicationInsightsTelemetry();
+
             // Configure MVC AuthorizeFilter
             services.AddMvc(config =>
             {
