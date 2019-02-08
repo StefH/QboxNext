@@ -49,7 +49,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: 'DataReceiver & Frontend: Publish'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
+  condition: and(succeeded(), eq(variables.buildBackend, 'yes'), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
   inputs:
     command: publish
     projects: |
