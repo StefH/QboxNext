@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
-using QboxNext.Core.Log;
+using Microsoft.Extensions.Logging;
 using QboxNext.Model.Classes;
 using QboxNext.Model.Interfaces;
 using QboxNext.Qboxes.Parsing;
@@ -15,13 +14,15 @@ namespace QboxNext.Qserver.Controllers
     {
         private readonly IQboxDataDumpContextFactory _qboxDataDumpContextFactory;
         private readonly IParserFactory _parserFactory;
+        private readonly ILogger<DeviceController> _logger;
         private readonly IQboxMessagesLogger _qboxMessagesLogger;
-        private static readonly Logger Log = QboxNextLogFactory.GetLogger("DeviceController");
 
-        public DeviceController(IQboxDataDumpContextFactory qboxDataDataDumpContextFactory, IParserFactory parserFactory)
+        public DeviceController(IQboxDataDumpContextFactory qboxDataDataDumpContextFactory, IParserFactory parserFactory, ILogger<DeviceController> logger)
         {
             _qboxDataDumpContextFactory = qboxDataDataDumpContextFactory ?? throw new ArgumentNullException(nameof(qboxDataDataDumpContextFactory));
             _parserFactory = parserFactory ?? throw new ArgumentNullException(nameof(parserFactory));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
             _qboxMessagesLogger = new QboxMessagesNullLogger();
         }
 
@@ -30,14 +31,14 @@ namespace QboxNext.Qserver.Controllers
         [HttpPost("/device/qbox/{pn}/{sn}")]
         public ActionResult Qbox(string pn, string sn)
         {
-            Log.Trace("Enter");
+            _logger.LogTrace("Enter");
             var qboxDataDumpContext = _qboxDataDumpContextFactory.CreateContext(ControllerContext, pn, sn);
             try
             {
-                Log.Info(qboxDataDumpContext.Mini.SerialNumber);
+                _logger.LogInformation(qboxDataDumpContext.Mini.SerialNumber);
                 string result = new MiniDataHandler(qboxDataDumpContext, _qboxMessagesLogger, _parserFactory).Handle();
-                Log.Info("Parsing Done: {0}", result);
-                Log.Trace("Return");
+                _logger.LogInformation("Parsing Done: {0}", result);
+                _logger.LogTrace("Return");
                 return Content(result);
             }
             finally

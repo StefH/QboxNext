@@ -1,21 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
+using Microsoft.Extensions.Logging;
 using QboxNext.Core.Encryption;
-using QboxNext.Core.Log;
 using QboxNext.Model.Classes;
-using QboxNext.Qboxes.Parsing.Protocols;
-using QboxNext.Qserver.Core.Interfaces;
-using QboxNext.Qserver.Core.Model;
+using QboxNext.Model.Interfaces;
+using QboxNext.Storage;
 
 namespace QboxNext.Qserver.Classes
 {
     public class QboxDataDumpContextFactory : IQboxDataDumpContextFactory
     {
-        private static readonly Logger Log = QboxNextLogFactory.GetLogger("QboxDataDumpContextFactory");
+        private readonly ILogger<QboxDataDumpContextFactory> _logger;
+        private readonly IMiniRetriever _miniRetriever;
+        private readonly IStorageProviderFactory _storageProviderFactory;
+
+        public QboxDataDumpContextFactory(ILogger<QboxDataDumpContextFactory> logger, IMiniRetriever miniRetriever, IStorageProviderFactory storageProviderFactory)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _miniRetriever = miniRetriever ?? throw new ArgumentNullException(nameof(miniRetriever));
+            _storageProviderFactory = storageProviderFactory ?? throw new ArgumentNullException(nameof(storageProviderFactory));
+        }
 
         /// <summary>
         /// Overide to allow the creation of the Qbox Data Dump context object.
@@ -36,11 +42,11 @@ namespace QboxNext.Qserver.Classes
 
                 var bytes = GetRequestVariables(context, out length, out lastSeenAtUrl, out externalIp);
 
-                var mini = Mini(sn);
+                var mini = _miniRetriever.Retrieve(sn);
 
                 if (mini != null)
                 {
-                    mini.SetStorageProvider();
+                    mini.SetStorageProvider(_storageProviderFactory);
                     var message = QboxMessageDecrypter.DecryptPlainOrEncryptedMessage(bytes);
                     return new QboxDataDumpContext(message, length, lastSeenAtUrl, externalIp, mini, error: null);
                 }
@@ -49,100 +55,15 @@ namespace QboxNext.Qserver.Classes
             }
             catch (Exception e)
             {
-                var s = String.Format("Serialnumber: {0} - orginal error message: {2} | {1}", sn, e.Message, pn);
-                Log.Error(e, s);
+                var s = string.Format("Serialnumber: {0} - orginal error message: {2} | {1}", sn, e.Message, pn);
+                _logger.LogError(e, s);
                 return new QboxDataDumpContext("N/A", 0, "N/A", "N/A", null, error: e.Message + " - " + s);//refactor: beter oplossen wordt nu gecontroleerd in de controller en die gooit een exception
             }
             finally
             {
-                Log.Trace("Return");
+                _logger.LogTrace("Return");
             }
-
         }
-
-        /// <summary>
-		/// Returns a mini poco by serial number. First tries the Redis cache repository and if not found
-		/// checks if it can find the box in Eco.
-		/// Upon connection exception it will also fall back to ECO.
-		/// </summary>
-		/// <param name="sn">Serialnumber of the Mini</param>
-		/// <returns>MiniPoco object holding the Mini data</returns>
-        private MiniPoco Mini(string sn)
-        {
-            try
-            {
-                // SAM: previously the Qbox metadata was read from Redis. For now we take a huge shortcut and
-                // only support smart meters EG with S0.
-                // This code is tied to a similar construct in Qservice (SeriesRetriever.GetSeriesAtCounterLevel).
-                var counterSensorMappingsSmartMeter = new CounterSensorMappingPoco
-                {
-                    PeriodeBegin = new DateTime(2000, 1, 1),
-                    Formule = 1000
-                };
-
-                var mini = new MiniPoco()
-                {
-                    SerialNumber = sn,
-                    DataStorePath = QboxNext.Core.Config.DataStorePath,
-                    Counters = new List<CounterPoco>()
-                    {
-                        new CounterPoco
-                        {
-                            CounterId = 181,
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        },
-                        new CounterPoco
-                        {
-                            CounterId = 182,
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        },
-                        new CounterPoco
-                        {
-                            CounterId = 281,
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        },
-                        new CounterPoco
-                        {
-                            CounterId = 282,
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        },
-                        new CounterPoco
-                        {
-                            CounterId = 2421,
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        },
-                        new CounterPoco
-                        {
-                            CounterId = 1,
-                            // This is not correct, since the Eltako's have different formula's. Keep it simple for now.
-                            CounterSensorMappings = new List<CounterSensorMappingPoco> { counterSensorMappingsSmartMeter }
-                        }
-                    },
-                    Clients = new List<ClientQboxPoco>()
-                    {
-                        new ClientQboxPoco
-                        {
-                            ClientId = 0,
-                            MeterType = DeviceMeterType.Smart_Meter_EG,     // Main meter type for second Qbox of Duo.
-                            SecondaryMeterType = DeviceMeterType.SO_Pulse   // Should be DeviceMeterType.SO_Pulse for Mono with Qbox Solar.
-                        }
-                    },
-                    Precision = Precision.mWh,
-                    MeterType = DeviceMeterType.NO_Meter,       // This should contain the actual meter type for Mono.
-                    SecondaryMeterType = DeviceMeterType.None,  // This should be DeviceMeterType.SO_Pulse for Mono with Qbox Solar.
-                    AutoAnswer = true
-                };
-                if (mini != null)
-                    mini.PrepareCounters();
-                return mini;
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, e.Message);
-            }
-            throw new ArgumentOutOfRangeException("sn");
-        }
-
 
         /// <summary>
 		/// Finds the values from the request and returnes them in out params for later use in the process.

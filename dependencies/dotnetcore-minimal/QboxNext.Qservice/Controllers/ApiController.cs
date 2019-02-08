@@ -1,21 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
-using QboxNext.Core.Log;
+using Microsoft.Extensions.Logging;
 using QboxNext.Core.Utils;
+using QboxNext.Model.Interfaces;
+using QboxNext.Model.Qboxes;
 using QboxNext.Qservice.Classes;
+using QboxNext.Qservice.Utils;
 
 namespace QboxNext.Qservice.Controllers
 {
     [ApiController]
     public class ApiController : ControllerBase
     {
-        private static readonly Logger Log = QboxNextLogFactory.GetLogger("ApiController");
+        private readonly ILogger<ApiController> _logger;
         private readonly ISeriesRetriever _seriesRetriever;
+        private readonly IMiniRetriever _miniRetriever;
+        private readonly ResolutionCalculator _resolutionCalculator = new ResolutionCalculator();
 
-        public ApiController()
+        public ApiController(ILogger<ApiController> logger, IMiniRetriever miniRetriever, ISeriesRetriever seriesRetriever)
         {
-            _seriesRetriever = new SeriesRetriever();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _miniRetriever = miniRetriever ?? throw new ArgumentNullException(nameof(miniRetriever));
+            _seriesRetriever = seriesRetriever ?? throw new ArgumentNullException(nameof(seriesRetriever));
         }
 
         [HttpGet("/api/getseries")]
@@ -35,7 +43,8 @@ namespace QboxNext.Qservice.Controllers
             var actualResolution = resolution ?? DeriveResolution(from, to);
             var fromUtc = DateTimeUtils.NlDateTimeToUtc(from);
             var toUtc = DateTimeUtils.NlDateTimeToUtc(to);
-            var series = _seriesRetriever.RetrieveForAccount(sn, fromUtc, toUtc, actualResolution);
+            var mini = _miniRetriever.Retrieve(sn);
+            var series = RetrieveForAccount(mini, fromUtc, toUtc, actualResolution);
             var response = new
             {
                 result = true,
@@ -45,32 +54,41 @@ namespace QboxNext.Qservice.Controllers
         }
 
         /// <summary>
-        /// Derives the series resolution from the given timeframe. The UI makes sure
+        /// Derives the series resolution from the given time frame. The UI makes sure
         /// that when the customer requests data for the year graph, the @from and to are
         /// in different months. Otherwise the @from and to are in the same month.
         /// </summary>
-        /// <param name="from">The start of the timeframe</param>
-        /// <param name="to">The end of the timeframe</param>
+        /// <param name="from">The start of the time frame</param>
+        /// <param name="to">The end of the time frame</param>
         /// <returns>Series resolution</returns>
         private SeriesResolution DeriveResolution(DateTime from, DateTime to)
         {
             var span = to - from;
-            Log.Debug($"Series request span from and to: {span}");
-            var firstDayToInclude = from;
-            var lastDayToInclude = to.AddDays(-1);
-            return span.TotalMinutes <= (int)SeriesResolution.Day ?
-                span.TotalMinutes <= (int)SeriesResolution.Hour ? SeriesResolution.OneMinute : SeriesResolution.FiveMinutes :
-                IsMostLikelyYearGraphRequestOrCustomPeriodTotalRequest(firstDayToInclude, lastDayToInclude) && !IsPossiblyWeekGraph(span) ? SeriesResolution.Month : SeriesResolution.Day;
+            _logger.LogDebug($"Series request span from and to: {span}");
+            return _resolutionCalculator.Calculate(from, to);
         }
 
-        private static bool IsMostLikelyYearGraphRequestOrCustomPeriodTotalRequest(DateTime firstDayToInclude, DateTime lastDayToInclude)
+        /// <summary>
+        /// Build the C# result that can be used to generate the Json result for GetSeries.
+        /// </summary>
+        private IList<Serie> RetrieveForAccount(Mini mini, DateTime inFromUtc, DateTime inToUtc, SeriesResolution inResolution)
         {
-            return ((firstDayToInclude.Month != lastDayToInclude.Month) || firstDayToInclude.Year != lastDayToInclude.Year);
+            var valueSeries = _seriesRetriever.RetrieveSerieValuesForAccount(mini, inFromUtc, inToUtc, inResolution);
+            return Mapper.Map<IEnumerable<ValueSerie>, IList<Serie>>(valueSeries);
         }
 
-        private bool IsPossiblyWeekGraph(TimeSpan span)
+
+        /// <summary>
+        /// Get all data related to current power usage or generation.
+        /// </summary>
+        [HttpGet("/api/getlivedata")]
+        public ActionResult GetLiveData(string sn)
         {
-            return span.TotalMinutes == (int)SeriesResolution.Week;
+            var liveDataRetriever = new LiveDataRetriever(_seriesRetriever);
+            var mini = _miniRetriever.Retrieve(sn);
+            var data = liveDataRetriever.Retrieve(mini, DateTime.UtcNow);
+
+            return new OkObjectResult(new { result = true, data });
         }
     }
 }

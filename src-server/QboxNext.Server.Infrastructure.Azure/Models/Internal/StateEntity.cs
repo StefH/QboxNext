@@ -1,14 +1,20 @@
 ﻿using JetBrains.Annotations;
-using Microsoft.WindowsAzure.Storage.Table;
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using System;
 using System.Linq;
+using WindowsAzure.Table.Attributes;
 
 namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
 {
-    public class StateEntity : TableEntity
+    public class StateEntity
     {
+        [PartitionKey]
+        public string SerialNumber { get; set; }
+
+        [RowKey]
+        public string RowKey { get; set; }
+
         public string CorrelationId { get; set; }
 
         public DateTime LogTimeStamp { get; set; }
@@ -57,13 +63,6 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
 
         public DateTime? LastValidResponse { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MeasurementEntity"/> class.
-        ///
-        /// Needed because:
-        /// error CS0310: 'StateEntity' must be a non-abstract type with a public parameterless constructor in order to use it as
-        /// parameter 'TElement' in the generic type or method 'CloudTable.ExecuteQuery{TElement}(TableQuery{TElement}, TableRequestOptions, OperationContext)'
-        /// </summary>
         public StateEntity()
         {
             // This is needed.
@@ -73,7 +72,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
         {
             Guard.NotNull(qboxState, nameof(qboxState));
 
-            PartitionKey = qboxState.SerialNumber;
+            SerialNumber = qboxState.SerialNumber;
             RowKey = $"{DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks:d19}:{qboxState.MessageType}";
 
             CorrelationId = qboxState.CorrelationId;

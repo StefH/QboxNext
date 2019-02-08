@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="row border px-2">
+      <div class="col-sm-6 form-group form-inline">
+        <label>Resolutie</label>
+        <dx-select-box class="ml-2" (onValueChanged)="refreshChart(true)" width="100px" [dataSource]="resolutions"
+          valueExpr="id" displayExpr="text" [(value)]="selectedResolutionId"></dx-select-box>
+      </div>
+
+      <div class="col-sm-6 form-group form-inline">
+        <label>Tijd</label>
+        <dx-date-box class="ml-2" (onValueChanged)="refreshChart(true)" width="100px" [min]="2000-01-01" [(value)]="selectedFromDate"></dx-date-box>
+      </div>
+    </div>
+    <div class="row border px-2">
+      <div class="col-sm-2">
+        <dx-check-box id="all" text="Alles" [(value)]="checkall" (onValueChanged)="checkAllClicked($event.event)">
+        </dx-check-box>
+      </div>
+      <div class="col-sm-2">
+        <dx-check-box id="181" text="Verbruik Laag (181)" [(value)]="check181" (onValueChanged)="checkClicked($event.event)">
+        </dx-check-box>
+      </div>
+      <div class="col-sm-2">
+        <dx-check-box id="182" text="Verbruik Hoog (182)" [(value)]="check182" (onValueChanged)="checkClicked($event.event)">
+        </dx-check-box>
+      </div>
+      <div class="col-sm-2">
+        <dx-check-box id="281" text="Opwek Laag (281)" [(value)]="check281" (onValueChanged)="checkClicked($event.event)">
+        </dx-check-box>
+      </div>
+      <div class="col-sm-2">
+        <dx-check-box id="282" text="Opwek Hoog (282)" [(value)]="check282" (onValueChanged)="checkClicked($event.event)">
+        </dx-check-box>
+      </div>
+      <div class="col-sm-2">
+        <dx-check-box id="net" text="Netto" [(value)]="checknet" (onValueChanged)="checkClicked($event.event)">
+        </dx-check-box>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col totaal-sidebar" style="margin-top: 50px;">
+        <div *ngIf="isLoadIndicatorVisible">
+          <dx-load-indicator></dx-load-indicator>
+        </div>
+          <div *ngIf="!isLoadIndicatorVisible" [innerHTML]="getOverview()"></div>
+      </div>
+
+      <div class="col col-md-10">
+        <dx-chart #chart id="chart" [dataSource]="result.items" [title]="getTitle()" [valueAxis]="[{ showZero: true, position: 'left', label: { customizeText: customizeLabelText } } ]">
+          <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip">
+          </dxo-tooltip>
+          <dxo-common-series-settings argumentField="labelText" type="bar" hoverMode="allArgumentPoints" selectionMode="allArgumentPoints">
+          </dxo-common-series-settings>
+          <dxo-legend verticalAlignment="top" horizontalAlignment="center">
+          </dxo-legend>
+          <dxo-export enabled="true"></dxo-export>
+          <!-- <dxo-loading-indicator [show]="true"></dxo-loading-indicator> -->
+        </dx-chart>
+      </div>
+    </div>
+  </div>
+</div>

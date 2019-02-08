@@ -34,13 +34,14 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="NLog" Version="4.5.11" />
+    <PackageReference Include="System.Memory" Version="4.5.2" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Storage.Abstractions\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Storage.Abstractions\**\*.cs" />
     <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Logging\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Logging\**\*.cs" />
     <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Model\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Model\**\*.cs" />
     <Compile Exclude="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\QboxNext.Core\**\*.cs" />

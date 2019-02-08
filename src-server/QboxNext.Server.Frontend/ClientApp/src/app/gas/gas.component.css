@@ -1,0 +1,36 @@
+::ng-deep #chart {
+  height: 700px;
+}
+
+::ng-deep .tooltip-header {
+  margin-bottom: 3px;
+  font-size: 14px;
+  font-weight: 500;
+  padding-bottom: 3px;
+  padding: 0px;
+  margin: 0px;
+  border-bottom: 1px solid #c5c5c5;
+}
+
+::ng-deep .tooltip-body {
+  width: 200px;
+  padding: 0px;
+  margin: 0px;
+}
+
+::ng-deep .tooltip-body .series-name {
+  font-weight: normal;
+  font-size: 12px;
+  opacity: 0.6;
+  display: inline-block;
+  line-height: 1.5;
+  padding: 0px;
+  width: 140px;
+}
+
+::ng-deep .tooltip-body .value-text {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1.5;
+  width: 60x;
+}

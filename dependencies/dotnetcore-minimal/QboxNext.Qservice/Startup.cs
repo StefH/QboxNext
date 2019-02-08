@@ -5,10 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using QboxNext.Logging;
-using QboxNext.Qserver.Core.DataStore;
+using QboxNext.Model.Classes;
+using QboxNext.Model.Interfaces;
+using QboxNext.Model.Qboxes;
 using QboxNext.Qserver.Core.Factories;
-using QboxNext.Qserver.Core.Interfaces;
+using QboxNext.Qservice.Classes;
 using QboxNext.Qservice.Mvc;
+using QboxNext.Storage;
 
 namespace QboxNext.Qservice
 {
@@ -32,14 +35,18 @@ namespace QboxNext.Qservice
                 {
                     options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                 });
+
+            QboxType qboxType = Configuration.GetValue("QboxType", QboxType.Duo);
+            services.AddSingleton<IMiniRetriever>(new ConfiguredMiniRetriever(qboxType));
+
+            services.AddSingleton<IStorageProviderFactory, StorageProviderFactory>();
+            services.AddScoped<ISeriesRetriever, SeriesRetriever>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory)
         {
             QboxNextLogProvider.LoggerFactory = logFactory;
-
-            StorageProviderFactory.Register(StorageProvider.kWhStorage, typeof(kWhStorage));
 
             if (env.IsDevelopment())
             {

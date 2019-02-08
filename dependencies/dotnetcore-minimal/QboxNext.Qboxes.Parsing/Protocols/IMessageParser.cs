@@ -1,4 +1,4 @@
-namespace QboxNext.Qboxes.Parsing.Protocols
+﻿namespace QboxNext.Qboxes.Parsing.Protocols
 {
     public interface IMessageParser
     {

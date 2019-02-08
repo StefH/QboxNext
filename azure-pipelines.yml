@@ -3,19 +3,42 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  buildProjects: '**/QboxNext.Server.WebApi.csproj'
+  buildProjectDataReceiver: '**/QboxNext.Server.DataReceiver.csproj'
+  buildProjectFrontend: '**/QboxNext.Server.Frontend.csproj'
+  npmProjectFrontend: './src-server/QboxNext.Server.Frontend/ClientApp'
 #  testProjects: '**/tests/**/*.csproj'
-  imageName: 'qboxnext-webapi'
+  imageNameDataReceiver: 'qboxnext-datareceiver'
+  imageNameFrontend: 'qboxnext-frontend'
   tag: '1.0.0'
+  buildFrontend: $(BUILD_FRONTEND)
+  buildBackend: $(BUILD_BACKEND)
   buildDocker: $(BUILD_DOCKER)
 
 steps:
+- task: Npm@1
+  displayName: 'qboxnext-frontend: npm install'
+  inputs:
+    workingDir: $(npmProjectFrontend)
+    command: install
+  condition: and(succeeded(), eq(variables.buildFrontend, 'yes'))
+
+- task: Npm@1
+  displayName: 'qboxnext-frontend: npm run build-prod'
+  inputs:
+    workingDir: $(npmProjectFrontend)
+    command: custom
+    customCommand: 'run build-prod'
+  condition: and(succeeded(), eq(variables.buildFrontend, 'yes'))
+
 - task: DotNetCoreCLI@2
-  displayName: 'Restore and Build'
+  displayName: 'DataReceiver & Frontend: Build'
   inputs:
     command: build
-    projects: '$(buildProjects)'
+    projects: |
+      $(buildProjectDataReceiver)
+      $(buildProjectFrontend)
     arguments: '--configuration $(BuildConfiguration)'
+  condition: and(succeeded(), eq(variables.buildBackend, 'yes'))
 
 #- task: DotNetCoreCLI@2
 #  displayName: Test
@@ -24,34 +47,46 @@ steps:
 #    projects: '$(testProjects)'
 #    arguments: '--configuration $(BuildConfiguration)'
 
-#- task: DotNetCoreCLI@2
-#  displayName: Publish
-#  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
-#  inputs:
-#    command: publish
-#    projects: $(buildProjects)
-#    publishWebProjects: True
-#    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-#    zipAfterPublish: True
+- task: DotNetCoreCLI@2
+  displayName: 'DataReceiver & Frontend: Publish'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
+  inputs:
+    command: publish
+    projects: |
+      $(buildProjectDataReceiver)
+      $(buildProjectFrontend)
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
 
-- script: docker build -t $(DOCKER_ID)/$(imageName) -f ./src-server/QboxNext.Server.WebApi/Dockerfile .
-  displayName: Build Docker image
+- script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
+  displayName: 'Build Docker image [$(imageNameDataReceiver)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
-- script: docker tag $(DOCKER_ID)/$(imageName):latest $(DOCKER_ID)/$(imageName):$(tag)
-  displayName: 'Tag Docker image [$(imageName):$(tag)]'
+- script: docker tag $(DOCKER_ID)/$(imageNameDataReceiver):latest $(DOCKER_ID)/$(imageNameDataReceiver):$(tag)
+  displayName: 'Tag Docker image [$(imageNameDataReceiver):$(tag)]'
+  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
+
+- script: docker build -t $(DOCKER_ID)/$(imageNameFrontend) -f ./src-server/QboxNext.Server.Frontend/Dockerfile .
+  displayName: 'Build Docker image [$(imageNameFrontend)]'
+  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
+
+- script: docker tag $(DOCKER_ID)/$(imageNameFrontend):latest $(DOCKER_ID)/$(imageNameFrontend):$(tag)
+  displayName: 'Tag Docker image [$(imageNameFrontend):$(tag)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
 # https://stackoverflow.com/questions/51489359/docker-using-password-via-the-cli-is-insecure-use-password-stdin
 - script: |
     echo "$(DOCKER_PWD)" | docker login --username $(DOCKER_ID) --password-stdin
-    docker push $(DOCKER_ID)/$(imageName):latest
-    docker push $(DOCKER_ID)/$(imageName):$(tag)
-  displayName: 'Push Docker images [$(imageName):latest and $(imageName):$(tag)]'
+    docker push $(DOCKER_ID)/$(imageNameDataReceiver):latest
+    docker push $(DOCKER_ID)/$(imageNameDataReceiver):$(tag)
+    docker push $(DOCKER_ID)/$(imageNameFrontend):latest
+    docker push $(DOCKER_ID)/$(imageNameFrontend):$(tag)
+  displayName: 'Push Docker images [$(imageNameDataReceiver) and $(imageNameFrontend)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
-#- task: PublishBuildArtifacts@1
-#  displayName: 'Publish Artifact'
-#  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
-#  inputs:
-#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'

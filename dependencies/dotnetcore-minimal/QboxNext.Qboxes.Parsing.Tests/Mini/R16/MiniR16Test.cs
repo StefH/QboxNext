@@ -1,5 +1,9 @@
 ﻿using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
+using QboxNext.Logging;
+using QboxNext.Qboxes.Parsing.Extensions;
 using QboxNext.Qboxes.Parsing.Protocols;
 
 namespace QboxNext.Qboxes.Parsing.Mini.R16
@@ -7,6 +11,22 @@ namespace QboxNext.Qboxes.Parsing.Mini.R16
     [TestFixture]
     public class MiniR16Test
     {
+        private MiniR16 _sut;
+
+        [SetUp]
+        public void Init()
+        {
+            ServiceProvider services = new ServiceCollection()
+                .AddLogging()
+                .AddParsers()
+                .BuildServiceProvider();
+
+            // Setup static logger factory
+            QboxNextLogProvider.LoggerFactory = services.GetRequiredService<ILoggerFactory>();
+
+            _sut = services.GetRequiredService<MiniR16>();
+        }
+
         [Test]
         public void MiniR16ParseShouldContainGroupIDTest()
         {
@@ -22,7 +42,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R16
             // 7 Counter payload group id
 
             // Act
-            var actual = new MiniR16().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);            
@@ -44,7 +64,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R16
             // 7 Counter payload group id  (g = group, - = counter value)
 
             // Act
-            var actual = new MiniR16().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             // Assert
             Assert.IsNotNull(actual);
@@ -74,7 +94,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R16
                 ";
 
             // Act
-            var actual = new MiniR16().Parse(source) as MiniParseResult;
+            var actual = _sut.Parse(source) as MiniParseResult;
 
             var deviceSettings = actual.Model.Payloads.Single(s => s.GetType() == typeof(DeviceSettingsPayload)) as DeviceSettingsPayload;
             Assert.IsNotNull(deviceSettings);
@@ -131,7 +151,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R16
     !9C66";
 
 			// Act
-			var actual = new MiniR16().Parse(source) as MiniParseResult;
+			var actual = _sut.Parse(source) as MiniParseResult;
 
 			var counters = actual.Model.Payloads.Cast<CounterPayload>().ToList();
 			Assert.AreEqual(27233, counters.FirstOrDefault(d => d.InternalNr == 1).Value);  // S0

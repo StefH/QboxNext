@@ -4,7 +4,6 @@ using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -36,7 +35,6 @@ namespace QBoxNext.Server.Business.Implementations
                 CorrelationId = correlationId,
                 SerialNumber = counterData.SerialNumber,
                 CounterId = counterData.CounterId,
-                LogTimeStamp = DateTime.UtcNow,
                 MeasureTime = counterData.MeasureTime,
                 PulseValue = counterData.PulseValue
             };
@@ -44,8 +42,10 @@ namespace QBoxNext.Server.Business.Implementations
             await _azureTablesService.StoreAsync(measurement);
         }
 
-        public async Task StoreAsync(IList<(string correlationId, CounterData counterData)> counters)
+        /// <inheritdoc cref="ICounterStoreService.StoreAsync(string, IList{CounterData})"/>
+        public async Task StoreAsync(string correlationId, IList<CounterData> counters)
         {
+            Guard.IsNotNullOrEmpty(correlationId, nameof(correlationId));
             Guard.IsNotNull(counters, nameof(counters));
 
             var measurements = new List<QboxMeasurement>();
@@ -53,12 +53,11 @@ namespace QBoxNext.Server.Business.Implementations
             {
                 var measurement = new QboxMeasurement
                 {
-                    CorrelationId = counter.correlationId,
-                    SerialNumber = counter.counterData.SerialNumber,
-                    CounterId = counter.counterData.CounterId,
-                    LogTimeStamp = DateTime.UtcNow,
-                    MeasureTime = counter.counterData.MeasureTime,
-                    PulseValue = counter.counterData.PulseValue
+                    CorrelationId = correlationId,
+                    SerialNumber = counter.SerialNumber,
+                    CounterId = counter.CounterId,
+                    MeasureTime = counter.MeasureTime,
+                    PulseValue = counter.PulseValue
                 };
                 measurements.Add(measurement);
             }

@@ -1,5 +1,9 @@
 ﻿using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
+using QboxNext.Logging;
+using QboxNext.Qboxes.Parsing.Extensions;
 using QboxNext.Qboxes.Parsing.Protocols;
 
 namespace QboxNext.Qboxes.Parsing.Mini.R21
@@ -7,6 +11,22 @@ namespace QboxNext.Qboxes.Parsing.Mini.R21
     [TestFixture]
     public class MiniR21Test
     {
+        private MiniR21 _sut;
+
+        [SetUp]
+        public void Init()
+        {
+            ServiceProvider services = new ServiceCollection()
+                .AddLogging()
+                .AddParsers()
+                .BuildServiceProvider();
+
+            // Setup static logger factory
+            QboxNextLogProvider.LoggerFactory = services.GetRequiredService<ILoggerFactory>();
+
+            _sut = services.GetRequiredService<MiniR21>();
+        }
+
 		/// <summary>
 		/// ClientStatus is changed in from R17 -> R21, extra byte (ClientId) is added
 		/// </summary>
@@ -25,7 +45,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R21
 			// 7 CLient Status = #status entries, client ID, status
 
 			// Act
-			var actual = new MiniR21().Parse(source) as MiniParseResult;
+			var actual = _sut.Parse(source) as MiniParseResult;
 
 			// Assert
 			Assert.IsNotNull(actual);
@@ -48,7 +68,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R21
 			// 7 CLient Status
 
 			// Act
-			var actual = new MiniR21().Parse(source) as MiniParseResult;
+			var actual = _sut.Parse(source) as MiniParseResult;
 
 			// Assert
 			Assert.IsNotNull(actual);
@@ -65,7 +85,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R21
 			//                                       ^ 4D = Start Composite Zwave
 
 			// Act
-			var actual = new MiniR21().Parse(source) as MiniParseResult;
+			var actual = _sut.Parse(source) as MiniParseResult;
 
 			// Assert
 			Assert.IsNotNull(actual);
@@ -84,7 +104,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R21
 			//                                       ^ 4D = Start Composite Zwave                                                                ^ invalid value for counter 6
 
 			// Act
-			var actual = new MiniR21().Parse(source) as MiniParseResult;
+			var actual = _sut.Parse(source) as MiniParseResult;
 
 			// Assert
 			Assert.IsNotNull(actual);
@@ -111,7 +131,7 @@ namespace QboxNext.Qboxes.Parsing.Mini.R21
 
 
 			// Act
-			var actual = new MiniR21().Parse(source) as MiniParseResult;
+			var actual = _sut.Parse(source) as MiniParseResult;
 
 			// Assert
 			Assert.IsNotNull(actual);

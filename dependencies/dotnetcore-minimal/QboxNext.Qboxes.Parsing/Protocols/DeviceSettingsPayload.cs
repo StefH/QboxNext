@@ -17,9 +17,9 @@ namespace QboxNext.Qboxes.Parsing.Protocols
         /// </summary>
         /// <param name="ProtocolNr">Firmware version 39: clientbyte added by client settings & client info</param>
         /// <param name="setting">DeviceSettingType</param>
-        /// <param name="parser"></param>
+        /// <param name="reader">The protocol reader.</param>
         /// <returns></returns>
-        public static IEnumerable<DeviceSettingsPayload> GetDeviceSettings(int ProtocolNr, DeviceSettingType setting, StringParser parser)
+        public static IEnumerable<DeviceSettingsPayload> GetDeviceSettings(int ProtocolNr, DeviceSettingType setting, IProtocolReader reader)
 		{
 			bool handled = false;
 
@@ -29,7 +29,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 				switch (setting)
 				{
 					case DeviceSettingType.P1CounterOptions: 
-						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValue = parser.ParseByte() };
+						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValue = reader.ReadByte() };
 						break;
 					case DeviceSettingType.ClientManufacturerReport:  
 						yield return new DeviceSettingsPayload
@@ -39,27 +39,27 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 							Client = null,
 							DeviceSettingValueStr =
 								String.Format("Manufacturer ID {0}, Product type {1}, Product ID {2}",
-									parser.ParseInt16(),
-									parser.ParseInt16(),
-									parser.ParseInt16())
+									reader.ReadInt16(),
+									reader.ReadInt16(),
+									reader.ReadInt16())
 						};
 						break;
 					case DeviceSettingType.ClientNodeId:
 					case DeviceSettingType.ClientNumberOfDevicesInZWaveNetwork:
-						parser.ParseByte();
+						reader.ReadByte();
 						break;
 					case DeviceSettingType.ClientCounterTypesSmartPlug:
-						var nbrCounterTypes = parser.ParseByte();
+						var nbrCounterTypes = reader.ReadByte();
 						for (int i = 0; i < nbrCounterTypes; i++)
-							parser.ParseByte();
+							reader.ReadByte();
 						break;
 					case DeviceSettingType.ClientCompositeZWave:  // 0x4D
-						yield return ParseCompositeZwave(ProtocolNr, parser);
+						yield return ParseCompositeZwave(ProtocolNr, reader);
 						break;
 					case DeviceSettingType.ClientRawNodeInformation:
 					case DeviceSettingType.ClientRawSupportedReport:
-						parser.ParseByte();
-						parser.ParseDelimitedText('"');
+						reader.ReadByte();
+						reader.ReadEncapsulatedString('"');
 						break;
 					case DeviceSettingType.ClientZWaveNetworkInfoList: // 0x60,
 						break;
@@ -79,7 +79,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 				switch (setting)
 				{
 					case DeviceSettingType.P1DSMRVersion:
-						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValue = parser.ParseByte() };
+						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValue = reader.ReadByte() };
 						break;
 					default:
 						handled = false;
@@ -92,7 +92,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 				switch (setting)
 				{
 					case DeviceSettingType.ManufacturerMeterType:
-						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValue = parser.ParseInt32() };
+						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValue = reader.ReadInt32() };
 						break;
 					case DeviceSettingType.Sensor1Low:
 					case DeviceSettingType.Sensor1High:
@@ -114,35 +114,35 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 					case DeviceSettingType.SensorSignalMin:
 					case DeviceSettingType.SensorSignalMax:
 					case DeviceSettingType.SensorSignalAverage:
-						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValue = parser.ParseUInt16() };
+						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValue = reader.ReadUInt16() };
 						break;
 					case DeviceSettingType.PrimaryMeterType:
 					case DeviceSettingType.SecondaryMeterType:
 					case DeviceSettingType.SensorChannel:
-						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValue = parser.ParseByte() };
+						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValue = reader.ReadByte() };
 						break;
 					case DeviceSettingType.CalibrationSettingsComposite:
 						for (byte i = 0; i < 4; i++)
 						{
-							yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = (DeviceSettingType)parser.ParseByte(), DeviceSettingValue = parser.ParseUInt16() };
+							yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = (DeviceSettingType)reader.ReadByte(), DeviceSettingValue = reader.ReadUInt16() };
 						}
 						break;
 					case DeviceSettingType.SensorSettingsComposite:
 						for (byte i = 0; i < 7; i++)
 						{
-							yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = (DeviceSettingType)parser.ParseByte(), DeviceSettingValue = parser.ParseUInt16() };
+							yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = (DeviceSettingType)reader.ReadByte(), DeviceSettingValue = reader.ReadUInt16() };
 						}
 						break;
 					case DeviceSettingType.SensorMeasurements:
 						for (int i = 0; i < 9; i++)
 						{
-							yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = (DeviceSettingType)parser.ParseByte(), DeviceSettingValue = parser.ParseUInt16() };
+							yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = (DeviceSettingType)reader.ReadByte(), DeviceSettingValue = reader.ReadUInt16() };
 						}
 						break;
 					case DeviceSettingType.FirmwareUrl:
 					case DeviceSettingType.ReportUrl:
 					case DeviceSettingType.P1ManufacturerCode:
-						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValueStr = parser.ParseDelimitedText('"') };
+						yield return new DeviceSettingsPayload { LastReceived = DateTime.Now.ToUniversalTime(), DeviceSetting = setting, DeviceSettingValueStr = reader.ReadEncapsulatedString('"') };
 						break;
 					case DeviceSettingType.ClientProductAndSerialNumber:
 					case DeviceSettingType.ClientRawP1Data:
@@ -150,8 +150,8 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 						{
 							LastReceived = DateTime.Now.ToUniversalTime(),
 							DeviceSetting = setting,
-							Client = ProtocolNr >= 39 ? (QboxClient?)parser.ParseByte() : null,
-							DeviceSettingValueStr = parser.ParseDelimitedText('"')
+							Client = ProtocolNr >= 39 ? (QboxClient?)reader.ReadByte() : null,
+							DeviceSettingValueStr = reader.ReadEncapsulatedString('"')
 						};
 						break;
 					case DeviceSettingType.ClientPrimaryMeterType:
@@ -161,8 +161,8 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 						{
 							LastReceived = DateTime.Now.ToUniversalTime(),
 							DeviceSetting = setting,
-							Client = ProtocolNr >= 39 ? (QboxClient?)parser.ParseByte() : null,
-							DeviceSettingValue = parser.ParseByte()
+							Client = ProtocolNr >= 39 ? (QboxClient?)reader.ReadByte() : null,
+							DeviceSettingValue = reader.ReadByte()
 						};
 						break;
 					default:
@@ -174,33 +174,33 @@ namespace QboxNext.Qboxes.Parsing.Protocols
 		/// <summary>
 		/// At this moment the bytes are read(parsed) and return as a string.
 		/// </summary>
-		private static DeviceSettingsPayload ParseCompositeZwave(int ProtocolNr, StringParser parser)
+		private static DeviceSettingsPayload ParseCompositeZwave(int ProtocolNr, IProtocolReader reader)
 		{
-			var setting = parser.ParseByte();
+			var setting = reader.ReadByte();
 			if (setting != 0x47)
 				throw new ArgumentOutOfRangeException(String.Format("By 0x4D (Composite Zwave) Expected byte is: 0x47 found: {0:x2}", setting));
 			var data = new ZWaveNetworkInfo();
-			data.NumberOfDevices = parser.ParseByte();
-			var nbrOfClientInfo = parser.ParseByte();
+			data.NumberOfDevices = reader.ReadByte();
+			var nbrOfClientInfo = reader.ReadByte();
 			for (int i = 0; i < nbrOfClientInfo; i++)
 			{
 				data.ClientInfos.Add(new ZWaveClientInfo
 				{
-					Info = parser.ParseDelimitedText('"')
+					Info = reader.ReadEncapsulatedString('"')
 				});
 			}
 
-			setting = parser.ParseByte();
+			setting = reader.ReadByte();
 			if (setting != (byte)DeviceSettingType.ClientZWaveNetworkInfoList)
 				throw new ArgumentOutOfRangeException(String.Format("By 0x4D (Composite Zwave) Expected byte after client info's is: 0x60 found: {0:x2}", setting));
 
-			var nbrOfDevices = parser.ParseByte();
+			var nbrOfDevices = reader.ReadByte();
 			for (int i = 0; i < nbrOfDevices; i++)
 			{
 				data.Devices.Add(new ZWaveNetworkDevice
 				{
-					NodeId = parser.ParseByte(),
-					DeviceType = parser.ParseByte()
+					NodeId = reader.ReadByte(),
+					DeviceType = reader.ReadByte()
 				});
 			}
 			

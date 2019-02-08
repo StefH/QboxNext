@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using QboxNext.MergeQbx.Utils;
 using QboxNext.Qserver.Core.DataStore;
-using QboxNext.Qserver.Core.Interfaces;
+using QboxNext.Storage;
 
 namespace QboxNext.MergeQbx
 {

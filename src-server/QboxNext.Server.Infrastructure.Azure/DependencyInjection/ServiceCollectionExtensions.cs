@@ -1,11 +1,10 @@
 ﻿using JetBrains.Annotations;
-using Microsoft.Extensions.DependencyInjection;
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Infrastructure.Azure.Implementations;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 
 // ReSharper disable once CheckNamespace
-namespace QboxNext.Server.Infrastructure.Azure.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods for setting up Azure services in an <see cref="IServiceCollection" />.

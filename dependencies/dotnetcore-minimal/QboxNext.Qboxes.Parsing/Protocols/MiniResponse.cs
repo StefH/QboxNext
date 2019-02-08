@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using QboxNext.Logging;
+﻿using System;
+using Microsoft.Extensions.Logging;
 using System.Linq;
+using QboxNext.Qboxes.Parsing.Protocols.SmartMeters;
 
 namespace QboxNext.Qboxes.Parsing.Protocols
 {
@@ -9,33 +10,38 @@ namespace QboxNext.Qboxes.Parsing.Protocols
     /// </summary>
     public class MiniResponse : MiniParser
     {
-        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger<MiniResponse>();
+        private readonly ILogger<MiniResponse> _logger;
+
+        public MiniResponse(ILogger<MiniResponse> logger, IProtocolReaderFactory protocolReaderFactory, SmartMeterCounterParser smartMeterCounterParser) : base(logger, protocolReaderFactory, smartMeterCounterParser)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
         protected override void DoParse()
         {
-            Logger.LogTrace("Enter");
+            _logger.LogTrace("Enter");
 
             var response = new ResponseParseResult();
             BaseParseResult = response;
 
-            response.SequenceNr = Parser.ParseByte();
-            response.ResponseTime = Parser.ParseTime();
-            response.Offset = Parser.ParseByte();
+            response.SequenceNr = Reader.ReadByte();
+            response.ResponseTime = Reader.ReadDateTime();
+            response.Offset = Reader.ReadByte();
             try
             {
-                while (!Parser.EndOfStream)
+                while (!Reader.AtEndOfStream())
                 {
-                    var setting = (DeviceSettingType)Parser.ParseByte();
+                    var setting = (DeviceSettingType)Reader.ReadByte();
                     // Below 0x40 is a devicesetting, above a (client) activity request or a client devicesetting. Parsing is different by 0x4? settings, writing is with clientnr reading without in A34
                     if ((byte)setting < 0x40)
                     {
-                        foreach (var item in DeviceSettingsPayload.GetDeviceSettings(0, setting, Parser).ToList())
+                        foreach (var item in DeviceSettingsPayload.GetDeviceSettings(0, setting, Reader).ToList())
                             response.DeviceSettings.Add(item);
                     }
                     else
                     {
                         // refactor, see command.cs
-                        response.DeviceSettings.Add(new DeviceSettingsPayload { DeviceSetting = setting, DeviceSettingValueStr = Parser.ReadToEnd() });
+                        response.DeviceSettings.Add(new DeviceSettingsPayload { DeviceSetting = setting, DeviceSettingValueStr = Reader.ReadToEnd() });
                     }
                 }
             }
@@ -43,7 +49,7 @@ namespace QboxNext.Qboxes.Parsing.Protocols
             {
                 // suppress error
             }
-            Logger.LogTrace("Exit");
+            _logger.LogTrace("Exit");
         }
     }
 }

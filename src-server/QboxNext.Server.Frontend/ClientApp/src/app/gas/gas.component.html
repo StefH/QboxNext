@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="row border px-2">
+      <div class="col-sm-6 form-group form-inline">
+        <label>Resolutie</label>
+        <dx-select-box class="ml-2" (onValueChanged)="refreshChart(true)" width="100px" [dataSource]="resolutions"
+          valueExpr="id" displayExpr="text" [(value)]="selectedResolutionId"></dx-select-box>
+      </div>
+
+      <div class="col-sm-6 form-group form-inline">
+        <label>Tijd</label>
+        <dx-date-box class="ml-2" (onValueChanged)="refreshChart(true)" width="100px" [min]="2000-01-01" [(value)]="selectedFromDate"></dx-date-box>
+        <!-- <a href="#" aria-label="Next">
+          <span class="fa fa-step-forward text-black"></span>
+        </a> -->
+      </div>
+    </div>
+    <div class="row border px-2">
+      <div class="col-sm-2">
+        <dx-check-box id="gas" text="Gas (2421)" [(value)]="checkgas" (onValueChanged)="checkClicked($event.event)">
+        </dx-check-box>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col totaal-sidebar" style="margin-top: 50px;">
+        <div *ngIf="isLoadIndicatorVisible">
+          <dx-load-indicator></dx-load-indicator>
+        </div>
+          <div *ngIf="!isLoadIndicatorVisible" [innerHTML]="getOverview()"></div>
+      </div>
+
+      <div class="col-md-10">
+        <dx-chart #chart id="chart" [dataSource]="result.items" [title]="getTitle()" [valueAxis]="[{ showZero: true, position: 'left', label: { customizeText: customizeLabelText } } ]">
+          <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip">
+          </dxo-tooltip>
+          <dxo-common-series-settings argumentField="labelText" type="bar" hoverMode="allArgumentPoints" selectionMode="allArgumentPoints">
+          </dxo-common-series-settings>
+          <dxo-legend verticalAlignment="top" horizontalAlignment="center">
+          </dxo-legend>
+          <dxo-export enabled="true"></dxo-export>
+          <!-- <dxo-loading-indicator [show]="true"></dxo-loading-indicator> -->
+        </dx-chart>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageTags>cache azure table storage</PackageTags>
+    <!--<Authors>Stuart Whiteford</Authors>
+    <Company>OceanWeb Systems</Company>-->
+    <!--<Copyright>Copyright © OceanWeb Systems Limited 2019. All rights reserved.</Copyright>-->
+    <Description>Distributed cache implementation of Microsoft.Extensions.Caching.Distributed.IDistributedCache using Azure Table Storage.</Description>
+    <!--<PackageIconUrl>https://gitlab.com/oceanweb/public/raw/master/oceanweb64x64.png</PackageIconUrl>
+    <PackageLicenseUrl>https://gitlab.com/oceanweb/public/raw/master/LICENSE</PackageLicenseUrl>-->
+    
+    <!--<PackageProjectUrl>https://gitlab.com/oceanweb/azuretablestoragecache</PackageProjectUrl>
+    <RepositoryUrl>https://gitlab.com/oceanweb/azuretablestoragecache</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Implementations\BinarySerializer.cs" />
+    <Compile Remove="Interfaces\Internal\IBinarySerializer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QboxNext.Server.Common\QboxNext.Server.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\Internal\" />
+  </ItemGroup>
+
+</Project>

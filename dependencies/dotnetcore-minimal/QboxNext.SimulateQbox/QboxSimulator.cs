@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using NLog;
-using QboxNext.Core.Simulation;
 using QboxNext.Core.Utils;
 using System.Threading;
 using System.IO;
 using System.Net;
 using System.Globalization;
 using QboxNext.Qboxes.Parsing.Protocols;
+using QboxNext.Simulation;
 
 namespace QboxNext.SimulateQbox
 {

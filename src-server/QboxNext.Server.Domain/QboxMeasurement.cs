@@ -7,8 +7,6 @@ namespace QboxNext.Server.Domain
     {
         public string CorrelationId { get; set; }
 
-        public DateTime LogTimeStamp { get; set; }
-
         public int CounterId { get; set; }
 
         [NotNull]

@@ -7,3 +7,5 @@
 */bin
 */obj
 **/.toolstarget
+**/node_modules
+**/dist/ClientApp

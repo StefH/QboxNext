@@ -1,0 +1,15 @@
+<div class="container-fluid body-content">
+  <div *ngIf="isAuthenticated">
+    <app-navigation></app-navigation>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <h5 *ngIf="!isAuthenticated">
+      You are not logged in! Please <a href="javascript:void(0)" (click)="login()">Log In</a> to continue.
+  </h5>
+  <hr />
+  <footer>
+    <p>&copy; Stef Heyenrath</p>
+  </footer>
+</div>

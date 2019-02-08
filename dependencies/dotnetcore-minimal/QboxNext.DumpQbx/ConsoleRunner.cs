@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using QboxNext.Qserver.Core.Utils;
+using QboxNext.Core.Extensions;
 
 namespace QboxNext.DumpQbx
 {

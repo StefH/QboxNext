@@ -2,13 +2,14 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
-using QboxNext.Core;
+using QboxNext.Core.Extensions;
 using QboxNext.Core.Utils;
+using QboxNext.Logging;
 using QboxNext.Model.Classes;
-using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Statistics;
-using QboxNext.Qserver.Core.Utils;
+using QboxNext.Storage;
 
 namespace QboxNext.Qserver.Core.DataStore
 {
@@ -21,6 +22,9 @@ namespace QboxNext.Qserver.Core.DataStore
         [SetUp]
         public void SetUp()
         {
+            // Setup static logger factory
+            QboxNextLogProvider.LoggerFactory = new LoggerFactory();
+
             if (Directory.Exists(BaseDir))
                 Directory.Delete(BaseDir, true);
 

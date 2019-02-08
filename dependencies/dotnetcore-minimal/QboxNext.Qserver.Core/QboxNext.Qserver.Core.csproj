@@ -5,11 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="NLog" Version="4.5.11" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\QboxNext.Storage.Abstractions\QboxNext.Storage.Abstractions.csproj" />
     <ProjectReference Include="..\QboxNext.Core\QboxNext.Core.csproj" />
     <ProjectReference Include="..\QboxNext.Logging\QboxNext.Logging.csproj" />
     <ProjectReference Include="..\QboxNext.Qboxes.Parsing\QboxNext.Qboxes.Parsing.csproj" />
