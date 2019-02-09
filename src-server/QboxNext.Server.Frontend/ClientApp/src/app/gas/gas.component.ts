@@ -4,7 +4,7 @@ import { DxChartComponent } from 'devextreme-angular';
 import * as moment from 'moment';
 import { nameof } from 'ts-simple-nameof';
 
-import { BaseComponent } from '../common/components';
+import { BaseComponent, DataComponent } from '../common/components';
 import { HttpStatusCodes } from '../common/constants';
 import { DataLoadStatus } from '../common/enums';
 import { GasValueFormatter } from '../common/formatters';
@@ -19,22 +19,13 @@ import { SessionStorageService } from '../common/services';
   styleUrls: ['./gas.component.css'],
   preserveWhitespaces: true
 })
-export class GasComponent extends BaseComponent implements OnInit {
+export class GasComponent extends DataComponent implements OnInit {
   public resolutions = [{ id: 'Hour', text: 'Uur' }, { id: 'Day', text: 'Dag' }, { id: 'Month', text: 'Maand' }];
 
-  @ViewChild(DxChartComponent)
-  private chart: DxChartComponent;
-  private resultFromServer = new QboxPagedDataQueryResult<QboxCounterData>();
-  private appData: ApplicationData;
-
-  public result = new QboxPagedDataQueryResult<QboxCounterData>();
-  public selectedFromDate: Date;
-  public selectedToDate: Date;
-  public selectedResolutionId: string;
   public checkgas = true;
 
   constructor(private service: DataService, private formatter: GasValueFormatter, private timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
-    super();
+    super('Gas');
   }
 
   public ngOnInit(): void {
@@ -85,17 +76,6 @@ export class GasComponent extends BaseComponent implements OnInit {
     if (this.checkgas) {
       this.chart.series.push({ valueField: 'delta2421', name: 'Gas (2421)', color: '#FFDD00' });
     }
-  }
-
-  public getTitle(): string {
-    const start = moment(this.selectedFromDate).format('D MMMM YYYY');
-    const end = moment(this.selectedToDate).format('D MMMM YYYY');
-
-    if (this.selectedResolutionId === 'QuarterOfHour' || this.selectedResolutionId === 'Hour') {
-      return `Gas (${start})`;
-    }
-
-    return `Gas (${start} tot ${end})`;
   }
 
   private filter(): void {
