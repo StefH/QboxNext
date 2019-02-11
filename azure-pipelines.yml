@@ -13,6 +13,7 @@ variables:
   buildFrontend: $(BUILD_FRONTEND)
   buildBackend: $(BUILD_BACKEND)
   buildDocker: $(BUILD_DOCKER)
+  publishDocker: $(PUBLISH_DOCKER)
 
 steps:
 - task: Npm@1
@@ -83,7 +84,7 @@ steps:
     docker push $(DOCKER_ID)/$(imageNameFrontend):latest
     docker push $(DOCKER_ID)/$(imageNameFrontend):$(tag)
   displayName: 'Push Docker images [$(imageNameDataReceiver) and $(imageNameFrontend)]'
-  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
+  condition: and(succeeded(), eq(variables.publishDocker, 'yes'))
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
