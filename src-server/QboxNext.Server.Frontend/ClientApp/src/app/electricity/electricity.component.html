@@ -52,10 +52,10 @@
       </div>
 
       <div class="col col-md-10">
-        <dx-chart #chart id="chart" [dataSource]="result.items" [title]="getTitle()" [valueAxis]="[{ showZero: true, position: 'left', label: { customizeText: customizeLabelText } } ]">
+        <dx-chart #chart id="chart" [dataSource]="result.items" (onPointClick)="pointClick($event)" [title]="getTitle()" [valueAxis]="[{ showZero: true, position: 'left', label: { customizeText: customizeLabelText } } ]">
           <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip">
           </dxo-tooltip>
-          <dxo-common-series-settings argumentField="labelText" type="bar" hoverMode="allArgumentPoints" selectionMode="allArgumentPoints">
+          <dxo-common-series-settings argumentField="labelText" type="bar" hoverMode="allArgumentPoints" tagField="tag" selectionMode="allArgumentPoints">
           </dxo-common-series-settings>
           <dxo-legend verticalAlignment="top" horizontalAlignment="center">
           </dxo-legend>

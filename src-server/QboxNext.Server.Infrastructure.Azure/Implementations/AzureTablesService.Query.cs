@@ -108,6 +108,15 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 Delta2421 = entities.Max(e => e.Counter2421) - entities.Min(e => e.Counter2421) ?? 0
             };
 
+            // Define DrillDownQuery
+            if (resolution > QboxQueryResolution.QuarterOfHour)
+            {
+                foreach (var item in items)
+                {
+                    item.DrillDownQuery = GetDrillDownQboxDataQuery(item.MeasureTime, resolution, addHours);
+                }
+            }
+
             return new QboxPagedDataQueryResult<QboxCounterData>
             {
                 Overview = overview,
@@ -160,6 +169,38 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 default:
                     throw new NotSupportedException();
             }
+        }
+
+        private static QboxDataQuery GetDrillDownQboxDataQuery(DateTime measureTime, QboxQueryResolution resolution, int addHours)
+        {
+            QboxQueryResolution resolutionNew = resolution - 1;
+            var query = new QboxDataQuery
+            {
+                AddHours = addHours,
+                Resolution = resolutionNew,
+                From = resolution.TruncateTime(measureTime)
+            };
+
+            switch (resolution)
+            {
+                case QboxQueryResolution.Hour:
+                case QboxQueryResolution.Day:
+                    query.To = query.From.AddDays(1);
+                    break;
+
+                case QboxQueryResolution.Month:
+                    query.To = query.From.AddMonths(1);
+                    break;
+
+                case QboxQueryResolution.Year:
+                    query.To = query.From.AddYears(1);
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
+
+            return query;
         }
     }
 }

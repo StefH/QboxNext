@@ -333,3 +333,4 @@ ASALocalRun/
 /Tools/azurite.2.6.5/__azurite_db_table__.json
 /src-server/QboxNext.Server.WebApi/logs/nlog.txt
 /src-server/QboxNext.Server.DataReceiver/logs/nlog.txt
+/src-server/QboxNext.Server.Frontend/logs/nlog.txt
