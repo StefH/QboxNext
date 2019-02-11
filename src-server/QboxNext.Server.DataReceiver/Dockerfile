@@ -5,16 +5,17 @@ EXPOSE 443
 
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Qboxes.Parsing/QboxNext.Qboxes.Parsing.csproj", "dependencies/dotnetcore-minimal/QboxNext.Qboxes.Parsing/"]
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Logging/QboxNext.Logging.csproj", "dependencies/dotnetcore-minimal/QboxNext.Logging/"]
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Qserver.Core/QboxNext.Qserver.Core.csproj", "dependencies/dotnetcore-minimal/QboxNext.Qserver.Core/"]
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Core/QboxNext.Core.csproj", "dependencies/dotnetcore-minimal/QboxNext.Core/"]
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Model/QboxNext.Model.csproj", "dependencies/dotnetcore-minimal/QboxNext.Model/"]
+
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Core/QboxNext.Core.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Core/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Logging/QboxNext.Logging.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Logging/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Model/QboxNext.Model.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Model/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Qboxes.Parsing/QboxNext.Qboxes.Parsing.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Qboxes.Parsing/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Qserver.Core/QboxNext.Qserver.Core.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Qserver.Core/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Storage.Abstractions/QboxNext.Storage.Abstractions.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Storage.Abstractions/"]
 
 COPY ["dependencies/NLog.Extensions.AzureStorage/src/NLog.Extensions.AzureTables/NLog.Extensions.AzureTables.csproj", "dependencies/NLog.Extensions.AzureStorage/src/NLog.Extensions.AzureTables/"]
 
 COPY ["src/QboxNext/QboxNext.csproj", "src/QboxNext/"]
-
 COPY ["src/QboxNext.Extensions/QboxNext.Extensions.csproj", "src/QboxNext.Extensions/"]
 
 COPY ["src-server/QboxNext.Server.Infrastructure.Azure/QboxNext.Server.Infrastructure.Azure.csproj", "src-server/QboxNext.Server.Infrastructure.Azure/"]
