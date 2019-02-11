@@ -2,7 +2,7 @@
 
 ### Build Docker for "Windows : nanoserver-1803"
 
-Go to the root from this project
+Go to the root from this solution
 
 #### 1. Build
 
@@ -32,7 +32,7 @@ docker run -it --rm --env-file C:\Users\StefHeyenrath\Documents\GitHub\qboxnext-
 
 ### Build Docker for "Linux"
 
-Go to the root from this project
+Go to the root from this solution
 
 #### 1. Build
 
@@ -58,3 +58,8 @@ docker push sheyenrath/qboxnext-frontend:1.0.2
 ``` cmd
 docker run -it --rm --env-file C:\Users\StefHeyenrath\Documents\GitHub\qboxnext-env.txt -p 4200:80 sheyenrath/qboxnext-frontend:latest
 ```
+
+##### Cleanup all docker images and containers
+Use this command:
+``` cmd
+docker system prune -a```

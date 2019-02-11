@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>7.1</LangVersion>
+    <AssemblyName>SimulateQbox</AssemblyName>
+    <PublishDir>$(ProjectDir)..\..\dist\$(AssemblyName)\</PublishDir>
+  </PropertyGroup>
+
+  <Import Project="$(ProjectDir)..\..\tools\targets\GenerateRuntimeScript.targets" />
+
+  <ItemGroup>
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QboxNext.ConsoleApp.Core\QboxNext.ConsoleApp.Core.csproj" />
+    <ProjectReference Include="..\QboxNext.Core\QboxNext.Core.csproj" />
+    <ProjectReference Include="..\QboxNext.Qboxes.Parsing\QboxNext.Qboxes.Parsing.csproj" />
+    <ProjectReference Include="..\QboxNext.Simulation\QboxNext.Simulation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.Development.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+      <CopyToOutputDirectory Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="hostsettings.json">
+      <CopyToOutputDirectory Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

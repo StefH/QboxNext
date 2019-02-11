@@ -3,8 +3,6 @@ using QboxNext.Core.Utils;
 using QboxNext.Extensions.Implementations;
 using QboxNext.Extensions.Interfaces.Internal;
 using QboxNext.Extensions.Interfaces.Public;
-using QboxNext.Model.Classes;
-using QboxNext.Model.Interfaces;
 using QboxNext.Qboxes.Parsing.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -36,7 +34,6 @@ namespace Microsoft.Extensions.DependencyInjection
         private static void AddServices(this IServiceCollection services)
         {
             // Internal
-            services.AddScoped<IQboxMessagesLogger, QboxMessagesNullLogger>();
             services.AddScoped<IQboxDataDumpContextFactory, QboxDataDumpContextFactory>();
             services.AddScoped<IQboxNextDataHandlerFactory, QboxNextDataHandlerFactory>();
             services.AddSingleton<IQboxMiniFactory, QboxMiniFactory>();

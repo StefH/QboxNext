@@ -19,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Core", "dependencies\dotnetcore-minimal\QboxNext.Core\QboxNext.Core.csproj", "{A60261EA-34F4-4075-87A2-675FD80F79DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Core", "dependencies\dotnetcore-minimal\src\QboxNext.Core\QboxNext.Core.csproj", "{A60261EA-34F4-4075-87A2-675FD80F79DC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Qboxes.Parsing", "dependencies\dotnetcore-minimal\QboxNext.Qboxes.Parsing\QboxNext.Qboxes.Parsing.csproj", "{1C3D8877-4932-44F6-A821-170681E3AB3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Qboxes.Parsing", "dependencies\dotnetcore-minimal\src\QboxNext.Qboxes.Parsing\QboxNext.Qboxes.Parsing.csproj", "{1C3D8877-4932-44F6-A821-170681E3AB3D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext", "src\QboxNext\QboxNext.csproj", "{D3804229-91F4-4502-9595-39884E5A01AD}"
 EndProject
@@ -29,9 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-server", "src-server", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Extensions", "src\QboxNext.Extensions\QboxNext.Extensions.csproj", "{D3804229-91F4-4502-9595-39884E5A01AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Model", "dependencies\dotnetcore-minimal\QboxNext.Model\QboxNext.Model.csproj", "{553FB0E0-DCAA-46F1-85EF-23E1C2263B00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Model", "dependencies\dotnetcore-minimal\src\QboxNext.Model\QboxNext.Model.csproj", "{553FB0E0-DCAA-46F1-85EF-23E1C2263B00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Logging", "dependencies\dotnetcore-minimal\QboxNext.Logging\QboxNext.Logging.csproj", "{23039BE0-17B9-44E3-A80A-F47E330573C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Logging", "dependencies\dotnetcore-minimal\src\QboxNext.Logging\QboxNext.Logging.csproj", "{23039BE0-17B9-44E3-A80A-F47E330573C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLog.Extensions.AzureTables", "dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\NLog.Extensions.AzureTables.csproj", "{168443E1-1EF0-4A4A-B0AA-0D6D0B3D215B}"
 EndProject
@@ -53,7 +53,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-azure-functions", "src-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Server.Frontend", "src-server\QboxNext.Server.Frontend\QboxNext.Server.Frontend.csproj", "{949DD250-28BA-4A3F-82EA-812CEE30A402}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Storage.Abstractions", "dependencies\dotnetcore-minimal\QboxNext.Storage.Abstractions\QboxNext.Storage.Abstractions.csproj", "{0E252804-DD29-40E4-85E1-CDEC541C1D3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Storage.Abstractions", "dependencies\dotnetcore-minimal\src\QboxNext.Storage.Abstractions\QboxNext.Storage.Abstractions.csproj", "{0E252804-DD29-40E4-85E1-CDEC541C1D3F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Qserver.Core", "dependencies\dotnetcore-minimal\src\QboxNext.Qserver.Core\QboxNext.Qserver.Core.csproj", "{3BC2C928-7452-46F4-83E6-257EEB41F856}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,10 @@ Global
 		{0E252804-DD29-40E4-85E1-CDEC541C1D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E252804-DD29-40E4-85E1-CDEC541C1D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E252804-DD29-40E4-85E1-CDEC541C1D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BC2C928-7452-46F4-83E6-257EEB41F856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BC2C928-7452-46F4-83E6-257EEB41F856}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BC2C928-7452-46F4-83E6-257EEB41F856}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BC2C928-7452-46F4-83E6-257EEB41F856}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +147,7 @@ Global
 		{2DD906F8-3ED8-40ED-883A-245B9A7E517B} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 		{949DD250-28BA-4A3F-82EA-812CEE30A402} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 		{0E252804-DD29-40E4-85E1-CDEC541C1D3F} = {E04D98D6-6C1E-4E41-AB15-3C8CA6BC9F8D}
+		{3BC2C928-7452-46F4-83E6-257EEB41F856} = {E04D98D6-6C1E-4E41-AB15-3C8CA6BC9F8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A6ED5AF-7B32-444B-887A-ABF343EE609C}

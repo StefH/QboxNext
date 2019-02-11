@@ -17,7 +17,7 @@ The modifications are:
 - no Qbox metadata is being retrieved from a database, for now only a Qbox Duo with Qbox Solar attached to a smartmeter supported.
 - all Qbox data is written to d:\QboxNextData on Windows and /var/qboxnextdata on Linux (yes, it runs on Linux now!).
 
-## How to build
+## How to build/develop
 
 1. Download [Visual Studio Express](https://visualstudio.microsoft.com/vs/express/) or [Visual Studio Code](https://code.visualstudio.com/).
 2. Install [git](https://git-scm.com/download/win).
@@ -33,29 +33,45 @@ dotnet build QboxNext.Qserver.sln
 ```
 Make sure you're either in the folder, or pointing the command to the right folder by replacing QboxNext.Qserver with a filepath.
 
-## How to run
+## Creating runtime binaries
 
-To run Qserver, right click on the QboxNext.Qserver project in the Solution Explorer and select 'Set as Startup Project'. 
-Then in the menu select Debug->Start Debugging.
+### Linux/Git Bash/WLS
 
-You can also use the following command from the directory where the QboxNext.Qserver.dll was built (usually located in `QboxNext.Qserver/bin/Debug/netcoreapp2.1`):
+```
+./publish.sh
+```
 
-`dotnet QboxNext.Qserver.dll`
+### Windows
 
-## Qserver
+```
+dotnet publish -c Release
+```
 
-An ASP.NET application that receives and processes messages from Qboxes. When run it uses the built-in [Kestrel](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-2.2) web server. 
-It will run on port 5000, the default Kestrel port.
+> All built applications will be located in `./dist` folder
 
-### Creating binaries for the Raspberry Pi
+## Creating runtime binaries for the Raspberry Pi
 
-On Windows, in the root directory of the repository enter
+> Note: `dotnet publish` is not supported on Rasberry PI. Build on a Windows/Linux system with .NET Core SDK installed.
+
+### Linux/Git Bash/WLS
+
+```
+./publish.sh -r linux-arm
+```
+
+### Windows
 
 ```
 dotnet publish -c Release -r linux-arm
 ```
 
-The files that need to be copied to the Raspberry Pi are then located in QboxNext.Qserver\bin\Release\netcoreapp2.1\linux-arm.
+> All built applications will be located in `./dist` folder
+
+
+## Qserver
+
+An ASP.NET application that receives and processes messages from Qboxes. When run it uses the built-in [Kestrel](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-2.2) web server. 
+It will run on port 5000, the default Kestrel port.
 
 ### Testing on Windows
 
@@ -142,12 +158,7 @@ Another option is to run the Qbox simulator. See SimulateQbox.
 
 ## DumpQbx
 
-DumpQbx is a tool to convert a QBX file into a readable text file. To use it open a command shell in the local git repo and enter:
-
-```dos
-cd QboxNext.DumpQbx\bin\Debug\netcoreapp2.1
-dotnet QboxNext.DumpQbx.dll --qbx=d:\QboxNextData\Qbox_15-46-002-442\15-46-002-442_00000181.qbx --values > d:\QboxNextData\Qbox_15-46-002-442\15-46-002-442_00000181.qbx.txt
-```
+DumpQbx is a tool to convert a QBX file into a readable text file.
 
 The generated text file will look like this:
 
@@ -166,11 +177,13 @@ The column 'kWh' is the raw value converted to kWh.
 The 'money' column is obsolete and can be ignored.
 The column 'quality' specifies if the value was a value received by Qserver or an interpolated value.
 
-### For Linux
+### How to run
+
 Run the command below. You may have to replace the file paths depending on the Qbox you want to dump. Check the `/var/qboxnext` folder to see the folders with qbx files in them.
-```
+
+```bash
 sudo sh -c \
-'dotnet QboxNext.DumpQbx.dll \
+'./dist/DumpQbx.sh \
 --qbx=/var/qboxnextdata/Qbox_00-00-000-000/00-00-000-000_00000181.qbx \
 --values \
 > /var/qboxnextdata/Qbox_00-00-000-000/00-00-000-000_00000181.qbx.txt'
@@ -180,33 +193,28 @@ sudo sh -c \
 
 ParseQboxMessage will parse the Qbox messages given on the command line and show its contents in a readable format. You can find those messages in the Qserver log files, look for lines containing 'input:'.
 
-### Windows and Linux
+### How to run
 
-```
-dotnet QboxNext.ParseQboxMessage.dll --message=<message>
+```bash
+./dist/ParseQboxMessage.sh --message=<message>
 ```
 
 ## SimulateQbox
 
 SimulateQbox is a simulator that can simulate Qboxes attached to several types of meters and simulate several usage and generation patterns.
-To use it make sure Qserver is running, open a command shell in the local git repo and enter:
 
-```dos
-cd QboxNext.SimulateQbox\bin\Debug\netcoreapp2.1
-dotnet QboxNext.SimulateQbox.dll --qserver=http://localhost:5000 --qboxserial=00-00-000-000 --metertype=smart --pattern=181:flat(2);182:zero;281:zero;282:zero;2421:zero
-```
+> To use it make sure Qserver is running.
 
 To view an explanation of the different meter types and patterns, run SimulateQbox without parameters:
 
-```dos
-dotnet QboxNext.SimulateQbox.dll
+```bash
+./dist/SimulateQbox.sh
 ```
 
-### For Linux
+### How to run
 
-Run the following command from the `./QboxNext.Qserver/bin/Debug/netcoreapp2.1` directory.
 ```bash
-dotnet QboxNext.SimulateQbox.dll --qserver=http://localhost:5000 \
+./dist/SimulateQbox.sh --qserver=http://localhost:5000 \
 --qboxserial=00-00-000-000 --metertype=smart \
 --pattern='181:flat(2);182:zero;281:zero;282:zero;2421:zero'
 ```

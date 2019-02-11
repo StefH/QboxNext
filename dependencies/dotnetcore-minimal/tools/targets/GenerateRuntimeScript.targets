@@ -1,0 +1,40 @@
+<Project>
+  <!-- Generates a runtime script in the parent publish folder -->
+
+  <Target Name="GenerateRuntimeScript" AfterTargets="Publish">
+    <PropertyGroup>
+      <PublishRootDir>$(PublishDir)..\</PublishRootDir>
+
+      <RuntimeScript>
+#!/bin/bash
+set -eo pipefail
+set -u
+
+./exec.sh $(AssemblyName)/$(AssemblyName).dll "$@"
+      </RuntimeScript>
+      <RuntimeCmdScript>
+@echo off
+
+call "%~dp0\exec.cmd" "$(AssemblyName)\$(AssemblyName).dll" %*
+      </RuntimeCmdScript>
+    </PropertyGroup>
+
+    <!-- Generate bash script -->
+    <WriteLinesToFile
+      File="$(PublishRootDir)$(AssemblyName).sh"
+      Lines="$(RuntimeScript)"
+      Overwrite="true"
+      Encoding="ISO-8859-1" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)\exec.sh" DestinationFolder="$(PublishRootDir)"/>
+	
+    <!-- Generate cmd script -->
+    <WriteLinesToFile
+      File="$(PublishRootDir)$(AssemblyName).cmd"
+      Lines="$(RuntimeCmdScript)"
+      Overwrite="true"
+      Encoding="ISO-8859-1" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)\exec.cmd" DestinationFolder="$(PublishRootDir)"/>
+
+  </Target>
+
+</Project>

@@ -17,14 +17,14 @@ fi
 
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-cd ${scriptDir}/../QboxNext.Qserver
+cd ${scriptDir}/../src/QboxNext.Qserver
 /mnt/c/Program\ Files/dotnet/dotnet.exe publish -c Release -r linux-arm
-cd ${scriptDir}/../QboxNext.Qservice
+cd ${scriptDir}/../src/QboxNext.Qservice
 /mnt/c/Program\ Files/dotnet/dotnet.exe publish -c Release -r linux-arm
 cd ${scriptDir}/..
 
-# replace 192.168.2.82 with the wifi IP-address of your RPi
-piIp=192.168.2.82
+# replace 192.168.2.19 with the wifi IP-address of your RPi
+piIp=192.168.2.19
 piUser=pi
 piPassword=raspberry
 
@@ -33,8 +33,8 @@ sshpass -p ${piPassword} ssh ${piUser}@${piIp} "pkill -f /home/pi/qserver/QboxNe
 echo Killing Qservice on Raspberry Pi...
 sshpass -p ${piPassword} ssh ${piUser}@${piIp} "pkill -f /home/pi/qservice/QboxNext.Qservice" || true
 echo Copying Qserver to Raspberry Pi...
-sshpass -p ${piPassword} rsync -avzuh -e ssh QboxNext.Qserver/bin/Release/netcoreapp2.1/linux-arm/publish/* ${piUser}@${piIp}:/home/pi/qserver
+sshpass -p ${piPassword} rsync -avzuh -e ssh dist/Qserver/* ${piUser}@${piIp}:/home/pi/qserver
 echo Copying Qservice to Raspberry Pi...
-sshpass -p ${piPassword} rsync -avzuh -e ssh QboxNext.Qservice/bin/Release/netcoreapp2.1/linux-arm/publish/* ${piUser}@${piIp}:/home/pi/qservice
+sshpass -p ${piPassword} rsync -avzuh -e ssh dist/Qservice/* ${piUser}@${piIp}:/home/pi/qservice
 echo Starting QboxNext services on Raspberry Pi...
-sshpass -p ${piPassword} ssh ${piUser}@${piIp} "nohup ~/start_qserver.sh > /dev/null 2>&1 &"
+sshpass -p ${piPassword} ssh ${piUser}@${piIp} "nohup ~/start_qbox.sh > /dev/null 2>&1 &"

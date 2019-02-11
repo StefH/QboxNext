@@ -61,3 +61,6 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+# Shell scripts should not have crlf otherwise WSL doesn't understand them.
+*.sh text eol=lf
