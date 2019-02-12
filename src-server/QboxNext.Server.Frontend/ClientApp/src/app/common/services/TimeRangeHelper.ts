@@ -40,6 +40,8 @@ export class TimeRangeHelper {
                 break;
             case Resolution.Month: toDate.add(1, 'year');
                 break;
+            default:
+                throw new Error('Invalid resolution');
         }
 
         return {
