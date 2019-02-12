@@ -32,20 +32,20 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             string fromPartitionKey = GetPartitionKey(serialNumber, from);
             string toPartitionKey = GetPartitionKey(serialNumber, to);
-            bool same = fromPartitionKey == toPartitionKey;
+            bool samePartitionKey = fromPartitionKey == toPartitionKey;
 
             string fromRowKey = GetRowKey(from);
             string toRowKey = GetRowKey(to);
 
+            _logger.LogInformation("Querying Table {table} with PartitionKey {fromPartitionKey} to {toPartitionKey} and RowKey {fromRowKey} to {toRowKey}", _measurementTable.name, fromPartitionKey, toPartitionKey, fromRowKey, toRowKey);
+
             var entityQuery = _measurementTable.set
                 .Where(m =>
                 (
-                    same && m.PartitionKey == fromPartitionKey ||
-                    !same && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) > 0) &&
+                    samePartitionKey && m.PartitionKey == fromPartitionKey ||
+                    !samePartitionKey && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) > 0) &&
                     string.CompareOrdinal(m.RowKey, fromRowKey) <= 0 && string.CompareOrdinal(m.RowKey, toRowKey) > 0
                 );
-
-            _logger.LogInformation("Querying Table {table} with PartitionKey {fromPartitionKey} to {toPartitionKey} and RowKey {fromRowKey} to {toRowKey}", _measurementTable.name, fromPartitionKey, toPartitionKey, fromRowKey, toRowKey);
 
             var entities = await entityQuery.ToListAsync();
 
