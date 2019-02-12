@@ -34,3 +34,7 @@
   line-height: 1.5;
   width: 60x;
 }
+
+::ng-deep .dx-date-box .ml-2  {
+  margin-left: 0!important;
+}

@@ -23,8 +23,8 @@ export class GasComponent extends DataComponent implements OnInit {
 
   public checkgas = true;
 
-  constructor(private service: DataService, private formatter: GasValueFormatter, private timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
-    super('Gas');
+  constructor(private service: DataService, private formatter: GasValueFormatter, timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
+    super('Gas', timeRangeHelper);
   }
 
   public ngOnInit(): void {

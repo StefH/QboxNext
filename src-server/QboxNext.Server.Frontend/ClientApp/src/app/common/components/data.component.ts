@@ -7,6 +7,7 @@ import { DevExpressPointClickEvent } from '../interfaces/devexpress';
 
 import { Resolution } from '../enums';
 import { ApplicationData, QboxCounterData, QboxDataQuery, QboxPagedDataQueryResult } from '../models';
+import { TimeRangeHelper } from '../services';
 import { BaseComponent } from './base.component';
 
 export abstract class DataComponent extends BaseComponent {
@@ -21,8 +22,24 @@ export abstract class DataComponent extends BaseComponent {
   @ViewChild(DxChartComponent)
   protected chart: DxChartComponent;
 
-  constructor(private title: string) {
+  constructor(private title: string, protected timeRangeHelper: TimeRangeHelper) {
     super();
+  }
+
+  public nextClick(): void {
+    this.selectedFromDate = this.timeRangeHelper.getNextDate(this.selectedResolutionId, this.selectedFromDate);
+  }
+
+  public previousClick(): void {
+    this.selectedFromDate = this.timeRangeHelper.getPreviousDate(this.selectedResolutionId, this.selectedFromDate);
+  }
+
+  public next2Click(): void {
+    this.selectedFromDate = this.timeRangeHelper.getNextDate(this.selectedResolutionId + 1, this.selectedFromDate);
+  }
+
+  public previous2Click(): void {
+    this.selectedFromDate = this.timeRangeHelper.getPreviousDate(this.selectedResolutionId + 1, this.selectedFromDate);
   }
 
   public pointClick(e: DevExpressPointClickEvent): void {

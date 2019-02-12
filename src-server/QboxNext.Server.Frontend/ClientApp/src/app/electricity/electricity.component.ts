@@ -27,8 +27,8 @@ export class ElectricityComponent extends DataComponent implements OnInit {
   public checknet: boolean;
   public checkall: boolean;
 
-  constructor(private service: DataService, private formatter: ElectricityValueFormatter, private timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
-    super('Electriciteit');
+  constructor(private service: DataService, private formatter: ElectricityValueFormatter, timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
+    super('Electriciteit', timeRangeHelper);
   }
 
   public ngOnInit(): void {

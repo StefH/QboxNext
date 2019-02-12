@@ -9,7 +9,11 @@
 
       <div class="col-sm-6 form-group form-inline">
         <label>Tijd</label>
-        <dx-date-box class="ml-2" (onValueChanged)="refreshChart(true)" width="100px" [min]="2000-01-01" [(value)]="selectedFromDate"></dx-date-box>
+        <dx-button class="ml-2" text="|&lt;" (onClick)="previous2Click()"></dx-button>
+        <dx-button text="&lt;" (onClick)="previousClick()"></dx-button>
+        <dx-date-box (onValueChanged)="refreshChart(true)" width="100px" [min]="2000-01-01" [(value)]="selectedFromDate"></dx-date-box>
+        <dx-button text="&gt;" (onClick)="nextClick()"></dx-button>
+        <dx-button text="&gt;|" (onClick)="next2Click()"></dx-button>
       </div>
     </div>
     <div class="row border px-2">
