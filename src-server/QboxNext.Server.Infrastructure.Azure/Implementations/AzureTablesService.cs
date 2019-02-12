@@ -17,10 +17,11 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
         private static readonly long MaxTicks = DateTime.MaxValue.Ticks + 1;
 
         private readonly ILogger<AzureTablesService> _logger;
-        private readonly ITableSet<RegistrationEntity> _registrationTableSet;
-        private readonly ITableSet<MeasurementEntity> _measurementTableSet;
-        private readonly ITableSet<StateEntity> _stateTableSet;
         private readonly TimeSpan _serverTimeout;
+
+        private readonly (string name, ITableSet<RegistrationEntity> set) _registrationTable;
+        private readonly (string name, ITableSet<MeasurementEntity> set) _measurementTable;
+        private readonly (string name, ITableSet<StateEntity> set) _stateTable;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureTablesService"/> class.
@@ -39,9 +40,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             var client = CloudStorageAccount.Parse(options.Value.ConnectionString).CreateCloudTableClient();
 
             // Create table sets
-            _registrationTableSet = new TableSet<RegistrationEntity>(client, options.Value.RegistrationsTableName);
-            _stateTableSet = new TableSet<StateEntity>(client, options.Value.StatesTableName);
-            _measurementTableSet = new TableSet<MeasurementEntity>(client, options.Value.MeasurementsTableName);
+            _registrationTable = (options.Value.RegistrationsTableName, new TableSet<RegistrationEntity>(client, options.Value.RegistrationsTableName));
+            _stateTable = (options.Value.StatesTableName, new TableSet<StateEntity>(client, options.Value.StatesTableName));
+            _measurementTable = (options.Value.MeasurementsTableName, new TableSet<MeasurementEntity>(client, options.Value.MeasurementsTableName));
         }
     }
 }

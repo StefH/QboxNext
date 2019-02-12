@@ -62,4 +62,5 @@ docker run -it --rm --env-file C:\Users\StefHeyenrath\Documents\GitHub\qboxnext-
 ##### Cleanup all docker images and containers
 Use this command:
 ``` cmd
-docker system prune -a```
+docker system prune -a
+```

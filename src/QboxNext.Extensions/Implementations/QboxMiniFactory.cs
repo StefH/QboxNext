@@ -16,11 +16,11 @@ namespace QboxNext.Extensions.Implementations
             return new QboxBuilder()
                 .WithType(QboxType.Duo)
                 .WithSerial(serialNumber)
-                .WithCounter(181, CounterType.Primary, DeviceEnergyType.NetLow)
-                .WithCounter(182, CounterType.Primary, DeviceEnergyType.NetHigh)
-                .WithCounter(281, CounterType.Primary, DeviceEnergyType.NetLow)
-                .WithCounter(282, CounterType.Primary, DeviceEnergyType.NetHigh)
-                .WithCounter(2421, CounterType.Primary, DeviceEnergyType.Gas)
+                .WithCounter(QboxConstants.CounterIdConsumptionLow, CounterType.Primary, DeviceEnergyType.NetLow)
+                .WithCounter(QboxConstants.CounterIdConsumptionHigh, CounterType.Primary, DeviceEnergyType.NetHigh)
+                .WithCounter(QboxConstants.CounterIdGenerationLow, CounterType.Primary, DeviceEnergyType.NetLow)
+                .WithCounter(QboxConstants.CounterIdGenerationHigh, CounterType.Primary, DeviceEnergyType.NetHigh)
+                .WithCounter(QboxConstants.CounterIdGasConsumption, CounterType.Primary, DeviceEnergyType.Gas)
                 .Build();
         }
     }

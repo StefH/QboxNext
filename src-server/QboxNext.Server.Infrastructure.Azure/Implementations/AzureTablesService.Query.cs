@@ -1,4 +1,5 @@
-﻿using QboxNext.Server.Common.Validation;
+﻿using Microsoft.Extensions.Logging;
+using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Domain.Utils;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
@@ -21,7 +22,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 return false;
             }
 
-            return await _registrationTableSet.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber) != null;
+            return await _registrationTable.set.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber) != null;
         }
 
         /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, DateTime, DateTime, QboxQueryResolution, int)"/>
@@ -36,14 +37,17 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             string fromRowKey = GetRowKey(from);
             string toRowKey = GetRowKey(to);
 
-            var entities = await _measurementTableSet
+            var entityQuery = _measurementTable.set
                 .Where(m =>
                 (
                     same && m.PartitionKey == fromPartitionKey ||
                     !same && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) > 0) &&
                     string.CompareOrdinal(m.RowKey, fromRowKey) <= 0 && string.CompareOrdinal(m.RowKey, toRowKey) > 0
-                )
-                .ToListAsync();
+                );
+
+            _logger.LogInformation("Querying Table {table} with PartitionKey {fromPartitionKey} to {toPartitionKey} and RowKey {fromRowKey} to {toRowKey}", _measurementTable.name, fromPartitionKey, toPartitionKey, fromRowKey, toRowKey);
+
+            var entities = await entityQuery.ToListAsync();
 
             if (entities.Count == 0)
             {
