@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
+using QboxNext.Server.Infrastructure.Azure.Utils;
 using System;
 using System.Linq;
 using WindowsAzure.Table.Attributes;
@@ -73,7 +74,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
             Guard.NotNull(qboxState, nameof(qboxState));
 
             SerialNumber = qboxState.SerialNumber;
-            RowKey = $"{DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks:d19}:{qboxState.MessageType}";
+            RowKey = RowKeyHelper.GetRowKey(DateTime.UtcNow);
 
             CorrelationId = qboxState.CorrelationId;
             LogTimeStamp = qboxState.LogTime;

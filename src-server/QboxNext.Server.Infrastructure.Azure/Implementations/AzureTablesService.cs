@@ -13,9 +13,6 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 {
     internal partial class AzureTablesService : IAzureTablesService
     {
-        private const int PartitionKeyStart = 100000000;
-        private static readonly long MaxTicks = DateTime.MaxValue.Ticks + 1;
-
         private readonly ILogger<AzureTablesService> _logger;
         private readonly TimeSpan _serverTimeout;
 

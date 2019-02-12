@@ -3,6 +3,7 @@ using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Domain.Utils;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
+using QboxNext.Server.Infrastructure.Azure.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -30,12 +31,12 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
-            string fromPartitionKey = GetPartitionKey(serialNumber, from);
-            string toPartitionKey = GetPartitionKey(serialNumber, to);
+            string fromPartitionKey = PartitionKeyHelper.GetPartitionKey(serialNumber, from);
+            string toPartitionKey = PartitionKeyHelper.GetPartitionKey(serialNumber, to);
             bool samePartitionKey = fromPartitionKey == toPartitionKey;
 
-            string fromRowKey = GetRowKey(from);
-            string toRowKey = GetRowKey(to);
+            string fromRowKey = RowKeyHelper.GetRowKey(from);
+            string toRowKey = RowKeyHelper.GetRowKey(to);
 
             _logger.LogInformation("Querying Table {table} with PartitionKey {fromPartitionKey} to {toPartitionKey} and RowKey {fromRowKey} to {toRowKey}", _measurementTable.name, fromPartitionKey, toPartitionKey, fromRowKey, toRowKey);
 

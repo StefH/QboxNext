@@ -4,7 +4,7 @@ using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using QboxNext.Server.Infrastructure.Azure.Models.Internal;
-using System;
+using QboxNext.Server.Infrastructure.Azure.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,8 +42,8 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             into g
                             select new MeasurementEntity
                             {
-                                PartitionKey = GetPartitionKey(g.Key.SerialNumber, g.Key.MeasureTime),
-                                RowKey = GetRowKey(g.Key.MeasureTime),
+                                PartitionKey = PartitionKeyHelper.GetPartitionKey(g.Key.SerialNumber, g.Key.MeasureTime),
+                                RowKey = RowKeyHelper.GetRowKey(g.Key.MeasureTime),
                                 SerialNumber = g.Key.SerialNumber,
                                 MeasureTime = g.Key.MeasureTime,
                                 CorrelationId = g.First().CorrelationId,
@@ -70,21 +70,6 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             _logger.LogInformation("Inserting state for '{SerialNumber}' with RowKey '{RowKey}' into Azure Table '{table}'", qboxState.SerialNumber, entity.RowKey, _stateTable.name);
 
             return await _stateTable.set.AddAsync(entity).TimeoutAfter(_serverTimeout) != null;
-        }
-
-        private static string GetPartitionKey(string serialNumber, DateTime measureTime)
-        {
-            return $"{serialNumber}:{GetDateTimeKey(measureTime)}";
-        }
-
-        private static int GetDateTimeKey(DateTime measureTime)
-        {
-            return PartitionKeyStart - measureTime.Year * 10000 - measureTime.Month * 100 - measureTime.Day;
-        }
-
-        private static string GetRowKey(DateTime measureTime)
-        {
-            return $"{MaxTicks - measureTime.Ticks:d19}";
         }
     }
 }
