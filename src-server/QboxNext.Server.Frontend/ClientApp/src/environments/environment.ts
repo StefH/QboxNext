@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  instrumentationKey: '',
+  clientId: atob('ekd3dUxkMm90NFExbzRGMlo4MWpLUUZTMWMzRk5zd3U=')
 };
 
 /*

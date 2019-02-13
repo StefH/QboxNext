@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { AppInsightsService, ApplicationInsightsModule } from '@markpieszak/ng-application-insights';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DxButtonModule } from 'devextreme-angular/ui/button';
 import { DxChartModule } from 'devextreme-angular/ui/chart';
@@ -30,7 +31,8 @@ import { NavigationComponent } from './navigation/navigation.component';
 const APP_PROVIDERS = [
   AuthenticationGuard,
   AuthenticationService,
-  WindowProvider
+  WindowProvider,
+  AppInsightsService
 ];
 
 @NgModule({
@@ -51,6 +53,11 @@ const APP_PROVIDERS = [
 
     // 3rd party
     NgbModule,
+
+    ApplicationInsightsModule.forRoot({
+      instrumentationKeySetLater: true
+    }),
+
     DxButtonModule,
     DxChartModule,
     DxSelectBoxModule,

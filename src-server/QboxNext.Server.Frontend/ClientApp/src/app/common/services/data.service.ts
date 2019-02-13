@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { AppInsightsService } from '@markpieszak/ng-application-insights';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 
@@ -12,8 +13,8 @@ import { BaseService } from './base.service';
 export class DataService extends BaseService<QboxCounterData> {
     private baseUrl = '/api/data';
 
-    constructor(http: HttpClient) {
-        super(http);
+    constructor(http: HttpClient, appInsightsService: AppInsightsService) {
+        super(http, appInsightsService);
     }
 
     public getData(resolution: Resolution, from: Date, to: Date): Observable<QboxPagedDataQueryResult<QboxCounterData>> {

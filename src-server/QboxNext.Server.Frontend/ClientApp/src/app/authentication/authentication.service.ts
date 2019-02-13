@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { AppInsightsService } from '@markpieszak/ng-application-insights';
 import { Auth0DecodedHash, Auth0Error, WebAuth } from 'auth0-js';
 import { nameof } from 'ts-simple-nameof';
 
+import { environment } from '../../environments/environment';
 import { LoginModel } from '../common/models';
 import { SessionStorageService } from '../common/services/session-storage.service';
 
@@ -13,9 +15,9 @@ import { SessionStorageService } from '../common/services/session-storage.servic
 export class AuthenticationService {
     private auth0: WebAuth;
 
-    constructor(private sessionStorageService: SessionStorageService, private router: Router) {
+    constructor(private sessionStorageService: SessionStorageService, private router: Router, private appInsightsService: AppInsightsService) {
         this.auth0 = new WebAuth({
-            clientID: 'zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu',
+            clientID: environment.clientId,
             domain: 'stef-heyenrath.eu.auth0.com',
             responseType: 'token id_token',
             audience: 'https://qboxnext.web.nl',
@@ -47,6 +49,8 @@ export class AuthenticationService {
             expiresAt: new Date().getTime() + (authResult.expiresIn || 0) * 1000,
             serialNumber: authResult.idTokenPayload['https://qboxnext.web.nl/SerialNumber']
         });
+
+        this.appInsightsService.setAuthenticatedUserContext(authResult.idTokenPayload['sub']);
 
         this.setLoginModel(model);
     }
