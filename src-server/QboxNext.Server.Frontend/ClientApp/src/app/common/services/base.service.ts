@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
+import { AppInsightsService } from '@markpieszak/ng-application-insights';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -7,7 +8,7 @@ import { PartialParamConstructor } from '../interfaces';
 import { ErrorMessage, PagedResult } from '../models';
 
 export abstract class BaseService<T> {
-    constructor(private httpClient: HttpClient) {
+    constructor(private httpClient: HttpClient, protected appInsightsService: AppInsightsService) {
     }
 
     /**
@@ -87,6 +88,8 @@ export abstract class BaseService<T> {
         } else {
             errorMessage.message = errorResponse.toString();
         }
+
+        this.appInsightsService.trackException(new Error(errorMessage.message));
 
         return throwError(errorMessage);
     }

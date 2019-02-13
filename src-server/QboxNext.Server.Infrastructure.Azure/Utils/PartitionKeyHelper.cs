@@ -11,6 +11,11 @@ namespace QboxNext.Server.Infrastructure.Azure.Utils
             return $"{serialNumber}:{GetDateTimeKey(measureTime)}";
         }
 
+        //public static string GetPartitionKey(string serialNumber, int dateTimeKey)
+        //{
+        //    return $"{serialNumber}:{dateTimeKey}";
+        //}
+
         public static int GetDateTimeKey(DateTime measureTime)
         {
             return PartitionKeyStart - measureTime.Year * 10000 - measureTime.Month * 100 - measureTime.Day;

@@ -16,9 +16,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
         private readonly ILogger<AzureTablesService> _logger;
         private readonly TimeSpan _serverTimeout;
 
-        private readonly (string name, ITableSet<RegistrationEntity> set) _registrationTable;
-        private readonly (string name, ITableSet<MeasurementEntity> set) _measurementTable;
-        private readonly (string name, ITableSet<StateEntity> set) _stateTable;
+        private readonly (string Name, ITableSet<RegistrationEntity> Set) _registrationTable;
+        private readonly (string Name, ITableSet<MeasurementEntity> Set) _measurementTable;
+        private readonly (string Name, ITableSet<StateEntity> Set) _stateTable;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureTablesService"/> class.

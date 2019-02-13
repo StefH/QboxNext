@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+import { AppInsightsService } from '@markpieszak/ng-application-insights';
 import * as moment from 'moment';
-import { LoginModel } from './common/models';
 
+import { environment } from '../environments/environment';
 import { AuthenticationService } from './authentication';
+import { LoginModel } from './common/models';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,15 @@ import { AuthenticationService } from './authentication';
 export class AppComponent implements OnInit {
   public title = 'QboxNext.Server.Frontend';
 
-  constructor(private authenticationService: AuthenticationService) {
+  constructor(private authenticationService: AuthenticationService, appInsightsService: AppInsightsService) {
+    if (environment.instrumentationKey.length > 0) {
+      appInsightsService.config = {
+        instrumentationKey: environment.instrumentationKey
+      };
+
+      appInsightsService.init();
+    }
+
     this.authenticationService.handleAuthentication();
   }
 

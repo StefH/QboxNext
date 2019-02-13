@@ -3,8 +3,10 @@ using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Domain.Utils;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
+using QboxNext.Server.Infrastructure.Azure.Models.Internal;
 using QboxNext.Server.Infrastructure.Azure.Utils;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -23,7 +25,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 return false;
             }
 
-            return await _registrationTable.set.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber) != null;
+            _logger.LogInformation("Querying Table {table} for SerialNumber {SerialNumber}", _registrationTable.Name, serialNumber);
+
+            return await _registrationTable.Set.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber) != null;
         }
 
         /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, DateTime, DateTime, QboxQueryResolution, int)"/>
@@ -33,23 +37,26 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             string fromPartitionKey = PartitionKeyHelper.GetPartitionKey(serialNumber, from);
             string toPartitionKey = PartitionKeyHelper.GetPartitionKey(serialNumber, to);
-            bool samePartitionKey = fromPartitionKey == toPartitionKey;
 
             string fromRowKey = RowKeyHelper.GetRowKey(from);
             string toRowKey = RowKeyHelper.GetRowKey(to);
 
-            _logger.LogInformation("Querying Table {table} with PartitionKey {fromPartitionKey} to {toPartitionKey} and RowKey {fromRowKey} to {toRowKey}", _measurementTable.name, fromPartitionKey, toPartitionKey, fromRowKey, toRowKey);
+            _logger.LogInformation("Querying Table {table} with PartitionKey {fromPartitionKey} to {toPartitionKey} and RowKey {fromRowKey} to {toRowKey}", _measurementTable.Name, fromPartitionKey, toPartitionKey, fromRowKey, toRowKey);
 
-            var entityQuery = _measurementTable.set
-                .Where(m =>
-                (
-                    samePartitionKey && m.PartitionKey == fromPartitionKey ||
-                    !samePartitionKey && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) > 0) &&
+            var queue = new ConcurrentQueue<List<MeasurementEntity>>();
+            var tasks = EachDay(from, to).Select(async date =>
+            {
+                var result = await _measurementTable.Set.Where(
+                    m => m.PartitionKey == PartitionKeyHelper.GetPartitionKey(serialNumber, date) &&
                     string.CompareOrdinal(m.RowKey, fromRowKey) <= 0 && string.CompareOrdinal(m.RowKey, toRowKey) > 0
-                );
+                ).ToListAsync();
 
-            var entities = await entityQuery.ToListAsync();
+                queue.Enqueue(result);
+            });
 
+            await Task.WhenAll(tasks);
+
+            var entities = queue.SelectMany(x => x).OrderBy(e => e.MeasureTime).ToList();
             if (entities.Count == 0)
             {
                 return new QboxPagedDataQueryResult<QboxCounterData>
@@ -60,9 +67,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 };
             }
 
-            var entitiesSorted = entities.OrderBy(e => e.MeasureTime).ToList();
-
-            var deltas = entitiesSorted.Zip(entitiesSorted.Skip(1), (current, next) => new QboxCounterData
+            var deltas = entities.Zip(entities.Skip(1), (current, next) => new QboxCounterData
             {
                 MeasureTime = next.MeasureTime,
                 Delta0181 = next.Counter0181 - current.Counter0181 ?? 0,
@@ -74,7 +79,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             deltas.Insert(0, new QboxCounterData
             {
-                MeasureTime = entitiesSorted[0].MeasureTime,
+                MeasureTime = entities[0].MeasureTime,
                 Delta0181 = 0,
                 Delta0182 = 0,
                 Delta0281 = 0,
@@ -128,6 +133,14 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 Items = items,
                 Count = items.Count
             };
+        }
+
+        private static IEnumerable<DateTime> EachDay(DateTime from, DateTime to)
+        {
+            for (var day = from.Date; day.Date <= to.Date; day = day.AddDays(1))
+            {
+                yield return day;
+            }
         }
 
         private static string GetLabelText(DateTime measureTime, QboxQueryResolution resolution)
