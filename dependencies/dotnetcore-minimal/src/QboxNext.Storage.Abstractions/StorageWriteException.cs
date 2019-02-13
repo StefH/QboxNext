@@ -1,4 +1,4 @@
-﻿namespace QboxNext.Qserver.Core.Exceptions
+﻿namespace QboxNext.Storage
 {
     public class StorageWriteException : StorageException
     {

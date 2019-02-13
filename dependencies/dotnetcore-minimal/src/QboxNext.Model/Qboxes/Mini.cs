@@ -82,12 +82,15 @@ namespace QboxNext.Model.Qboxes
         {
             foreach (var counterPoco in Counters)
             {
-                counterPoco.StorageProvider = storageProviderFactory.GetStorageProvider(
-                    SerialNumber, 
-                    counterPoco.CounterId, 
-                    Precision, 
-                    counterPoco.StorageId
-                );
+                var context = new StorageProviderContext
+                {
+                    SerialNumber = SerialNumber,
+                    CounterId = counterPoco.CounterId,
+                    Precision = Precision,
+                    StorageId = counterPoco.StorageId
+                };
+
+                counterPoco.StorageProvider = storageProviderFactory.GetStorageProvider(context);
             }
         }
 

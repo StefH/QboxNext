@@ -46,6 +46,8 @@
     <ProjectReference Include="..\QboxNext.Core\QboxNext.Core.csproj" />
     <ProjectReference Include="..\QboxNext.Logging\QboxNext.Logging.csproj" />
     <ProjectReference Include="..\QboxNext.Model\QboxNext.Model.csproj" />
+    <ProjectReference Include="..\QboxNext.Storage.Qbx\QboxNext.Storage.Qbx.csproj" />
+    <ProjectReference Include="..\QboxNext.Storage\QboxNext.Storage.csproj" />
   </ItemGroup>
 
   <ItemGroup>
