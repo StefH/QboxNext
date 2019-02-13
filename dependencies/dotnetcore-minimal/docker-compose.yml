@@ -1,7 +1,9 @@
 version: '3'
 services:
   qserver:
-    build: QboxNext.Qserver
+    build:
+      context: .
+      dockerfile: ./src/QboxNext.Qserver/Dockerfile
     image: qboxnextteam/qserver
     restart: always
     ports:
@@ -14,7 +16,9 @@ services:
 #     - d:/qboxnextdata:/var/qboxnextdata 
 
   qservice:
-    build: QboxNext.Qservice
+    build:
+      context: .
+      dockerfile: ./src/QboxNext.Qservice/Dockerfile
     image: qboxnextteam/qservice
     restart: always
     ports:

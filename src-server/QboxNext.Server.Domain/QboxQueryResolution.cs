@@ -2,10 +2,10 @@
 {
     public enum QboxQueryResolution
     {
-        QuarterOfHour,
-        Hour,
-        Day,
-        Month,
-        Year
+        QuarterOfHour = 0,
+        Hour = 1,
+        Day = 2,
+        Month = 3,
+        Year = 4
     }
 }

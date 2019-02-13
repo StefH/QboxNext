@@ -1,15 +1,17 @@
+import { Resolution } from '../enums';
+
 export class ApplicationData {
     public gasSelectedFromDate: Date;
 
     public gasSelectedToDate: Date;
 
-    public gasSelectedResolutionId: string;
+    public gasSelectedResolutionId: Resolution;
 
     public electricitySelectedFromDate: Date;
 
     public electricitySelectedToDate: Date;
 
-    public electricitySelectedResolutionId: string;
+    public electricitySelectedResolutionId: Resolution;
 
     public check181: boolean;
 

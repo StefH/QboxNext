@@ -9,6 +9,7 @@ variables:
   imageNameFrontend: 'qboxnext-frontend-nanoserver-1803'
   tag: '1.0.0'
   buildDocker: $(BUILD_DOCKER)
+  publishDocker: $(PUBLISH_DOCKER)
 
 steps:
 #- task: DotNetCoreCLI@2
@@ -66,7 +67,7 @@ steps:
     docker push $(DOCKER_ID)/$(imageNameFrontend):latest
     docker push $(DOCKER_ID)/$(imageNameFrontend):$(tag)
   displayName: 'Push Docker images [$(imageNameDataReceiver) and $(imageNameFrontend)]'
-  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
+  condition: and(succeeded(), eq(variables.publishDocker, 'yes'))
 
 #- task: PublishBuildArtifacts@1
 #  displayName: 'Publish Artifact'

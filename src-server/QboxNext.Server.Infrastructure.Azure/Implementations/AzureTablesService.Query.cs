@@ -1,7 +1,9 @@
-﻿using QboxNext.Server.Common.Validation;
+﻿using Microsoft.Extensions.Logging;
+using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Domain.Utils;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
+using QboxNext.Server.Infrastructure.Azure.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,7 +23,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 return false;
             }
 
-            return await _registrationTableSet.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber) != null;
+            return await _registrationTable.set.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber) != null;
         }
 
         /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, DateTime, DateTime, QboxQueryResolution, int)"/>
@@ -29,21 +31,24 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
-            string fromPartitionKey = GetPartitionKey(serialNumber, from);
-            string toPartitionKey = GetPartitionKey(serialNumber, to);
-            bool same = fromPartitionKey == toPartitionKey;
+            string fromPartitionKey = PartitionKeyHelper.GetPartitionKey(serialNumber, from);
+            string toPartitionKey = PartitionKeyHelper.GetPartitionKey(serialNumber, to);
+            bool samePartitionKey = fromPartitionKey == toPartitionKey;
 
-            string fromRowKey = GetRowKey(from);
-            string toRowKey = GetRowKey(to);
+            string fromRowKey = RowKeyHelper.GetRowKey(from);
+            string toRowKey = RowKeyHelper.GetRowKey(to);
 
-            var entities = await _measurementTableSet
+            _logger.LogInformation("Querying Table {table} with PartitionKey {fromPartitionKey} to {toPartitionKey} and RowKey {fromRowKey} to {toRowKey}", _measurementTable.name, fromPartitionKey, toPartitionKey, fromRowKey, toRowKey);
+
+            var entityQuery = _measurementTable.set
                 .Where(m =>
                 (
-                    same && m.PartitionKey == fromPartitionKey ||
-                    !same && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) > 0) &&
+                    samePartitionKey && m.PartitionKey == fromPartitionKey ||
+                    !samePartitionKey && string.CompareOrdinal(m.PartitionKey, fromPartitionKey) <= 0 && string.CompareOrdinal(m.PartitionKey, toPartitionKey) > 0) &&
                     string.CompareOrdinal(m.RowKey, fromRowKey) <= 0 && string.CompareOrdinal(m.RowKey, toRowKey) > 0
-                )
-                .ToListAsync();
+                );
+
+            var entities = await entityQuery.ToListAsync();
 
             if (entities.Count == 0)
             {
@@ -108,6 +113,15 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 Delta2421 = entities.Max(e => e.Counter2421) - entities.Min(e => e.Counter2421) ?? 0
             };
 
+            // Define DrillDownQuery
+            if (resolution > QboxQueryResolution.QuarterOfHour)
+            {
+                foreach (var item in items)
+                {
+                    item.DrillDownQuery = GetDrillDownQboxDataQuery(item.MeasureTime, resolution, addHours);
+                }
+            }
+
             return new QboxPagedDataQueryResult<QboxCounterData>
             {
                 Overview = overview,
@@ -160,6 +174,38 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 default:
                     throw new NotSupportedException();
             }
+        }
+
+        private static QboxDataQuery GetDrillDownQboxDataQuery(DateTime measureTime, QboxQueryResolution resolution, int addHours)
+        {
+            QboxQueryResolution resolutionNew = resolution - 1;
+            var query = new QboxDataQuery
+            {
+                AddHours = addHours,
+                Resolution = resolutionNew,
+                From = resolution.TruncateTime(measureTime)
+            };
+
+            switch (resolution)
+            {
+                case QboxQueryResolution.Hour:
+                case QboxQueryResolution.Day:
+                    query.To = query.From.AddDays(1);
+                    break;
+
+                case QboxQueryResolution.Month:
+                    query.To = query.From.AddMonths(1);
+                    break;
+
+                case QboxQueryResolution.Year:
+                    query.To = query.From.AddYears(1);
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
+
+            return query;
         }
     }
 }

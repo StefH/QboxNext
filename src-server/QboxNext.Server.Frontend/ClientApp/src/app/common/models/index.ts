@@ -5,3 +5,4 @@ export * from './selectOption.model';
 export * from './QboxPagedDataQueryResult.model';
 export * from './login.model';
 export * from './application-data.model';
+export * from './QboxDataQuery';

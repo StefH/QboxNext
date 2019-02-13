@@ -253,4 +253,7 @@ ModelManifest.xml
 **/test-results/*
 
 # Launch settings in unit test projects
-*.Tests/**/launchSettings.json
+test/**/launchSettings.json
+
+# Ignore distribution folder
+dist/

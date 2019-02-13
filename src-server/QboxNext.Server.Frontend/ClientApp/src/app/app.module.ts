@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DxButtonModule } from 'devextreme-angular/ui/button';
 import { DxChartModule } from 'devextreme-angular/ui/chart';
 import { DxCheckBoxModule } from 'devextreme-angular/ui/check-box';
 import { DxDateBoxModule } from 'devextreme-angular/ui/date-box';
@@ -50,6 +51,7 @@ const APP_PROVIDERS = [
 
     // 3rd party
     NgbModule,
+    DxButtonModule,
     DxChartModule,
     DxSelectBoxModule,
     DxDateBoxModule,

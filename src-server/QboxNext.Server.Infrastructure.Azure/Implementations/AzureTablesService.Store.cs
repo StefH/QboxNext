@@ -4,11 +4,10 @@ using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using QboxNext.Server.Infrastructure.Azure.Models.Internal;
-using System;
+using QboxNext.Server.Infrastructure.Azure.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using QboxMeasurement = QboxNext.Server.Domain.QboxMeasurement;
 
 namespace QboxNext.Server.Infrastructure.Azure.Implementations
 {
@@ -19,7 +18,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
         {
             Guard.NotNull(qboxMeasurement, nameof(qboxMeasurement));
 
-            _logger.LogInformation($"Inserting measurement for '{qboxMeasurement.SerialNumber}' into Azure Table '{nameof(_measurementTableSet)}'");
+            _logger.LogInformation($"Inserting measurement for '{qboxMeasurement.SerialNumber}' into Azure Table '{nameof(_measurementTable)}'");
 
             return await StoreBatchAsync(new[] { qboxMeasurement }).TimeoutAfter(_serverTimeout);
         }
@@ -43,8 +42,8 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             into g
                             select new MeasurementEntity
                             {
-                                PartitionKey = GetPartitionKey(g.Key.SerialNumber, g.Key.MeasureTime),
-                                RowKey = GetRowKey(g.Key.MeasureTime),
+                                PartitionKey = PartitionKeyHelper.GetPartitionKey(g.Key.SerialNumber, g.Key.MeasureTime),
+                                RowKey = RowKeyHelper.GetRowKey(g.Key.MeasureTime),
                                 SerialNumber = g.Key.SerialNumber,
                                 MeasureTime = g.Key.MeasureTime,
                                 CorrelationId = g.First().CorrelationId,
@@ -58,9 +57,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             string serialNumber = qboxMeasurements.First().SerialNumber;
 
-            _logger.LogInformation($"Inserting {entities.Count} measurement(s) for '{serialNumber}' into Azure Table '{nameof(_measurementTableSet)}'");
+            _logger.LogInformation("Inserting {Count} measurement(s) for '{SerialNumber}' into Azure Table '{table}'", entities.Count, serialNumber, _measurementTable.name);
 
-            return await _measurementTableSet.AddOrUpdateAsync(entities).TimeoutAfter(_serverTimeout) != null;
+            return await _measurementTable.set.AddOrUpdateAsync(entities).TimeoutAfter(_serverTimeout) != null;
         }
 
         public async Task<bool> StoreAsync(QboxState qboxState)
@@ -68,19 +67,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             Guard.NotNull(qboxState, nameof(qboxState));
 
             var entity = new StateEntity(qboxState);
-            _logger.LogInformation($"Inserting state for '{qboxState.SerialNumber}' with RowKey '{entity.RowKey}' into Azure Table '{nameof(_stateTableSet)}'");
+            _logger.LogInformation("Inserting state for '{SerialNumber}' with RowKey '{RowKey}' into Azure Table '{table}'", qboxState.SerialNumber, entity.RowKey, _stateTable.name);
 
-            return await _stateTableSet.AddAsync(entity).TimeoutAfter(_serverTimeout) != null;
-        }
-
-        private static string GetPartitionKey(string serialNumber, DateTime measureTime)
-        {
-            return $"{serialNumber}:{MeasurementPartitionKeyStart - measureTime.Year * 10000 - measureTime.Month * 100 - measureTime.Day}";
-        }
-
-        private static string GetRowKey(DateTime measureTime)
-        {
-            return $"{MaxTicks - measureTime.Ticks:d19}";
+            return await _stateTable.set.AddAsync(entity).TimeoutAfter(_serverTimeout) != null;
         }
     }
 }

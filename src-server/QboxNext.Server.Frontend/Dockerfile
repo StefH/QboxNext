@@ -6,12 +6,12 @@ EXPOSE 443
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
 
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Storage.Abstractions/QboxNext.Storage.Abstractions.csproj", "dependencies/dotnetcore-minimal/QboxNext.Storage.Abstractions/"]
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Qboxes.Parsing/QboxNext.Qboxes.Parsing.csproj", "dependencies/dotnetcore-minimal/QboxNext.Qboxes.Parsing/"]
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Logging/QboxNext.Logging.csproj", "dependencies/dotnetcore-minimal/QboxNext.Logging/"]
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Qserver.Core/QboxNext.Qserver.Core.csproj", "dependencies/dotnetcore-minimal/QboxNext.Qserver.Core/"]
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Core/QboxNext.Core.csproj", "dependencies/dotnetcore-minimal/QboxNext.Core/"]
-COPY ["dependencies/dotnetcore-minimal/QboxNext.Model/QboxNext.Model.csproj", "dependencies/dotnetcore-minimal/QboxNext.Model/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Core/QboxNext.Core.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Core/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Logging/QboxNext.Logging.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Logging/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Model/QboxNext.Model.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Model/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Qboxes.Parsing/QboxNext.Qboxes.Parsing.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Qboxes.Parsing/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Qserver.Core/QboxNext.Qserver.Core.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Qserver.Core/"]
+COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Storage.Abstractions/QboxNext.Storage.Abstractions.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Storage.Abstractions/"]
 
 COPY ["dependencies/NLog.Extensions.AzureStorage/src/NLog.Extensions.AzureTables/NLog.Extensions.AzureTables.csproj", "dependencies/NLog.Extensions.AzureStorage/src/NLog.Extensions.AzureTables/"]
 
@@ -22,7 +22,6 @@ COPY ["src-server/QboxNext.Server.Infrastructure.Azure/QboxNext.Server.Infrastru
 COPY ["src-server/QBoxNext.Server.Business/QBoxNext.Server.Business.csproj", "src-server/QBoxNext.Server.Business/"]
 COPY ["src-server/QboxNext.Server.Domain/QboxNext.Server.Domain.csproj", "src-server/QboxNext.Server.Domain/"]
 COPY ["src-server/QboxNext.Server.Common/QboxNext.Server.Common.csproj", "src-server/QboxNext.Server.Common/"]
-
 COPY ["src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend.csproj", "src-server/QboxNext.Server.Frontend/"]
 
 RUN dotnet restore "src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend.csproj"

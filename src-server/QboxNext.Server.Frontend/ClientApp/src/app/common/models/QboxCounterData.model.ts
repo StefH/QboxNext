@@ -1,8 +1,11 @@
+import { QboxDataQuery } from './QboxDataQuery';
 
 export class QboxCounterData {
     public labelText: string;
 
-    public labelValue: number;
+    public labelValue: string;
+
+    public drillDownQuery: QboxDataQuery;
 
     public delta0181: number;
 

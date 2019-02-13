@@ -19,5 +19,7 @@ namespace QboxNext.Server.Domain
         public int Delta0282 { get; set; }
 
         public int Delta2421 { get; set; }
+
+        public QboxDataQuery DrillDownQuery { get; set; }
     }
 }

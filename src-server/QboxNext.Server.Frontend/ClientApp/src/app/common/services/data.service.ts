@@ -1,27 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import * as moment from 'moment';
 import { Observable } from 'rxjs';
 
-import { QboxCounterData, QboxPagedDataQueryResult } from '../models';
+import { Resolution } from '../enums';
+import { QboxCounterData, QboxDataQuery, QboxPagedDataQueryResult } from '../models';
 import { BaseService } from './base.service';
 
 @Injectable()
 export class DataService extends BaseService<QboxCounterData> {
     private baseUrl = '/api/data';
 
-    constructor(private http: HttpClient) {
+    constructor(http: HttpClient) {
         super(http);
     }
 
-    public getData(resolution: string, from: Date, to: Date): Observable<QboxPagedDataQueryResult<QboxCounterData>> {
+    public getData(resolution: Resolution, from: Date, to: Date): Observable<QboxPagedDataQueryResult<QboxCounterData>> {
+        // console.log(from);
+        // console.log(to);
 
-        const request = {
-            from: from.toISOString().split('T')[0],
-            to: to.toISOString().split('T')[0],
-            addHours: 1,
+        const request = new QboxDataQuery({
+            from: moment(from).format('YYYY-MM-DD'),
+            to: moment(to).format('YYYY-MM-DD'),
             resolution: resolution
-        };
+        });
+
+        // console.log(request);
 
         return this.post<QboxPagedDataQueryResult<QboxCounterData>>(this.baseUrl, request);
     }

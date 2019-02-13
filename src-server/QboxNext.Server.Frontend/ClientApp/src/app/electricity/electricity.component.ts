@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { DxChartComponent } from 'devextreme-angular';
-import * as moment from 'moment';
 import { nameof } from 'ts-simple-nameof';
 
-import { BaseComponent } from '../common/components';
+import { DataComponent } from '../common/components';
 import { HttpStatusCodes } from '../common/constants';
-import { DataLoadStatus } from '../common/enums';
+import { DataLoadStatus, Resolution } from '../common/enums';
 import { ElectricityValueFormatter } from '../common/formatters';
 import { ApplicationData, QboxCounterData, QboxPagedDataQueryResult } from '../common/models';
 import { DataService, TimeRangeHelper } from '../common/services';
@@ -19,19 +17,9 @@ import { SessionStorageService } from '../common/services';
   styleUrls: ['./electricity.component.css'],
   preserveWhitespaces: true
 })
-export class ElectricityComponent extends BaseComponent implements OnInit {
-  public resolutions = [{ id: 'QuarterOfHour', text: 'Kwartier' }, { id: 'Hour', text: 'Uur' }, { id: 'Day', text: 'Dag' }, { id: 'Month', text: 'Maand' }];
+export class ElectricityComponent extends DataComponent implements OnInit {
+  public resolutions = [{ id: Resolution.QuarterOfHour, text: 'Kwartier' }, { id: Resolution.Hour, text: 'Uur' }, { id: Resolution.Day, text: 'Dag' }, { id: Resolution.Month, text: 'Maand' }];
 
-  @ViewChild(DxChartComponent)
-  private chart: DxChartComponent;
-  private resultFromServer = new QboxPagedDataQueryResult<QboxCounterData>();
-  private appData: ApplicationData;
-
-  public result = new QboxPagedDataQueryResult<QboxCounterData>();
-
-  public selectedFromDate: Date;
-  public selectedToDate: Date;
-  public selectedResolutionId: string;
   public check181: boolean;
   public check182: boolean;
   public check281: boolean;
@@ -39,8 +27,8 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
   public checknet: boolean;
   public checkall: boolean;
 
-  constructor(private service: DataService, private formatter: ElectricityValueFormatter, private timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
-    super();
+  constructor(private service: DataService, private formatter: ElectricityValueFormatter, timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
+    super('Electriciteit', timeRangeHelper);
   }
 
   public ngOnInit(): void {
@@ -104,22 +92,12 @@ export class ElectricityComponent extends BaseComponent implements OnInit {
     }
   }
 
-  public getTitle(): string {
-    const start = moment(this.selectedFromDate).format('D MMMM YYYY');
-    const end = moment(this.selectedToDate).format('D MMMM YYYY');
-
-    if (this.selectedResolutionId === 'QuarterOfHour' || this.selectedResolutionId === 'Hour') {
-      return `Electriciteit (${start})`;
-    }
-
-    return `Electriciteit (${start} tot ${end})`;
-  }
-
   private filter(): void {
     const mapCounterDataValue = (i: QboxCounterData) => {
       return new QboxCounterData({
         labelText: i.labelText,
         labelValue: i.labelValue,
+        drillDownQuery: i.drillDownQuery,
         delta0181: i.delta0181,
         delta0182: i.delta0182,
         delta0281: i.delta0281,

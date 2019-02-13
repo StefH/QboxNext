@@ -25,17 +25,18 @@ namespace QboxNext.Extensions.Implementations
     /// - handle Payload.Visit(...) exceptions correctly
     /// - Async support
     /// </summary>
+    [UsedImplicitly]
     public class QboxNextDataHandler : IQboxNextDataHandler
     {
         private static readonly Dictionary<int, int> SmartMeterIdMapping = new Dictionary<int, int>
         {
-           { 1, 181 },
-           { 2, 182 },
-           { 3, 281 },
-           { 4, 282 },
+           { 1, QboxConstants.CounterIdConsumptionLow },
+           { 2, QboxConstants.CounterIdConsumptionHigh },
+           { 3, QboxConstants.CounterIdGenerationLow },
+           { 4, QboxConstants.CounterIdGenerationHigh },
            { 5, 270 },
            { 6, 170 },
-           { 7, 2421 }
+           { 7, QboxConstants.CounterIdGasConsumption }
         };
         private static readonly Dictionary<int, int> SoladinIdMapping = new Dictionary<int, int>
         {
@@ -212,7 +213,7 @@ namespace QboxNext.Extensions.Implementations
                 };
                 await _stateStoreService.StoreAsync(_correlationId, stateDataException);
 
-                _logger.LogError(exception, $"sn: {stateDataException.SerialNumber}");
+                _logger.LogError(exception, "SerialNumber {SerialNumber}", stateDataException.SerialNumber);
 
                 throw;
             }
@@ -432,7 +433,6 @@ namespace QboxNext.Extensions.Implementations
             }
             catch (Exception e)
             {
-                //todo: add specific handling for file locking etc iso this Pokemon... (rolf)
                 _logger.LogError(e, e.Message);
             }
         }
