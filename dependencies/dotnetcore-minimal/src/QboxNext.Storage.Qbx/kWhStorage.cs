@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Threading;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using QboxNext.Core.Extensions;
 using QboxNext.Core.Utils;
-using QboxNext.Logging;
-using QboxNext.Qserver.Core.Exceptions;
-using QboxNext.Qserver.Core.Interfaces;
-using QboxNext.Storage;
 
-namespace QboxNext.Qserver.Core.DataStore
+namespace QboxNext.Storage.Qbx
 {
-
     /// <summary>
     /// A persistent storage provider to store records of measurement data
     /// Included in the record are:
@@ -30,10 +25,14 @@ namespace QboxNext.Qserver.Core.DataStore
     /// Raw data that is received will always fill up the intermediate slots in the past that have no raw data with the average value calculated
     /// over the missing slots.
     /// </summary>
-    // ReSharper disable InconsistentNaming
+    // ReSharper disable once InconsistentNaming
     public class kWhStorage : IStorageProvider
-    // ReSharper restore InconsistentNaming
     {
+        private readonly ILogger<kWhStorage> _logger;
+        private readonly ILoggerFactory _loggerFactory;
+        private readonly StorageProviderContext _context;
+        private readonly kWhStorageOptions _options;
+
         #region private
 
         private bool FileExists
@@ -44,23 +43,9 @@ namespace QboxNext.Qserver.Core.DataStore
                 if (_reader != null || _writer != null)
                     return true;
 
-                return File.Exists(GetFilePath());
+                return System.IO.File.Exists(GetFilePath());
             }
         }
-        /// <summary>
-        /// The file path or directory part of the file name.
-        /// This is used in the building of the file name.
-        /// </summary>
-        private readonly string _filePath = string.Empty;
-        /// <summary>
-        /// The extension for the filename. Is used in the building of the filename
-        /// </summary>
-        private const string Extension = "qbx";
-
-        /// <summary>
-        /// ReferenceDate in hele minuten, de waarden in deze storage worden weggeschreven in hele minuten.
-        /// </summary>
-        private DateTime ReferenceDate { get; set; }
 
         /// <summary>
         /// Backing field for the StartOfFile property. Denotes the first time a value was added and is the base for
@@ -88,7 +73,7 @@ namespace QboxNext.Qserver.Core.DataStore
             get
             {
                 if (_writer == null)
-                    _writer = new SafeWriterWrapper(GetFilePath());
+                    _writer = new SafeWriterWrapper(_loggerFactory, GetFilePath());
                 return _writer.BinaryWriter;
             }
         }
@@ -101,7 +86,7 @@ namespace QboxNext.Qserver.Core.DataStore
         {
             get
             {
-                return _reader ?? (_reader = new BinaryReader(File.Open(GetFilePath(), FileMode.Open, FileAccess.Read, FileShare.ReadWrite)));
+                return _reader ?? (_reader = new BinaryReader(System.IO.File.Open(GetFilePath(), FileMode.Open, FileAccess.Read, FileShare.ReadWrite)));
             }
         }
 
@@ -118,36 +103,7 @@ namespace QboxNext.Qserver.Core.DataStore
 
         #endregion
 
-        #region protected
-
-        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger("kWhStorage");
-
-        /// <summary>
-        /// Auto implement property for the number of days that is used to create the file when initialized or expanded.
-        /// </summary>
-        protected double GrowthNrOfDays { get; set; }
-
-        #endregion protected
-
         #region public
-
-        /// <summary>
-        /// Serialnumber for the Qbox that holds the counter for which this storage provider is storing the data
-        /// </summary>
-        public string SerialNumber { get; private set; }
-
-        /// <summary>
-        /// The counter nr for the counter in the Qbox
-        /// </summary>
-        public int Counter { get; private set; }
-
-        /// <summary>
-        /// StorageId added by firmware 39
-        /// By StorageId = null/empty, the old filename is used
-        /// By StorageId != null, value is used for filename
-        /// </summary>
-        //todo: refactor naar 1 storage id methode naam geving. Let wel op dat dan een tool geschreven moet worden om alle bestaande files eerst te hernoemen
-        public string StorageId { get; private set; }
 
         /// <summary>
         /// A Guid id intended to be used as a unique identifier for the file
@@ -191,70 +147,29 @@ namespace QboxNext.Qserver.Core.DataStore
             }
         }
 
-        /// <summary>
-        /// Auto implement property that stores the precision given in the constructor
-        /// Used in the calculation of the values when storing the data for the kWh and money fields
-        /// </summary>
-        private Precision Precision { get; set; }
-
-        /// <summary>
-        /// Proeprty that signals that it is allowed to overwrite given values.
-        /// In normal operation it should not be allowed to overwrite values stored because the Qbox sends its values every minute
-        /// and if a value in the past is send (twice) this should be seen as an error. The time in the qbox can be off due to hardware
-        /// choices. That would allow overwrite of faulty values over existing correct values.
-        /// To allow the recalculation of a file with its values for kwh and money it is in extraordinary cases needed to allow for overwrites.
-        /// </summary>
-        private bool AllowOverwrite { get; set; }
-
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Constructor with default values for a few of the parameters
-        /// </summary>
-        /// <param name="serialNumber">Initializes the serial number property</param>
-        /// <param name="filePath">Initializes the path (directory part of the file path)</param>
-        /// <param name="counter">Initializes the counter id property</param>
-        /// <param name="precision">Initializes the precision that the values are returned in in the GetSeries calls</param>
-        /// <param name="storageId">The "second" storageId used in building the file name</param>
-        /// <param name="allowOverwrite">Initializes the allowOverwrite property</param>
-        /// <param name="nrOfDays">Initialized the number of days the file is initially created for and when a file expansion is made</param>
-        public kWhStorage(string serialNumber, string filePath, int counter, Precision precision, string storageId = "", bool allowOverwrite = false, int nrOfDays = 7)
-            : this(serialNumber, filePath, counter, precision, DateTime.Now, storageId, allowOverwrite, nrOfDays)
-        {
-        }
-
-        /// <summary>
         /// Constructor that has an extra parameter to hold the ReferenceDate so the storage can be created in the past. This helps
         /// when tools want to create and recalcalculate files based on history of existing Qboxes or to simulate a past history.
         /// </summary>
-        /// <param name="serialNumber">Initializes the serial number property</param>
-        /// <param name="filePath">Initializes the path (directory part of the file path)</param>
-        /// <param name="counter">Initializes the counter id property</param>
-        /// <param name="precision">Initializes the precision that the values are returned in in the GetSeries calls</param>
-        /// <param name="referenceDate">Initialize the reference date as the start date for the file iso the current date and time</param>
-        /// <param name="storageId">The "second" storageId used in building the file name</param>
-        /// <param name="allowOverwrite">Initializes the allowOverwrite property</param>
-        /// <param name="nrOfDays">Initialized the number of days the file is initially created for and when a file expansion is made</param>
-        private kWhStorage(string serialNumber, string filePath, int counter, Precision precision, DateTime referenceDate, string storageId = "", bool allowOverwrite = false, int nrOfDays = 7)
+        /// <param name="loggerFactory"></param>
+        /// <param name="options">The options.</param>
+        /// <param name="context"></param>
+        public kWhStorage(ILoggerFactory loggerFactory, IOptions<kWhStorageOptions> options, StorageProviderContext context)
         {
-            Logger.LogTrace("ctor");
-
-            Precision = precision;
-            SerialNumber = serialNumber;
-            Counter = counter;
-            _filePath = filePath;
-            ReferenceDate = referenceDate.TruncateToMinute();
-            AllowOverwrite = allowOverwrite;
-            GrowthNrOfDays = nrOfDays;
-            StorageId = storageId;
+            _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+            _logger = loggerFactory.CreateLogger<kWhStorage>();
+            _options = options.Value ?? throw new ArgumentNullException(nameof(options));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
 
             ID = Guid.NewGuid();
 
             _buffer = new kWhStorageBuffer(this);
 
-            Logger.LogDebug("SerialNumber: {0}, filePath: {1}", serialNumber, GetFilePath());
+            _logger.LogDebug("SerialNumber: {0}, filePath: {1}", _context.SerialNumber, GetFilePath());
 
             if (!FileExists)
                 return;
@@ -266,7 +181,7 @@ namespace QboxNext.Qserver.Core.DataStore
             catch (EndOfStreamException)
             {
                 Dispose();
-                File.Delete(GetFilePath());
+                System.IO.File.Delete(GetFilePath());
             }
         }
 
@@ -288,7 +203,7 @@ namespace QboxNext.Qserver.Core.DataStore
             Writer.Write(startOfFile.ToBinary());
 
             // write end of file
-            var endOfFile = startOfFile.AddDays(GrowthNrOfDays);
+            var endOfFile = startOfFile.AddDays(_options.GrowthNrOfDays);
             Writer.Write(endOfFile.ToBinary());
 
             // write the ID            
@@ -322,13 +237,13 @@ namespace QboxNext.Qserver.Core.DataStore
         private void WriteSlot(BinaryWriter writer, Record record)
         {
 #if DEBUG
-            Logger.LogTrace("Enter");
-            Logger.LogTrace("Raw:{0} | Value:{1} | Money:{2} | Quality:{3}", record.Raw, record.KiloWattHour, record.Money, record.Quality);
+            _logger.LogTrace("Enter");
+            _logger.LogTrace("Raw:{0} | Value:{1} | Money:{2} | Quality:{3}", record.Raw, record.KiloWattHour, record.Money, record.Quality);
 #endif
             try
             {
-                var kwh = Convert.ToUInt64(record.KiloWattHour * (int)Precision);
-                var money = Convert.ToUInt64(record.Money * (int)Precision);
+                var kwh = Convert.ToUInt64(record.KiloWattHour * (int)_context.Precision);
+                var money = Convert.ToUInt64(record.Money * (int)_context.Precision);
                 writer.Write(record.Raw);
                 writer.Write(kwh);
                 writer.Write(money);
@@ -338,12 +253,12 @@ namespace QboxNext.Qserver.Core.DataStore
             }
             catch (Exception e)
             {
-                Logger.LogError(e, string.Format("Error: {4} | Raw:{0} | Value:{1} | Money:{2} | Quality:{3}",
+                _logger.LogError(e, string.Format("Error: {4} | Raw:{0} | Value:{1} | Money:{2} | Quality:{3}",
                     record.Raw, record.KiloWattHour, record.Money, record.Quality, e.Message));
                 throw;
             }
 #if DEBUG
-            Logger.LogTrace("Exit");
+            _logger.LogTrace("Exit");
 #endif
         }
 
@@ -368,7 +283,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// </summary>
         private void ReadHeader()
         {
-            Logger.LogTrace("Enter");
+            _logger.LogTrace("Enter");
 
             Reader.BaseStream.Seek(0, SeekOrigin.Begin);
             // Tijden in hele minuten
@@ -376,8 +291,8 @@ namespace QboxNext.Qserver.Core.DataStore
             _endOfFile = DateTime.FromBinary(Reader.ReadInt64()).TruncateToMinute();
             ID = new Guid(Reader.ReadBytes(16));
 
-            Logger.LogTrace("{0} header start {1} end {2}, filesize {3}  calculated endtime {4}", GetFilePath(), _startOfFile, _endOfFile, Reader.BaseStream.Length, CalculatedEndTime);
-            Logger.LogTrace("Exit");
+            _logger.LogTrace("{0} header start {1} end {2}, filesize {3}  calculated endtime {4}", GetFilePath(), _startOfFile, _endOfFile, Reader.BaseStream.Length, CalculatedEndTime);
+            _logger.LogTrace("Exit");
         }
 
         /// <summary>
@@ -411,14 +326,14 @@ namespace QboxNext.Qserver.Core.DataStore
             if (IsOffsetTooHigh(inOffset))
             {
                 var error = string.Format("Offset after end of file ({0}) - offset {1} [file is limited to {2} - {3}]", GetFilePath(), inOffset, CalculateOffset(StartOfFile), CalculateOffset(EndOfFile));
-                Logger.LogError(error);
+                _logger.LogError(error);
                 throw new InvalidOperationException(error);
             }
 
             if (IsOffsetTooLow(inOffset))
             {
                 var error = string.Format("Offset before start of file ({0}) - offset {1} [file is limited to {2} - {3}]", GetFilePath(), inOffset, CalculateOffset(StartOfFile), CalculateOffset(EndOfFile));
-                Logger.LogError(error);
+                _logger.LogError(error);
                 throw new InvalidOperationException(error);
             }
         }
@@ -465,7 +380,7 @@ namespace QboxNext.Qserver.Core.DataStore
 
         private string GetDirectory()
         {
-            return Path.Combine(_filePath, "Qbox_" + SerialNumber);
+            return Path.Combine(_options.DataStorePath, "Qbox_" + _context.SerialNumber);
         }
 
         /// <summary>
@@ -508,11 +423,11 @@ namespace QboxNext.Qserver.Core.DataStore
             var offsetToEndFile = CalculateOffset(endTime);
 
             Writer.Seek((int)(offsetToEndFile), SeekOrigin.Begin);
-            var newEndTime = measurementTime.AddDays(GrowthNrOfDays);
+            var newEndTime = measurementTime.AddDays(_options.GrowthNrOfDays);
             InitializeToZero(newEndTime - endTime);
             _endOfFile = newEndTime;
 
-            Logger.LogInformation("File extended till " + _endOfFile);
+            _logger.LogInformation("File extended till " + _endOfFile);
 
             WriteEndOfFile(_endOfFile.Value);
         }
@@ -571,7 +486,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// <returns>The distance between the two records in minutes</returns>
         private int FindPrevious(DateTime inMeasureTime, out Record outPrevious)
         {
-            Logger.LogTrace("Enter");
+            _logger.LogTrace("Enter");
             var distance = 1;
 
             Guard.IsTrue(inMeasureTime.Second == 0, "inMeasureTime should be truncated to 1 minute");
@@ -581,14 +496,14 @@ namespace QboxNext.Qserver.Core.DataStore
                 if (_buffer.IsValidSlot(timestamp))
                 {
                     outPrevious = _buffer.ReadSlot(timestamp);
-                    Logger.LogTrace("Return: {0}, {1}, {2}, {3}, {4}", distance, outPrevious.Raw, outPrevious.KiloWattHour, outPrevious.Money, outPrevious.Quality);
+                    _logger.LogTrace("Return: {0}, {1}, {2}, {3}, {4}", distance, outPrevious.Raw, outPrevious.KiloWattHour, outPrevious.Money, outPrevious.Quality);
                     return distance;
                 }
                 distance++;
                 timestamp = timestamp.AddMinutes(-1);
             }
 
-            Logger.LogTrace("Return: {0}, no previous value", distance);
+            _logger.LogTrace("Return: {0}, no previous value", distance);
             outPrevious = null;
             return distance;
         }
@@ -603,7 +518,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// <returns>A distance in minutes between the measuretime and the next record</returns>
         private int FindNext(DateTime measureTime, out Record next)
         {
-            Logger.LogTrace("Enter");
+            _logger.LogTrace("Enter");
 
             var distance = 0;
 
@@ -613,7 +528,7 @@ namespace QboxNext.Qserver.Core.DataStore
                     return distance;
                 distance++;
             }
-            Logger.LogTrace("Return: {0}", distance);
+            _logger.LogTrace("Return: {0}", distance);
             return distance;
         }
 
@@ -657,7 +572,7 @@ namespace QboxNext.Qserver.Core.DataStore
         //refactor: investigate the use of the method
         private bool IsTimeAllowed(DateTime measureTime)
         {
-            return measureTime <= ReferenceDate.AddMinutes(5) && measureTime >= new DateTime(2010, 1, 1);
+            return measureTime <= _context.ReferenceDate.AddMinutes(5) && measureTime >= new DateTime(2010, 1, 1);
         }
 
         #endregion
@@ -703,9 +618,9 @@ namespace QboxNext.Qserver.Core.DataStore
         public string GetFilePath()
         {
             // Create the filename
-            var filename = String.IsNullOrEmpty(StorageId) ?
-                $"{SerialNumber}_{Counter:00000000}.{Extension}" :
-                $"{StorageId}.{Extension}";
+            var filename = _context.StorageId == StorageId.Empty ? 
+                $"{_context.SerialNumber}_{_context.CounterId:00000000}{_options.Extension}" :
+                $"{_context.StorageId}{_options.Extension}";
             var result = Path.GetFullPath(Path.Combine(GetDirectory(), filename));
             return result;
         }
@@ -732,7 +647,7 @@ namespace QboxNext.Qserver.Core.DataStore
             }
             var start = begin < StartOfFile ? StartOfFile : begin;
             var stop = end > EndOfFile ? EndOfFile : end;
-            stop = stop > ReferenceDate ? ReferenceDate : stop;
+            stop = stop > _context.ReferenceDate ? _context.ReferenceDate : stop;
             if (stop < start)
             {
                 return 0;
@@ -769,10 +684,10 @@ namespace QboxNext.Qserver.Core.DataStore
             if (inBegin > inEnd)
                 throw new ArgumentOutOfRangeException("inBegin", "begin before end");
 
-            Logger.LogTrace("GetRecords(begin = {0}, end = {1}, counter = {2}, path = {3}, refdate = {4})", inBegin, inEnd, Counter, GetFilePath(), ReferenceDate);
+            _logger.LogTrace("GetRecords(begin = {0}, end = {1}, counter = {2}, path = {3}, refdate = {4})", inBegin, inEnd, _context.CounterId, GetFilePath(), _context.ReferenceDate);
             if (!FileExists)
             {
-                Logger.LogWarning("File does not exist {0}", GetFilePath());
+                _logger.LogWarning("File does not exist {0}", GetFilePath());
                 return false;
             }
 
@@ -780,10 +695,10 @@ namespace QboxNext.Qserver.Core.DataStore
             Record previousLast = null;
             foreach (var currentSlot in ioSlots)
             {
-                Logger.LogTrace("process slot {0} - {1}", currentSlot.Begin, currentSlot.End);
+                _logger.LogTrace("process slot {0} - {1}", currentSlot.Begin, currentSlot.End);
                 var beginTime = currentSlot.Begin < inBegin ? inBegin : currentSlot.Begin;
                 var endTime = currentSlot.End > inEnd ? inEnd : (currentSlot.End < beginTime ? beginTime : currentSlot.End);
-                Logger.LogTrace("beginTime = {0}, endTime = {1}", beginTime, endTime);
+                _logger.LogTrace("beginTime = {0}, endTime = {1}", beginTime, endTime);
 
                 Record first;
                 // Optimization: use previous last value if the end of the previous slot is the start of the current slot,
@@ -801,15 +716,15 @@ namespace QboxNext.Qserver.Core.DataStore
                         continue;
                 }
 
-                Logger.LogTrace("first = {0}", first != null ? first.Raw.ToString(CultureInfo.InvariantCulture) : "null");
+                _logger.LogTrace("first = {0}", first != null ? first.Raw.ToString(CultureInfo.InvariantCulture) : "null");
                 // todo (evalueren): als eerste waarde niet gevonden wordt heeft verder zoeken geen zin??!!
                 if (first == null)
                     break;
 
-                var lastAllowedTimestamp = ReferenceDate < EndOfFile ? ReferenceDate : EndOfFile;
+                var lastAllowedTimestamp = _context.ReferenceDate < EndOfFile ? _context.ReferenceDate : EndOfFile;
                 var last = endTime > lastAllowedTimestamp ? GetClosestValue(lastAllowedTimestamp, false) : GetValue(endTime);
 
-                Logger.LogTrace("last = {0}", last != null ? last.Raw.ToString() : "null");
+                _logger.LogTrace("last = {0}", last != null ? last.Raw.ToString() : "null");
                 // Bij dag of maand resolution zoeken naar dichtsbijzijnde waarde indien first en last geen waarde heeft (qplat-73)
                 if (first.Time <= endTime && first.IsValidMeasurement && (last == null || !last.IsValidMeasurement) && ((currentSlot.End - currentSlot.Begin).TotalDays >= 1.0))
                     last = GetClosestValue(endTime, false);
@@ -818,7 +733,7 @@ namespace QboxNext.Qserver.Core.DataStore
                     (first.IsValidMeasurement) && (last.IsValidMeasurement))
                 {
                     var delta = CalculateDelta(first, last, inUnit);
-                    Logger.LogTrace("delta = {0}", delta);
+                    _logger.LogTrace("delta = {0}", delta);
                     currentSlot.Value = Convert.ToDecimal(inNegate ? delta * -1m : delta);
                     if (endTime > EndOfFile)
                     {
@@ -830,12 +745,12 @@ namespace QboxNext.Qserver.Core.DataStore
                 previousLast = last;
             }
 
-            if (Logger.IsEnabled(LogLevel.Debug))
+            if (_logger.IsEnabled(LogLevel.Debug))
             {
                 foreach (var seriesValue in ioSlots)
-                    Logger.LogDebug("{0} - {1} : {2}", seriesValue.Begin, seriesValue.End, seriesValue.Value);
+                    _logger.LogDebug("{0} - {1} : {2}", seriesValue.Begin, seriesValue.End, seriesValue.Value);
             }
-            Logger.LogTrace("Exit");
+            _logger.LogTrace("Exit");
             return true;
         }
 
@@ -845,7 +760,7 @@ namespace QboxNext.Qserver.Core.DataStore
             if (!FileExists)
                 return false;
 
-            return (inTimestamp >= StartOfFile && inTimestamp < EndOfFile && inTimestamp <= ReferenceDate.AddMinutes(5));
+            return (inTimestamp >= StartOfFile && inTimestamp < EndOfFile && inTimestamp <= _context.ReferenceDate.AddMinutes(5));
         }
 
 
@@ -864,15 +779,15 @@ namespace QboxNext.Qserver.Core.DataStore
             }
             try
             {
-                if (measureTime < StartOfFile || measureTime >= EndOfFile || measureTime > ReferenceDate.AddMinutes(5))
+                if (measureTime < StartOfFile || measureTime >= EndOfFile || measureTime > _context.ReferenceDate.AddMinutes(5))
                 {
-                    Logger.LogWarning("measureTime {1} falls outside the file ({0}) s:{2} e:{3}", GetFilePath(), measureTime, StartOfFile, EndOfFile);
+                    _logger.LogWarning("measureTime {1} falls outside the file ({0}) s:{2} e:{3}", GetFilePath(), measureTime, StartOfFile, EndOfFile);
                     return null;
                 }
 
                 var result = ReadSlot(measureTime);
                 result.Time = measureTime;
-                Logger.LogTrace("Read {0} for timestamp {1}", result.Raw, measureTime);
+                _logger.LogTrace("Read {0} for timestamp {1}", result.Raw, measureTime);
                 return result;
             }
             catch (Exception ex)
@@ -903,7 +818,7 @@ namespace QboxNext.Qserver.Core.DataStore
         {
             inMeasureTime = inMeasureTime.TruncateToMinute();
 
-            Logger.LogTrace("Enter");
+            _logger.LogTrace("Enter");
 
             if (!IsTimeAllowed(inMeasureTime))
                 return null;
@@ -934,18 +849,18 @@ namespace QboxNext.Qserver.Core.DataStore
                 }
                 else
                 {
-                    Logger.LogTrace("distance: {0}", distance);
+                    _logger.LogTrace("distance: {0}", distance);
                     // calculate the qualityindex
                     var quality = distance == 0 ? (ushort)0 : Convert.ToUInt16(Math.Log10(distance) * 10000);
 
-                    Logger.LogTrace("distance: {0}, quality: {1}, formulekWh: {2}", distance, quality, inPulsesPerUnit);
+                    _logger.LogTrace("distance: {0}, quality: {1}, formulekWh: {2}", distance, quality, inPulsesPerUnit);
 
                     var delta = inPulseValue < previous.Raw ? 0m : inPulseValue - previous.Raw;
                     var deltakWh = delta / inPulsesPerUnit;
                     var lastValue = previous.KiloWattHour;
                     var lastMoney = previous.Money;
 
-                    Logger.LogTrace("delta: {0}, lastkWhValue: {1}, lastMoney: {2}", delta, lastValue, lastMoney);
+                    _logger.LogTrace("delta: {0}, lastkWhValue: {1}, lastMoney: {2}", delta, lastValue, lastMoney);
 
                     if (distance <= 1)
                     {
@@ -953,9 +868,9 @@ namespace QboxNext.Qserver.Core.DataStore
                         lastMoney += deltakWh * inEurocentsPerUnit;
 
                         current = new Record(inPulseValue, lastValue, lastMoney, quality);
-                        Logger.LogTrace("distance = 0 >> raw:{0} | kWh: {1} | money: {2} | quality: {3}",
+                        _logger.LogTrace("distance = 0 >> raw:{0} | kWh: {1} | money: {2} | quality: {3}",
                             inPulseValue, current.KiloWattHour,
-                                  current.Money, current.Quality);
+                            current.Money, current.Quality);
 
                         Writer.BaseStream.Seek(CalculateSafeOffset(inMeasureTime), SeekOrigin.Begin);
                         WriteSlot(Writer, current);
@@ -963,8 +878,7 @@ namespace QboxNext.Qserver.Core.DataStore
                     else
                     {
                         // set the pointer of the file to the beginning of the missing values interval
-                        Writer.BaseStream.Seek(CalculateSafeOffset(inMeasureTime.AddMinutes((distance - 1) * -1)),
-                                               SeekOrigin.Begin);
+                        Writer.BaseStream.Seek(CalculateSafeOffset(inMeasureTime.AddMinutes((distance - 1) * -1)), SeekOrigin.Begin);
 
                         var average = (ulong)(delta / distance);
                         var rest = delta % distance;
@@ -989,8 +903,8 @@ namespace QboxNext.Qserver.Core.DataStore
                             lastMoney += valuekWh * inEurocentsPerUnit;
 
                             current = new Record(raw, lastValue, lastMoney, quality);
-                            Logger.LogTrace("distance = {4} >>>>>> raw:{0} | kWh: {1} | money: {2} | quality: {3}", raw,
-                                      current.KiloWattHour, current.Money, current.Quality, distance);
+                            _logger.LogTrace("distance = {4} >>>>>> raw:{0} | kWh: {1} | money: {2} | quality: {3}", raw,
+                                current.KiloWattHour, current.Money, current.Quality, distance);
 
                             WriteSlot(Writer, current);
                         }
@@ -999,10 +913,10 @@ namespace QboxNext.Qserver.Core.DataStore
             }
             else
             {
-                Logger.LogWarning("Overwrite attempt: {0}", inMeasureTime);
+                _logger.LogWarning("Overwrite attempt: {0}", inMeasureTime);
             }
             Writer.Flush();
-            Logger.LogTrace("Exit");
+            _logger.LogTrace("Exit");
             if (current != null)
                 current.Time = inMeasureTime;
             return current;
@@ -1018,7 +932,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// <param name="inFrom">The starttime to to reinitialize the slots. This does not need to be the beginning of the file (StartOfFile)</param>
         public void ReinitializeSlots(DateTime inFrom)
         {
-            Logger.LogTrace("Enter");
+            _logger.LogTrace("Enter");
 
             try
             {
@@ -1031,14 +945,14 @@ namespace QboxNext.Qserver.Core.DataStore
                 if (!IsOffsetValid(offset))
                     return;
 
-                Logger.LogDebug("Total minutes: {0}, from: {1}, end of file: {2}", span.TotalMinutes, inFrom, EndOfFile);
+                _logger.LogDebug("Total minutes: {0}, from: {1}, end of file: {2}", span.TotalMinutes, inFrom, EndOfFile);
                 Writer.BaseStream.Seek(offset, SeekOrigin.Begin);
                 for (var i = 0; i < span.TotalMinutes; i++)
                     WriteSlot(Writer, new Record(ulong.MaxValue, 0, 0, 0));
             }
             finally
             {
-                Logger.LogTrace("Exit");
+                _logger.LogTrace("Exit");
             }
         }
 
@@ -1048,7 +962,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// </summary>
         private Record CreateRecord(ulong inRaw, ulong inEnergy, ulong inMoney, ushort inQuality, DateTime inTimestamp)
         {
-            return new Record(inRaw, inEnergy / (decimal)Precision, inMoney / (decimal)Precision, inQuality)
+            return new Record(inRaw, inEnergy / (decimal)_context.Precision, inMoney / (decimal)_context.Precision, inQuality)
             {
                 Time = inTimestamp
             };
@@ -1060,7 +974,7 @@ namespace QboxNext.Qserver.Core.DataStore
         /// </summary>
         private bool IsValidSlot(ulong inRaw, ushort inQuality)
         {
-            return (inRaw < ulong.MaxValue || (inRaw == ulong.MaxValue && (inQuality > 0 && !AllowOverwrite)));
+            return (inRaw < ulong.MaxValue || (inRaw == ulong.MaxValue && (inQuality > 0 && !_context.AllowOverwrite)));
         }
 
 
@@ -1163,242 +1077,5 @@ namespace QboxNext.Qserver.Core.DataStore
             private int _endSectorOfBuffer = -1;
             private byte[] _buffer;
         }
-    }
-
-
-    /// <summary>
-    /// Convenience class that wraps the SafeFileStream for use in this particular class
-    /// Builds the correct file and binary writer combination from the FilePath only (see ctor)
-    /// </summary>
-    public class SafeWriterWrapper : IDisposable
-    {
-        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger("SafeWriterWrapper");
-
-        protected SafeFileStream Stream { get; set; }
-
-        /// <summary>
-        /// The writer used from the Storage Provider
-        /// </summary>
-        public BinaryWriter BinaryWriter { get; set; }
-
-        /// <summary>
-        /// Contructor for the class to assemble all elements needed from the file path only.
-        /// </summary>
-        /// <param name="filePath"></param>
-        public SafeWriterWrapper(string filePath)
-        {
-            Logger.LogTrace("Enter");
-
-            Stream = new SafeFileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
-            if (!Stream.TryOpen(new TimeSpan(30000)))
-                Logger.LogError("Cannot open file: {0}", filePath);
-            BinaryWriter = new BinaryWriter(Stream.UnderlyingStream);
-
-            Logger.LogTrace("Exit");
-        }
-
-        #region IDisposable
-
-        /// <summary>
-        /// Dispoze implementation for the IDisposable pattern and interface.
-        /// Calls Dispose to signal that the class and it's resources are no longer required.
-        /// Then suppresses the finalizer in the garbage collector.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of the resources that are no longer needed.
-        /// </summary>
-        /// <param name="disposing"></param>
-        public void Dispose(bool disposing)
-        {
-            Logger.LogTrace("Enter");
-
-            if (BinaryWriter != null)
-                BinaryWriter.Dispose();
-            if (Stream != null)
-                Stream.Dispose();
-
-            Logger.LogTrace("Exit");
-        }
-
-        /// <summary>
-        /// If for any reason the dispose was not called we will handle this in the finalizer.
-        /// The finalizer is called by the garbage collector but we do not know when and we do not
-        /// know in which order. So some of the resources could be finalized already.
-        /// </summary>
-        ~SafeWriterWrapper()
-        {
-            Dispose(false);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// This is a thread-safe wrapper around a FileStream.  While it is not a Stream itself, it can be cast to
-    /// one (keep in mind that this might throw an exception).
-    /// The SafeFileStream will create a mutex in Global to signal the opening of a specific file path for writing.
-    /// This will allow other file streams to wait for the mutex to unlock before opening the same file. 
-    /// </summary>
-    public class SafeFileStream : IDisposable
-    {
-        private static readonly ILogger Logger = QboxNextLogProvider.CreateLogger("SafeFileStream");
-
-        #region Private Members
-        private Stream _mStream;
-        private readonly string _mPath;
-        private readonly FileMode _mFileMode;
-        private readonly FileAccess _mFileAccess;
-        private readonly FileShare _mFileShare;
-        #endregion//Private Members
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructor for the SaveFileStream creates the resources the stream depends upon
-        /// </summary>
-        /// <param name="path">The path including the file name for the file to open</param>
-        /// <param name="mode">The mode for the file open.</param>
-        /// <param name="access">The required access type</param>
-        /// <param name="share">The type of share that is allowed between streams opening the same file</param>
-        public SafeFileStream(string path, FileMode mode, FileAccess access, FileShare share)
-        {
-            _mPath = path;
-            _mFileMode = mode;
-            _mFileAccess = access;
-            _mFileShare = share;
-        }
-
-        #endregion//Constructors
-
-        #region Properties
-
-        /// <summary>
-        /// The underlying stream for this wrapper. This helps in enabling casting directly to a stream.
-        /// </summary>
-        public Stream UnderlyingStream
-        {
-            get
-            {
-                if (!IsOpen)
-                    throw new InvalidOperationException("The underlying stream does not exist - try opening this stream.");
-                return _mStream;
-            }
-        }
-
-        /// <summary>
-        /// Returns true if the stream is created and therefore active 
-        /// </summary>
-        public bool IsOpen
-        {
-            get { return _mStream != null; }
-        }
-        #endregion//Properties
-
-        #region Functions
-        /// <summary>
-        /// Opens the stream when it is not locked.  If the file is locked, then will wait for it to unlock.
-        /// </summary>
-        public void Open()
-        {
-            if (_mStream != null)
-            {
-                throw new InvalidOperationException();
-            }
-            do
-            {
-                try
-                {
-                    _mStream = File.Open(_mPath, _mFileMode, _mFileAccess, _mFileShare);
-                    break;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogWarning(ex, $"Can't open file: {ex.Message}\nWill retry after one second.");
-                    Thread.Sleep(1000);
-                }
-            }
-            while (true);
-        }
-
-        /// <summary>
-        /// Try Open will try to open the stream and will wait for a lock to unlock for the given time span.
-        /// The procedure catches any exceptions and logs it to allow procedural flow in the calling class 
-        /// to continue (using if statement).
-        /// </summary>
-        /// <param name="span">The period of time to wait for the file to unlock</param>
-        /// <returns>True if the file was opened and a stream is attached. Otherwise returns false</returns>
-        public bool TryOpen(TimeSpan span)
-        {
-            if (_mStream != null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            DateTime deadline = DateTime.Now + span;
-            do
-            {
-                try
-                {
-                    _mStream = File.Open(_mPath, _mFileMode, _mFileAccess, _mFileShare);
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Logger.LogWarning(e, $"Can't open file {_mPath}: {e.Message}\nWill retry after one second.");
-                    Thread.Sleep(1000);
-                }
-            }
-            while (DateTime.Now < deadline);
-
-            Logger.LogWarning($"Could not open file {_mPath} for {_mFileMode}/{_mFileAccess}/{_mFileShare} after {span.TotalMilliseconds} milliseconds");
-            return false;
-        }
-
-        /// <summary>
-        /// Part of the IDisposable pattern to release resources
-        /// </summary>
-        /// <param name="disposing">True if the call to Close was made from Dispose</param>
-        public void Close(bool disposing)
-        {
-            if (_mStream != null)
-            {
-                _mStream.Close();
-                _mStream = null;
-            }
-        }
-
-        /// <summary>
-        /// Implementation for the IDisposable interface
-        /// It will close the file and release the mutex by calling close and suppress the finalizer
-        /// to be run from the Garbage collection.
-        /// </summary>
-        public void Dispose()
-        {
-            Close(true);
-            GC.SuppressFinalize(this);
-        }
-
-        ~SafeFileStream()
-        {
-            Close(false);
-        }
-
-        /// <summary>
-        /// Enables the direct casting of this wrapper to a stream instance
-        /// </summary>
-        /// <param name="sfs"></param>
-        /// <returns></returns>
-        public static explicit operator Stream(SafeFileStream sfs)
-        {
-            return sfs.UnderlyingStream;
-        }
-
-        #endregion//Functions
     }
 }

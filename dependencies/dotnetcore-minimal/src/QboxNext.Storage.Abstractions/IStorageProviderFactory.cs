@@ -2,6 +2,6 @@
 {
     public interface IStorageProviderFactory
     {
-        IStorageProvider GetStorageProvider(string serialNumber, int counter, Precision precision, StorageId storageId);
+        IStorageProvider GetStorageProvider(StorageProviderContext context);
     }
 }

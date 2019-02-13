@@ -257,3 +257,6 @@ test/**/launchSettings.json
 
 # Ignore distribution folder
 dist/
+
+# Ignore data folder
+**/qboxnextdata/*

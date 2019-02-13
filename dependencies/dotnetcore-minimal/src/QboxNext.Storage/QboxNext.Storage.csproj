@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>QboxNext.Storage</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QboxNext.Core\QboxNext.Core.csproj" />
+    <ProjectReference Include="..\QboxNext.Storage.Abstractions\QboxNext.Storage.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

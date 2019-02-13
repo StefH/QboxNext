@@ -3,21 +3,24 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using QboxNext.Core.Extensions;
 using QboxNext.Core.Utils;
 using QboxNext.Logging;
 using QboxNext.Model.Classes;
 using QboxNext.Qserver.Core.Statistics;
-using QboxNext.Storage;
 
-namespace QboxNext.Qserver.Core.DataStore
+namespace QboxNext.Storage.Qbx
 {
     [TestFixture]
     [NonParallelizable]
     public class KWhStorageTest
     {
         private const string BaseDir = @"./Temp/KWhStorageTest";
+
+        private StorageProviderContext _dataStorageContext;
+        private IOptions<kWhStorageOptions> _options;
 
         [SetUp]
         public void SetUp()
@@ -26,9 +29,22 @@ namespace QboxNext.Qserver.Core.DataStore
             QboxNextLogProvider.LoggerFactory = new LoggerFactory();
 
             if (Directory.Exists(BaseDir))
+            {
                 Directory.Delete(BaseDir, true);
+            }
 
             Directory.CreateDirectory(BaseDir);
+
+            _options = new OptionsWrapper<kWhStorageOptions>(new kWhStorageOptions
+            {
+                DataStorePath = BaseDir
+            });
+            _dataStorageContext = new StorageProviderContext
+            {
+                SerialNumber = "Serial",
+                CounterId = 15,
+                Precision = Precision.Wh
+            };
         }
 
         [TearDown]
@@ -43,9 +59,7 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void SetValueShouldCreateAFileInTempTest()
         {
-            // arrange
-            const int counter = 1;
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 var measureTime = DateTime.Now;
 
@@ -53,7 +67,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 target.SetValue(measureTime, 5, 5, 5);
             }
             // assert
-            Assert.IsTrue(File.Exists(GetTestPath("Qbox_Serial/Serial_00000001.qbx")));
+            Assert.IsTrue(File.Exists(GetTestPath($"Qbox_Serial/Serial_{_dataStorageContext.CounterId:00000000}.qbx")));
         }
 
 
@@ -63,9 +77,9 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void SetValueShouldCreateAFileWithStorageidFilenameInTempTest()
         {
-            // arrange
-            const int counter = 1;
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh, "MyStorageid-counterid"))
+            _dataStorageContext.StorageId = "MyStorageid-counterid";
+
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 var measureTime = DateTime.Now;
 
@@ -84,13 +98,12 @@ namespace QboxNext.Qserver.Core.DataStore
         public void SetValueShouldWriteTheRecordToFileAtOffsetTest()
         {
             // arrange
-            string testPath = GetTestPath("Qbox_Serial/Serial_00000001.qbx");
-            const int counter = 1;
+            string testPath = GetTestPath($"Qbox_Serial/Serial_{_dataStorageContext.CounterId:00000000}.qbx");
 
             var measureTime = DateTime.Now;
 
             // act
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 target.SetValue(measureTime, 25, 50, 15);
             }
@@ -121,11 +134,8 @@ namespace QboxNext.Qserver.Core.DataStore
         {
             var watch = new Stopwatch();
 
-            // arrange
-            const int counter = 1;
-
             DateTime measureTime = DateTime.Now;
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 // act first time with initialization
                 target.SetValue(measureTime, 25, 50, 15);
@@ -146,21 +156,18 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void SetValueShouldIncreaseTheFileSizeWithSevenDaysIfMeasureFallsBeyondTheEndOfTheFileTest()
         {
-            // arrange
-            const int counter = 1;
-
             var measureTime = DateTime.Now.AddDays(-10);
 
             var secondMeasureTime = DateTime.Now.AddDays(-1);
 
             // act
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 target.SetValue(measureTime, 25, 50, 15);
                 target.SetValue(secondMeasureTime, 25, 50, 15);
             }
 
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
 
                 // assert
@@ -181,20 +188,17 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void SetValueShouldIncreaseTheFileSizeWithOneYearIfMeasureIsOneMinuteBeyondTheEndOfTheFileTest()
         {
-            // arrange
-            const int counter = 1;
-
             var measureTime = new DateTime(DateTime.Today.Year - 1, 1, 1);
             var secondMeasureTime = new DateTime(DateTime.Today.Year, 1, 1);
 
             // act
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 target.SetValue(measureTime, 25, 50, 15);
                 target.SetValue(secondMeasureTime, 25, 50, 15);
             }
 
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 // assert
                 Assert.That(target.StartOfFile.Equals(RoundDown(measureTime)));
@@ -209,18 +213,15 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void GetValueTest()
         {
-            // arrange
-            const int counter = 1;
-
             var measureTime = DateTime.Now;
             Record actual;
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 target.SetValue(measureTime, 50, 2, 3);
             }
 
             // act
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 actual = target.GetValue(measureTime);
             }
@@ -235,18 +236,15 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void GetValueShouldReturnNullIfTheTimeFallsOutsideTheCurrentFileRangeTest()
         {
-            // arrange
-            const int counter = 1;
-
             DateTime measureTime = DateTime.Now;
             Record actual;
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 target.SetValue(measureTime, 50, 5, 21);
             }
 
             // act
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 actual = target.GetValue(measureTime.AddMinutes(-1));
             }
@@ -259,18 +257,15 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void GetValueShouldReturnNullIfTheTimeFallsBeyondTheCurrentFileRangeTest()
         {
-            // arrange
-            const int counter = 1;
-
             var measureTime = DateTime.Now;
             Record actual;
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 target.SetValue(measureTime, 50, 25, 15);
             }
 
             // act
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 actual = target.GetValue(measureTime.AddYears(1));
             }
@@ -284,12 +279,9 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void GetValueShouldReturnTheAverageValueBetweenEmptySlotsTest()
         {
-            // arrange
-            const int counter = 1;
-
             var measureTime = DateTime.Now.AddMinutes(-15);
             Record actual = null;
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 target.SetValue(measureTime, 50, 25, 15);
                 Console.WriteLine(target.GetValue(measureTime).Raw);
@@ -297,7 +289,7 @@ namespace QboxNext.Qserver.Core.DataStore
             }
 
             // act
-            using (var target = new kWhStorage("Serial", BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 for (var i = 0; i < 10; i++)
                 {
@@ -327,11 +319,9 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void SumTest()
         {
-            const string serialNumber = "Serial";
-            const int counter = 1;
             decimal expected;
             decimal actual;
-            using (var target = new kWhStorage(serialNumber, BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 target.SetValue(DateTime.Today.AddDays(-1), 50, 5, 2);
                 target.SetValue(DateTime.Today.AddDays(-1).AddMinutes(120), 100, 5, 2);
@@ -350,12 +340,9 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void GetValueShouldNotThrowExceptionWhenFileDoesNotExistTest()
         {
-            // arrange
-            const string serialNumber = "Serial";
-            const int counter = 1;
 
             // act
-            using (var target = new kWhStorage(serialNumber, BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 Record result = null;
                 try
@@ -375,12 +362,9 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void GetRecordsShouldNotThrowWhenFileDoesNotExitTest()
         {
-            // arrange
-            const string serialNumber = "Serial";
-            const int counter = 1;
 
             // act
-            using (var target = new kWhStorage(serialNumber, BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 try
                 {
@@ -390,7 +374,7 @@ namespace QboxNext.Qserver.Core.DataStore
                     // assert
                     Assert.IsFalse(result);
                     Assert.AreEqual(7, values.Count);
-                    Assert.IsTrue(values.TrueForAll(v => v.Value == null));
+                    Assert.IsTrue((bool)values.TrueForAll(v => v.Value == null));
                 }
                 catch
                 {
@@ -404,14 +388,11 @@ namespace QboxNext.Qserver.Core.DataStore
         [Category("Integration")]
         public void GetRecordsShouldReturnWithinReasonableTimeWhenMeasurementsAreMissingfromTheFileTest()
         {
-            // arrange
-            const string serialNumber = "Serial";
-            const int counter = 1;
 
             // Do this twice to miss the overhead of just in time compilation.
             for (int i = 0; i < 2; i++)
             {
-                using (var target = new kWhStorage(serialNumber, BaseDir, counter, Precision.Wh))
+                using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
                 {
                     target.SetValue(DateTime.Now.AddDays(-8), 50, 1, 1);
                     target.SetValue(DateTime.Now.AddDays(-7), 100, 1, 1);
@@ -443,11 +424,7 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void GetSumTest()
         {
-            // arrange
-            const string serialNumber = "Serial";
-            const int counter = 1;
-
-            using (var target = new kWhStorage(serialNumber, BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 target.SetValue(DateTime.Now.AddDays(-8), 50, 1000, 1);
                 target.SetValue(DateTime.Now.AddDays(-7), 100, 1000, 1);
@@ -469,11 +446,11 @@ namespace QboxNext.Qserver.Core.DataStore
         public void WhenSetValueIsCalledWithAnIntervalItShouldLevelTheValuesWrittenTest()
         {
             // arrange
-            const string serialNumber = "Interval";
-            const int counter = 1;
+            _dataStorageContext.SerialNumber = "Interval";
+            _dataStorageContext.Precision = Precision.mWh;
             var start = DateTime.Now.AddMinutes(-2);
 
-            using (var target = new kWhStorage(serialNumber, BaseDir, counter, Precision.mWh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 // act
                 target.SetValue(start.AddMinutes(-10), 50, 300, 1);
@@ -496,11 +473,12 @@ namespace QboxNext.Qserver.Core.DataStore
         public void WhenSetValueIsCalledWith2000AsFormulaAndAPrecisionOf10000IsShouldWriteAHalfTest()
         {
             // arrange
-            const string serialNumber = "Interval";
-            const int counter = 1;
+            _dataStorageContext.SerialNumber = "Interval";
+            _dataStorageContext.Precision = Precision.mWh;
+
             var start = DateTime.Now.AddMinutes(-2);
 
-            using (var target = new kWhStorage(serialNumber, BaseDir, counter, Precision.mWh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 // act
                 target.SetValue(start.AddMinutes(-5), 5, 2000, 1);
@@ -529,11 +507,12 @@ namespace QboxNext.Qserver.Core.DataStore
         public void WhenSumIsCalledItCalculatesTheSameAsTheIndividualResolutionTest()
         {
             // arrange
-            const string serialNumber = "Interval";
-            const int counter = 2421;
+            _dataStorageContext.SerialNumber = "Interval";
+            _dataStorageContext.CounterId = 2421;
+
             var start = DateTime.Today.AddDays(-14);
 
-            using (var target = new kWhStorage(serialNumber, BaseDir, counter, Precision.Wh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 var totalMinutes = (ulong)(DateTime.Now - start).TotalMinutes;
                 for (ulong i = 0; i < totalMinutes; i++)
@@ -548,7 +527,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 var thisWeek = PeriodBuilder.LastWeek();
                 var thisWeekSeries = SeriesValueListBuilder.BuildSeries(thisWeek.From, thisWeek.To, SeriesResolution.Hour);
                 target.GetRecords(thisWeek.From, thisWeek.To, Unit.M3, thisWeekSeries, false);
-                var thisWeekSeriesSum = thisWeekSeries.Sum(s => s.Value);
+                var thisWeekSeriesSum = Enumerable.Sum<SeriesValue>(thisWeekSeries, s => s.Value);
 
                 var thisWeekSum = target.Sum(thisWeek.From, thisWeek.To, Unit.M3);
                 Assert.AreEqual(thisWeekSum, thisWeekSeriesSum);
@@ -561,11 +540,12 @@ namespace QboxNext.Qserver.Core.DataStore
         public void WhenTheLastFiveMinutesAreRequestedFromTheFileItShouldCaluclateTheWeightForTheActualTimeGapTest()
         {
             // arrange
-            const string serialNumber = "Interval";
-            const int counter = 2421;
+            _dataStorageContext.SerialNumber = "Interval";
+            _dataStorageContext.CounterId = 2421;
+
             var start = DateTime.Now.AddMinutes(-20);
 
-            using (var target = new kWhStorage(serialNumber, BaseDir, counter, Precision.mWh))
+            using (var target = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 // act
                 var i = 0;
@@ -589,8 +569,10 @@ namespace QboxNext.Qserver.Core.DataStore
         public void SetValueShouldStoreTheRunningTotalsInTheFileTest()
         {
             // arrange
+            _dataStorageContext.SerialNumber = "12-13-001-075";
+
             var time = new DateTime(2012, 8, 17, 13, 20, 0);
-            using (var storageProvider = new kWhStorage("12-13-001-075", BaseDir, 1, Precision.Wh))
+            using (var storageProvider = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 // act
                 for (int i = 0; i < 10; i++)
@@ -599,10 +581,10 @@ namespace QboxNext.Qserver.Core.DataStore
                 }
 
             }
-            using (var storageProvider = new kWhStorage("12-13-001-075", BaseDir, 1, Precision.Wh))
+            using (var storageProvider = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 // assert
-                string fileName = GetTestPath("Qbox_12-13-001-075/12-13-001-075_00000001.qbx");
+                string fileName = GetTestPath($"Qbox_12-13-001-075/12-13-001-075_{_dataStorageContext.CounterId:00000000}.qbx");
                 Assert.IsTrue(File.Exists(fileName));
                 for (int i = 0; i < 10; i++)
                 {
@@ -617,8 +599,10 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenLastDayOfStorageContainsPartialDataShouldGiveCorrectSum()
         {
+            _dataStorageContext.SerialNumber = "12-13-001-076";
+
             var time = new DateTime(2012, 8, 17, 13, 20, 0);
-            using (var storageProvider = new kWhStorage("12-13-001-076", BaseDir, 1, Precision.Wh))
+            using (var storageProvider = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 for (int i = 0; i < 10; i++)
                 {
@@ -633,7 +617,9 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenReadHeaderIsCalledStartTimeShouldBeReturned()
         {
-            using (var storageProvider = new kWhStorage("00-00-000-002", BaseDir, 1, Precision.Wh))
+            _dataStorageContext.SerialNumber = "00-00-000-002";
+
+            using (var storageProvider = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 storageProvider.SetValue(new DateTime(2013, 5, 7, 22, 58, 0), 3000, 300.0m, 0.21m);
                 Assert.IsNotNull(storageProvider);
@@ -644,12 +630,13 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenValueIsWrittenOneMinuteBeforeStartShouldThrowException()
         {
+            _dataStorageContext.SerialNumber = "00-00-000-003";
             DateTime startOfFile;
             DateTime endOfFile;
 
             Assert.Throws(typeof(InvalidOperationException), delegate
             {
-                using (var storage = new kWhStorage("00-00-000-003", BaseDir, 1, Precision.Wh))
+                using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
                 {
                     // Write first value, this should set the start time of the storage.
                     storage.SetValue(new DateTime(2013, 5, 7, 22, 58, 0), 3000, 300.0m, 0.21m);
@@ -661,7 +648,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 }
 
                 // If it doesn't throw an exception, we should be able to open the file again and the header should be intact.
-                using (var storage = new kWhStorage("00-00-000-003", BaseDir, 1, Precision.Wh))
+                using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
                 {
                     storage.GetValue(new DateTime(2013, 5, 7, 22, 58, 0));
 
@@ -675,10 +662,11 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenValueIsWrittenInLastSlotShouldStoreValueAndNotGrowFile()
         {
+            _dataStorageContext.SerialNumber = "00-00-000-003";
             DateTime endOfFile;
             DateTime timestampAtEnd;
 
-            using (var storage = new kWhStorage("00-00-000-003", BaseDir, 1, Precision.Wh))
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 // Write first value, this should set the start time of the storage.
                 storage.SetValue(new DateTime(2013, 5, 7, 22, 58, 0), 3000, 300.0m, 0.21m);
@@ -689,7 +677,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 storage.SetValue(timestampAtEnd, 3000, 300.0m, 0.21m);
             }
 
-            using (var storage = new kWhStorage("00-00-000-003", BaseDir, 1, Precision.Wh))
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 var record = storage.GetValue(timestampAtEnd);
                 Assert.AreEqual(3000, record.Raw);
@@ -701,7 +689,9 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenValueIsWrittenOneMinuteBeyondEndOfFileShouldGrowFile()
         {
-            using (var storage = new kWhStorage("00-00-000-004", BaseDir, 1, Precision.Wh))
+            _dataStorageContext.SerialNumber = "00-00-000-004";
+
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 // Write first value, this should set the start time of the storage.
                 storage.SetValue(new DateTime(2013, 5, 7, 22, 58, 0), 3000, 300.0m, 0.21m);
@@ -719,14 +709,16 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenValuesAreWrittenWithRunningTotalGetValueShouldReturnSameValues()
         {
-            using (var storage = new kWhStorage("00-00-000-005", BaseDir, 1, Precision.Wh))
+            _dataStorageContext.SerialNumber = "00-00-000-005";
+
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 Record runningTotal = null;
                 for (int i = 0; i < 10; ++i)
                     runningTotal = storage.SetValue(new DateTime(2013, 5, 7, 0, i, 0), (ulong)(3000 + i), 300.0m, 0.21m, runningTotal);
             }
 
-            using (var storage = new kWhStorage("00-00-000-005", BaseDir, 1, Precision.Wh))
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 for (int i = 0; i < 10; ++i)
                 {
@@ -741,7 +733,9 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenReinitializeIsCalledWithTimestampBeyondFileShouldNotThrowException()
         {
-            using (var storage = new kWhStorage("00-00-000-004", BaseDir, 1, Precision.Wh))
+            _dataStorageContext.SerialNumber = "00-00-000-004";
+
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 // Write first value, this should set the start time of the storage.
                 storage.SetValue(new DateTime(2013, 5, 7, 22, 58, 0), 3000, 300.0m, 0.21m);
@@ -755,7 +749,12 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenSlotEndsAfterEndOfFileButBeforeReferenceDateGetSeriesShouldReturnValue()
         {
-            using (var storage = new kWhStorage("00-00-000-005", BaseDir, 1, Precision.Wh, "", false, 7))
+            _dataStorageContext.SerialNumber = "00-00-000-005";
+            _dataStorageContext.StorageId = "";
+            _dataStorageContext.AllowOverwrite = false;
+            _options.Value.GrowthNrOfDays = 7;
+
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 var baseTimestamp = new DateTime(2013, 1, 1, 0, 0, 0);
                 // Create a file that start and ends before now and that contains valid usage.
@@ -779,8 +778,11 @@ namespace QboxNext.Qserver.Core.DataStore
         [Category("Integration")]
         public void WhenReferenceDateIsBeforeEndOfFileGetSeriesShouldReturnValue()
         {
+            _dataStorageContext.SerialNumber = "00-00-000-005";
+            _dataStorageContext.StorageId = "";
+
             // Test a new Qbox that has just started. The storage file starts at the first measurement, and ends after the ReferenceDate (now).
-            using (var storage = new kWhStorage("00-00-000-005", BaseDir, 1, Precision.Wh, ""))
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 var baseTimestamp = DateTime.Now.Date;
 
@@ -804,7 +806,10 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenFirstTimestampOfSlotIsInvalidMeasurementPreviousValueShouldBeUsedTest()
         {
-            using (var storage = new kWhStorage("00-00-000-006", BaseDir, 1, Precision.Wh, ""))
+            _dataStorageContext.SerialNumber = "00-00-000-006";
+            _dataStorageContext.StorageId = "";
+
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 var firstZeroTimestamp = new DateTime(2013, 10, 4, 8, 22, 0);   // 2013-10-04 08:22
                 storage.SetValue(firstZeroTimestamp, 0, 1000.0m, 0.21m);
@@ -846,7 +851,10 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenFirstTimestampOfFirstSlotIsInvalidMeasurementNextValueShouldBeUsedTest()
         {
-            using (var storage = new kWhStorage("00-00-000-006", BaseDir, 1, Precision.Wh, ""))
+            _dataStorageContext.SerialNumber = "00-00-000-006";
+            _dataStorageContext.StorageId = "";
+
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 var firstZeroTimestamp = new DateTime(2013, 12, 31, 0, 0, 0);
                 storage.SetValue(firstZeroTimestamp, 0, 1000.0m, 0.21m);
@@ -888,7 +896,10 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void WhenFirstSlotIsInvalidRestOfSlotsShouldBeFilledTest()
         {
-            using (var storage = new kWhStorage("00-00-000-006", BaseDir, 1, Precision.Wh, ""))
+            _dataStorageContext.SerialNumber = "00-00-000-006";
+            _dataStorageContext.StorageId = "";
+
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 var firstZeroTimestamp = new DateTime(2013, 12, 31, 0, 0, 0);
                 storage.SetValue(firstZeroTimestamp, 0, 1000.0m, 0.21m);
@@ -922,7 +933,7 @@ namespace QboxNext.Qserver.Core.DataStore
                 Assert.IsTrue(storage.GetRecords(startPeriod, endPeriod, Unit.kWh, slots, false));
 
                 Assert.IsNull(slots[0].Value);
-                foreach (var slot in slots.Skip(1))
+                foreach (var slot in Enumerable.Skip<SeriesValue>(slots, 1))
                     Assert.IsNotNull(slot.Value);
             }
         }
@@ -931,7 +942,10 @@ namespace QboxNext.Qserver.Core.DataStore
         [Test]
         public void FindPreviousWorksCorrectlyWithUntruncatedTimeTest()
         {
-            using (var storage = new kWhStorage("00-00-000-006", BaseDir, 1, Precision.Wh, ""))
+            _dataStorageContext.SerialNumber = "00-00-000-006";
+            _dataStorageContext.StorageId = "";
+
+            using (var storage = new kWhStorage(new LoggerFactory(), _options, _dataStorageContext))
             {
                 var baseTimestamp = new DateTime(2016, 2, 28, 18, 17, 16);
 

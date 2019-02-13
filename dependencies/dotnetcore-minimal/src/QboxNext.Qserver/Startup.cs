@@ -10,10 +10,10 @@ using QboxNext.Model.Interfaces;
 using QboxNext.Model.Qboxes;
 using QboxNext.Qboxes.Parsing.Extensions;
 using QboxNext.Qserver.Classes;
-using QboxNext.Qserver.Core.Factories;
 using QboxNext.Qserver.Core.Interfaces;
 using QboxNext.Qserver.Core.Utils;
-using QboxNext.Storage;
+using QboxNext.Storage.Extensions;
+using QboxNext.Storage.Qbx;
 
 namespace QboxNext.Qserver
 {
@@ -34,7 +34,9 @@ namespace QboxNext.Qserver
             services.AddSingleton<IMiniRetriever>(new ConfiguredMiniRetriever(qboxType));
             services.AddSingleton<IQboxDataDumpContextFactory, QboxDataDumpContextFactory>();
 
-            services.AddSingleton<IStorageProviderFactory, StorageProviderFactory>();
+            services
+                .Configure<kWhStorageOptions>(Configuration.GetSection("kWhStorage"))
+                .AddStorageProvider<kWhStorage>();
 
             services.AddParsers();
         }

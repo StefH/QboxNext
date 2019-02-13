@@ -27,6 +27,16 @@ namespace QboxNext.Storage
             return new StorageId(value);
         }
 
+        public static bool operator ==(StorageId first, StorageId second)
+        {
+            return Equals(first, second);
+        }
+
+        public static bool operator !=(StorageId first, StorageId second)
+        {
+            return !Equals(first, second);
+        }
+
         public bool Equals(StorageId other)
         {
             return string.Equals(Value, other.Value);

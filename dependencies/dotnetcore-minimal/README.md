@@ -7,24 +7,27 @@
 This repository is a modified clone of Qplatform.
 The modifications are:
 
-- only the code needed for Qserver and the Qbox simulator was kept, the rest was removed,
+- only the code needed for Qserver, Qservice and the Qbox simulator was kept, the rest was removed,
 - a stand-alone version of DumpQBX was added,
 - a stand-alone version of ParseQboxMessage was added,
 - all root namespaces were set to 'QboxNext',
 - all sensitive information like connectionstrings and signing keys was removed,
 - all csprojs have been rebuilt as .NET Core projects,
 - all databases have been removed: metadata SQL database, metadata cache Redis database and status Mongo database),
-- no Qbox metadata is being retrieved from a database, for now only a Qbox Duo with Qbox Solar attached to a smartmeter supported.
-- all Qbox data is written to d:\QboxNextData on Windows and /var/qboxnextdata on Linux (yes, it runs on Linux now!).
+- no Qbox metadata is being retrieved from a database, for now specifying Qbox Duo (default) or Qbox Mono can be done through configuration.
+- all Qbox data is written to qboxnext\QboxNextData on Windows and /var/qboxnextdata on Linux (yes, it runs on Linux now!).
 
-## How to build/develop
+## How to develop
 
+For simplified instructies on how to get Qserver and Qservice working a Raspberry Pi, see [this page](https://qboxnext.miraheze.org/wiki/Qserver_en_Qservice_op_Raspberry_Pi3_installeren).
+
+To work on this code:
 1. Download [Visual Studio Express](https://visualstudio.microsoft.com/vs/express/) or [Visual Studio Code](https://code.visualstudio.com/).
 2. Install [git](https://git-scm.com/download/win).
 3. Open a command shell and change to a directory for your git repositories, for example ```cd /d d:\git```
-4. Enter the command to clone this repository: ```git clone https://bitbucket.org/qboxnext/dotnetcore-minimal```
+4. Enter the command to clone this repository: ```git clone https://bitbucket.org/qboxnext/qboxnext```
 5. Open Visual Studio.
-6. Open the sln, in this example d:\git\dotnetcore-minimal\QboxNext.Qserver.sln
+6. Open the sln, in this example d:\git\qboxnext\QboxNext.Qserver.sln
 7. In the menu select Build->Rebuild Solution
 
 Note: If you're not using Visual Studio, you can build the solution by running the following shell command (you need the [dotnet-sdk-2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2) package for this). 
@@ -72,6 +75,10 @@ dotnet publish -c Release -r linux-arm
 
 An ASP.NET application that receives and processes messages from Qboxes. When run it uses the built-in [Kestrel](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-2.2) web server. 
 It will run on port 5000, the default Kestrel port.
+
+## Qservice
+
+Another service, this one creates graph data from the data that was received by Qserver.
 
 ### Testing on Windows
 

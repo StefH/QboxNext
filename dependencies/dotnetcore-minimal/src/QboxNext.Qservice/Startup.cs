@@ -8,10 +8,10 @@ using QboxNext.Logging;
 using QboxNext.Model.Classes;
 using QboxNext.Model.Interfaces;
 using QboxNext.Model.Qboxes;
-using QboxNext.Qserver.Core.Factories;
 using QboxNext.Qservice.Classes;
 using QboxNext.Qservice.Mvc;
-using QboxNext.Storage;
+using QboxNext.Storage.Extensions;
+using QboxNext.Storage.Qbx;
 
 namespace QboxNext.Qservice
 {
@@ -39,8 +39,12 @@ namespace QboxNext.Qservice
             QboxType qboxType = Configuration.GetValue("QboxType", QboxType.Duo);
             services.AddSingleton<IMiniRetriever>(new ConfiguredMiniRetriever(qboxType));
 
-            services.AddSingleton<IStorageProviderFactory, StorageProviderFactory>();
-            services.AddScoped<ISeriesRetriever, SeriesRetriever>();
+            services
+                .Configure<kWhStorageOptions>(Configuration.GetSection("kWhStorage"))
+                .AddStorageProvider<kWhStorage>();
+
+            services
+                .AddScoped<ISeriesRetriever, SeriesRetriever>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,20 +6,24 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using QboxNext.MergeQbx.Utils;
-using QboxNext.Qserver.Core.DataStore;
 using QboxNext.Storage;
+using QboxNext.Storage.Qbx;
 
 namespace QboxNext.MergeQbx
 {
     public class ConsoleRunner : IHostedService
     {
         private readonly ILogger<ConsoleRunner> _logger;
+        private readonly ILoggerFactory _loggerFactory;
+        private readonly kWhStorageOptions _kWhStorageOptions;
         private readonly CommandLineOptions _options;
 
-        public ConsoleRunner(ILogger<ConsoleRunner> logger, IOptions<CommandLineOptions> options)
+        public ConsoleRunner(ILoggerFactory loggerFactory, IOptions<CommandLineOptions> options, IOptions<kWhStorageOptions> kWhStorageOptions)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+            _logger = _loggerFactory.CreateLogger<ConsoleRunner>();
             _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+            _kWhStorageOptions = kWhStorageOptions?.Value ?? new kWhStorageOptions();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -52,19 +56,29 @@ namespace QboxNext.MergeQbx
                 return true;
             }
 
-            _logger.LogError($"Could not find file {_options.OriginalQbxPath}");
+            _logger.LogError($"Could not find file {path}");
             Environment.ExitCode = -1;
             return false;
 
         }
 
-        private static kWhStorage GetStorageProviderForPath(string originalQbxPath)
+        private kWhStorage GetStorageProviderForPath(string originalQbxPath)
         {
-            string serial = QbxPathUtils.GetSerialFromPath(originalQbxPath);
-            string baseDir = QbxPathUtils.GetBaseDirFromPath(originalQbxPath);
-            int counterId = QbxPathUtils.GetCounterIdFromPath(originalQbxPath);
-            string storageId = QbxPathUtils.GetStorageIdFromPath(originalQbxPath);
-            return new kWhStorage(serial, baseDir, counterId, Precision.mWh, storageId);
+            var storageProviderContext = new StorageProviderContext
+            {
+                SerialNumber = QbxPathUtils.GetSerialFromPath(originalQbxPath),
+                CounterId = QbxPathUtils.GetCounterIdFromPath(originalQbxPath),
+                Precision = Precision.mWh,
+                StorageId = QbxPathUtils.GetStorageIdFromPath(originalQbxPath)
+            };
+
+            IOptions<kWhStorageOptions> options = new OptionsWrapper<kWhStorageOptions>(_kWhStorageOptions);
+
+            // Override path.
+            options.Value.DataStorePath = QbxPathUtils.GetBaseDirFromPath(originalQbxPath);
+
+            return new kWhStorage(_loggerFactory, options, storageProviderContext);
         }
+
     }
 }
