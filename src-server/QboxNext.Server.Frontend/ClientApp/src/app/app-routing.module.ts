@@ -8,7 +8,7 @@ import { GasComponent } from './gas/gas.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, canActivate: [AuthenticationGuard]  },
   { path: 'callback', component: CallbackComponent },
   { path: 'electricity', component: ElectricityComponent, canActivate: [AuthenticationGuard] },
   { path: 'gas', component: GasComponent, canActivate: [AuthenticationGuard] }

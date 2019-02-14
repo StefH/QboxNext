@@ -5,9 +5,9 @@
       <router-outlet></router-outlet>
     </div>
   </div>
-  <h5 *ngIf="!isAuthenticated">
+  <div *ngIf="!isAuthenticated">
       You are not logged in! Please <a href="javascript:void(0)" (click)="login()">Log In</a> to continue.
-  </h5>
+  </div>
   <hr />
   <footer>
     <p>&copy; Stef Heyenrath</p>
