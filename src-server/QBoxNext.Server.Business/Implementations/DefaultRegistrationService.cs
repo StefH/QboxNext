@@ -10,6 +10,10 @@ namespace QBoxNext.Server.Business.Implementations
     {
         private readonly IAzureTablesService _azureTablesService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultRegistrationService"/> class.
+        /// </summary>
+        /// <param name="azureTablesService">The azure tables service.</param>
         public DefaultRegistrationService([NotNull] IAzureTablesService azureTablesService)
         {
             Guard.NotNull(azureTablesService, nameof(azureTablesService));
@@ -17,6 +21,7 @@ namespace QBoxNext.Server.Business.Implementations
             _azureTablesService = azureTablesService;
         }
 
+        /// <inheritdoc cref="IRegistrationService.IsValidRegistrationAsync(string)"/>
         public Task<bool> IsValidRegistrationAsync(string serialNumber)
         {
             return _azureTablesService.IsValidRegistrationAsync(serialNumber);

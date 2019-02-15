@@ -19,7 +19,7 @@ namespace QBoxNext.Server.Business.Implementations
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultStateStoreService"/> class.
         /// </summary>
-        /// <param name="azureTablesService">The data store service.</param>
+        /// <param name="azureTablesService">The state store service.</param>
         public DefaultStateStoreService([NotNull] IAzureTablesService azureTablesService)
         {
             Guard.IsNotNull(azureTablesService, nameof(azureTablesService));

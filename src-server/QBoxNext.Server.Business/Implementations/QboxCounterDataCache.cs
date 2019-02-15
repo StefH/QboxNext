@@ -1,5 +1,6 @@
-﻿using JetBrains.Annotations;
-using Microsoft.Extensions.Caching.Memory;
+﻿using DistributedCache.AzureTableStorage.Extensions;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using QboxNext.Server.Common.Validation;
@@ -13,18 +14,17 @@ namespace QBoxNext.Server.Business.Implementations
 {
     internal class QboxCounterDataCache : IQboxCounterDataCache
     {
+        private readonly DistributedCacheEntryOptions _defaultDistributedCacheEntryOptions = new DistributedCacheEntryOptions();
         private readonly ILogger<QboxCounterDataCache> _logger;
-        private readonly MemoryCache _cache;
+        private readonly IDistributedCache _cache;
 
-        public QboxCounterDataCache([NotNull] ILogger<QboxCounterDataCache> logger)
+        public QboxCounterDataCache([NotNull] ILogger<QboxCounterDataCache> logger, [NotNull] IDistributedCache cache)
         {
             Guard.NotNull(logger, nameof(logger));
+            Guard.NotNull(cache, nameof(cache));
 
             _logger = logger;
-            _cache = new MemoryCache(new MemoryCacheOptions
-            {
-                SizeLimit = 10000
-            });
+            _cache = cache;
         }
 
         /// <inheritdoc cref="IQboxCounterDataCache.GetOrCreateAsync(string, QboxDataQuery, Func{Task{QboxPagedDataQueryResult{QboxCounterData}}})"/>
@@ -37,7 +37,7 @@ namespace QBoxNext.Server.Business.Implementations
             Guard.NotNull(query, nameof(query));
             Guard.NotNull(getDataFunc, nameof(getDataFunc));
 
-            if (IsRealTime(query))
+            if (IsRealtime(query))
             {
                 _logger.LogInformation("Query {Query} is a realtime query.", JsonConvert.SerializeObject(query));
 
@@ -48,32 +48,27 @@ namespace QBoxNext.Server.Business.Implementations
             query.From = start;
             query.To = end;
 
-            string key = GetKey(serialNumber, start, end, query.Resolution);
+            string key = ConstructCacheKey(serialNumber, start, end, query.Resolution);
 
-            if (!_cache.TryGetValue(key, out QboxPagedDataQueryResult<QboxCounterData> cacheEntry))
+            var cacheEntry = await _cache.GetAsync<QboxPagedDataQueryResult<QboxCounterData>>(key);
+            if (cacheEntry == null)
             {
                 // Key not in cache, so get data.
                 cacheEntry = await getDataFunc();
 
-                int size = (int)(query.To - query.From).TotalDays;
-
-                // Set cache entry size by extension method.
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetSize(size);
-
                 // Save data in cache.
-                _cache.Set(key, cacheEntry, cacheEntryOptions);
+                await _cache.SetAsync(key, cacheEntry, _defaultDistributedCacheEntryOptions);
             }
 
             return cacheEntry;
         }
 
-        private string GetKey(string serialNumber, DateTime fromTruncated, DateTime toTruncated, QboxQueryResolution resolution)
+        private string ConstructCacheKey(string serialNumber, DateTime fromTruncated, DateTime toTruncated, QboxQueryResolution resolution)
         {
             return $"{serialNumber}:{fromTruncated.Ticks}:{toTruncated.Ticks}:{resolution}";
         }
 
-        private static bool IsRealTime(QboxDataQuery query)
+        private static bool IsRealtime(QboxDataQuery query)
         {
             return query.From >= DateTime.UtcNow && DateTime.UtcNow < query.From;
         }
