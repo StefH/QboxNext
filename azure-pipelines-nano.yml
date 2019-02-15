@@ -10,6 +10,7 @@ variables:
   tag: '1.0.0'
   buildDocker: $(BUILD_DOCKER)
   publishDocker: $(PUBLISH_DOCKER)
+  buildNumber: $(Build.BuildNumber)
 
 steps:
 #- task: DotNetCoreCLI@2
@@ -38,7 +39,7 @@ steps:
 #    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 #    zipAfterPublish: True
 
-- script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile.nanoserver-1803 .
+- script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) --build-arg BuildNumber=$(buildNumber) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile.nanoserver-1803 .
   displayName: 'Build Docker image [$(imageNameDataReceiver)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
@@ -46,7 +47,7 @@ steps:
   displayName: 'Tag Docker image [$(imageNameDataReceiver):$(tag)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
-- script: docker build -t $(DOCKER_ID)/$(imageNameFrontend) -f ./src-server/QboxNext.Server.Frontend/Dockerfile.nanoserver-1803 .
+- script: docker build -t $(DOCKER_ID)/$(imageNameFrontend) --build-arg BuildNumber=$(buildNumber) -f ./src-server/QboxNext.Server.Frontend/Dockerfile.nanoserver-1803 .
   displayName: 'Build Docker image [$(imageNameFrontend)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 

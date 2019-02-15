@@ -17,6 +17,7 @@ import { DxSelectBoxModule } from 'devextreme-angular/ui/select-box';
 // import nlCldrData from 'devextreme-cldr-data/nl.json';
 
 // import Globalize from 'globalize/message.js';
+import { AboutComponent } from './about/about.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationGuard, AuthenticationService, AuthorizationInterceptor } from './authentication';
@@ -42,6 +43,7 @@ const APP_PROVIDERS = [
     CallbackComponent,
 
     HomeComponent,
+    AboutComponent,
     ElectricityComponent,
     GasComponent
   ],

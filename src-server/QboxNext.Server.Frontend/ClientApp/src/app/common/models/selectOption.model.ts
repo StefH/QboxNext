@@ -1,5 +1,5 @@
 
-export abstract class SelectOptionModel {
+export class SelectOptionModel {
 
     public key: string;
 
