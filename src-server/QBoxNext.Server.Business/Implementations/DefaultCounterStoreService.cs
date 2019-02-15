@@ -5,6 +5,7 @@ using QboxNext.Extensions.Models.Public;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QBoxNext.Server.Business.Implementations
@@ -30,16 +31,7 @@ namespace QBoxNext.Server.Business.Implementations
             Guard.IsNotNullOrEmpty(correlationId, nameof(correlationId));
             Guard.IsNotNull(counterData, nameof(counterData));
 
-            var measurement = new QboxMeasurement
-            {
-                CorrelationId = correlationId,
-                SerialNumber = counterData.SerialNumber,
-                CounterId = counterData.CounterId,
-                MeasureTime = counterData.MeasureTime,
-                PulseValue = counterData.PulseValue
-            };
-
-            await _azureTablesService.StoreAsync(measurement);
+            await _azureTablesService.StoreAsync(Map(correlationId, counterData));
         }
 
         /// <inheritdoc cref="ICounterStoreService.StoreAsync(string, IList{CounterData})"/>
@@ -48,21 +40,21 @@ namespace QBoxNext.Server.Business.Implementations
             Guard.IsNotNullOrEmpty(correlationId, nameof(correlationId));
             Guard.IsNotNull(counters, nameof(counters));
 
-            var measurements = new List<QboxMeasurement>();
-            foreach (var counter in counters)
-            {
-                var measurement = new QboxMeasurement
-                {
-                    CorrelationId = correlationId,
-                    SerialNumber = counter.SerialNumber,
-                    CounterId = counter.CounterId,
-                    MeasureTime = counter.MeasureTime,
-                    PulseValue = counter.PulseValue
-                };
-                measurements.Add(measurement);
-            }
+            var measurements = counters.Select(counterData => Map(correlationId, counterData)).ToList();
 
             await _azureTablesService.StoreBatchAsync(measurements);
+        }
+
+        private QboxMeasurement Map(string correlationId, CounterData counter)
+        {
+            return new QboxMeasurement
+            {
+                CorrelationId = correlationId,
+                SerialNumber = counter.SerialNumber,
+                CounterId = counter.CounterId,
+                MeasureTime = counter.MeasureTime,
+                PulseValue = counter.PulseValue
+            };
         }
     }
 }

@@ -1,20 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Implementations\MiniPocoFactory.cs" />
-    <Compile Remove="Implementations\QboxDataDumpContextFactory.cs" />
-    <Compile Remove="Implementations\QboxNextDataHandler.cs" />
-    <Compile Remove="Implementations\QboxNextDataHandlerFactory.cs" />
-    <Compile Remove="Models\QboxContext.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.1.2" />
+    <PackageReference Include="DistributedCache.AzureTableStorage" Version="1.0.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
@@ -23,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\QboxNext.Extensions\QboxNext.Extensions.csproj" />
     <ProjectReference Include="..\..\src\QboxNext\QboxNext.csproj" />
-    <!--<ProjectReference Include="..\QboxNext.Server.Caching.AzureTableStorage\QboxNext.Server.Caching.AzureTableStorage.csproj" />-->
     <ProjectReference Include="..\QboxNext.Server.Common\QboxNext.Server.Common.csproj" />
     <ProjectReference Include="..\QboxNext.Server.Domain\QboxNext.Server.Domain.csproj" />
     <ProjectReference Include="..\QboxNext.Server.Infrastructure.Azure\QboxNext.Server.Infrastructure.Azure.csproj" />

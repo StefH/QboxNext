@@ -35,8 +35,8 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
-            string fromPartitionKey = PartitionKeyHelper.GetPartitionKey(serialNumber, from);
-            string toPartitionKey = PartitionKeyHelper.GetPartitionKey(serialNumber, to);
+            string fromPartitionKey = PartitionKeyHelper.ConstructPartitionKey(serialNumber, from);
+            string toPartitionKey = PartitionKeyHelper.ConstructPartitionKey(serialNumber, to);
 
             string fromRowKey = RowKeyHelper.GetRowKey(from);
             string toRowKey = RowKeyHelper.GetRowKey(to);
@@ -47,7 +47,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             var tasks = EachDay(from, to).Select(async date =>
             {
                 var result = await _measurementTable.Set.Where(
-                    m => m.PartitionKey == PartitionKeyHelper.GetPartitionKey(serialNumber, date) &&
+                    m => m.PartitionKey == PartitionKeyHelper.ConstructPartitionKey(serialNumber, date) &&
                     string.CompareOrdinal(m.RowKey, fromRowKey) <= 0 && string.CompareOrdinal(m.RowKey, toRowKey) > 0
                 ).ToListAsync();
 

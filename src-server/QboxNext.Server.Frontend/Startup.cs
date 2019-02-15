@@ -1,4 +1,5 @@
 ﻿using CorrelationId;
+using DistributedCache.AzureTableStorage.Options;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -74,7 +75,7 @@ namespace QboxNext.Server.Frontend
             // Configure
             services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
             services.Configure<AppOptions>(Configuration.GetSection("App"));
-            // services.Configure<AzureTableStorageCacheOptions>(Configuration.GetSection("AzureTableStorageCacheOptions"));
+            services.Configure<AzureTableStorageCacheOptions>(Configuration.GetSection("AzureTableStorageCacheOptions"));
 
             // Auth0
             services.AddAuth0(options =>
