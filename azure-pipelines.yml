@@ -6,7 +6,6 @@ variables:
   buildProjectDataReceiver: '**/QboxNext.Server.DataReceiver.csproj'
   buildProjectFrontend: '**/QboxNext.Server.Frontend.csproj'
   npmProjectFrontend: './src-server/QboxNext.Server.Frontend/ClientApp'
-#  testProjects: '**/tests/**/*.csproj'
   imageNameDataReceiver: 'qboxnext-datareceiver'
   imageNameFrontend: 'qboxnext-frontend'
   tag: '1.0.0'

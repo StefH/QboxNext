@@ -45,7 +45,6 @@ COPY ["src-server/QboxNext.Server.Infrastructure.Azure/QboxNext.Server.Infrastru
 COPY ["src-server/QBoxNext.Server.Business/QBoxNext.Server.Business.csproj", "src-server/QBoxNext.Server.Business/"]
 COPY ["src-server/QboxNext.Server.Domain/QboxNext.Server.Domain.csproj", "src-server/QboxNext.Server.Domain/"]
 COPY ["src-server/QboxNext.Server.Common/QboxNext.Server.Common.csproj", "src-server/QboxNext.Server.Common/"]
-
 COPY ["src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend.csproj", "src-server/QboxNext.Server.Frontend/"]
 
 RUN dotnet restore "src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend.csproj"
