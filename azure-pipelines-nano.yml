@@ -10,7 +10,7 @@ variables:
   tag: '1.0.0'
   buildDocker: $(BUILD_DOCKER)
   publishDocker: $(PUBLISH_DOCKER)
-  buildNumber: 'R$(Build.BuildNumber)'
+  buildNumber: $(Build.BuildNumber)
 
 steps:
 #- task: DotNetCoreCLI@2
