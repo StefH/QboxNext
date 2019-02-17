@@ -5,6 +5,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1.0.3.0</VersionPrefix>
+    <Copyright>Copyright © Stef Heyenrath ($([System.DateTime]::UtcNow.ToString("s")))</Copyright>
   </PropertyGroup>
 
   <Choose>

@@ -13,7 +13,7 @@ variables:
   buildBackend: $(BUILD_BACKEND)
   buildDocker: $(BUILD_DOCKER)
   publishDocker: $(PUBLISH_DOCKER)
-  buildNumber: $(Build.BuildNumber)
+  buildNumber: 'R$(Build.BuildNumber)'
 
 steps:
 - task: Npm@1

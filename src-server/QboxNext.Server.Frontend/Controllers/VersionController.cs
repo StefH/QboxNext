@@ -14,6 +14,7 @@ namespace QboxNext.Server.Frontend.Controllers
 
             return Ok(new
             {
+                Copyright = versionInfo.LegalCopyright,
                 Version = versionInfo.ProductVersion
             });
         }
