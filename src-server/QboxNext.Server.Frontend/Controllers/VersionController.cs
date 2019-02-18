@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 
 namespace QboxNext.Server.Frontend.Controllers
@@ -10,12 +10,14 @@ namespace QboxNext.Server.Frontend.Controllers
         [HttpGet("/api/version")]
         public ActionResult GetVersion()
         {
-            var versionInfo = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
+            var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes().ToArray();
+            var copyright = (AssemblyCopyrightAttribute)attributes.First(a => a is AssemblyCopyrightAttribute);
+            var version = (AssemblyInformationalVersionAttribute)attributes.First(a => a is AssemblyInformationalVersionAttribute);
 
             return Ok(new
             {
-                Copyright = versionInfo.LegalCopyright,
-                Version = versionInfo.ProductVersion
+                copyright.Copyright,
+                version.InformationalVersion
             });
         }
     }
