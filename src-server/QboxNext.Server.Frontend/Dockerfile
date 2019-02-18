@@ -32,7 +32,7 @@ WORKDIR "/src/src-server/QboxNext.Server.Frontend"
 RUN dotnet build "QboxNext.Server.Frontend.csproj" -c Release -o /app --version-suffix=$BuildNumber
 
 FROM build AS publish
-RUN dotnet publish "QboxNext.Server.Frontend.csproj" -c Release -o /app --version-suffix=$BuildNumber
+RUN dotnet publish "QboxNext.Server.Frontend.csproj" -c Release -o /app /p:Version=1.0.0-${BuildNumber}
 
 # --- Angular build:start
 FROM node as nodebuilder
