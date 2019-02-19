@@ -13,7 +13,7 @@ import { AboutService } from './about.service';
 })
 export class AboutComponent extends BaseComponent implements OnInit {
 
-    public versionInfo = new QboxVersionInfo();
+    public versionInfo: QboxVersionInfo;
 
     constructor(private service: AboutService) {
         super();

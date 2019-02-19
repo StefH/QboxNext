@@ -1,7 +1,9 @@
 
 export class QboxVersionInfo {
 
-    public version: string;
+    public copyright: string;
+
+    public informationalVersion: string;
 
     public constructor(init?: Partial<QboxVersionInfo>) {
         Object.assign(this, init);
