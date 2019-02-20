@@ -1,20 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { AuthenticationService } from '../authentication';
-import { LoginModel } from '../common/models';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html'
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent {
   public navbarOpen = false;
 
   constructor(private authenticationService: AuthenticationService) {
     this.authenticationService.handleAuthentication();
-  }
-
-  ngOnInit() {
   }
 
   public get isAuthenticated(): boolean {

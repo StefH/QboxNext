@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.2</VersionPrefix>
     <Description>QboxNext is a modified clone of Qplatform.</Description>
     <AssemblyTitle>QboxNext</AssemblyTitle>
     <Authors>Sebastiaan;Stef Heyenrath</Authors>
@@ -17,7 +16,7 @@
     <RepositoryUrl>https://github.com/stefh/QboxNext</RepositoryUrl>
     <ApplicationIcon>../../resources/logo.ico</ApplicationIcon>
     <DebugType>full</DebugType>
-    <!--<IncludeSource>True</IncludeSource>-->
+    <IncludeSource>True</IncludeSource>
     <IncludeSymbols>True</IncludeSymbols>
     <ProjectGuid>{D3804229-91F4-4502-9595-39884E5A01AD}</ProjectGuid>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

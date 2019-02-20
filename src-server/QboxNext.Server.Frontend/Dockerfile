@@ -5,6 +5,7 @@ EXPOSE 443
 
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
+ARG BuildNumber
 
 COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Core/QboxNext.Core.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Core/"]
 COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Logging/QboxNext.Logging.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Logging/"]
@@ -28,10 +29,11 @@ RUN dotnet restore "src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend
 
 COPY . .
 WORKDIR "/src/src-server/QboxNext.Server.Frontend"
-RUN dotnet build "QboxNext.Server.Frontend.csproj" -c Release -o /app
+RUN dotnet build "QboxNext.Server.Frontend.csproj" -c Release -o /app --version-suffix=$BuildNumber
 
 FROM build AS publish
-RUN dotnet publish "QboxNext.Server.Frontend.csproj" -c Release -o /app
+ARG BuildNumber
+RUN dotnet publish "QboxNext.Server.Frontend.csproj" -c Release -o /app /p:Version=1.0.0-$BuildNumber
 
 # --- Angular build:start
 FROM node as nodebuilder

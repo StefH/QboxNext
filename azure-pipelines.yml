@@ -6,7 +6,6 @@ variables:
   buildProjectDataReceiver: '**/QboxNext.Server.DataReceiver.csproj'
   buildProjectFrontend: '**/QboxNext.Server.Frontend.csproj'
   npmProjectFrontend: './src-server/QboxNext.Server.Frontend/ClientApp'
-#  testProjects: '**/tests/**/*.csproj'
   imageNameDataReceiver: 'qboxnext-datareceiver'
   imageNameFrontend: 'qboxnext-frontend'
   tag: '1.0.0'
@@ -14,6 +13,7 @@ variables:
   buildBackend: $(BUILD_BACKEND)
   buildDocker: $(BUILD_DOCKER)
   publishDocker: $(PUBLISH_DOCKER)
+  buildNumber: $(Build.BuildNumber)
 
 steps:
 - task: Npm@1
@@ -38,7 +38,7 @@ steps:
     projects: |
       $(buildProjectDataReceiver)
       $(buildProjectFrontend)
-    arguments: '--configuration $(BuildConfiguration)'
+    arguments: '--configuration $(BuildConfiguration) --version-suffix=$(buildNumber)'
   condition: and(succeeded(), eq(variables.buildBackend, 'yes'))
 
 #- task: DotNetCoreCLI@2
@@ -57,10 +57,10 @@ steps:
       $(buildProjectDataReceiver)
       $(buildProjectFrontend)
     publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(BuildConfiguration) /p:Version=1.0.0-$(BuildNumber) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
 
-- script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
+- script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) --build-arg BuildNumber=$(buildNumber) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
   displayName: 'Build Docker image [$(imageNameDataReceiver)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
@@ -68,7 +68,7 @@ steps:
   displayName: 'Tag Docker image [$(imageNameDataReceiver):$(tag)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 
-- script: docker build -t $(DOCKER_ID)/$(imageNameFrontend) -f ./src-server/QboxNext.Server.Frontend/Dockerfile .
+- script: docker build -t $(DOCKER_ID)/$(imageNameFrontend) --build-arg BuildNumber=$(buildNumber) -f ./src-server/QboxNext.Server.Frontend/Dockerfile .
   displayName: 'Build Docker image [$(imageNameFrontend)]'
   condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
 

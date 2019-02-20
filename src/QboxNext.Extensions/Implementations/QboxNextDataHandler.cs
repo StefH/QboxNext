@@ -236,7 +236,7 @@ namespace QboxNext.Extensions.Implementations
             }
 
             var counterDataList = new List<CounterData>();
-            foreach (var counterPayload in payloads.Where(p => p is CounterPayload).Cast<CounterPayload>())
+            foreach (var counterPayload in payloads.OfType<CounterPayload>())
             {
                 if (TryMapCounterPayload(counterPayload, out CounterData counterData))
                 {

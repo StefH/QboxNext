@@ -1,0 +1,6 @@
+<div *ngIf="loadingStatus !== DataLoadStatus.Finished">
+  <dx-load-indicator></dx-load-indicator>
+</div>
+<div *ngIf="loadingStatus === DataLoadStatus.Finished">
+  <pre>{{versionInfo | json}}</pre>
+</div>
