@@ -38,7 +38,7 @@ steps:
     projects: |
       $(buildProjectDataReceiver)
       $(buildProjectFrontend)
-    arguments: '--configuration $(BuildConfiguration) --version-suffix=$(buildNumber)'
+    arguments: '--configuration $(BuildConfiguration) /p:Version=1.0.0-$(buildNumber)'
   condition: and(succeeded(), eq(variables.buildBackend, 'yes'))
 
 #- task: DotNetCoreCLI@2

@@ -5,6 +5,7 @@ EXPOSE 443
 
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
+ARG BuildNumber
 
 COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Core/QboxNext.Core.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Core/"]
 COPY ["dependencies/dotnetcore-minimal/src/QboxNext.Logging/QboxNext.Logging.csproj", "dependencies/dotnetcore-minimal/src/QboxNext.Logging/"]
@@ -27,10 +28,10 @@ COPY ["src-server/QboxNext.Server.Common/QboxNext.Server.Common.csproj", "src-se
 RUN dotnet restore "src-server/QboxNext.Server.DataReceiver/QboxNext.Server.DataReceiver.csproj"
 COPY . .
 WORKDIR "/src/src-server/QboxNext.Server.DataReceiver"
-RUN dotnet build "QboxNext.Server.DataReceiver.csproj" -c Release -o /app
+RUN dotnet build "QboxNext.Server.DataReceiver.csproj" -c Release -o /app /p:Version=1.0.0-$BuildNumber
 
 FROM build AS publish
-RUN dotnet publish "QboxNext.Server.DataReceiver.csproj" -c Release -o /app
+RUN dotnet publish "QboxNext.Server.DataReceiver.csproj" -c Release -o /app /p:Version=1.0.0-$BuildNumber
 
 FROM base AS final
 WORKDIR /app

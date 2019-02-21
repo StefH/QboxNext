@@ -29,7 +29,7 @@ RUN dotnet restore "src-server/QboxNext.Server.Frontend/QboxNext.Server.Frontend
 
 COPY . .
 WORKDIR "/src/src-server/QboxNext.Server.Frontend"
-RUN dotnet build "QboxNext.Server.Frontend.csproj" -c Release -o /app --version-suffix=$BuildNumber
+RUN dotnet build "QboxNext.Server.Frontend.csproj" -c Release -o /app /p:Version=1.0.0-$BuildNumber
 
 FROM build AS publish
 ARG BuildNumber
