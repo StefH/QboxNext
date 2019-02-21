@@ -31,6 +31,7 @@ WORKDIR "/src/src-server/QboxNext.Server.DataReceiver"
 RUN dotnet build "QboxNext.Server.DataReceiver.csproj" -c Release -o /app /p:Version=1.0.0-$BuildNumber
 
 FROM build AS publish
+ARG BuildNumber
 RUN dotnet publish "QboxNext.Server.DataReceiver.csproj" -c Release -o /app /p:Version=1.0.0-$BuildNumber
 
 FROM base AS final
