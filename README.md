@@ -24,10 +24,10 @@ This is an extension project which uses the code from QboxNext.
 See the [WIKI : QboxNext.Extensions](https://github.com/StefH/QboxNext/wiki/QboxNext.Extensions).
 
 #### DataReceiver Project
-See the [WIKI : Example Project](https://github.com/StefH/QboxNext/wiki/DataReceiver).
+See the [WIKI : DataReceiver Project](https://github.com/StefH/QboxNext/wiki/DataReceiver).
 
 #### Frontend Project
-See the [WIKI : Example Project](https://github.com/StefH/QboxNext/wiki/Frontend).
+See the [WIKI : Frontend Project](https://github.com/StefH/QboxNext/wiki/Frontend).
 
 #### Use Case Overview
 See the [WIKI : Overview](https://github.com/StefH/QboxNext/wiki/Overview).
