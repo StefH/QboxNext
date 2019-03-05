@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Extensions.AzureTables;
-using NLog.Targets.Wrappers;
 using QboxNext.Logging;
 using QboxNext.Server.DataReceiver.Options;
 using QboxNext.Server.DataReceiver.Telemetry;
@@ -69,15 +68,13 @@ namespace QboxNext.Server.DataReceiver
             IOptions<AppOptions> appOptions
         )
         {
+            var logger = logFactory.CreateLogger<Startup>();
+
             // Update the ConnectionString from the TableStorageTarget and AsyncTargetWrapper[TableStorageTarget]
             var target = LogManager.Configuration.AllTargets.OfType<TableStorageTarget>().FirstOrDefault();
             if (target != null)
             {
-                target.ConnectionString = azureTableStorageOptions.Value.ConnectionString;
-            }
-            target = LogManager.Configuration.AllTargets.OfType<AsyncTargetWrapper>().Select(atw => atw.WrappedTarget).OfType<TableStorageTarget>().FirstOrDefault();
-            if (target != null)
-            {
+                logger.LogInformation("Updating target.ConnectionString to {ConnectionString}", azureTableStorageOptions.Value.ConnectionString);
                 target.ConnectionString = azureTableStorageOptions.Value.ConnectionString;
             }
             LogManager.ReconfigExistingLoggers();
