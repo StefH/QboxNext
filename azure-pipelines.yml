@@ -11,8 +11,10 @@ variables:
   tag: '1.0.0'
   buildFrontend: $(BUILD_FRONTEND)
   buildBackend: $(BUILD_BACKEND)
-  buildDocker: $(BUILD_DOCKER)
-  publishDocker: $(PUBLISH_DOCKER)
+  buildDockerFrontend: $(BUILD_DOCKER_FRONTEND)
+  buildDockerBackend: $(BUILD_DOCKER_BACKEND)
+  publishDockerFrontend: $(PUBLISH_DOCKER_FRONTEND)
+  publishDockerBackend: $(PUBLISH_DOCKER_BACKEND)
   buildNumber: $(Build.BuildNumber)
 
 steps:
@@ -62,29 +64,34 @@ steps:
 
 - script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) --build-arg BuildNumber=$(buildNumber) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
   displayName: 'Build Docker image [$(imageNameDataReceiver)]'
-  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
+  condition: and(succeeded(), eq(variables.buildDockerBackend, 'yes'))
 
 - script: docker tag $(DOCKER_ID)/$(imageNameDataReceiver):latest $(DOCKER_ID)/$(imageNameDataReceiver):$(tag)
   displayName: 'Tag Docker image [$(imageNameDataReceiver):$(tag)]'
-  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
+  condition: and(succeeded(), eq(variables.buildDockerBackend, 'yes'))
 
 - script: docker build -t $(DOCKER_ID)/$(imageNameFrontend) --build-arg BuildNumber=$(buildNumber) -f ./src-server/QboxNext.Server.Frontend/Dockerfile .
   displayName: 'Build Docker image [$(imageNameFrontend)]'
-  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
+  condition: and(succeeded(), eq(variables.buildDockerFrontend, 'yes'))
 
 - script: docker tag $(DOCKER_ID)/$(imageNameFrontend):latest $(DOCKER_ID)/$(imageNameFrontend):$(tag)
   displayName: 'Tag Docker image [$(imageNameFrontend):$(tag)]'
-  condition: and(succeeded(), eq(variables.buildDocker, 'yes'))
+  condition: and(succeeded(), eq(variables.buildDockerFrontend, 'yes'))
 
 # https://stackoverflow.com/questions/51489359/docker-using-password-via-the-cli-is-insecure-use-password-stdin
 - script: |
     echo "$(DOCKER_PWD)" | docker login --username $(DOCKER_ID) --password-stdin
-    docker push $(DOCKER_ID)/$(imageNameDataReceiver):latest
-    docker push $(DOCKER_ID)/$(imageNameDataReceiver):$(tag)
     docker push $(DOCKER_ID)/$(imageNameFrontend):latest
     docker push $(DOCKER_ID)/$(imageNameFrontend):$(tag)
-  displayName: 'Push Docker images [$(imageNameDataReceiver) and $(imageNameFrontend)]'
-  condition: and(succeeded(), eq(variables.publishDocker, 'yes'))
+  displayName: 'Push Docker images for $(imageNameFrontend)'
+  condition: and(succeeded(), eq(variables.publishDockerFrontend, 'yes'))
+
+- script: |
+    echo "$(DOCKER_PWD)" | docker login --username $(DOCKER_ID) --password-stdin
+    docker push $(DOCKER_ID)/$(imageNameDataReceiver):latest
+    docker push $(DOCKER_ID)/$(imageNameDataReceiver):$(tag)
+  displayName: 'Push Docker images for $(imageNameDataReceiver)'
+  condition: and(succeeded(), eq(variables.publishDockerBackend, 'yes'))
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
