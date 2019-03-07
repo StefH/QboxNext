@@ -75,7 +75,7 @@ namespace QboxNext.Server.DataReceiver
             app.UseCorrelationId(new CorrelationIdOptions
             {
                 UpdateTraceIdentifier = true,
-                IncludeInResponse = true,
+                IncludeInResponse = false,
                 UseGuidForCorrelationId = true
             });
 
