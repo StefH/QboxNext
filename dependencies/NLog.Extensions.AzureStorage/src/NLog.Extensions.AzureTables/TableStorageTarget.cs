@@ -33,17 +33,7 @@ namespace NLog.Extensions.AzureTables
         [PublicAPI]
         [NotNull]
         [RequiredParameter]
-        public string ConnectionString
-        {
-            get => _connectionString;
-
-            set
-            {
-                _connectionString = value;
-                CreateClient();
-            }
-        }
-        private string _connectionString;
+        public string ConnectionString { get; set; }
 
         [PublicAPI]
         [RequiredParameter]
@@ -85,12 +75,12 @@ namespace NLog.Extensions.AzureTables
         {
             try
             {
-                _client = CloudStorageAccount.Parse(_connectionString).CreateCloudTableClient();
+                _client = CloudStorageAccount.Parse(ConnectionString).CreateCloudTableClient();
                 InternalLogger.Trace("AzureTableStorageTarget - Initialized");
             }
             catch (Exception ex)
             {
-                InternalLogger.Error(ex, "AzureTableStorageTarget(Name={0}): Failed to create TableClient with connectionString={1}.", Name, _connectionString);
+                InternalLogger.Error(ex, "AzureTableStorageTarget(Name={0}): Failed to create TableClient with connectionString={1}.", Name, ConnectionString);
                 throw;
             }
         }

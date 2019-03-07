@@ -13,7 +13,6 @@ using QboxNext.Logging;
 using QboxNext.Server.DataReceiver.Options;
 using QboxNext.Server.DataReceiver.Telemetry;
 using QboxNext.Server.Infrastructure.Azure.Options;
-using System.Linq;
 
 namespace QboxNext.Server.DataReceiver
 {
@@ -68,16 +67,7 @@ namespace QboxNext.Server.DataReceiver
             IOptions<AppOptions> appOptions
         )
         {
-            var logger = logFactory.CreateLogger<Startup>();
-
-            // Update the ConnectionString from the TableStorageTarget and AsyncTargetWrapper[TableStorageTarget]
-            var target = LogManager.Configuration.AllTargets.OfType<TableStorageTarget>().FirstOrDefault();
-            if (target != null)
-            {
-                logger.LogInformation("Updating target.ConnectionString to {ConnectionString}", azureTableStorageOptions.Value.ConnectionString);
-                target.ConnectionString = azureTableStorageOptions.Value.ConnectionString;
-            }
-            LogManager.ReconfigExistingLoggers();
+            AddNLogTableStorageTarget(azureTableStorageOptions);
 
             // TODO : this needs to be in place until correct DI is added to QboxNext
             QboxNextLogProvider.LoggerFactory = logFactory;
@@ -90,6 +80,26 @@ namespace QboxNext.Server.DataReceiver
             });
 
             app.UseMvc();
+        }
+
+        private void AddNLogTableStorageTarget(IOptions<AzureTableStorageOptions> azureTableStorageOptions)
+        {
+            var section = Configuration.GetSection("Logging").GetSection("TableStorageTarget");
+
+            var target = new TableStorageTarget
+            {
+                Name = "AzureTable",
+                MachineName = section["MachineName"],
+                TableName = section["TableName"],
+                ConnectionString = azureTableStorageOptions.Value.ConnectionString,
+                CorrelationId = "${aspnet-TraceIdentifier}",
+                Layout = section["Layout"]
+            };
+
+            LogManager.Configuration.AddTarget(target);
+            LogManager.Configuration.AddRule(NLog.LogLevel.Info, NLog.LogLevel.Fatal, target);
+
+            LogManager.ReconfigExistingLoggers();
         }
     }
 }

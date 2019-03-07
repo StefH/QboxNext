@@ -37,7 +37,8 @@ namespace QboxNext.Qboxes.Parsing.Protocols
         /// <inheritdoc />
         public DateTime ReadDateTime()
         {
-            return Epoch.AddSeconds(ReadInt32());
+            int seconds = ReadInt32();
+            return Epoch.AddSeconds(seconds);
         }
 
         /// <inheritdoc />

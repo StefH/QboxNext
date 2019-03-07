@@ -56,8 +56,8 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
 
             string serialNumber = qboxMeasurements.First().SerialNumber;
-
-            _logger.LogInformation("Inserting {Count} measurement(s) for '{SerialNumber}' into Azure Table '{table}'", entities.Count, serialNumber, _measurementTable.Name);
+            string rowKey = entities.Count == 1 ? entities.First().RowKey : string.Empty;
+            _logger.LogInformation("Inserting {Count} measurement(s) for '{SerialNumber}' with RowKey '{RowKey}' into Azure Table '{table}'", entities.Count, serialNumber, rowKey, _measurementTable.Name);
 
             return await _measurementTable.Set.AddOrUpdateAsync(entities).TimeoutAfter(_serverTimeout) != null;
         }
