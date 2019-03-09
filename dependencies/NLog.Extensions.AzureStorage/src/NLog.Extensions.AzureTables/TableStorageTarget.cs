@@ -267,9 +267,6 @@ namespace NLog.Extensions.AzureTables
 
         private DynamicTableEntity CreateEntity(LogEventInfo logEvent, string layoutMessage, string machineName, string partitionKey, [CanBeNull] string correlationId)
         {
-            string id = correlationId ?? Guid.NewGuid().ToString();
-            string rowKey = $"{DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks:d19}:{id}";
-
             string exceptionValue = null;
             string stackTraceValue = null;
             string innerExceptionValue = null;
@@ -323,7 +320,7 @@ namespace NLog.Extensions.AzureTables
 
             properties.Add("MachineName", new EntityProperty(machineName));
 
-            return new DynamicTableEntity(partitionKey, rowKey, "*", properties);
+            return new DynamicTableEntity(partitionKey, RowKeyHelper.Construct(DateTime.UtcNow), "*", properties);
         }
     }
 }

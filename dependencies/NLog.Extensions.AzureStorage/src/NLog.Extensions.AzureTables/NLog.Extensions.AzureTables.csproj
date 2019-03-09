@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Compile Remove="PartitionKeyHelper.cs" />
-    <Compile Remove="RowKeyHelper.cs" />
   </ItemGroup>
 
   <ItemGroup>
