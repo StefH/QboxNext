@@ -254,7 +254,7 @@ namespace QboxNext.Extensions.Implementations
             }
 
             // Only throw exception when all counters fail
-            if (exceptionInformation.Count == payloads.Count)
+            if (payloads.Count > 0 && exceptionInformation.Count == payloads.Count)
             {
                 throw new AggregateException(exceptionInformation.Select(x => x.exception));
             }
