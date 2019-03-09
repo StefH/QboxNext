@@ -2,6 +2,7 @@
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -66,6 +67,12 @@ namespace QboxNext.Server.DataReceiver
             IOptions<AppOptions> appOptions
         )
         {
+            // https://stackoverflow.com/questions/28664686/how-do-i-get-client-ip-address-in-asp-net-core
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             AddNLogTableStorageTarget(azureTableStorageOptions);
 
             // TODO : this needs to be in place until correct DI is added to QboxNext
