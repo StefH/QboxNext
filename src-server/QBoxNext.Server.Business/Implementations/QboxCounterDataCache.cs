@@ -70,7 +70,7 @@ namespace QBoxNext.Server.Business.Implementations
 
         private static bool IsRealtime(QboxDataQuery query)
         {
-            return query.From >= DateTime.UtcNow && DateTime.UtcNow < query.From;
+            return DateTime.UtcNow >= query.From && DateTime.UtcNow <= query.To;
         }
     }
 }
