@@ -37,7 +37,8 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                             group entity by new
                             {
                                 entity.SerialNumber,
-                                entity.MeasureTime
+                                entity.MeasureTime,
+                                entity.MeasureTimeAdjusted
                             }
             into g
                             select new MeasurementEntity
@@ -46,6 +47,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                                 RowKey = RowKeyHelper.Construct(g.Key.MeasureTime),
                                 SerialNumber = g.Key.SerialNumber,
                                 MeasureTime = g.Key.MeasureTime,
+                                MeasureTimeAdjusted = g.Key.MeasureTimeAdjusted,
                                 CorrelationId = g.First().CorrelationId,
                                 Counter0181 = g.FirstOrDefault(c => c.CounterId == 181)?.PulseValue,
                                 Counter0182 = g.FirstOrDefault(c => c.CounterId == 182)?.PulseValue,

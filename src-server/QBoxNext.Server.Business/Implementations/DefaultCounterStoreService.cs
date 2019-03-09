@@ -4,6 +4,7 @@ using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,12 +48,22 @@ namespace QBoxNext.Server.Business.Implementations
 
         private QboxMeasurement Map(string correlationId, CounterData counter)
         {
+            bool adjusted = false;
+            var now = DateTime.UtcNow;
+            // MeasureTime is longer ago than 1 day, adjust it.
+            if (counter.MeasureTime < now.AddDays(-1))
+            {
+                adjusted = true;
+                counter.MeasureTime = now;
+            }
+
             return new QboxMeasurement
             {
                 CorrelationId = correlationId,
                 SerialNumber = counter.SerialNumber,
                 CounterId = counter.CounterId,
                 MeasureTime = counter.MeasureTime,
+                MeasureTimeAdjusted = adjusted,
                 PulseValue = counter.PulseValue
             };
         }
