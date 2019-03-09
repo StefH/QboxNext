@@ -6,7 +6,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Utils
     {
         private static readonly long MaxTicks = DateTime.MaxValue.Ticks + 1;
 
-        public static string GetRowKey(DateTime measureTime)
+        public static string Construct(DateTime measureTime)
         {
             return $"{MaxTicks - measureTime.Ticks:d19}";
         }

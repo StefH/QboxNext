@@ -42,8 +42,8 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             into g
                             select new MeasurementEntity
                             {
-                                PartitionKey = PartitionKeyHelper.ConstructPartitionKey(g.Key.SerialNumber, g.Key.MeasureTime),
-                                RowKey = RowKeyHelper.GetRowKey(g.Key.MeasureTime),
+                                PartitionKey = PartitionKeyHelper.Construct(g.Key.SerialNumber, g.Key.MeasureTime),
+                                RowKey = RowKeyHelper.Construct(g.Key.MeasureTime),
                                 SerialNumber = g.Key.SerialNumber,
                                 MeasureTime = g.Key.MeasureTime,
                                 CorrelationId = g.First().CorrelationId,
