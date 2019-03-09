@@ -37,7 +37,7 @@ namespace QBoxNext.Server.Business.Implementations
             Guard.NotNull(query, nameof(query));
             Guard.NotNull(getDataFunc, nameof(getDataFunc));
 
-            if (IsRealtime(query))
+            if (IsNowOrFuture(query))
             {
                 _logger.LogInformation("Query {Query} is a realtime query.", JsonConvert.SerializeObject(query));
 
@@ -68,9 +68,9 @@ namespace QBoxNext.Server.Business.Implementations
             return $"{serialNumber}:{fromTruncated.Ticks}:{toTruncated.Ticks}:{resolution}";
         }
 
-        private static bool IsRealtime(QboxDataQuery query)
+        private static bool IsNowOrFuture(QboxDataQuery query)
         {
-            return DateTime.UtcNow >= query.From && DateTime.UtcNow <= query.To;
+            return query.From >= DateTime.UtcNow || query.To > DateTime.UtcNow;
         }
     }
 }
