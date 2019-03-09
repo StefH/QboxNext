@@ -17,7 +17,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
 
         public DateTime MeasureTime { get; set; }
 
-        public bool MeasureTimeAdjusted { get; set; }
+        public bool? MeasureTimeAdjusted { get; set; }
 
         public int? Counter0181 { get; set; }
 
