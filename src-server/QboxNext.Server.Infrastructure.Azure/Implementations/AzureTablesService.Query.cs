@@ -105,7 +105,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                                          Delta2421 = g.Sum(x => x.Delta2421)
                                      };
 
-            var itemsFound = groupedByTimeFrame.OrderBy(i => i.MeasureTime).ToList();
+            var itemsFound = groupedByTimeFrame.ToList();
 
             var items = FillGaps(from, to, resolution, itemsFound);
 
@@ -144,7 +144,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             var items = new List<QboxCounterData>();
             for (int i = 0; i < steps; i++)
             {
-                var delta = 1.0 * i / steps * (from - to).TotalMinutes;
+                double delta = 1.0 * i / steps * (to - from).TotalMinutes;
                 var measureTime = from.AddMinutes(delta);
                 var measureTimeRounded = resolution.TruncateTime(measureTime);
                 int labelValue = GetLabelValue(measureTimeRounded, resolution);
@@ -165,7 +165,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 }
             }
 
-            return items;
+            return items.OrderBy(e => e.MeasureTime).ToList();
         }
 
         private static int GetSteps(DateTime from, DateTime to, QboxQueryResolution resolution)
