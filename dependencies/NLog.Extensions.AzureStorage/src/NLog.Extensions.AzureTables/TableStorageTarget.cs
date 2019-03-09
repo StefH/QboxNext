@@ -33,17 +33,7 @@ namespace NLog.Extensions.AzureTables
         [PublicAPI]
         [NotNull]
         [RequiredParameter]
-        public string ConnectionString
-        {
-            get => _connectionString;
-
-            set
-            {
-                _connectionString = value;
-                CreateClient();
-            }
-        }
-        private string _connectionString;
+        public string ConnectionString { get; set; }
 
         [PublicAPI]
         [RequiredParameter]
@@ -85,12 +75,12 @@ namespace NLog.Extensions.AzureTables
         {
             try
             {
-                _client = CloudStorageAccount.Parse(_connectionString).CreateCloudTableClient();
+                _client = CloudStorageAccount.Parse(ConnectionString).CreateCloudTableClient();
                 InternalLogger.Trace("AzureTableStorageTarget - Initialized");
             }
             catch (Exception ex)
             {
-                InternalLogger.Error(ex, "AzureTableStorageTarget(Name={0}): Failed to create TableClient with connectionString={1}.", Name, _connectionString);
+                InternalLogger.Error(ex, "AzureTableStorageTarget(Name={0}): Failed to create TableClient with connectionString={1}.", Name, ConnectionString);
                 throw;
             }
         }
@@ -278,7 +268,7 @@ namespace NLog.Extensions.AzureTables
         private DynamicTableEntity CreateEntity(LogEventInfo logEvent, string layoutMessage, string machineName, string partitionKey, [CanBeNull] string correlationId)
         {
             string id = correlationId ?? Guid.NewGuid().ToString();
-            string rowKey = $"{DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks:d19}:{id}";
+            string rowKey = RowKeyHelper.Construct(DateTime.UtcNow, id);
 
             string exceptionValue = null;
             string stackTraceValue = null;

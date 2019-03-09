@@ -66,7 +66,7 @@ namespace QboxNext.Server.DataReceiver.Controllers
             var handler = _qboxNextDataHandlerFactory.Create(_correlationContext.CorrelationContext.CorrelationId, qboxDataDumpContext);
             string result = await handler.HandleAsync();
 
-            return Ok(result);
+            return Content(result);
         }
 
         private async Task<QboxContext> MapQboxContextAsync(string productNumber, string serialNumber)

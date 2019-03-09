@@ -154,7 +154,7 @@ namespace QboxNext.Extensions.Implementations
                         _context.Mini.QboxStatus.LastInvalidResponse = DateTime.UtcNow;
                     }
 
-                    await StorePayloadsAsync(parseResult.Model.Payloads);
+                    await VisitPayloadsAsync(parseResult.Model.Payloads);
 
                     BuildResult(ResponseType.Normal);
                 }
@@ -219,7 +219,7 @@ namespace QboxNext.Extensions.Implementations
             }
         }
 
-        private async Task StorePayloadsAsync(IList<BasePayload> payloads)
+        private async Task VisitPayloadsAsync(IList<BasePayload> payloads)
         {
             // Loop all payloads except CounterPayload and visit
             var exceptionInformation = new ConcurrentQueue<(string details, Exception exception)>();
@@ -254,7 +254,7 @@ namespace QboxNext.Extensions.Implementations
             }
 
             // Only throw exception when all counters fail
-            if (exceptionInformation.Count == payloads.Count)
+            if (payloads.Count > 0 && exceptionInformation.Count == payloads.Count)
             {
                 throw new AggregateException(exceptionInformation.Select(x => x.exception));
             }

@@ -14,6 +14,8 @@ namespace QboxNext.Server.Domain
 
         public DateTime MeasureTime { get; set; }
 
+        public bool MeasureTimeAdjusted { get; set; }
+
         public int PulseValue { get; set; }
     }
 }

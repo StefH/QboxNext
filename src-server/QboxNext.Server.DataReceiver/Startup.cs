@@ -2,19 +2,17 @@
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Extensions.AzureTables;
-using NLog.Targets.Wrappers;
 using QboxNext.Logging;
 using QboxNext.Server.DataReceiver.Options;
 using QboxNext.Server.DataReceiver.Telemetry;
 using QboxNext.Server.Infrastructure.Azure.Options;
-using System.Linq;
 
 namespace QboxNext.Server.DataReceiver
 {
@@ -45,7 +43,7 @@ namespace QboxNext.Server.DataReceiver
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc();
 
             // https://github.com/Microsoft/ApplicationInsights-aspnetcore/wiki/Custom-Configuration
             services.AddSingleton<ITelemetryInitializer, QboxNextTelemetryInitializer>();
@@ -69,18 +67,13 @@ namespace QboxNext.Server.DataReceiver
             IOptions<AppOptions> appOptions
         )
         {
-            // Update the ConnectionString from the TableStorageTarget and AsyncTargetWrapper[TableStorageTarget]
-            var target = LogManager.Configuration.AllTargets.OfType<TableStorageTarget>().FirstOrDefault();
-            if (target != null)
+            // https://stackoverflow.com/questions/28664686/how-do-i-get-client-ip-address-in-asp-net-core
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
-                target.ConnectionString = azureTableStorageOptions.Value.ConnectionString;
-            }
-            target = LogManager.Configuration.AllTargets.OfType<AsyncTargetWrapper>().Select(atw => atw.WrappedTarget).OfType<TableStorageTarget>().FirstOrDefault();
-            if (target != null)
-            {
-                target.ConnectionString = azureTableStorageOptions.Value.ConnectionString;
-            }
-            LogManager.ReconfigExistingLoggers();
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
+            AddNLogTableStorageTarget(azureTableStorageOptions);
 
             // TODO : this needs to be in place until correct DI is added to QboxNext
             QboxNextLogProvider.LoggerFactory = logFactory;
@@ -88,11 +81,31 @@ namespace QboxNext.Server.DataReceiver
             app.UseCorrelationId(new CorrelationIdOptions
             {
                 UpdateTraceIdentifier = true,
-                IncludeInResponse = true,
+                IncludeInResponse = false,
                 UseGuidForCorrelationId = true
             });
 
             app.UseMvc();
+        }
+
+        private void AddNLogTableStorageTarget(IOptions<AzureTableStorageOptions> azureTableStorageOptions)
+        {
+            var section = Configuration.GetSection("Logging").GetSection("TableStorageTarget");
+
+            var target = new TableStorageTarget
+            {
+                Name = "AzureTable",
+                MachineName = section["MachineName"],
+                TableName = section["TableName"],
+                ConnectionString = azureTableStorageOptions.Value.ConnectionString,
+                CorrelationId = "${aspnet-TraceIdentifier}",
+                Layout = section["Layout"]
+            };
+
+            LogManager.Configuration.AddTarget(target);
+            LogManager.Configuration.AddRule(NLog.LogLevel.Info, NLog.LogLevel.Fatal, target);
+
+            LogManager.ReconfigExistingLoggers();
         }
     }
 }

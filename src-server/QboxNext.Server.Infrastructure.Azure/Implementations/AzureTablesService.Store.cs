@@ -37,15 +37,17 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                             group entity by new
                             {
                                 entity.SerialNumber,
-                                entity.MeasureTime
+                                entity.MeasureTime,
+                                entity.MeasureTimeAdjusted
                             }
             into g
                             select new MeasurementEntity
                             {
-                                PartitionKey = PartitionKeyHelper.ConstructPartitionKey(g.Key.SerialNumber, g.Key.MeasureTime),
-                                RowKey = RowKeyHelper.GetRowKey(g.Key.MeasureTime),
+                                PartitionKey = PartitionKeyHelper.Construct(g.Key.SerialNumber, g.Key.MeasureTime),
+                                RowKey = RowKeyHelper.Construct(g.Key.MeasureTime),
                                 SerialNumber = g.Key.SerialNumber,
                                 MeasureTime = g.Key.MeasureTime,
+                                MeasureTimeAdjusted = g.Key.MeasureTimeAdjusted,
                                 CorrelationId = g.First().CorrelationId,
                                 Counter0181 = g.FirstOrDefault(c => c.CounterId == 181)?.PulseValue,
                                 Counter0182 = g.FirstOrDefault(c => c.CounterId == 182)?.PulseValue,
@@ -56,8 +58,8 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
 
             string serialNumber = qboxMeasurements.First().SerialNumber;
-
-            _logger.LogInformation("Inserting {Count} measurement(s) for '{SerialNumber}' into Azure Table '{table}'", entities.Count, serialNumber, _measurementTable.Name);
+            string rowKey = entities.Count == 1 ? entities.First().RowKey : string.Empty;
+            _logger.LogInformation("Inserting {Count} measurement(s) for '{SerialNumber}' with RowKey '{RowKey}' into Azure Table '{table}'", entities.Count, serialNumber, rowKey, _measurementTable.Name);
 
             return await _measurementTable.Set.AddOrUpdateAsync(entities).TimeoutAfter(_serverTimeout) != null;
         }

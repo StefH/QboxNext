@@ -74,7 +74,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
             Guard.NotNull(qboxState, nameof(qboxState));
 
             SerialNumber = qboxState.SerialNumber;
-            RowKey = RowKeyHelper.GetRowKey(DateTime.UtcNow);
+            RowKey = RowKeyHelper.Construct(DateTime.UtcNow);
 
             CorrelationId = qboxState.CorrelationId;
             LogTimeStamp = qboxState.LogTime;

@@ -6,7 +6,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Utils
     {
         private const int PartitionKeyStart = 100000000;
 
-        public static string ConstructPartitionKey(string serialNumber, DateTime measureTime)
+        public static string Construct(string serialNumber, DateTime measureTime)
         {
             return $"{serialNumber}:{ConstructDateTimeKey(measureTime)}";
         }
