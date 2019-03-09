@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { nameof } from 'ts-simple-nameof';
 
-import { BaseComponent, DataComponent } from '../common/components';
+import { DataComponent } from '../common/components';
 import { HttpStatusCodes } from '../common/constants';
 import { DataLoadStatus, Resolution } from '../common/enums';
 import { GasValueFormatter } from '../common/formatters';
@@ -29,8 +29,8 @@ export class GasComponent extends DataComponent implements OnInit {
 
   public ngOnInit(): void {
     this.appData = this.sessionStorageService.get<ApplicationData>(nameof(ApplicationData)) || new ApplicationData();
-    this.selectedFromDate = this.appData.gasSelectedFromDate || moment('2018-10-01');
-    this.selectedToDate = this.appData.gasSelectedToDate || moment('2018-11-01');
+    this.selectedFromDate = this.appData.gasSelectedFromDate || moment();
+    this.selectedToDate = this.appData.gasSelectedToDate || moment().add(1, 'day');
     this.selectedResolutionId = this.appData.gasSelectedResolutionId || this.resolutions[0].id;
 
     this.updateChartSeries();

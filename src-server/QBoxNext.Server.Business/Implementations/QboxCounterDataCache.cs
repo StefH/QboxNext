@@ -39,7 +39,7 @@ namespace QBoxNext.Server.Business.Implementations
 
             if (IsNowOrFuture(query))
             {
-                _logger.LogInformation("Query {Query} is a realtime query.", JsonConvert.SerializeObject(query));
+                _logger.LogInformation("Query {Query} is a realtime query, getting fresh data from Azure Table Storage", JsonConvert.SerializeObject(query));
 
                 return await getDataFunc();
             }

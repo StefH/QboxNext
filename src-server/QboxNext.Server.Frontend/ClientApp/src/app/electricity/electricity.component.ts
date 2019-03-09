@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+import * as moment from 'moment';
 import { nameof } from 'ts-simple-nameof';
 
 import { DataComponent } from '../common/components';
@@ -185,8 +186,8 @@ export class ElectricityComponent extends DataComponent implements OnInit {
 
   private readAppData(): void {
     this.appData = this.sessionStorageService.get<ApplicationData>(nameof(ApplicationData)) || new ApplicationData();
-    this.selectedFromDate = this.appData.electricitySelectedFromDate || new Date('2018-10-01');
-    this.selectedToDate = this.appData.electricitySelectedToDate || new Date('2018-11-01');
+    this.selectedFromDate = this.appData.electricitySelectedFromDate || moment().toDate();
+    this.selectedToDate = this.appData.electricitySelectedToDate || moment().add(1, 'day').toDate();
     this.selectedResolutionId = this.appData.electricitySelectedResolutionId || this.resolutions[1].id;
     this.check181 = this.appData.check181 || true;
     this.check182 = this.appData.check182 || true;

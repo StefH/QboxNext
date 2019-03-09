@@ -105,7 +105,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                                          Delta2421 = g.Sum(x => x.Delta2421)
                                      };
 
-            var items = groupedByTimeFrame.OrderBy(i => i.MeasureTime).ToList();
+            var itemsFound = groupedByTimeFrame.OrderBy(i => i.MeasureTime).ToList();
+
+            var items = FillGaps(from, to, resolution, itemsFound);
 
             var overview = new QboxCounterData
             {
@@ -133,6 +135,61 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 Items = items,
                 Count = items.Count
             };
+        }
+
+        private static List<QboxCounterData> FillGaps(DateTime from, DateTime to, QboxQueryResolution resolution, List<QboxCounterData> itemsFound)
+        {
+            int steps = GetSteps(from, to, resolution);
+
+            var items = new List<QboxCounterData>();
+            for (int i = 0; i < steps; i++)
+            {
+                var delta = 1.0 * i / steps * (from - to).TotalMinutes;
+                var measureTime = from.AddMinutes(delta);
+                var measureTimeRounded = resolution.TruncateTime(measureTime);
+                int labelValue = GetLabelValue(measureTimeRounded, resolution);
+
+                var existing = itemsFound.FirstOrDefault(it => it.LabelValue == labelValue);
+                if (existing != null)
+                {
+                    items.Add(existing);
+                }
+                else
+                {
+                    items.Add(new QboxCounterData
+                    {
+                        MeasureTime = measureTimeRounded,
+                        LabelText = GetLabelText(measureTimeRounded, resolution),
+                        LabelValue = labelValue
+                    });
+                }
+            }
+
+            return items;
+        }
+
+        private static int GetSteps(DateTime from, DateTime to, QboxQueryResolution resolution)
+        {
+            switch (resolution)
+            {
+                case QboxQueryResolution.QuarterOfHour:
+                    return 24 * 4;
+
+                case QboxQueryResolution.Hour:
+                    return 24;
+
+                case QboxQueryResolution.Day:
+                    return (to - from).Days;
+
+                case QboxQueryResolution.Month:
+                    return to.Month - from.Month;
+
+                case QboxQueryResolution.Year:
+                    return to.Year - from.Year;
+
+                default:
+                    throw new NotSupportedException();
+            }
         }
 
         private static IEnumerable<DateTime> EachDay(DateTime from, DateTime to)
