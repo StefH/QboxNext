@@ -31,6 +31,13 @@ namespace QboxNext.Server.DataReceiver
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel(
+                    (builderContext, options) =>
+                    {
+                        options.AddServerHeader = false;
+
+                        options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(60);
+                    })
                 .UseApplicationInsights()
                 .UseStartup<Startup>()
                 .ConfigureLogging(logging =>
