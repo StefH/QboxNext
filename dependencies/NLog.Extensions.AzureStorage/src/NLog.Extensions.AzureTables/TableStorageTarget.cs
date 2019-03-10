@@ -1,12 +1,13 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
 using NLog.Common;
 using NLog.Config;
 using NLog.Layouts;
 using NLog.Targets;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using WindowsAzure.Table;
 
 namespace NLog.Extensions.AzureTables
 {
@@ -20,11 +21,7 @@ namespace NLog.Extensions.AzureTables
         private readonly AzureStorageNameCache _containerNameCache = new AzureStorageNameCache();
         private readonly Func<string, string> _checkAndRepairTableNameDelegate;
 
-        private CloudTableClient _client;
-        private CloudTable _table;
-
-        // Delegates for bucket sorting
-        private SortHelpers.KeySelector<AsyncLogEventInfo, TablePartitionKey> _getTablePartitionNameDelegate;
+        private (string Name, ITableSet<LoggingEntity> Set) _table;
 
         [PublicAPI]
         [NotNull]
@@ -68,14 +65,19 @@ namespace NLog.Extensions.AzureTables
                 MachineName = GetMachineName();
             }
 
-            CreateClient();
+            InitTable();
         }
 
-        private void CreateClient()
+        private void InitTable()
         {
             try
             {
-                _client = CloudStorageAccount.Parse(ConnectionString).CreateCloudTableClient();
+                var client = CloudStorageAccount.Parse(ConnectionString).CreateCloudTableClient();
+
+                string tableName = CheckAndRepairTableName(RenderLogEvent(TableName, LogEventInfo.CreateNullEvent()));
+
+                _table = (tableName, new TableSet<LoggingEntity>(client, tableName));
+
                 InternalLogger.Trace("AzureTableStorageTarget - Initialized");
             }
             catch (Exception ex)
@@ -87,7 +89,6 @@ namespace NLog.Extensions.AzureTables
 
         /// <summary>
         /// Writes logging event to the log target.
-        /// classes.
         /// </summary>
         /// <param name="logEvent">Logging event to be written out.</param>
         protected override void Write(LogEventInfo logEvent)
@@ -97,23 +98,15 @@ namespace NLog.Extensions.AzureTables
                 return;
             }
 
-            var tableName = RenderLogEvent(TableName, logEvent);
             try
             {
-                tableName = CheckAndRepairTableName(tableName);
+                var entity = MapEntity(logEvent);
 
-                InitializeTable(tableName);
-
-                string correlationId = CorrelationId != null ? RenderLogEvent(CorrelationId, logEvent) : null;
-                string layoutMessage = RenderLogEvent(Layout, logEvent);
-                var entity = CreateEntity(logEvent, layoutMessage, MachineName, logEvent.LoggerName, correlationId);
-                var insertOperation = TableOperation.Insert(entity);
-                TableExecute(_table, insertOperation);
+                _table.Set.AddOrUpdate(entity);
             }
             catch (StorageException ex)
             {
-                InternalLogger.Error(ex, "AzureTableStorage: failed writing to table: {0}", tableName);
-                throw;
+                InternalLogger.Error(ex, "AzureTableStorage: failed writing entry to table: {0}", _table.Name);
             }
         }
 
@@ -125,98 +118,15 @@ namespace NLog.Extensions.AzureTables
         /// <param name="logEvents">Logging events to be written out.</param>
         protected override void Write(IList<AsyncLogEventInfo> logEvents)
         {
-            if (logEvents.Count <= 1)
+            try
             {
-                base.Write(logEvents);
-                return;
+                var loggingEntities = logEvents.Select(l => l.LogEvent).Select(MapEntity);
+
+                _table.Set.AddOrUpdate(loggingEntities);
             }
-
-            //must sort into containers and then into the blobs for the container
-            if (_getTablePartitionNameDelegate == null)
+            catch (StorageException ex)
             {
-                _getTablePartitionNameDelegate = c => new TablePartitionKey(RenderLogEvent(TableName, c.LogEvent), c.LogEvent.LoggerName ?? string.Empty);
-            }
-
-            var partitionBuckets = SortHelpers.BucketSort(logEvents, _getTablePartitionNameDelegate);
-
-            //Iterate over all the tables being written to
-            foreach (var partitionBucket in partitionBuckets)
-            {
-                var tableName = partitionBucket.Key.TableName;
-
-                try
-                {
-                    tableName = CheckAndRepairTableName(tableName);
-
-                    InitializeTable(tableName);
-
-                    //iterate over all the partition keys or we will get a System.ArgumentException: 'All entities in a given batch must have the same partition key.'
-                    var batch = new TableBatchOperation();
-                    //add each message for the destination table partition limit batch to 100 elements
-                    foreach (var asyncLogEventInfo in partitionBucket.Value)
-                    {
-                        string correlationId = CorrelationId != null ? RenderLogEvent(CorrelationId, asyncLogEventInfo.LogEvent) : null;
-                        string layoutMessage = RenderLogEvent(Layout, asyncLogEventInfo.LogEvent);
-                        var entity = CreateEntity(asyncLogEventInfo.LogEvent, layoutMessage, MachineName, partitionBucket.Key.PartitionId, correlationId);
-                        batch.Insert(entity);
-                        if (batch.Count == 100)
-                        {
-                            TableExecuteBatch(_table, batch);
-                            batch.Clear();
-                        }
-                    }
-
-                    if (batch.Count > 0)
-                    {
-                        TableExecuteBatch(_table, batch);
-                    }
-
-                    foreach (var asyncLogEventInfo in partitionBucket.Value)
-                    {
-                        asyncLogEventInfo.Continuation(null);
-                    }
-                }
-                catch (StorageException ex)
-                {
-                    InternalLogger.Error(ex, "AzureTableStorage: failed writing batch to table: {0}", tableName);
-                    throw;
-                }
-            }
-        }
-
-        private static void TableExecute(CloudTable cloudTable, TableOperation insertOperation)
-        {
-            cloudTable.ExecuteAsync(insertOperation).GetAwaiter().GetResult();
-        }
-
-        private static void TableExecuteBatch(CloudTable cloudTable, TableBatchOperation batch)
-        {
-            cloudTable.ExecuteBatchAsync(batch).GetAwaiter().GetResult();
-        }
-
-        private void TableCreateIfNotExists(CloudTable cloudTable)
-        {
-            cloudTable.CreateIfNotExistsAsync().GetAwaiter().GetResult();
-        }
-
-        /// <summary>
-        /// Initializes the Azure storage table and creates it if it doesn't exist.
-        /// </summary>
-        /// <param name="tableName">Name of the table.</param>
-        private void InitializeTable(string tableName)
-        {
-            if (_table == null || _table.Name != tableName)
-            {
-                _table = _client.GetTableReference(tableName);
-                try
-                {
-                    TableCreateIfNotExists(_table);
-                }
-                catch (StorageException storageException)
-                {
-                    InternalLogger.Error(storageException, "AzureTableStorage: failed to get a reference to storage table.");
-                    throw;
-                }
+                InternalLogger.Error(ex, "AzureTableStorage: failed writing entries to table: {0}", _table.Name);
             }
         }
 
@@ -265,10 +175,13 @@ namespace NLog.Extensions.AzureTables
             }
         }
 
-        private DynamicTableEntity CreateEntity(LogEventInfo logEvent, string layoutMessage, string machineName, string partitionKey, [CanBeNull] string correlationId)
+        private LoggingEntity MapEntity(LogEventInfo logEvent)
         {
-            string id = correlationId ?? Guid.NewGuid().ToString();
-            string rowKey = RowKeyHelper.Construct(DateTime.UtcNow, id);
+            var now = DateTime.UtcNow;
+            string correlationId = CorrelationId != null ? RenderLogEvent(CorrelationId, logEvent) : null;
+            string layoutMessage = RenderLogEvent(Layout, logEvent);
+            string rowKey = RowKeyHelper.Construct(now);
+            string partitionKey = PartitionKeyHelper.Construct(now);
 
             string exceptionValue = null;
             string stackTraceValue = null;
@@ -302,28 +215,21 @@ namespace NLog.Extensions.AzureTables
                 }
             }
 
-            var properties = new Dictionary<string, EntityProperty>();
-            if (!string.IsNullOrEmpty(correlationId))
+            return new LoggingEntity
             {
-                properties.Add("CorrelationId", new EntityProperty(correlationId));
-            }
-
-            properties.Add("LogTimeStamp", new EntityProperty(logEvent.TimeStamp));
-            properties.Add("Level", new EntityProperty(logEvent.Level.Name));
-            properties.Add("LoggerName", new EntityProperty(logEvent.LoggerName));
-            properties.Add("Message", new EntityProperty(logEvent.Message));
-            properties.Add("FullMessage", new EntityProperty(layoutMessage));
-            properties.Add("Exception", new EntityProperty(exceptionValue));
-            properties.Add("InnerException", new EntityProperty(innerExceptionValue));
-
-            if (IncludeStackTrace)
-            {
-                properties.Add("StackTrace", new EntityProperty(stackTraceValue));
-            }
-
-            properties.Add("MachineName", new EntityProperty(machineName));
-
-            return new DynamicTableEntity(partitionKey, rowKey, "*", properties);
+                PartitionKey = partitionKey,
+                RowKey = rowKey,
+                CorrelationId = correlationId,
+                Message = logEvent.Message,
+                MachineName = MachineName,
+                LogTimeStamp = logEvent.TimeStamp,
+                Exception = exceptionValue,
+                FullMessage = layoutMessage,
+                InnerException = innerExceptionValue,
+                Level = logEvent.Level.Name,
+                LoggerName = logEvent.LoggerName,
+                StackTrace = stackTraceValue
+            };
         }
     }
 }
