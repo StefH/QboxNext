@@ -46,8 +46,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             var queue = new ConcurrentQueue<List<MeasurementEntity>>();
             var tasks = EachDay(from, to).Select(async date =>
             {
-                var result = await _measurementTable.Set.Where(
-                    m => m.PartitionKey == PartitionKeyHelper.Construct(serialNumber, date) &&
+                var result = await _measurementTable.Set.Where(m =>
+                    m.MeasureTimeAdjusted != true && // Exclude adjusted measurements
+                    m.PartitionKey == PartitionKeyHelper.Construct(serialNumber, date) &&
                     string.CompareOrdinal(m.RowKey, fromRowKey) <= 0 && string.CompareOrdinal(m.RowKey, toRowKey) > 0
                 ).ToListAsync();
 
