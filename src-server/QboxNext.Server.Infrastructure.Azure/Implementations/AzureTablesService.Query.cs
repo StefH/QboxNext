@@ -47,7 +47,6 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             var tasks = EachDay(from, to).Select(async date =>
             {
                 var result = await _measurementTable.Set.Where(m =>
-                    m.MeasureTimeAdjusted != true && // Exclude adjusted measurements
                     m.PartitionKey == PartitionKeyHelper.Construct(serialNumber, date) &&
                     string.CompareOrdinal(m.RowKey, fromRowKey) <= 0 && string.CompareOrdinal(m.RowKey, toRowKey) > 0
                 ).ToListAsync();
@@ -57,7 +56,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             await Task.WhenAll(tasks);
 
-            var entities = queue.SelectMany(x => x).OrderBy(e => e.MeasureTime).ToList();
+            var entities = queue.SelectMany(x => x)
+                .Where(e => e.MeasureTimeAdjusted != true) // Exclude adjusted measurements here. Not possible in real query above !
+                .OrderBy(e => e.MeasureTime).ToList();
 
             var deltas = entities.Zip(entities.Skip(1), (current, next) => new QboxCounterData
             {
