@@ -15,7 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="PartitionKeyHelper.cs" />
+    <Compile Remove="SortHelpers.cs" />
+    <Compile Remove="TablePartitionKey.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +25,7 @@
     </PackageReference>
     <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="WindowsAzure.Storage" version="9.3.3" />
+    <PackageReference Include="windowsazure.storageextensions" Version="1.2.0" />
   </ItemGroup>
 
 </Project>

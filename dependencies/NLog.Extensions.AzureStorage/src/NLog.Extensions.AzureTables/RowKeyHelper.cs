@@ -6,9 +6,9 @@ namespace NLog.Extensions.AzureTables
     {
         private static readonly long MaxTicks = DateTime.MaxValue.Ticks + 1;
 
-        public static string Construct(DateTime timestamp, string id)
+        public static string Construct(DateTime timestamp)
         {
-            return $"{MaxTicks - timestamp.Ticks:d19}:{id}";
+            return $"{MaxTicks - timestamp.Ticks:d19}";
         }
     }
 }
