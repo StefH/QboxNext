@@ -58,15 +58,6 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             await Task.WhenAll(tasks);
 
             var entities = queue.SelectMany(x => x).OrderBy(e => e.MeasureTime).ToList();
-            if (entities.Count == 0)
-            {
-                return new QboxPagedDataQueryResult<QboxCounterData>
-                {
-                    Overview = new QboxCounterData(),
-                    Items = new List<QboxCounterData>(),
-                    Count = 0
-                };
-            }
 
             var deltas = entities.Zip(entities.Skip(1), (current, next) => new QboxCounterData
             {
@@ -78,15 +69,18 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 Delta2421 = next.Counter2421 - current.Counter2421 ?? 0,
             }).ToList();
 
-            deltas.Insert(0, new QboxCounterData
+            if (deltas.Count > 0)
             {
-                MeasureTime = entities[0].MeasureTime,
-                Delta0181 = 0,
-                Delta0182 = 0,
-                Delta0281 = 0,
-                Delta0282 = 0,
-                Delta2421 = 0
-            });
+                deltas.Insert(0, new QboxCounterData
+                {
+                    MeasureTime = entities[0].MeasureTime,
+                    Delta0181 = 0,
+                    Delta0182 = 0,
+                    Delta0281 = 0,
+                    Delta0282 = 0,
+                    Delta2421 = 0
+                });
+            }
 
             var groupedByTimeFrame = from delta in deltas
                                      group delta by new
