@@ -34,7 +34,7 @@ export class AuthenticationService {
         this.auth0.parseHash((err: Auth0Error | null, authResult: Auth0DecodedHash) => {
             if (authResult && authResult.accessToken && authResult.idToken) {
                 this.setSession(authResult);
-                this.router.navigate(['/']);
+                this.router.navigate(['/electricity']);
             } else if (err) {
                 this.router.navigate(['/']);
                 console.log(err);

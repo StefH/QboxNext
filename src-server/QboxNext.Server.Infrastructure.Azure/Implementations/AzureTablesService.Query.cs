@@ -8,7 +8,6 @@ using QboxNext.Server.Infrastructure.Azure.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using WindowsAzure.Table.Extensions;
@@ -91,8 +90,8 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 into g
                                      select new QboxCounterData
                                      {
-                                         LabelText = GetLabelText(g.Key.MeasureTimeRounded, resolution),
-                                         LabelValue = GetLabelValue(g.Key.MeasureTimeRounded, resolution),
+                                         LabelText = resolution.GetLabelText(g.Key.MeasureTimeRounded),
+                                         LabelValue = resolution.GetLabelValue(g.Key.MeasureTimeRounded),
                                          MeasureTime = g.Key.MeasureTimeRounded,
                                          Delta0181 = g.Sum(x => x.Delta0181),
                                          Delta0182 = g.Sum(x => x.Delta0182),
@@ -135,7 +134,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
         private static List<QboxCounterData> FillGaps(DateTime from, DateTime to, QboxQueryResolution resolution, List<QboxCounterData> itemsFound)
         {
-            int steps = GetSteps(from, to, resolution);
+            int steps = resolution.GetSteps(from, to);
 
             var items = new List<QboxCounterData>();
             for (int i = 0; i < steps; i++)
@@ -143,9 +142,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                 double delta = 1.0 * i / steps * (to - from).TotalMinutes;
                 var measureTime = from.AddMinutes(delta);
                 var measureTimeRounded = resolution.TruncateTime(measureTime);
-                int labelValue = GetLabelValue(measureTimeRounded, resolution);
+                string labelText = resolution.GetLabelText(measureTimeRounded);
 
-                var existing = itemsFound.FirstOrDefault(it => it.LabelValue == labelValue);
+                var existing = itemsFound.FirstOrDefault(it => it.LabelText == labelText);
                 if (existing != null)
                 {
                     items.Add(existing);
@@ -155,8 +154,8 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                     items.Add(new QboxCounterData
                     {
                         MeasureTime = measureTimeRounded,
-                        LabelText = GetLabelText(measureTimeRounded, resolution),
-                        LabelValue = labelValue
+                        LabelText = labelText,
+                        LabelValue = resolution.GetLabelValue(measureTimeRounded)
                     });
                 }
             }
@@ -164,81 +163,11 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             return items.OrderBy(e => e.MeasureTime).ToList();
         }
 
-        private static int GetSteps(DateTime from, DateTime to, QboxQueryResolution resolution)
-        {
-            switch (resolution)
-            {
-                case QboxQueryResolution.QuarterOfHour:
-                    return 24 * 4;
-
-                case QboxQueryResolution.Hour:
-                    return 24;
-
-                case QboxQueryResolution.Day:
-                    return (to - from).Days;
-
-                case QboxQueryResolution.Month:
-                    return to.Month - from.Month;
-
-                case QboxQueryResolution.Year:
-                    return to.Year - from.Year;
-
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
         private static IEnumerable<DateTime> EachDay(DateTime from, DateTime to)
         {
             for (var day = from.Date; day.Date <= to.Date; day = day.AddDays(1))
             {
                 yield return day;
-            }
-        }
-
-        private static string GetLabelText(DateTime measureTime, QboxQueryResolution resolution)
-        {
-            switch (resolution)
-            {
-                case QboxQueryResolution.QuarterOfHour:
-                    return measureTime.ToString("HH:mm");
-
-                case QboxQueryResolution.Hour:
-                    return measureTime.ToString("HH u");
-
-                case QboxQueryResolution.Day:
-                    return measureTime.Day.ToString();
-
-                case QboxQueryResolution.Month:
-                    return measureTime.ToString("MMM", new CultureInfo("nl-NL"));
-
-                case QboxQueryResolution.Year:
-                    return measureTime.ToString("yyyy");
-
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
-        private static int GetLabelValue(DateTime measureTime, QboxQueryResolution resolution)
-        {
-            switch (resolution)
-            {
-                case QboxQueryResolution.QuarterOfHour:
-                case QboxQueryResolution.Hour:
-                    return measureTime.Hour;
-
-                case QboxQueryResolution.Day:
-                    return measureTime.Day;
-
-                case QboxQueryResolution.Month:
-                    return measureTime.Month;
-
-                case QboxQueryResolution.Year:
-                    return measureTime.Year;
-
-                default:
-                    throw new NotSupportedException();
             }
         }
 
