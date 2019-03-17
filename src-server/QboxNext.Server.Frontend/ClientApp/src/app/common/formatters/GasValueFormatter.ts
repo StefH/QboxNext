@@ -4,15 +4,7 @@ export class GasValueFormatter implements IValueFormatter {
 
     public format(value: number, showZero: boolean = true): string {
         if (value === 0 && !showZero) {
-            return `-`;
-        }
-
-        if (value < 10) {
-            return `${value} L`;
-        }
-
-        if (value < 100) {
-            return `${value} L`;
+            return '-';
         }
 
         if (value < 1000) {

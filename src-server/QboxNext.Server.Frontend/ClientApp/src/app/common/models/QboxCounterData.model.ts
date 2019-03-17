@@ -19,6 +19,8 @@ export class QboxCounterData {
 
     public net: number;
 
+    public costs: number;
+
     public constructor(init?: Partial<QboxCounterData>) {
         Object.assign(this, init);
     }

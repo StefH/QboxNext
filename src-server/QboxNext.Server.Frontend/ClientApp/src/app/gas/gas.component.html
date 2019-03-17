@@ -5,6 +5,7 @@
         <label>Resolutie</label>
         <dx-select-box class="ml-2" (onValueChanged)="refreshChart(true)" width="100px" [dataSource]="resolutions"
           valueExpr="id" displayExpr="text" [(value)]="selectedResolutionId"></dx-select-box>
+          <dx-button icon="refresh" (onClick)="refreshClicked()"></dx-button>
       </div>
 
       <div class="col-sm-6 form-group form-inline">
@@ -44,7 +45,7 @@
           <dxo-legend verticalAlignment="top" horizontalAlignment="center">
           </dxo-legend>
           <dxo-export enabled="true"></dxo-export>
-          <!-- <dxo-loading-indicator [show]="true"></dxo-loading-indicator> -->
+          <dxo-loading-indicator show="true"></dxo-loading-indicator>
         </dx-chart>
       </div>
     </div>

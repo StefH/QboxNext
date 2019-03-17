@@ -17,6 +17,10 @@ import { DxSelectBoxModule } from 'devextreme-angular/ui/select-box';
 // import nlCldrData from 'devextreme-cldr-data/nl.json';
 
 // import Globalize from 'globalize/message.js';
+import { CurrencyPipe } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
+import localeNl from '@angular/common/locales/nl';
+import { LOCALE_ID } from '@angular/core';
 import { AboutComponent } from './about/about.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -68,11 +72,13 @@ const APP_PROVIDERS = [
     DxCheckBoxModule
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'nl-NL' },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthorizationInterceptor,
       multi: true
     },
+    CurrencyPipe,
 
     // expose our Services and Providers/Services into Angular's dependency injection
     APP_PROVIDERS
@@ -81,6 +87,8 @@ const APP_PROVIDERS = [
 })
 export class AppModule {
   constructor() {
+    registerLocaleData(localeNl);
+
     // Globalize.load(
     //   supplemental, nlCldrData
     // );
