@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import * as moment from 'moment';
-import { nameof } from 'ts-simple-nameof';
 
 import { CurrencyPipe } from '@angular/common';
 import { DataComponent } from '../common/components';
@@ -197,10 +196,10 @@ export class ElectricityComponent extends DataComponent implements OnInit {
   }
 
   private readAppData(): void {
-    this.appData = this.sessionStorageService.get<ApplicationData>(nameof(ApplicationData)) || new ApplicationData();
+    this.appData = this.sessionStorageService.get<ApplicationData>('ApplicationData') || ApplicationData.Default;
     this.selectedFromDate = this.appData.electricitySelectedFromDate || moment().toDate();
     this.selectedToDate = this.appData.electricitySelectedToDate || moment().add(1, 'day').toDate();
-    this.selectedResolutionId = this.appData.electricitySelectedResolutionId || this.resolutions[1].id;
+    this.selectedResolutionId = this.appData.electricitySelectedResolutionId;
     this.check181 = this.appData.check181 || true;
     this.check182 = this.appData.check182 || true;
     this.check281 = this.appData.check281 || true;
@@ -219,6 +218,6 @@ export class ElectricityComponent extends DataComponent implements OnInit {
     this.appData.check282 = this.check282;
     this.appData.checknet = this.checknet;
     this.appData.checkall = this.checkall;
-    this.sessionStorageService.set(nameof(ApplicationData), this.appData);
+    this.sessionStorageService.set('ApplicationData', this.appData);
   }
 }

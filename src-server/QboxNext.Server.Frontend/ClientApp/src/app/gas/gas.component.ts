@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import * as moment from 'moment';
-import { nameof } from 'ts-simple-nameof';
 
 import { CurrencyPipe } from '@angular/common';
 import { DataComponent } from '../common/components';
@@ -29,10 +28,10 @@ export class GasComponent extends DataComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.appData = this.sessionStorageService.get<ApplicationData>(nameof(ApplicationData)) || new ApplicationData();
+    this.appData = this.sessionStorageService.get<ApplicationData>('ApplicationData') || ApplicationData.Default;
     this.selectedFromDate = this.appData.gasSelectedFromDate || moment();
     this.selectedToDate = this.appData.gasSelectedToDate || moment().add(1, 'day');
-    this.selectedResolutionId = this.appData.gasSelectedResolutionId || this.resolutions[0].id;
+    this.selectedResolutionId = this.appData.gasSelectedResolutionId;
 
     this.updateChartSeries();
 
@@ -143,7 +142,7 @@ export class GasComponent extends DataComponent implements OnInit {
           this.appData.gasSelectedFromDate = this.selectedFromDate;
           this.appData.gasSelectedToDate = this.selectedToDate;
           this.appData.gasSelectedResolutionId = this.selectedResolutionId;
-          this.sessionStorageService.set(nameof(ApplicationData), this.appData);
+          this.sessionStorageService.set('ApplicationData', this.appData);
         }, error => {
           switch (error.statusCode) {
             case HttpStatusCodes.NOT_FOUND:

@@ -28,4 +28,11 @@ export class ApplicationData {
     public constructor(init?: Partial<ApplicationData>) {
         Object.assign(this, init);
     }
+
+    public static get Default(): ApplicationData {
+        return new ApplicationData({
+            electricitySelectedResolutionId: Resolution.Hour,
+            gasSelectedResolutionId: Resolution.Hour
+        });
+    }
 }

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 
 import { AppInsightsService } from '@markpieszak/ng-application-insights';
 import { Auth0DecodedHash, Auth0Error, WebAuth } from 'auth0-js';
-import { nameof } from 'ts-simple-nameof';
 
 import { environment } from '../../environments/environment';
 import { LoginModel } from '../common/models';
@@ -64,11 +63,11 @@ export class AuthenticationService {
     }
 
     public getLoginModel(): LoginModel | null {
-        return this.sessionStorageService.get(nameof(LoginModel), LoginModel);
+        return this.sessionStorageService.get('LoginModel', LoginModel);
     }
 
     public clearLoginModel(): void {
-        this.sessionStorageService.clear(nameof(LoginModel));
+        this.sessionStorageService.clear('LoginModel');
     }
 
     public isAuthenticated(): boolean {
@@ -77,6 +76,6 @@ export class AuthenticationService {
     }
 
     private setLoginModel(loginModel: LoginModel): void {
-        this.sessionStorageService.set(nameof(LoginModel), loginModel);
+        this.sessionStorageService.set('LoginModel', loginModel);
     }
 }
