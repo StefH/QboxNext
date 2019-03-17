@@ -4,7 +4,7 @@ export class ElectricityValueFormatter implements IValueFormatter {
 
     public format(value: number, showZero: boolean = true): string {
         if (value === 0 && !showZero) {
-            return `-`;
+            return '-';
         }
 
         if (Math.abs(value) < 10000) {

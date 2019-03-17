@@ -27,7 +27,7 @@
     "@markpieszak/ng-application-insights": "^7.0.1",
     "@ng-bootstrap/ng-bootstrap": "^4.0.3",
     "auth0-js": "^9.10.0",
-    "bootstrap": "^4.2.1",
+    "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
     "devextreme": "^18.2.6",
     "devextreme-angular": "^18.2.6",

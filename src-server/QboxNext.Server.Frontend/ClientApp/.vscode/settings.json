@@ -3,6 +3,7 @@
         "electriciteit",
         "hoog",
         "injectable",
+        "kosten",
         "kwartier",
         "laag",
         "maand",
@@ -11,6 +12,7 @@
         "netto",
         "opwek",
         "qbox",
+        "totaal",
         "verbruik"
     ]
 }

@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { nameof } from 'ts-simple-nameof';
 
+import { CurrencyPipe } from '@angular/common';
 import { DataComponent } from '../common/components';
-import { HttpStatusCodes } from '../common/constants';
+import { Costs, HttpStatusCodes } from '../common/constants';
 import { DataLoadStatus, Resolution } from '../common/enums';
 import { ElectricityValueFormatter } from '../common/formatters';
 import { ApplicationData, QboxCounterData, QboxPagedDataQueryResult } from '../common/models';
@@ -28,7 +29,8 @@ export class ElectricityComponent extends DataComponent implements OnInit {
   public checknet: boolean;
   public checkall: boolean;
 
-  constructor(private service: DataService, private formatter: ElectricityValueFormatter, timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
+  constructor(private service: DataService, private formatter: ElectricityValueFormatter, private cp: CurrencyPipe,
+    timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
     super('Electriciteit', timeRangeHelper);
   }
 
@@ -47,7 +49,8 @@ export class ElectricityComponent extends DataComponent implements OnInit {
   public customizeTooltip(info: any): any {
     const points: any[] = [];
     info.points.forEach(point => {
-      const valueAsString = new ElectricityValueFormatter().format(point.value);
+      const valueAsString = point.seriesName === 'Kosten' ?
+        this.cp.transform(point.value, 'EUR', 'symbol', '1.2-2') : this.formatter.format(point.value);
       points.push(`<div class=\'series-name\'>${point.seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
     });
 
@@ -66,6 +69,8 @@ export class ElectricityComponent extends DataComponent implements OnInit {
     this.chart.series.forEach(serie => {
       info.points.push({ seriesName: serie.name, value: this.result.overview ? this.result.overview[serie.valueField] : '' });
     });
+
+    info.points.push({ seriesName: 'Kosten', value: this.result.overview ? this.result.overview.costs : '' });
 
     return this.customizeTooltip(info).html;
   }
@@ -95,6 +100,9 @@ export class ElectricityComponent extends DataComponent implements OnInit {
 
   private filter(): void {
     const mapCounterDataValue = (i: QboxCounterData) => {
+      const net = i.delta0181 + i.delta0182 + i.delta0281 + i.delta0282;
+      const costs = net * Costs.Electricity / 1000;
+
       return new QboxCounterData({
         labelText: i.labelText,
         labelValue: i.labelValue,
@@ -103,9 +111,9 @@ export class ElectricityComponent extends DataComponent implements OnInit {
         delta0182: i.delta0182,
         delta0281: i.delta0281,
         delta0282: i.delta0282,
+        costs: costs,
         net: !(this.check181 && this.check182 && this.check281 && this.check282) ?
-          i.delta0181 + i.delta0182 + i.delta0281 + i.delta0282 :
-          (this.check181 ? i.delta0181 : 0) + (this.check182 ? i.delta0182 : 0) + (this.check281 ? i.delta0281 : 0) + (this.check282 ? i.delta0282 : 0)
+          net : (this.check181 ? i.delta0181 : 0) + (this.check182 ? i.delta0182 : 0) + (this.check281 ? i.delta0281 : 0) + (this.check282 ? i.delta0282 : 0)
       });
     };
 

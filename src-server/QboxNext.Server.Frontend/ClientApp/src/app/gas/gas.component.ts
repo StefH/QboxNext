@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { nameof } from 'ts-simple-nameof';
 
+import { CurrencyPipe } from '@angular/common';
 import { DataComponent } from '../common/components';
-import { HttpStatusCodes } from '../common/constants';
+import { Costs, HttpStatusCodes } from '../common/constants';
 import { DataLoadStatus, Resolution } from '../common/enums';
 import { GasValueFormatter } from '../common/formatters';
 import { ApplicationData, QboxCounterData, QboxPagedDataQueryResult } from '../common/models';
@@ -23,7 +24,7 @@ export class GasComponent extends DataComponent implements OnInit {
 
   public checkgas = true;
 
-  constructor(private service: DataService, private formatter: GasValueFormatter, timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
+  constructor(private service: DataService, private formatter: GasValueFormatter, private cp: CurrencyPipe, timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
     super('Gas', timeRangeHelper);
   }
 
@@ -45,7 +46,8 @@ export class GasComponent extends DataComponent implements OnInit {
   public customizeTooltip(info: any): any {
     const points: any[] = [];
     info.points.forEach(point => {
-      const valueAsString = new GasValueFormatter().format(point.value);
+      const valueAsString = point.seriesName === 'Kosten' ?
+        this.cp.transform(point.value, 'EUR', 'symbol', '1.2-2') : this.formatter.format(point.value);
       points.push(`<div class=\'series-name\'>${point.seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
     });
 
@@ -65,6 +67,8 @@ export class GasComponent extends DataComponent implements OnInit {
       info.points.push({ seriesName: serie.name, value: this.result.overview ? this.result.overview[serie.valueField] : '' });
     });
 
+    info.points.push({ seriesName: 'Kosten', value: this.result.overview ? this.result.overview.costs : '' });
+
     return this.customizeTooltip(info).html;
   }
 
@@ -78,15 +82,20 @@ export class GasComponent extends DataComponent implements OnInit {
   }
 
   private filter(): void {
-    const clientResult = new QboxPagedDataQueryResult<QboxCounterData>({
-      count: this.resultFromServer.count,
-      overview: this.resultFromServer.overview,
-      items: this.resultFromServer.items.map(i => new QboxCounterData({
+    const mapCounterDataValue = (i: QboxCounterData) => {
+      return new QboxCounterData({
         labelText: i.labelText,
         labelValue: i.labelValue,
         drillDownQuery: i.drillDownQuery,
-        delta2421: i.delta2421
-      }))
+        delta2421: i.delta2421,
+        costs: i.delta2421 * Costs.Gas / 1000
+      });
+    };
+
+    const clientResult = new QboxPagedDataQueryResult<QboxCounterData>({
+      count: this.resultFromServer.count,
+      overview: mapCounterDataValue(this.resultFromServer.overview),
+      items: this.resultFromServer.items.map(mapCounterDataValue)
     });
 
     this.result = clientResult;
