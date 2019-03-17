@@ -46,11 +46,15 @@ export class ElectricityComponent extends DataComponent implements OnInit {
     return this.loadingStatus === DataLoadStatus.Started;
   }
 
+  public refreshClicked() {
+    this.refreshChart(true);
+  }
+
   public customizeTooltip(info: any): any {
     const points: any[] = [];
     info.points.forEach(point => {
       const valueAsString = point.seriesName === 'Kosten' ?
-        this.cp.transform(point.value, 'EUR', 'symbol', '1.2-2') : this.formatter.format(point.value);
+        this.cp.transform(point.value, 'EUR', 'symbol', '1.2-2') : new ElectricityValueFormatter().format(point.value);
       points.push(`<div class=\'series-name\'>${point.seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
     });
 

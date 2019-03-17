@@ -39,6 +39,10 @@ export class GasComponent extends DataComponent implements OnInit {
     this.refreshChart(true);
   }
 
+  public refreshClicked() {
+    this.refreshChart(true);
+  }
+
   public get isLoadIndicatorVisible(): boolean {
     return this.loadingStatus === DataLoadStatus.Started;
   }
@@ -47,7 +51,7 @@ export class GasComponent extends DataComponent implements OnInit {
     const points: any[] = [];
     info.points.forEach(point => {
       const valueAsString = point.seriesName === 'Kosten' ?
-        this.cp.transform(point.value, 'EUR', 'symbol', '1.2-2') : this.formatter.format(point.value);
+        this.cp.transform(point.value, 'EUR', 'symbol', '1.2-2') : new GasValueFormatter().format(point.value);
       points.push(`<div class=\'series-name\'>${point.seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
     });
 
