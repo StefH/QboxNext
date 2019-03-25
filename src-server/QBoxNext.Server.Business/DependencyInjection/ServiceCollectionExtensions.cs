@@ -30,8 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
         private static void AddServices(this IServiceCollection services)
         {
             // Internal
-            services.AddSingleton<IQboxCounterDataCache, QboxCounterDataCache>();
-
+            services.AddScoped<IQboxCounterDataCache, QboxCounterDataCache>();
             services.AddScoped<ICounterStoreService, DefaultCounterStoreService>();
             services.AddScoped<IStateStoreService, DefaultStateStoreService>();
             services.AddScoped<IRegistrationService, DefaultRegistrationService>();
