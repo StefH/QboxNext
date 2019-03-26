@@ -20,7 +20,7 @@ namespace QboxNext.Server.Domain.Utils
                     return (to - from).Days;
 
                 case QboxQueryResolution.Month:
-                    return to.Month - from.Month;
+                    return (to.Year - from.Year) * 12 + to.Month - from.Month;
 
                 case QboxQueryResolution.Year:
                     return to.Year - from.Year;
@@ -44,7 +44,7 @@ namespace QboxNext.Server.Domain.Utils
                     return measureTime.Day.ToString();
 
                 case QboxQueryResolution.Month:
-                    return measureTime.ToString("MMM", new CultureInfo("nl-NL"));
+                    return measureTime.ToString("MMM yy", new CultureInfo("nl-NL"));
 
                 case QboxQueryResolution.Year:
                     return measureTime.ToString("yyyy");
