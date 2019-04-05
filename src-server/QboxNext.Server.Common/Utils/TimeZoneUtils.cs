@@ -1,11 +1,12 @@
 ﻿using System;
+using TimeZoneConverter;
 
-namespace QboxNext.Extensions.Utils
+namespace QboxNext.Server.Common.Utils
 {
     public static class TimeZoneUtils
     {
-        private static readonly TimeZoneInfo UTC = TimeZoneInfo.FindSystemTimeZoneById("UTC");
-        private static readonly TimeZoneInfo Amsterdam = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
+        private static readonly TimeZoneInfo UTC = TZConvert.GetTimeZoneInfo("UTC");
+        private static readonly TimeZoneInfo Amsterdam = TZConvert.GetTimeZoneInfo("W. Europe Standard Time");
 
         /// <summary>
         /// Gets the hours difference between Amsterdam and UTC calculated for the time at that moment.

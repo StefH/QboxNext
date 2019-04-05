@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using QboxNext.Extensions.Utils;
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Domain.Utils;
@@ -12,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WindowsAzure.Table.Extensions;
+using QboxNext.Server.Common.Utils;
 
 namespace QboxNext.Server.Infrastructure.Azure.Implementations
 {

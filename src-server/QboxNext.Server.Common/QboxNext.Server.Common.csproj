@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
+    <PackageReference Include="TimeZoneConverter" Version="3.0.0" />
   </ItemGroup>
 
 </Project>
