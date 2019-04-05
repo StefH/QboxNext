@@ -58,6 +58,7 @@ export abstract class DataComponent extends BaseComponent {
     const fromDate = moment(this.selectedFromDate);
 
     switch (this.selectedResolutionId) {
+      case Resolution.FiveMinutes:
       case Resolution.QuarterOfHour:
       case Resolution.Hour:
         return `${this.title} (${fromDate.format('D MMMM YYYY')})`;

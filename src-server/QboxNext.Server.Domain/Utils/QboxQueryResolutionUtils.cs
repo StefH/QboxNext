@@ -10,6 +10,9 @@ namespace QboxNext.Server.Domain.Utils
         {
             switch (resolution)
             {
+                case QboxQueryResolution.FiveMinutes:
+                    return 24 * 12;
+
                 case QboxQueryResolution.QuarterOfHour:
                     return 24 * 4;
 
@@ -34,6 +37,7 @@ namespace QboxNext.Server.Domain.Utils
         {
             switch (resolution)
             {
+                case QboxQueryResolution.FiveMinutes:
                 case QboxQueryResolution.QuarterOfHour:
                     return measureTime.ToString("HH:mm");
 
@@ -58,6 +62,7 @@ namespace QboxNext.Server.Domain.Utils
         {
             switch (resolution)
             {
+                case QboxQueryResolution.FiveMinutes:
                 case QboxQueryResolution.QuarterOfHour:
                 case QboxQueryResolution.Hour:
                     return measureTime.Hour;
@@ -80,6 +85,9 @@ namespace QboxNext.Server.Domain.Utils
         {
             switch (resolution)
             {
+                case QboxQueryResolution.FiveMinutes:
+                    return measureTime.Truncate(TimeSpan.FromMinutes(5));
+
                 case QboxQueryResolution.QuarterOfHour:
                     return measureTime.Truncate(TimeSpan.FromMinutes(15));
 
@@ -104,6 +112,7 @@ namespace QboxNext.Server.Domain.Utils
         {
             switch (resolution)
             {
+                case QboxQueryResolution.FiveMinutes:
                 case QboxQueryResolution.QuarterOfHour:
                 case QboxQueryResolution.Hour:
                 case QboxQueryResolution.Day:

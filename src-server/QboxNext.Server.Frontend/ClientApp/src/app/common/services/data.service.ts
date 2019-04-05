@@ -24,7 +24,8 @@ export class DataService extends BaseService<QboxCounterData> {
         const request = new QboxDataQuery({
             from: moment(from).format('YYYY-MM-DD'),
             to: moment(to).format('YYYY-MM-DD'),
-            resolution: resolution
+            resolution: resolution,
+            adjustHours: true
         });
 
         // console.log(request);

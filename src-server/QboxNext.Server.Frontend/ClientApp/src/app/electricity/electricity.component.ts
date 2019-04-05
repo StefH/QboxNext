@@ -19,7 +19,13 @@ import { SessionStorageService } from '../common/services';
   preserveWhitespaces: true
 })
 export class ElectricityComponent extends DataComponent implements OnInit {
-  public resolutions = [{ id: Resolution.QuarterOfHour, text: 'Kwartier' }, { id: Resolution.Hour, text: 'Uur' }, { id: Resolution.Day, text: 'Dag' }, { id: Resolution.Month, text: 'Maand' }];
+  public resolutions = [
+    { id: Resolution.FiveMinutes, text: '5 Minuten' },
+    { id: Resolution.QuarterOfHour, text: 'Kwartier' },
+    { id: Resolution.Hour, text: 'Uur' },
+    { id: Resolution.Day, text: 'Dag' },
+    { id: Resolution.Month, text: 'Maand' }
+  ];
 
   public check181: boolean;
   public check182: boolean;
