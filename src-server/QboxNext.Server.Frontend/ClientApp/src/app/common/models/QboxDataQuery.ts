@@ -7,7 +7,7 @@ export class QboxDataQuery {
 
   public resolution: Resolution;
 
-  public addHours: number;
+  public adjustHours: boolean;
 
   public constructor(init?: Partial<QboxDataQuery>) {
     Object.assign(this, init);

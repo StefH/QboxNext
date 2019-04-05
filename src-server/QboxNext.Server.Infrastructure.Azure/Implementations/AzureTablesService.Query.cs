@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using QboxNext.Extensions.Utils;
 using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Domain;
 using QboxNext.Server.Domain.Utils;
@@ -29,21 +30,29 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             return await _registrationTable.Set.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber) != null;
         }
 
-        /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, DateTime, DateTime, QboxQueryResolution, int)"/>
-        public async Task<QboxPagedDataQueryResult<QboxCounterData>> QueryDataAsync(string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution, int addHours)
+        /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, DateTime, DateTime, QboxQueryResolution, bool)"/>
+        public async Task<QboxPagedDataQueryResult<QboxCounterData>> QueryDataAsync(string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution, bool adjustHours)
         {
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
 
-            string fromPartitionKey = PartitionKeyHelper.Construct(serialNumber, from);
+            int adjustedHours = 0;
+            DateTime fromQueryParameter = from;
+            if (adjustHours)
+            {
+                fromQueryParameter = from.AddDays(-1);
+                adjustedHours = TimeZoneUtils.GetHoursDifferenceFromUTC(from);
+            }
+
+            string fromPartitionKey = PartitionKeyHelper.Construct(serialNumber, fromQueryParameter);
             string toPartitionKey = PartitionKeyHelper.Construct(serialNumber, to);
 
-            string fromRowKey = RowKeyHelper.Construct(from);
+            string fromRowKey = RowKeyHelper.Construct(fromQueryParameter);
             string toRowKey = RowKeyHelper.Construct(to);
 
-            _logger.LogInformation("Querying Table {table} with PartitionKey {fromPartitionKey} to {toPartitionKey} and RowKey {fromRowKey} to {toRowKey}", _measurementTable.Name, fromPartitionKey, toPartitionKey, fromRowKey, toRowKey);
+            _logger.LogInformation("Querying Table {table} with PartitionKey {fromPartitionKey} to {toPartitionKey} and RowKey {fromRowKey} to {toRowKey} and AdjustHours = {adjustHours}", _measurementTable.Name, fromPartitionKey, toPartitionKey, fromRowKey, toRowKey, adjustHours);
 
             var queue = new ConcurrentQueue<List<MeasurementEntity>>();
-            var tasks = EachDay(from, to).Select(async date =>
+            var tasks = EachDay(fromQueryParameter, to).Select(async date =>
             {
                 var result = await _measurementTable.Set.Where(m =>
                     m.PartitionKey == PartitionKeyHelper.Construct(serialNumber, date) &&
@@ -57,7 +66,17 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 
             var entities = queue.SelectMany(x => x)
                 .Where(e => e.MeasureTimeAdjusted != true) // Exclude adjusted measurements here. Not possible in real query above !
+                .Where(e => !adjustHours || e.MeasureTime > from.AddHours(-adjustedHours)) // Filter
                 .OrderBy(e => e.MeasureTime).ToList();
+
+            // Adjust MeasureTime if needed
+            if (adjustHours)
+            {
+                foreach (var entity in entities)
+                {
+                    entity.MeasureTime = entity.MeasureTime.AddHours(adjustedHours);
+                }
+            }
 
             var deltas = entities.Zip(entities.Skip(1), (current, next) => new QboxCounterData
             {
@@ -116,11 +135,11 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             };
 
             // Define DrillDownQuery
-            if (resolution > QboxQueryResolution.QuarterOfHour)
+            if (resolution > QboxQueryResolution.FiveMinutes)
             {
                 foreach (var item in items)
                 {
-                    item.DrillDownQuery = GetDrillDownQboxDataQuery(item.MeasureTime, resolution, addHours);
+                    item.DrillDownQuery = GetDrillDownQboxDataQuery(item.MeasureTime, resolution, adjustHours);
                 }
             }
 
@@ -171,18 +190,19 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             }
         }
 
-        private static QboxDataQuery GetDrillDownQboxDataQuery(DateTime measureTime, QboxQueryResolution resolution, int addHours)
+        private static QboxDataQuery GetDrillDownQboxDataQuery(DateTime measureTime, QboxQueryResolution resolution, bool adjustHours)
         {
             QboxQueryResolution resolutionNew = resolution - 1;
             var query = new QboxDataQuery
             {
-                AddHours = addHours,
+                AdjustHours = adjustHours,
                 Resolution = resolutionNew,
                 From = resolution.TruncateTime(measureTime)
             };
 
             switch (resolution)
             {
+                case QboxQueryResolution.QuarterOfHour:
                 case QboxQueryResolution.Hour:
                 case QboxQueryResolution.Day:
                     query.To = query.From.AddDays(1);

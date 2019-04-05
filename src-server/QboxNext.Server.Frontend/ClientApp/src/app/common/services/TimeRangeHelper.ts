@@ -16,6 +16,7 @@ export class TimeRangeHelper {
         const currentAsMoment = moment(currentDate);
 
         switch (resolution) {
+            case Resolution.FiveMinutes:
             case Resolution.QuarterOfHour:
             case Resolution.Hour:
                 return currentAsMoment.add(value, 'day').toDate();
@@ -33,6 +34,7 @@ export class TimeRangeHelper {
         const toDate = moment(from);
 
         switch (resolution) {
+            case Resolution.FiveMinutes:
             case Resolution.QuarterOfHour:
             case Resolution.Hour: toDate.add(1, 'day');
                 break;

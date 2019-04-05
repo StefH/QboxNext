@@ -28,7 +28,7 @@ namespace QBoxNext.Server.Business.Implementations
             Guard.NotNullOrEmpty(serialNumber, nameof(serialNumber));
             Guard.NotNull(query, nameof(query));
 
-            return await _cache.GetOrCreateAsync(serialNumber, query, () => _azureTablesService.QueryDataAsync(serialNumber, query.From, query.To, query.Resolution, query.AddHours));
+            return await _cache.GetOrCreateAsync(serialNumber, query, () => _azureTablesService.QueryDataAsync(serialNumber, query.From, query.To, query.Resolution, query.AdjustHours));
         }
     }
 }
