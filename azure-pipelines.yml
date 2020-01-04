@@ -18,6 +18,12 @@ variables:
   buildNumber: $(Build.BuildNumber)
 
 steps:
+# https://developercommunity.visualstudio.com/content/problem/812837/dotnet-publish-fails-because-of-an-node-error.html
+- task: NodeTool@0
+  displayName: 'Install Node Version 10.x'
+  inputs:
+    versionSpec: '10.x'
+
 - task: Npm@1
   displayName: 'qboxnext-frontend: npm install'
   inputs:

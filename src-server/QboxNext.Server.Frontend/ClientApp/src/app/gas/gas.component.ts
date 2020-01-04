@@ -23,8 +23,8 @@ export class GasComponent extends DataComponent implements OnInit {
 
   public checkgas = true;
 
-  constructor(private service: DataService, private formatter: GasValueFormatter, private cp: CurrencyPipe, timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
-    super('Gas', timeRangeHelper);
+  constructor(private service: DataService, private formatter: GasValueFormatter, cp: CurrencyPipe, timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
+    super('Gas', timeRangeHelper, cp);
   }
 
   public ngOnInit(): void {
@@ -50,7 +50,7 @@ export class GasComponent extends DataComponent implements OnInit {
     const points: any[] = [];
     info.points.forEach(point => {
       const valueAsString = point.seriesName === 'Kosten' ?
-        this.cp.transform(point.value, 'EUR', 'symbol', '1.2-2') : new GasValueFormatter().format(point.value);
+        this.cp.transform(point.value || 0, 'EUR', 'symbol', '1.2-2') : new GasValueFormatter().format(point.value);
       points.push(`<div class=\'series-name\'>${point.seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
     });
 
@@ -61,7 +61,7 @@ export class GasComponent extends DataComponent implements OnInit {
 
   public getOverview(): string {
     const info: any = {
-      argumentText: 'Totaal',
+      argumentText: 'Info',
       length: 1,
       points: []
     };
