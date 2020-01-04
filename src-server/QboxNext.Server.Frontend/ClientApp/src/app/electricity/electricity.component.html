@@ -54,7 +54,11 @@
         <div *ngIf="isLoadIndicatorVisible">
           <dx-load-indicator></dx-load-indicator>
         </div>
+        <div>
+          <div [innerHTML]="getEnergyCosts()"></div>
+          <div>&nbsp;</div>
           <div *ngIf="!isLoadIndicatorVisible" [innerHTML]="getOverview()"></div>
+        </div>
       </div>
 
       <div class="col col-md-10">

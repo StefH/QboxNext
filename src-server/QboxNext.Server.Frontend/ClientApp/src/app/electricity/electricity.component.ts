@@ -34,9 +34,9 @@ export class ElectricityComponent extends DataComponent implements OnInit {
   public checknet: boolean;
   public checkall: boolean;
 
-  constructor(private service: DataService, private formatter: ElectricityValueFormatter, private cp: CurrencyPipe,
+  constructor(private service: DataService, private formatter: ElectricityValueFormatter, cp: CurrencyPipe,
     timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
-    super('Electriciteit', timeRangeHelper);
+    super('Electriciteit', timeRangeHelper, cp);
   }
 
   public ngOnInit(): void {
@@ -59,7 +59,7 @@ export class ElectricityComponent extends DataComponent implements OnInit {
     const points: any[] = [];
     info.points.forEach(point => {
       const valueAsString = point.seriesName === 'Kosten' ?
-        this.cp.transform(point.value, 'EUR', 'symbol', '1.2-2') : new ElectricityValueFormatter().format(point.value);
+        this.cp.transform(point.value || 0, 'EUR', 'symbol', '1.2-2') : new ElectricityValueFormatter().format(point.value);
       points.push(`<div class=\'series-name\'>${point.seriesName}</div><div class=\'value-text\'>${valueAsString}</div>`);
     });
 
@@ -70,7 +70,7 @@ export class ElectricityComponent extends DataComponent implements OnInit {
 
   public getOverview(): string {
     const info: any = {
-      argumentText: 'Totaal',
+      argumentText: 'Info',
       length: 1,
       points: []
     };

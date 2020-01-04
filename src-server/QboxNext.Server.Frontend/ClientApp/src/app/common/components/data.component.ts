@@ -5,6 +5,8 @@ import * as moment from 'moment';
 
 import { DevExpressPointClickEvent } from '../interfaces/devexpress';
 
+import { CurrencyPipe } from '@angular/common';
+import { Costs } from '../constants';
 import { Resolution } from '../enums';
 import { ApplicationData, QboxCounterData, QboxDataQuery, QboxPagedDataQueryResult } from '../models';
 import { TimeRangeHelper } from '../services';
@@ -22,7 +24,7 @@ export abstract class DataComponent extends BaseComponent {
   @ViewChild(DxChartComponent)
   protected chart: DxChartComponent;
 
-  constructor(private title: string, protected timeRangeHelper: TimeRangeHelper) {
+  constructor(private title: string, protected timeRangeHelper: TimeRangeHelper, protected cp: CurrencyPipe) {
     super();
   }
 
@@ -71,5 +73,15 @@ export abstract class DataComponent extends BaseComponent {
     }
 
     return `${this.title} (${moment(this.selectedFromDate).format('YYYY')})`;
+  }
+
+  public getEnergyCosts(): string {
+    const header = 'Kosten';
+    const costs = [
+      `<div class=\'series-name\'>Electriciteit (kWh)</div><div class=\'value-text\'>${this.cp.transform(Costs.Electricity, 'EUR', 'symbol', '1.5-5')}</div>`,
+      `<div class=\'series-name\'>Gas (m³)</div><div class=\'value-text\'>${this.cp.transform(Costs.Gas, 'EUR', 'symbol', '1.5-5')}</div>`
+    ];
+
+    return `<div><div class=\'tooltip-header\'>${header}</div><div class=\'tooltip-body\'>${costs.join('\r\n')}</div></div>`;
   }
 }
