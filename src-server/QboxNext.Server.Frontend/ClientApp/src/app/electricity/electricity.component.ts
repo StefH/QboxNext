@@ -4,16 +4,15 @@ import * as moment from 'moment';
 
 import { CurrencyPipe } from '@angular/common';
 import { DataComponent } from '../common/components';
-import { Costs, HttpStatusCodes } from '../common/constants';
+import { HttpStatusCodes } from '../common/constants';
 import { DataLoadStatus, Resolution } from '../common/enums';
 import { ElectricityValueFormatter } from '../common/formatters';
 import { ApplicationData, QboxCounterData, QboxPagedDataQueryResult } from '../common/models';
-import { DataService, TimeRangeHelper } from '../common/services';
-import { SessionStorageService } from '../common/services';
+import { DataService, PriceService, SessionStorageService, TimeRangeHelper } from '../common/services';
 
 @Component({
   selector: 'app-show-data',
-  providers: [DataService, ElectricityValueFormatter, TimeRangeHelper],
+  providers: [DataService, ElectricityValueFormatter, TimeRangeHelper, PriceService],
   templateUrl: './electricity.component.html',
   styleUrls: ['./electricity.component.css'],
   preserveWhitespaces: true
@@ -34,9 +33,9 @@ export class ElectricityComponent extends DataComponent implements OnInit {
   public checknet: boolean;
   public checkall: boolean;
 
-  constructor(private service: DataService, private formatter: ElectricityValueFormatter, cp: CurrencyPipe,
+  constructor(private service: DataService, private formatter: ElectricityValueFormatter, cp: CurrencyPipe, priceService: PriceService,
     timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
-    super('Electriciteit', timeRangeHelper, cp);
+    super('Electriciteit', timeRangeHelper, cp, priceService);
   }
 
   public ngOnInit(): void {
@@ -69,6 +68,7 @@ export class ElectricityComponent extends DataComponent implements OnInit {
   }
 
   public getOverview(): string {
+    console.log('getOverview?');
     const info: any = {
       argumentText: 'Info',
       length: 1,
@@ -108,9 +108,12 @@ export class ElectricityComponent extends DataComponent implements OnInit {
   }
 
   private filter(): void {
+    console.log('filter?');
+    const price = this.priceService.getElectricityPrice(moment(this.selectedFromDate).year());
+
     const mapCounterDataValue = (i: QboxCounterData) => {
       const net = i.delta0181 + i.delta0182 + i.delta0281 + i.delta0282;
-      const costs = net * Costs.Electricity / 1000;
+      const costs = net * price / 1000;
 
       return new QboxCounterData({
         labelText: i.labelText,

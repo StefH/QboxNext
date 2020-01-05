@@ -6,10 +6,9 @@ import * as moment from 'moment';
 import { DevExpressPointClickEvent } from '../interfaces/devexpress';
 
 import { CurrencyPipe } from '@angular/common';
-import { Costs } from '../constants';
 import { Resolution } from '../enums';
 import { ApplicationData, QboxCounterData, QboxDataQuery, QboxPagedDataQueryResult } from '../models';
-import { TimeRangeHelper } from '../services';
+import { PriceService, TimeRangeHelper } from '../services';
 import { BaseComponent } from './base.component';
 
 export abstract class DataComponent extends BaseComponent {
@@ -24,7 +23,7 @@ export abstract class DataComponent extends BaseComponent {
   @ViewChild(DxChartComponent)
   protected chart: DxChartComponent;
 
-  constructor(private title: string, protected timeRangeHelper: TimeRangeHelper, protected cp: CurrencyPipe) {
+  constructor(private title: string, protected timeRangeHelper: TimeRangeHelper, protected cp: CurrencyPipe, protected priceService: PriceService) {
     super();
   }
 
@@ -76,10 +75,14 @@ export abstract class DataComponent extends BaseComponent {
   }
 
   public getEnergyCosts(): string {
+    const year = moment(this.selectedFromDate).year();
+    console.log('getEnergyCosts=' + year);
     const header = 'Kosten';
+    const electricityPrice = this.priceService.getElectricityPrice(year);
+    const gasPrice = this.priceService.getGasPrice(year);
     const costs = [
-      `<div class=\'series-name\'>Electriciteit (kWh)</div><div class=\'value-text\'>${this.cp.transform(Costs.Electricity, 'EUR', 'symbol', '1.5-5')}</div>`,
-      `<div class=\'series-name\'>Gas (m³)</div><div class=\'value-text\'>${this.cp.transform(Costs.Gas, 'EUR', 'symbol', '1.5-5')}</div>`
+      `<div class=\'series-name\'>Electriciteit (kWh)</div><div class=\'value-text\'>${this.cp.transform(electricityPrice, 'EUR', 'symbol', '1.5-5')}</div>`,
+      `<div class=\'series-name\'>Gas (m³)</div><div class=\'value-text\'>${this.cp.transform(gasPrice, 'EUR', 'symbol', '1.5-5')}</div>`
     ];
 
     return `<div><div class=\'tooltip-header\'>${header}</div><div class=\'tooltip-body\'>${costs.join('\r\n')}</div></div>`;
