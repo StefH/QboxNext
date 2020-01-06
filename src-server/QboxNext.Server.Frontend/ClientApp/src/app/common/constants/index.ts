@@ -1,2 +1,2 @@
-export * from './costs';
+export * from './prices';
 export * from './httpstatus-codes';

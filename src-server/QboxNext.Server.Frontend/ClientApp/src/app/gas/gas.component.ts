@@ -4,16 +4,15 @@ import * as moment from 'moment';
 
 import { CurrencyPipe } from '@angular/common';
 import { DataComponent } from '../common/components';
-import { Costs, HttpStatusCodes } from '../common/constants';
+import { HttpStatusCodes } from '../common/constants';
 import { DataLoadStatus, Resolution } from '../common/enums';
 import { GasValueFormatter } from '../common/formatters';
 import { ApplicationData, QboxCounterData, QboxPagedDataQueryResult } from '../common/models';
-import { DataService, TimeRangeHelper } from '../common/services';
-import { SessionStorageService } from '../common/services';
+import { DataService, PriceService, SessionStorageService, TimeRangeHelper } from '../common/services';
 
 @Component({
   selector: 'app-show-gas',
-  providers: [DataService, GasValueFormatter, TimeRangeHelper],
+  providers: [DataService, GasValueFormatter, TimeRangeHelper, PriceService],
   templateUrl: './gas.component.html',
   styleUrls: ['./gas.component.css'],
   preserveWhitespaces: true
@@ -23,8 +22,9 @@ export class GasComponent extends DataComponent implements OnInit {
 
   public checkgas = true;
 
-  constructor(private service: DataService, private formatter: GasValueFormatter, cp: CurrencyPipe, timeRangeHelper: TimeRangeHelper, private sessionStorageService: SessionStorageService) {
-    super('Gas', timeRangeHelper, cp);
+  constructor(timeRangeHelper: TimeRangeHelper, cp: CurrencyPipe, priceService: PriceService,
+    private service: DataService, private formatter: GasValueFormatter, private sessionStorageService: SessionStorageService) {
+    super('Gas', timeRangeHelper, cp, priceService);
   }
 
   public ngOnInit(): void {
@@ -59,22 +59,6 @@ export class GasComponent extends DataComponent implements OnInit {
     };
   }
 
-  public getOverview(): string {
-    const info: any = {
-      argumentText: 'Info',
-      length: 1,
-      points: []
-    };
-
-    this.chart.series.forEach(serie => {
-      info.points.push({ seriesName: serie.name, value: this.result.overview ? this.result.overview[serie.valueField] : '' });
-    });
-
-    info.points.push({ seriesName: 'Kosten', value: this.result.overview ? this.result.overview.costs : '' });
-
-    return this.customizeTooltip(info).html;
-  }
-
   public customizeLabelText = (info: any) => this.formatter.format(info.value);
 
   private updateChartSeries(): void {
@@ -85,13 +69,15 @@ export class GasComponent extends DataComponent implements OnInit {
   }
 
   private filter(): void {
+    const price = this.priceService.getGasPrice(moment(this.selectedFromDate).year());
+
     const mapCounterDataValue = (i: QboxCounterData) => {
       return new QboxCounterData({
         labelText: i.labelText,
         labelValue: i.labelValue,
         drillDownQuery: i.drillDownQuery,
         delta2421: i.delta2421,
-        costs: i.delta2421 * Costs.Gas / 1000
+        costs: i.delta2421 * price / 1000
       });
     };
 
@@ -129,6 +115,8 @@ export class GasComponent extends DataComponent implements OnInit {
     const dates = this.timeRangeHelper.getToDate(this.selectedResolutionId, this.selectedFromDate);
     this.selectedToDate = dates.toDate.toDate();
 
+    this.updateEnergyCosts();
+
     this.subscription.add(this.service.getData(this.selectedResolutionId, dates.fromDate.toDate(), this.selectedToDate)
       .subscribe(
         data => {
@@ -137,6 +125,7 @@ export class GasComponent extends DataComponent implements OnInit {
 
           this.filter();
           this.updateChartSeries();
+          this.updateOverview();
 
           // Save settings
           this.appData.gasSelectedFromDate = this.selectedFromDate;
@@ -156,6 +145,8 @@ export class GasComponent extends DataComponent implements OnInit {
             default:
               this.error(error);
           }
+
+          this.updateOverview();
         }));
   }
 }
