@@ -67,23 +67,6 @@ export class ElectricityComponent extends DataComponent implements OnInit {
     };
   }
 
-  public getOverview(): string {
-    console.log('getOverview?');
-    const info: any = {
-      argumentText: 'Info',
-      length: 1,
-      points: []
-    };
-
-    this.chart.series.forEach(serie => {
-      info.points.push({ seriesName: serie.name, value: this.result.overview ? this.result.overview[serie.valueField] : '' });
-    });
-
-    info.points.push({ seriesName: 'Kosten', value: this.result.overview ? this.result.overview.costs : '' });
-
-    return this.customizeTooltip(info).html;
-  }
-
   public customizeLabelText = (info: any) => {
     return this.formatter.format(info.value);
   }
@@ -108,7 +91,6 @@ export class ElectricityComponent extends DataComponent implements OnInit {
   }
 
   private filter(): void {
-    console.log('filter?');
     const price = this.priceService.getElectricityPrice(moment(this.selectedFromDate).year());
 
     const mapCounterDataValue = (i: QboxCounterData) => {
@@ -178,6 +160,8 @@ export class ElectricityComponent extends DataComponent implements OnInit {
     const dates = this.timeRangeHelper.getToDate(this.selectedResolutionId, this.selectedFromDate);
     this.selectedToDate = dates.toDate.toDate();
 
+    this.updateEnergyCosts();
+
     this.subscription.add(this.service.getData(this.selectedResolutionId, dates.fromDate.toDate(), this.selectedToDate)
       .subscribe(
         data => {
@@ -186,6 +170,7 @@ export class ElectricityComponent extends DataComponent implements OnInit {
 
           this.filter();
           this.updateChartSeries();
+          this.updateOverview();
 
           this.saveAppData();
         }, error => {
@@ -201,6 +186,8 @@ export class ElectricityComponent extends DataComponent implements OnInit {
             default:
               this.error(error);
           }
+
+          this.updateOverview();
         }));
   }
 

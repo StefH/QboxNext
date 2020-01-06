@@ -59,22 +59,6 @@ export class GasComponent extends DataComponent implements OnInit {
     };
   }
 
-  public getOverview(): string {
-    const info: any = {
-      argumentText: 'Info',
-      length: 1,
-      points: []
-    };
-
-    this.chart.series.forEach(serie => {
-      info.points.push({ seriesName: serie.name, value: this.result.overview ? this.result.overview[serie.valueField] : '' });
-    });
-
-    info.points.push({ seriesName: 'Kosten', value: this.result.overview ? this.result.overview.costs : '' });
-
-    return this.customizeTooltip(info).html;
-  }
-
   public customizeLabelText = (info: any) => this.formatter.format(info.value);
 
   private updateChartSeries(): void {
@@ -131,6 +115,8 @@ export class GasComponent extends DataComponent implements OnInit {
     const dates = this.timeRangeHelper.getToDate(this.selectedResolutionId, this.selectedFromDate);
     this.selectedToDate = dates.toDate.toDate();
 
+    this.updateEnergyCosts();
+
     this.subscription.add(this.service.getData(this.selectedResolutionId, dates.fromDate.toDate(), this.selectedToDate)
       .subscribe(
         data => {
@@ -139,6 +125,7 @@ export class GasComponent extends DataComponent implements OnInit {
 
           this.filter();
           this.updateChartSeries();
+          this.updateOverview();
 
           // Save settings
           this.appData.gasSelectedFromDate = this.selectedFromDate;
@@ -158,6 +145,8 @@ export class GasComponent extends DataComponent implements OnInit {
             default:
               this.error(error);
           }
+
+          this.updateOverview();
         }));
   }
 }

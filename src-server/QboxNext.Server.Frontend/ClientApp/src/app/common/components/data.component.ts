@@ -19,6 +19,8 @@ export abstract class DataComponent extends BaseComponent {
 
   protected resultFromServer = new QboxPagedDataQueryResult<QboxCounterData>();
   protected appData: ApplicationData;
+  protected energyCostsAsHtml = '';
+  protected overviewAsHtml = '';
 
   @ViewChild(DxChartComponent)
   protected chart: DxChartComponent;
@@ -26,6 +28,8 @@ export abstract class DataComponent extends BaseComponent {
   constructor(private title: string, protected timeRangeHelper: TimeRangeHelper, protected cp: CurrencyPipe, protected priceService: PriceService) {
     super();
   }
+
+  protected abstract customizeTooltip(info: any): any;
 
   public nextClick(): void {
     this.selectedFromDate = this.timeRangeHelper.getNextDate(this.selectedResolutionId, this.selectedFromDate);
@@ -74,7 +78,23 @@ export abstract class DataComponent extends BaseComponent {
     return `${this.title} (${moment(this.selectedFromDate).format('YYYY')})`;
   }
 
-  public getEnergyCosts(): string {
+  protected updateOverview() {
+    const info: any = {
+      argumentText: 'Info',
+      length: 1,
+      points: []
+    };
+
+    this.chart.series.forEach(serie => {
+      info.points.push({ seriesName: serie.name, value: this.result.overview ? this.result.overview[serie.valueField] : '' });
+    });
+
+    info.points.push({ seriesName: 'Kosten', value: this.result.overview ? this.result.overview.costs : '' });
+
+    this.overviewAsHtml = this.customizeTooltip(info).html;
+  }
+
+  protected updateEnergyCosts() {
     const year = moment(this.selectedFromDate).year();
     console.log('getEnergyCosts=' + year);
     const header = 'Kosten';
@@ -85,6 +105,6 @@ export abstract class DataComponent extends BaseComponent {
       `<div class=\'series-name\'>Gas (m³)</div><div class=\'value-text\'>${this.cp.transform(gasPrice, 'EUR', 'symbol', '1.5-5')}</div>`
     ];
 
-    return `<div><div class=\'tooltip-header\'>${header}</div><div class=\'tooltip-body\'>${costs.join('\r\n')}</div></div>`;
+    this.energyCostsAsHtml = `<div><div class=\'tooltip-header\'>${header}</div><div class=\'tooltip-body\'>${costs.join('\r\n')}</div></div>`;
   }
 }

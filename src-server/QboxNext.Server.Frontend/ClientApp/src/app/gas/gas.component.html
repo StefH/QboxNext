@@ -30,13 +30,13 @@
   <div class="col-md-12">
     <div class="row">
       <div class="col totaal-sidebar" style="margin-top: 50px;">
-        <div *ngIf="isLoadIndicatorVisible">
+        <div [hidden]="!isLoadIndicatorVisible">
           <dx-load-indicator></dx-load-indicator>
         </div>
-        <div>
-          <div [innerHTML]="getEnergyCosts()"></div>
+        <div [hidden]="isLoadIndicatorVisible">
+          <div [innerHTML]="overviewAsHtml"></div>
           <div>&nbsp;</div>
-          <div *ngIf="!isLoadIndicatorVisible" [innerHTML]="getOverview()"></div>
+          <div [innerHTML]="energyCostsAsHtml"></div>
         </div>
       </div>
 
