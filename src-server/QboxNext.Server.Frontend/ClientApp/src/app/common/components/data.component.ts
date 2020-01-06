@@ -96,7 +96,6 @@ export abstract class DataComponent extends BaseComponent {
 
   protected updateEnergyCosts() {
     const year = moment(this.selectedFromDate).year();
-    console.log('getEnergyCosts=' + year);
     const header = 'Kosten';
     const electricityPrice = this.priceService.getElectricityPrice(year);
     const gasPrice = this.priceService.getGasPrice(year);
