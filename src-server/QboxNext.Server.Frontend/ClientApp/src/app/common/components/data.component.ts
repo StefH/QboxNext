@@ -16,11 +16,11 @@ export abstract class DataComponent extends BaseComponent {
   public selectedFromDate: Date;
   public selectedToDate: Date;
   public selectedResolutionId: Resolution;
+  public energyCostsAsHtml = '';
+  public overviewAsHtml = '';
 
   protected resultFromServer = new QboxPagedDataQueryResult<QboxCounterData>();
   protected appData: ApplicationData;
-  protected energyCostsAsHtml = '';
-  protected overviewAsHtml = '';
 
   @ViewChild(DxChartComponent)
   protected chart: DxChartComponent;
