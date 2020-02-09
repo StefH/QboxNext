@@ -1,0 +1,31 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "CleanupQboxStatesCronExpression": "0 0 * * *"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "System": "Warning",
+      "Microsoft": "Warning"
+    }
+  },
+  "AzureTableStorageCleanerOptions": {
+    "ConnectionString": "UseDevelopmentStorage=true",
+
+    "LoggingTableName": "QboxLogging",
+    "LoggingTableRetentionInMonths": 6,
+    "LoggingTableDeleteRows": false,
+
+    "StatesTableName": "QboxStates",
+    "StatesTableRetentionInMonths": 6,
+    "StatesTableDeleteRows": false,
+
+    "ServerTimeout": 60
+  },
+  "ApplicationInsights": {
+    "InstrumentationKey": "<replace>"
+  }
+}

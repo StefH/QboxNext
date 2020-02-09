@@ -20,5 +20,19 @@ namespace QboxNext.Server.Common.Extensions
                 throw new TimeoutException();
             }
         }
+
+        public static async Task TimeoutAfter(this Task task, TimeSpan timeout)
+        {
+            using (var timeoutCancellationTokenSource = new CancellationTokenSource())
+            {
+                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token));
+                if (completedTask == task)
+                {
+                    timeoutCancellationTokenSource.Cancel();
+                }
+
+                throw new TimeoutException();
+            }
+        }
     }
 }

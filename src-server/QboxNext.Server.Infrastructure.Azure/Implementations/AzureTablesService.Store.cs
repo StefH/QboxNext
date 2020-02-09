@@ -44,7 +44,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
                             select new MeasurementEntity
                             {
                                 PartitionKey = PartitionKeyHelper.Construct(g.Key.SerialNumber, g.Key.MeasureTime),
-                                RowKey = RowKeyHelper.Construct(g.Key.MeasureTime),
+                                RowKey = DateTimeRowKeyHelper.Construct(g.Key.MeasureTime),
                                 SerialNumber = g.Key.SerialNumber,
                                 MeasureTime = g.Key.MeasureTime,
                                 MeasureTimeAdjusted = g.Key.MeasureTimeAdjusted,

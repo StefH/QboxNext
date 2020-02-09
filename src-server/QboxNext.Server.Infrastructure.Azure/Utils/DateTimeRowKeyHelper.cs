@@ -2,7 +2,7 @@
 
 namespace QboxNext.Server.Infrastructure.Azure.Utils
 {
-    internal static class RowKeyHelper
+    internal static class DateTimeRowKeyHelper
     {
         private static readonly long MaxTicks = DateTime.MaxValue.Ticks + 1;
 
