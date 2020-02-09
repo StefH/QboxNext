@@ -27,6 +27,7 @@
     "StatesTableName": "QboxStates",
     "StatesTableRetentionInMonths": 6,
     "StatesTableDeleteRows": false,
+    "StatesTableCronExpression": "0 0 * * *",
 
     "ServerTimeout": 60
   },

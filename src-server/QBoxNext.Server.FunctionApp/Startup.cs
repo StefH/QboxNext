@@ -22,8 +22,7 @@ namespace QBoxNext.Server.FunctionApp
             if (!string.IsNullOrEmpty(scriptRoot))
             {
                 configBuilder.SetBasePath(scriptRoot).AddJsonFile("local.settings.json", optional: false, reloadOnChange: false);
-
-                // configBuilder.SetBasePath(scriptRoot).AddJsonFile("local.settings.development.json", optional: true, reloadOnChange: false);
+                configBuilder.SetBasePath(scriptRoot).AddJsonFile("local.settings.development.json", optional: true, reloadOnChange: false);
             }
             configBuilder.AddEnvironmentVariables();
 
