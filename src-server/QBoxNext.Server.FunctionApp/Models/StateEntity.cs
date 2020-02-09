@@ -1,5 +1,4 @@
-﻿using System;
-using WindowsAzure.Table.Attributes;
+﻿using WindowsAzure.Table.Attributes;
 
 namespace QBoxNext.Server.FunctionApp.Models
 {
@@ -15,7 +14,5 @@ namespace QBoxNext.Server.FunctionApp.Models
         // Example: "2518211341772170473"
         [RowKey]
         public string RowKey { get; set; }
-
-        public DateTime LogTimeStamp { get; set; }
     }
 }

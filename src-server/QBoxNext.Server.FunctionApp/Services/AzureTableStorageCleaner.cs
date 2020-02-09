@@ -40,16 +40,20 @@ namespace QBoxNext.Server.FunctionApp.Services
             var fromDate = DateTime.UtcNow.AddMonths(-_options.Value.StatesTableRetentionInMonths);
             string fromRowKey = DateTimeRowKeyHelper.Construct(fromDate);
 
-            _logger.LogInformation("Azure Table '{table}': cleaning older rows then '{fromDate}' [{fromRowKey}]", _stateTable.Name, fromDate, fromRowKey);
+            _logger.LogInformation("Azure Table '{table}': querying older rows then '{fromDate}' [{fromRowKey}]", _stateTable.Name, fromDate, fromRowKey);
 
             var rowsToDelete = await _stateTable.Set
-                .Where(stateEntity => string.CompareOrdinal(stateEntity.RowKey, fromRowKey) <= 0) // This is : "RowKey > fromRowKey"
+                .Where(stateEntity => string.CompareOrdinal(stateEntity.RowKey, fromRowKey) > 0)
+                .OrderBy(stateEntity => stateEntity.RowKey)
                 .ToListAsync();
 
             if (rowsToDelete.Count > 0)
             {
                 _logger.LogInformation("Azure Table '{table}': {rowsToDelete} rows found from {first} to {last}",
-                    _stateTable.Name, rowsToDelete, rowsToDelete.FirstOrDefault()?.LogTimeStamp, rowsToDelete.LastOrDefault()?.LogTimeStamp);
+                    _stateTable.Name, rowsToDelete.Count,
+                    DateTimeRowKeyHelper.Deconstruct(rowsToDelete.FirstOrDefault()?.RowKey),
+                    DateTimeRowKeyHelper.Deconstruct(rowsToDelete.LastOrDefault()?.RowKey)
+                );
 
                 if (_options.Value.StatesTableDeleteRows)
                 {

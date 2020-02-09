@@ -10,5 +10,16 @@ namespace QboxNext.Server.Infrastructure.Azure.Utils
         {
             return $"{MaxTicks - measureTime.Ticks:d19}";
         }
+
+        public static DateTime? Deconstruct(string rowKey)
+        {
+            if (string.IsNullOrEmpty(rowKey))
+            {
+                return null;
+            }
+
+            var value = long.Parse(rowKey);
+            return new DateTime(MaxTicks - value);
+        }
     }
 }

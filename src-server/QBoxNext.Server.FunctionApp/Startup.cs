@@ -19,12 +19,25 @@ namespace QBoxNext.Server.FunctionApp
             var configBuilder = new ConfigurationBuilder();
 
             string scriptRoot = AzureFunctionUtils.GetAzureWebJobsScriptRoot();
+
+            // By default, only the "Values" section from local.settings.json is read.
+            // In order to read more custom configuration sections, we need to use AddJsonFile(...)
             if (!string.IsNullOrEmpty(scriptRoot))
             {
                 configBuilder.SetBasePath(scriptRoot).AddJsonFile("local.settings.json", optional: false, reloadOnChange: false);
-                configBuilder.SetBasePath(scriptRoot).AddJsonFile("local.settings.development.json", optional: true, reloadOnChange: false);
+
+                if (!AzureFunctionUtils.IsAzureEnvironment())
+                {
+                    // In case we are running locally, also add the development file.
+                    configBuilder.SetBasePath(scriptRoot).AddJsonFile("local.settings.development.json", optional: false, reloadOnChange: false);
+                }
             }
-            configBuilder.AddEnvironmentVariables();
+
+            // Only add EnvironmentVariables if running in Azure.
+            if (AzureFunctionUtils.IsAzureEnvironment())
+            {
+                configBuilder.AddEnvironmentVariables();
+            }
 
             var configuration = configBuilder.Build();
 
