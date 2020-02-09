@@ -3,7 +3,12 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "CleanupQboxStatesCronExpression": "0 0 * * *"
+
+    // “At 00:00”
+    "CleanupQboxStatesCronExpression": "0 0 * * *",
+
+    // “At 03:00”
+    "CleanupQboxLoggingCronExpression": "0 3 * * *"
   },
   "Logging": {
     "LogLevel": {

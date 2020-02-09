@@ -48,8 +48,8 @@ namespace QBoxNext.Server.FunctionApp.Services
 
             if (rowsToDelete.Count > 0)
             {
-                _logger.LogInformation("Azure Table '{table}': {rowsToDelete} rows will be deleted from {first} to {last}",
-                    _stateTable.Name, rowsToDelete, rowsToDelete.FirstOrDefault()?.LogTimeStamp, _stateTable.Name, rowsToDelete.LastOrDefault()?.LogTimeStamp);
+                _logger.LogInformation("Azure Table '{table}': {rowsToDelete} rows found from {first} to {last}",
+                    _stateTable.Name, rowsToDelete, rowsToDelete.FirstOrDefault()?.LogTimeStamp, rowsToDelete.LastOrDefault()?.LogTimeStamp);
 
                 if (_options.Value.StatesTableDeleteRows)
                 {
