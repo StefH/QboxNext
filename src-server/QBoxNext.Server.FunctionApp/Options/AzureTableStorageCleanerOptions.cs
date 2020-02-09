@@ -25,9 +25,5 @@ namespace QBoxNext.Server.FunctionApp.Options
         public int StatesTableRetentionInMonths { get; set; }
 
         public bool StatesTableDeleteRows { get; set; }
-
-        [Required]
-        [Range(0, 3600)]
-        public int ServerTimeout { get; set; }
     }
 }
