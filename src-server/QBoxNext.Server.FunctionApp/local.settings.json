@@ -6,10 +6,10 @@
     "FUNCTIONS_EXTENSION_VERSION": "~3",
 
     // Change this to a different value in Azure , like "0 0 * * *" ==> “At 01:00”
-    "CleanupQboxStatesCronExpression": "* * * * *",
+    "CleanupQboxStatesCronExpression": "<replace>",
 
     // Change this to a different value in Azure , like "0 3 * * *" ==> “At 03:00”
-    "CleanupQboxLoggingCronExpression": "* * * * *"
+    "CleanupQboxLoggingCronExpression": "<replace>"
   },
   "Logging": {
     "LogLevel": {

@@ -3,12 +3,14 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  buildProjectFunctions '**/QBoxNext.Server.FunctionApp.csproj'
   buildProjectDataReceiver: '**/QboxNext.Server.DataReceiver.csproj'
   buildProjectFrontend: '**/QboxNext.Server.Frontend.csproj'
   npmProjectFrontend: './src-server/QboxNext.Server.Frontend/ClientApp'
   imageNameDataReceiver: 'qboxnext-datareceiver'
   imageNameFrontend: 'qboxnext-frontend'
   tag: '1.0.0'
+  buildFunctions: $(BUILD_FUNCTIONS)
   buildFrontend: $(BUILD_FRONTEND)
   buildBackend: $(BUILD_BACKEND)
   buildDockerFrontend: $(BUILD_DOCKER_FRONTEND)
@@ -40,7 +42,7 @@ steps:
   condition: and(succeeded(), eq(variables.buildFrontend, 'yes'))
 
 - task: DotNetCoreCLI@2
-  displayName: 'DataReceiver & Frontend: Build'
+  displayName: 'DataReceiver & Frontend & Functions: Build'
   inputs:
     command: build
     projects: |

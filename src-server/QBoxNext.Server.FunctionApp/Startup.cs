@@ -33,11 +33,7 @@ namespace QBoxNext.Server.FunctionApp
                 }
             }
 
-            // Only add EnvironmentVariables if running in Azure.
-            if (AzureFunctionUtils.IsAzureEnvironment())
-            {
-                configBuilder.AddEnvironmentVariables();
-            }
+            configBuilder.AddEnvironmentVariables();
 
             var configuration = configBuilder.Build();
 
