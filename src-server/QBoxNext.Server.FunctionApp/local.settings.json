@@ -3,13 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "FUNCTIONS_EXTENSION_VERSION": "~3",
-
-    // Change this to a different value in Azure , like "0 0 * * *" ==> “At 01:00”
-    "CleanupQboxStatesCronExpression": "<replace>",
-
-    // Change this to a different value in Azure , like "0 3 * * *" ==> “At 03:00”
-    "CleanupQboxLoggingCronExpression": "<replace>"
+    "FUNCTIONS_EXTENSION_VERSION": "~3"
   },
   "Logging": {
     "LogLevel": {
@@ -24,12 +18,14 @@
     "LoggingTableName": "QboxLogging",
     "LoggingTableRetentionInMonths": 11,
     "LoggingTableDeleteRows": false,
-    "LoggingTableCronExpressionNOTUSED": "0 3 * * *",
+    // Change this to a different value in Azure , like "0 3 * * *" ==> “At 03:00”
+    "LoggingTableCronExpression": "<replace>",
 
     "StatesTableName": "QboxStates",
     "StatesTableRetentionInMonths": 11,
     "StatesTableDeleteRows": false,
-    "StatesTableCronExpressionNOTUSED": "0 0 * * *"
+    // Change this to a different value in Azure , like "0 0 * * *" ==> “At 01:00”
+    "StatesTableCronExpression": "<replace>"
   },
   "ApplicationInsights": {
     "InstrumentationKey": "<replace>"

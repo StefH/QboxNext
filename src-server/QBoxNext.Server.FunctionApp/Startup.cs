@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -38,6 +39,8 @@ namespace QBoxNext.Server.FunctionApp
             var configuration = configBuilder.Build();
 
             // Add Services
+            builder.Services.AddSingleton(configuration);
+            builder.Services.AddSingleton<INameResolver, CustomNameResolver>();
             builder.Services.AddScoped<IAzureTableStorageCleaner, AzureTableStorageCleaner>();
 
             // Logging
