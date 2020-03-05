@@ -46,6 +46,7 @@ steps:
   inputs:
     command: build
     projects: |
+      $(buildProjectFunctions)
       $(buildProjectDataReceiver)
       $(buildProjectFrontend)
     arguments: '--configuration $(BuildConfiguration) /p:Version=1.0.0-$(buildNumber)'
