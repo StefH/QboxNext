@@ -60,11 +60,12 @@ steps:
 #    arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'DataReceiver & Frontend: Publish'
+  displayName: 'DataReceiver & Frontend & Functions: Publish'
   condition: and(succeeded(), eq(variables.buildBackend, 'yes'), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
   inputs:
     command: publish
     projects: |
+      $(buildProjectFunctions)
       $(buildProjectDataReceiver)
       $(buildProjectFrontend)
     publishWebProjects: True
