@@ -3,7 +3,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  buildProjectFunctions '**/QBoxNext.Server.FunctionApp.csproj'
+  buildProjectFunctions: '**/QBoxNext.Server.FunctionApp.csproj'
   buildProjectDataReceiver: '**/QboxNext.Server.DataReceiver.csproj'
   buildProjectFrontend: '**/QboxNext.Server.Frontend.csproj'
   npmProjectFrontend: './src-server/QboxNext.Server.Frontend/ClientApp'
