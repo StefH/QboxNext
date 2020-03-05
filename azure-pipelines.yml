@@ -10,7 +10,6 @@ variables:
   imageNameDataReceiver: 'qboxnext-datareceiver'
   imageNameFrontend: 'qboxnext-frontend'
   tag: '1.0.0'
-  buildFunctions: $(BUILD_FUNCTIONS)
   buildFrontend: $(BUILD_FRONTEND)
   buildBackend: $(BUILD_BACKEND)
   buildDockerFrontend: $(BUILD_DOCKER_FRONTEND)
