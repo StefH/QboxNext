@@ -68,9 +68,11 @@ steps:
       $(buildProjectFunctions)
       $(buildProjectDataReceiver)
       $(buildProjectFrontend)
-    publishWebProjects: True
+    publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) /p:Version=1.0.0-$(BuildNumber) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
+    zipAfterPublish: true
+    # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/dotnet-core-cli?view=azure-devops#file-structure-for-output-files-is-different-from-previous-builds
+    modifyOutputPath: true
 
 - script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) --build-arg BuildNumber=$(buildNumber) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
   displayName: 'Build Docker image [$(imageNameDataReceiver)]'
