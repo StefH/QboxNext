@@ -23,7 +23,7 @@
     "StatesTableName": "QboxStates",
     "StatesTableRetentionInMonths": 11,
     "StatesTableDeleteRows": false,
-    // Change this to a different value in Azure , like "0 0 * * *" ==> “At 01:00”
+    // Change this to a different value in Azure , like "0 1 * * *" ==> “At 01:00”
     "StatesTableCronExpression": "<replace>"
   },
   "ApplicationInsights": {
