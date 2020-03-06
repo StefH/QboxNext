@@ -21,7 +21,7 @@
     "LoggingTableCronExpression": "<replace>",
 
     "StatesTableName": "QboxStates",
-    "StatesTableRetentionInMonths": 11,
+    "StatesTableRetentionInMonths": 9,
     "StatesTableDeleteRows": false,
     // Change this to a different value in Azure , like "0 1 * * *" ==> “At 01:00”
     "StatesTableCronExpression": "<replace>"
