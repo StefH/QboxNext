@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AzureFunctionsVersion>v3</AzureFunctionsVersion>
-    <!--<TargetFramework>netstandard20</TargetFramework>
-    <AzureFunctionsVersion>v2</AzureFunctionsVersion>-->
+    <!--<TargetFramework>netcoreapp3.1</TargetFramework>
+    <AzureFunctionsVersion>v3</AzureFunctionsVersion>-->
+    <TargetFramework>netstandard20</TargetFramework>
+    <AzureFunctionsVersion>v2</AzureFunctionsVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,20 +13,21 @@
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.2" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <!--<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.5" />-->
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.10" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.34" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
     <PackageReference Include="windowsazure.storageextensions" Version="1.2.0" />
   </ItemGroup>
 
-  <!--<ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />
+  <ItemGroup>
+    <!--<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />-->
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="3.0.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.2" />
-  </ItemGroup>-->
+    <!--<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.2" />-->
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\QboxNext.Server.Common\QboxNext.Server.Common.csproj" />
