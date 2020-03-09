@@ -9,6 +9,7 @@ using QBoxNext.Server.FunctionApp.Models;
 using QBoxNext.Server.FunctionApp.Options;
 using WindowsAzure.Table;
 using WindowsAzure.Table.Extensions;
+using NLog.Extensions.AzureTables;
 
 namespace QBoxNext.Server.FunctionApp.Services
 {
@@ -18,6 +19,7 @@ namespace QBoxNext.Server.FunctionApp.Services
         private readonly IOptions<AzureTableStorageCleanerOptions> _options;
 
         private readonly (string Name, ITableSet<StateEntity> Set) _stateTable;
+        private readonly (string Name, ITableSet<LoggingEntity> Set) _loggingTable;
 
         public AzureTableStorageCleaner(ILogger<AzureTableStorageCleaner> logger, IOptions<AzureTableStorageCleanerOptions> options)
         {
@@ -29,6 +31,7 @@ namespace QBoxNext.Server.FunctionApp.Services
 
             // Create table sets
             _stateTable = (options.Value.StatesTableName, new TableSet<StateEntity>(client, options.Value.StatesTableName));
+            _loggingTable = (options.Value.LoggingTableName, new TableSet<LoggingEntity>(client, options.Value.LoggingTableName));
         }
 
         public async Task CleanupStatesAsync()
@@ -69,6 +72,47 @@ namespace QBoxNext.Server.FunctionApp.Services
             else
             {
                 _logger.LogInformation("Azure Table '{table}': no rows deleted because no rows found", _stateTable.Name);
+            }
+        }
+
+        public async Task CleanupLoggingAsync()
+        {
+            DateTime fromDate = DateTime.UtcNow.AddMonths(-_options.Value.LoggingTableRetentionInMonths).Date;
+            string fromPartitionKey = NLogPartitionKeyHelper.Construct(fromDate);
+
+            _logger.LogInformation("Azure Table '{table}': querying older rows then '{fromDate}' [{fromPartitionKey}]", _loggingTable.Name, fromDate, fromPartitionKey);
+
+            var rowsToDelete = await _loggingTable.Set
+                .Where(stateEntity => string.CompareOrdinal(stateEntity.PartitionKey, fromPartitionKey) >= 0)
+                .ToListAsync();
+
+            var rowsToDeleteOrdered = rowsToDelete.OrderByDescending(e => e.RowKey).ToList();
+            int count = rowsToDeleteOrdered.Count;
+            if (count > 0)
+            {
+                string firstPartitionKey = rowsToDeleteOrdered.First().PartitionKey;
+                string lastPartitionKey = rowsToDeleteOrdered.Last().PartitionKey;
+
+                _logger.LogInformation("Azure Table '{table}': {rowsToDelete} rows found from '{first}' [{firstPartitionKey}] to '{last}' [{lastPartitionKey}]",
+                    _loggingTable.Name, count,
+                    NLogPartitionKeyHelper.Deconstruct(firstPartitionKey), firstPartitionKey,
+                    NLogPartitionKeyHelper.Deconstruct(lastPartitionKey), lastPartitionKey
+                );
+
+                if (_options.Value.LoggingTableDeleteRows)
+                {
+                    await _loggingTable.Set.RemoveAsync(rowsToDeleteOrdered);
+
+                    _logger.LogInformation("Azure Table '{table}': {rowsToDelete} rows deleted", _loggingTable.Name, count);
+                }
+                else
+                {
+                    _logger.LogInformation("Azure Table '{table}': no rows deleted because 'LoggingTableDeleteRows' is set to false", _loggingTable.Name);
+                }
+            }
+            else
+            {
+                _logger.LogInformation("Azure Table '{table}': no rows deleted because no rows found", _loggingTable.Name);
             }
         }
     }

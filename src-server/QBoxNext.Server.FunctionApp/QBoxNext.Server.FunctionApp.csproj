@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\NLogPartitionKeyHelper.cs" Link="Utils\NLogPartitionKeyHelper.cs" />
+    <Compile Include="..\..\dependencies\NLog.Extensions.AzureStorage\src\NLog.Extensions.AzureTables\NLogRowKeyHelper.cs" Link="Utils\NLogRowKeyHelper.cs" />
     <Compile Include="..\QboxNext.Server.Infrastructure.Azure\Utils\DateTimeRowKeyHelper.cs" Link="Utils\DateTimeRowKeyHelper.cs" />
   </ItemGroup>
 

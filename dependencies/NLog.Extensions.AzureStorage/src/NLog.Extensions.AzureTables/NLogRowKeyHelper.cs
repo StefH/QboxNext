@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace QboxNext.Server.Infrastructure.Azure.Utils
+namespace NLog.Extensions.AzureTables
 {
-    internal static class DateTimeRowKeyHelper
+    internal static class NLogRowKeyHelper
     {
         private static readonly long MaxTicks = DateTime.MaxValue.Ticks + 1;
 
-        public static string Construct(DateTime measureTime)
+        public static string Construct(DateTime timestamp)
         {
-            return $"{MaxTicks - measureTime.Ticks:d19}";
+            return $"{MaxTicks - timestamp.Ticks:d19}";
         }
 
         public static DateTime? Deconstruct(string rowKey)

@@ -180,8 +180,8 @@ namespace NLog.Extensions.AzureTables
             var now = DateTime.UtcNow;
             string correlationId = CorrelationId != null ? RenderLogEvent(CorrelationId, logEvent) : null;
             string layoutMessage = RenderLogEvent(Layout, logEvent);
-            string rowKey = RowKeyHelper.Construct(now);
-            string partitionKey = PartitionKeyHelper.Construct(now);
+            string rowKey = NLogRowKeyHelper.Construct(now);
+            string partitionKey = NLogPartitionKeyHelper.Construct(now);
 
             string exceptionValue = null;
             string stackTraceValue = null;

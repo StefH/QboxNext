@@ -18,11 +18,19 @@ namespace QBoxNext.Server.FunctionApp
         }
 
         [FunctionName("CleanupQboxStates")]
-        public async Task CleanupQboxStatesAsync([TimerTrigger("%AzureTableStorageCleanerOptions:StatesTableCronExpression%")] TimerInfo myTimer)
+        public async Task CleanupQboxStatesAsync([TimerTrigger("%AzureTableStorageCleanerOptions:StatesTableCronExpression%")] TimerInfo stateTableTimer)
         {
             _logger.LogInformation("CleanupQboxStates function executed at: {now}", DateTime.Now);
 
             await _service.CleanupStatesAsync();
+        }
+
+        [FunctionName("CleanupQboxLogging")]
+        public async Task CleanupQboxLoggingAsync([TimerTrigger("%AzureTableStorageCleanerOptions:LoggingTableCronExpression%")] TimerInfo loggingTableTimer)
+        {
+            _logger.LogInformation("CleanupQboxLogging function executed at: {now}", DateTime.Now);
+
+            await _service.CleanupLoggingAsync();
         }
     }
 }
