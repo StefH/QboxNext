@@ -80,7 +80,7 @@ namespace QBoxNext.Server.FunctionApp.Services
             DateTime fromDate = DateTime.UtcNow.AddMonths(-_options.Value.LoggingTableRetentionInMonths).Date;
             string fromPartitionKey = NLogPartitionKeyHelper.Construct(fromDate);
 
-            _logger.LogInformation("Azure Table '{table}': querying older rows then '{fromDate}' [{fromPartitionKey}]", _loggingTable.Name, fromDate, fromPartitionKey);
+            _logger.LogInformation("Azure Table '{table}': querying older rows then '{fromDate:d}' [{fromPartitionKey}]", _loggingTable.Name, fromDate, fromPartitionKey);
 
             var rowsToDelete = await _loggingTable.Set
                 .Where(stateEntity => string.CompareOrdinal(stateEntity.PartitionKey, fromPartitionKey) >= 0)
@@ -93,7 +93,7 @@ namespace QBoxNext.Server.FunctionApp.Services
                 string firstPartitionKey = rowsToDeleteOrdered.First().PartitionKey;
                 string lastPartitionKey = rowsToDeleteOrdered.Last().PartitionKey;
 
-                _logger.LogInformation("Azure Table '{table}': {rowsToDelete} rows found from '{first}' [{firstPartitionKey}] to '{last}' [{lastPartitionKey}]",
+                _logger.LogInformation("Azure Table '{table}': {rowsToDelete} rows found from '{first:d}' [{firstPartitionKey}] to '{last:d}' [{lastPartitionKey}]",
                     _loggingTable.Name, count,
                     NLogPartitionKeyHelper.Deconstruct(firstPartitionKey), firstPartitionKey,
                     NLogPartitionKeyHelper.Deconstruct(lastPartitionKey), lastPartitionKey

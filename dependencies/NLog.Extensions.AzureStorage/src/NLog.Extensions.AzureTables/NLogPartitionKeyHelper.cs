@@ -13,17 +13,17 @@ namespace NLog.Extensions.AzureTables
 
         public static DateTime? Deconstruct(string partitionKey)
         {
-            if (string.IsNullOrEmpty(partitionKey))
+            if (!string.IsNullOrEmpty(partitionKey) && int.TryParse(partitionKey, out int partitionKeyAsInt))
             {
-                return null;
+                int value = PartitionKeyStart - partitionKeyAsInt;
+                int year = value / 10000;
+                int month = (value - year * 10000) / 100;
+                int day = value - year * 10000 - month * 100;
+
+                return new DateTime(year, month, day);
             }
 
-            int value = PartitionKeyStart - int.Parse(partitionKey);
-            int year = value / 10000;
-            int month = (value - year * 10000) / 100;
-            int day = value - year * 10000 - month * 100;
-
-            return new DateTime(year, month, day);
+            return null;
         }
     }
 }
