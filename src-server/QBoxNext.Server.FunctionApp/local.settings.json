@@ -15,7 +15,7 @@
     "ConnectionString": "UseDevelopmentStorage=true",
 
     "LoggingTableName": "QboxLogging",
-    "LoggingTableRetentionInMonths": 11,
+    "LoggingTableRetentionInMonths": 6,
     "LoggingTableDeleteRows": false,
     // Change this to a different value in Azure , like "0 3 * * *" ==> “At 03:00”
     "LoggingTableCronExpression": "<replace>",
