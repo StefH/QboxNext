@@ -21,6 +21,7 @@ namespace QboxNext.Extensions.Implementations
                 .WithCounter(QboxConstants.CounterIdGenerationLow, CounterType.Primary, DeviceEnergyType.NetLow)
                 .WithCounter(QboxConstants.CounterIdGenerationHigh, CounterType.Primary, DeviceEnergyType.NetHigh)
                 .WithCounter(QboxConstants.CounterIdGasConsumption, CounterType.Primary, DeviceEnergyType.Gas)
+                .WithCounter(1, CounterType.Secondary, DeviceEnergyType.Generation)
                 .Build();
         }
     }

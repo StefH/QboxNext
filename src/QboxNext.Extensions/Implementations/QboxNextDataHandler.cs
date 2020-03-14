@@ -350,24 +350,32 @@ namespace QboxNext.Extensions.Implementations
 
             if (payload.Value == ulong.MaxValue)
             {
+                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. The payload value equals maximum ulong", _context.Mini.SerialNumber);
                 return false;
             }
 
-            if (payload is R21CounterPayload counterPayload && !counterPayload.IsValid)
+            if (!(payload is R21CounterPayload counterPayload))
             {
-                _logger.LogInformation("Invalid value for counter {InternalNr} / {SerialNumber}", counterPayload.InternalNr, _context.Mini.SerialNumber);
+                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. The payload is not of type R21CounterPayload for counter '{InternalNr}'", _context.Mini.SerialNumber, payload.InternalNr);
+                return false;
+            }
+
+            if (!counterPayload.IsValid)
+            {
+                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. The payload is not valid for counter '{InternalNr}'", _context.Mini.SerialNumber, counterPayload.InternalNr);
                 return false;
             }
 
             if (ClientNotConnected())
             {
                 // No connection with client, payload is last measured value and not the real value. First real value will be spread out over missing values
-                _logger.LogDebug("No connection with client, data not saved");
+                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. There is no connection with client, data not saved", _context.Mini.SerialNumber);
                 return false;
             }
 
             if (!MapCounterId(payload, _context.Mini))
             {
+                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. Mapping the counterId failed.", _context.Mini.SerialNumber);
                 return false;
             }
 
@@ -375,17 +383,20 @@ namespace QboxNext.Extensions.Implementations
             var counter = FindCounter(payload);
             if (counter == null)
             {
-                _logger.LogWarning($"Received value for unknown counter: {payload.InternalNr} / {_context.Mini.SerialNumber}");
-                return false; //todo: investigate if exception would be better 
+                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. Received value for unknown counter: {payload.InternalNr}", _context.Mini.SerialNumber, counterPayload.InternalNr);
+                return false;
             }
 
             if (!(_result is MiniParseResult parseResult))
             {
+                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. The _result is not of type MiniParseResult", _context.Mini.SerialNumber);
                 return false;
             }
 
+            // Counter is valid, set the LastDataReceived
             _context.Mini.QboxStatus.LastDataReceived = DateTime.UtcNow;
 
+            // Counter is valid, define a valid CounterData object
             counterData = new CounterData
             {
                 SerialNumber = _context.Mini.SerialNumber,
