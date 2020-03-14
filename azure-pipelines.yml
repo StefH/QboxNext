@@ -3,6 +3,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  buildProjectFunctions: '**/QBoxNext.Server.FunctionApp.csproj'
   buildProjectDataReceiver: '**/QboxNext.Server.DataReceiver.csproj'
   buildProjectFrontend: '**/QboxNext.Server.Frontend.csproj'
   npmProjectFrontend: './src-server/QboxNext.Server.Frontend/ClientApp'
@@ -40,10 +41,11 @@ steps:
   condition: and(succeeded(), eq(variables.buildFrontend, 'yes'))
 
 - task: DotNetCoreCLI@2
-  displayName: 'DataReceiver & Frontend: Build'
+  displayName: 'DataReceiver & Frontend & Functions: Build'
   inputs:
     command: build
     projects: |
+      $(buildProjectFunctions)
       $(buildProjectDataReceiver)
       $(buildProjectFrontend)
     arguments: '--configuration $(BuildConfiguration) /p:Version=1.0.0-$(buildNumber)'
@@ -57,16 +59,19 @@ steps:
 #    arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'DataReceiver & Frontend: Publish'
+  displayName: 'DataReceiver & Frontend & Functions: Publish'
   condition: and(succeeded(), eq(variables.buildBackend, 'yes'), ne(variables['Build.Reason'], 'PullRequest')) # Do not run for PullRequests
   inputs:
     command: publish
     projects: |
+      $(buildProjectFunctions)
       $(buildProjectDataReceiver)
       $(buildProjectFrontend)
-    publishWebProjects: True
+    publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) /p:Version=1.0.0-$(BuildNumber) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
+    zipAfterPublish: true
+    # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/dotnet-core-cli?view=azure-devops#file-structure-for-output-files-is-different-from-previous-builds
+    modifyOutputPath: true
 
 - script: docker build -t $(DOCKER_ID)/$(imageNameDataReceiver) --build-arg BuildNumber=$(buildNumber) -f ./src-server/QboxNext.Server.DataReceiver/Dockerfile .
   displayName: 'Build Docker image [$(imageNameDataReceiver)]'

@@ -334,3 +334,5 @@ ASALocalRun/
 /src-server/QboxNext.Server.WebApi/logs/nlog.txt
 /src-server/QboxNext.Server.DataReceiver/logs/nlog.txt
 /src-server/QboxNext.Server.Frontend/logs/nlog.txt
+
+/src-server/QBoxNext.Server.FunctionApp/local.settings.development.json

@@ -1,0 +1,15 @@
+{
+  "version": "2.0",
+
+  // See https://stackoverflow.com/questions/56973292/injected-into-a-custom-class-logger-in-azure-function-does-not-write-to-console?rq=1
+  // However, this is not really needed because using 'AddApplicationInsights' also writes to console when running locally
+  "logging": {
+    "fileLoggingMode": "debugOnly",
+    "logLevel": {
+      // For all functions
+      "Function": "Information",
+      // Default settings, e.g. for host
+      "default": "Information"
+    }
+  }
+}

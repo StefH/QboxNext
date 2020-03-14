@@ -46,8 +46,8 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
             string fromPartitionKey = PartitionKeyHelper.Construct(serialNumber, fromQueryParameter);
             string toPartitionKey = PartitionKeyHelper.Construct(serialNumber, to);
 
-            string fromRowKey = RowKeyHelper.Construct(fromQueryParameter);
-            string toRowKey = RowKeyHelper.Construct(to);
+            string fromRowKey = DateTimeRowKeyHelper.Construct(fromQueryParameter);
+            string toRowKey = DateTimeRowKeyHelper.Construct(to);
 
             _logger.LogInformation("Querying Table {table} with PartitionKey {fromPartitionKey} to {toPartitionKey} and RowKey {fromRowKey} to {toRowKey} and AdjustHours = {adjustHours}", _measurementTable.Name, fromPartitionKey, toPartitionKey, fromRowKey, toRowKey, adjustHours);
 

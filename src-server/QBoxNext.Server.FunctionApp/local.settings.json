@@ -1,0 +1,32 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "System": "Warning",
+      "Microsoft": "Warning"
+    }
+  },
+  "AzureTableStorageCleanerOptions": {
+    "ConnectionString": "UseDevelopmentStorage=true",
+
+    "LoggingTableName": "QboxLogging",
+    "LoggingTableRetentionInMonths": 6,
+    "LoggingTableDeleteRows": false,
+    // Change this to a different value in Azure , like "0 3 * * *" ==> “At 03:00”
+    "LoggingTableCronExpression": "<replace>",
+
+    "StatesTableName": "QboxStates",
+    "StatesTableRetentionInMonths": 6,
+    "StatesTableDeleteRows": false,
+    // Change this to a different value in Azure , like "0 1 * * *" ==> “At 01:00”
+    "StatesTableCronExpression": "<replace>"
+  },
+  "ApplicationInsights": {
+    "InstrumentationKey": "<replace>"
+  }
+}

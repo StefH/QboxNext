@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Public\**" />
+    <EmbeddedResource Remove="Models\Public\**" />
+    <None Remove="Models\Public\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
@@ -19,10 +25,6 @@
     <ProjectReference Include="..\..\src\QboxNext.Extensions\QboxNext.Extensions.csproj" />
     <ProjectReference Include="..\QboxNext.Server.Common\QboxNext.Server.Common.csproj" />
     <ProjectReference Include="..\QboxNext.Server.Domain\QboxNext.Server.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Public\" />
   </ItemGroup>
 
 </Project>
