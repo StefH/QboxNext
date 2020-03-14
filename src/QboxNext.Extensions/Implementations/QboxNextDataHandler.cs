@@ -354,15 +354,9 @@ namespace QboxNext.Extensions.Implementations
                 return false;
             }
 
-            if (!(payload is R21CounterPayload counterPayload))
+            if ((payload is R21CounterPayload) && !(payload as R21CounterPayload).IsValid)
             {
-                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. The payload is not of type R21CounterPayload for counter '{InternalNr}'", _context.Mini.SerialNumber, payload.InternalNr);
-                return false;
-            }
-
-            if (!counterPayload.IsValid)
-            {
-                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. The payload is not valid for counter '{InternalNr}'", _context.Mini.SerialNumber, counterPayload.InternalNr);
+                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. The payload is of type R21CounterPayload but not valid for counter '{InternalNr}'", _context.Mini.SerialNumber, payload.InternalNr);
                 return false;
             }
 
@@ -375,7 +369,7 @@ namespace QboxNext.Extensions.Implementations
 
             if (!MapCounterId(payload, _context.Mini))
             {
-                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. Mapping the counterId failed.", _context.Mini.SerialNumber);
+                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. Mapping the counter {InternalNr} failed", _context.Mini.SerialNumber, payload.InternalNr);
                 return false;
             }
 
@@ -383,7 +377,7 @@ namespace QboxNext.Extensions.Implementations
             var counter = FindCounter(payload);
             if (counter == null)
             {
-                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. Received value for unknown counter: {payload.InternalNr}", _context.Mini.SerialNumber, counterPayload.InternalNr);
+                _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. Received value for unknown counter: {InternalNr}", _context.Mini.SerialNumber, payload.InternalNr);
                 return false;
             }
 
