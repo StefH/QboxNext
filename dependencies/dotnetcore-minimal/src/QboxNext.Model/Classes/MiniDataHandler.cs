@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using QboxNext.Core.Dto;
+using QboxNext.Core.Interfaces;
 using QboxNext.Logging;
 using QboxNext.Model.Interfaces;
 using QboxNext.Model.Qboxes;
@@ -38,17 +39,19 @@ namespace QboxNext.Model.Classes
         private readonly QboxDataDumpContext _context;
         private readonly IQboxMessagesLogger _qboxMessagesLogger;
         private readonly IParserFactory _parserFactory;
+        private readonly IDateTimeService _dateTimeService;
 
         private BaseParseResult _result;
 
         public static List<int> AutoStatusCommandSequenceNrs { get; set; }
 
 
-        public MiniDataHandler(QboxDataDumpContext context, IQboxMessagesLogger qboxMessagesLogger, IParserFactory parserFactory)
+        public MiniDataHandler(QboxDataDumpContext context, IQboxMessagesLogger qboxMessagesLogger, IParserFactory parserFactory, IDateTimeService dateTimeService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _qboxMessagesLogger = qboxMessagesLogger ?? new QboxMessagesNullLogger();
             _parserFactory = parserFactory ?? throw new ArgumentNullException(nameof(parserFactory));
+            _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
         }
 
         public string Handle()
@@ -84,34 +87,34 @@ namespace QboxNext.Model.Classes
                         switch (_context.Mini.State)
                         {
                             case MiniState.HardReset:
-                                _context.Mini.QboxStatus.LastHardReset = DateTime.UtcNow;
+                                _context.Mini.QboxStatus.LastHardReset = _dateTimeService.UtcNow;
                                 break;
                             case MiniState.InvalidImage:
-                                _context.Mini.QboxStatus.LastImageInvalid = DateTime.UtcNow;
+                                _context.Mini.QboxStatus.LastImageInvalid = _dateTimeService.UtcNow;
                                 break;
                             case MiniState.Operational:
                                 operational = true;
                                 break;
                             case MiniState.ValidImage:
-                                _context.Mini.QboxStatus.LastImageValid = DateTime.UtcNow;
+                                _context.Mini.QboxStatus.LastImageValid = _dateTimeService.UtcNow;
                                 break;
                             case MiniState.UnexpectedReset:
-                                _context.Mini.QboxStatus.LastPowerLoss = DateTime.UtcNow;
+                                _context.Mini.QboxStatus.LastPowerLoss = _dateTimeService.UtcNow;
                                 break;
                         }
 
                         if (!operational)
-                            _context.Mini.QboxStatus.LastNotOperational = DateTime.UtcNow;
+                            _context.Mini.QboxStatus.LastNotOperational = _dateTimeService.UtcNow;
 
                         if (parseResult.Model.Status.TimeIsReliable)
-                            _context.Mini.QboxStatus.LastTimeIsReliable = DateTime.UtcNow;
+                            _context.Mini.QboxStatus.LastTimeIsReliable = _dateTimeService.UtcNow;
                         else
-                            _context.Mini.QboxStatus.LastTimeUnreliable = DateTime.UtcNow;
+                            _context.Mini.QboxStatus.LastTimeUnreliable = _dateTimeService.UtcNow;
 
                         if (parseResult.Model.Status.ValidResponse)
-                            _context.Mini.QboxStatus.LastValidResponse = DateTime.UtcNow;
+                            _context.Mini.QboxStatus.LastValidResponse = _dateTimeService.UtcNow;
                         else
-                            _context.Mini.QboxStatus.LastInvalidResponse = DateTime.UtcNow;
+                            _context.Mini.QboxStatus.LastInvalidResponse = _dateTimeService.UtcNow;
 
                         foreach (var payload in parseResult.Model.Payloads)
                             payload.Visit(this);
@@ -129,7 +132,7 @@ namespace QboxNext.Model.Classes
                         BuildResult(ResponseType.Basic);
                     }
 
-                    _context.Mini.QboxStatus.LastSeen = DateTime.UtcNow;
+                    _context.Mini.QboxStatus.LastSeen = _dateTimeService.UtcNow;
 
                     Logger.LogDebug("sn: {0} | result: {1}", _context.Mini.SerialNumber, _result.GetMessage());
 
@@ -141,8 +144,8 @@ namespace QboxNext.Model.Classes
                 {
                     if (_context.Mini != null)
                     {
-                        _context.Mini.QboxStatus.LastSeen = DateTime.UtcNow;
-                        _context.Mini.QboxStatus.LastError = DateTime.UtcNow;
+                        _context.Mini.QboxStatus.LastSeen = _dateTimeService.UtcNow;
+                        _context.Mini.QboxStatus.LastError = _dateTimeService.UtcNow;
                         _context.Mini.QboxStatus.LastErrorMessage = e.Message;
                     }
 
@@ -160,7 +163,7 @@ namespace QboxNext.Model.Classes
             _result.Write((byte)_result.SequenceNr);
 
             // time in seconds from 1-1-2007
-            var seconds = Convert.ToInt32((DateTime.Now.Subtract(Epoch)).TotalSeconds);
+            var seconds = Convert.ToInt32((_dateTimeService.Now.Subtract(Epoch)).TotalSeconds);
             _result.Write(seconds);
 
             _result.Write(_context.Mini.Offset);
@@ -268,7 +271,7 @@ namespace QboxNext.Model.Classes
                     return;
 
                 counter.SetValue(parseResult.Model.MeasurementTime, ioPayload.Value, _context.Mini.QboxStatus);
-                _context.Mini.QboxStatus.LastDataReceived = DateTime.UtcNow;
+                _context.Mini.QboxStatus.LastDataReceived = _dateTimeService.UtcNow;
             }
             catch (Exception e)
             {
@@ -284,7 +287,7 @@ namespace QboxNext.Model.Classes
                 {
                     var key = payload.DeviceSetting.ToString();
                     _context.Mini.QboxStatus.DebugSettings[key] = payload.DeviceSettingValueStr;
-                    _context.Mini.QboxStatus.DebugSettingsLastReceived[key] = DateTime.UtcNow;
+                    _context.Mini.QboxStatus.DebugSettingsLastReceived[key] = _dateTimeService.UtcNow;
                 }
             }
             catch (Exception e)

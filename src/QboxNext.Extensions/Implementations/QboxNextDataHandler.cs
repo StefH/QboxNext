@@ -15,6 +15,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QboxNext.Core.Interfaces;
 
 namespace QboxNext.Extensions.Implementations
 {
@@ -50,6 +51,7 @@ namespace QboxNext.Extensions.Implementations
         private readonly ICounterStoreService _counterService;
         private readonly IStateStoreService _stateStoreService;
         private readonly ILogger<QboxNextDataHandler> _logger;
+        private readonly IDateTimeService _dateTimeService;
 
         private BaseParseResult _result;
 
@@ -61,6 +63,7 @@ namespace QboxNext.Extensions.Implementations
         /// <param name="parserFactory">The parser factory.</param>
         /// <param name="counterService">The counter service.</param>
         /// <param name="stateStoreService">The state store service.</param>
+        /// <param name="dateTimeService">The DateTimeService</param>
         /// <param name="logger">The logger.</param>
         public QboxNextDataHandler(
             [NotNull] string correlationId,
@@ -68,6 +71,7 @@ namespace QboxNext.Extensions.Implementations
             [NotNull] IParserFactory parserFactory,
             [NotNull] ICounterStoreService counterService,
             [NotNull] IStateStoreService stateStoreService,
+            [NotNull] IDateTimeService dateTimeService,
             [NotNull] ILogger<QboxNextDataHandler> logger)
         {
             Guard.IsNotNullOrEmpty(correlationId, nameof(correlationId));
@@ -76,6 +80,7 @@ namespace QboxNext.Extensions.Implementations
             Guard.IsNotNull(counterService, nameof(counterService));
             Guard.IsNotNull(stateStoreService, nameof(stateStoreService));
             Guard.IsNotNull(logger, nameof(logger));
+            Guard.IsNotNull(dateTimeService, nameof(dateTimeService));
 
             _correlationId = correlationId;
             _context = context;
@@ -83,6 +88,7 @@ namespace QboxNext.Extensions.Implementations
             _counterService = counterService;
             _stateStoreService = stateStoreService;
             _logger = logger;
+            _dateTimeService = dateTimeService;
         }
 
         /// <inheritdoc cref="IQboxNextDataHandler.HandleAsync()"/>
@@ -116,43 +122,43 @@ namespace QboxNext.Extensions.Implementations
                     switch (_context.Mini.State)
                     {
                         case MiniState.HardReset:
-                            _context.Mini.QboxStatus.LastHardReset = DateTime.UtcNow;
+                            _context.Mini.QboxStatus.LastHardReset = _dateTimeService.UtcNow;
                             break;
                         case MiniState.InvalidImage:
-                            _context.Mini.QboxStatus.LastImageInvalid = DateTime.UtcNow;
+                            _context.Mini.QboxStatus.LastImageInvalid = _dateTimeService.UtcNow;
                             break;
                         case MiniState.Operational:
                             operational = true;
                             break;
                         case MiniState.ValidImage:
-                            _context.Mini.QboxStatus.LastImageValid = DateTime.UtcNow;
+                            _context.Mini.QboxStatus.LastImageValid = _dateTimeService.UtcNow;
                             break;
                         case MiniState.UnexpectedReset:
-                            _context.Mini.QboxStatus.LastPowerLoss = DateTime.UtcNow;
+                            _context.Mini.QboxStatus.LastPowerLoss = _dateTimeService.UtcNow;
                             break;
                     }
 
                     if (!operational)
                     {
-                        _context.Mini.QboxStatus.LastNotOperational = DateTime.UtcNow;
+                        _context.Mini.QboxStatus.LastNotOperational = _dateTimeService.UtcNow;
                     }
 
                     if (parseResult.Model.Status.TimeIsReliable)
                     {
-                        _context.Mini.QboxStatus.LastTimeIsReliable = DateTime.UtcNow;
+                        _context.Mini.QboxStatus.LastTimeIsReliable = _dateTimeService.UtcNow;
                     }
                     else
                     {
-                        _context.Mini.QboxStatus.LastTimeUnreliable = DateTime.UtcNow;
+                        _context.Mini.QboxStatus.LastTimeUnreliable = _dateTimeService.UtcNow;
                     }
 
                     if (parseResult.Model.Status.ValidResponse)
                     {
-                        _context.Mini.QboxStatus.LastValidResponse = DateTime.UtcNow;
+                        _context.Mini.QboxStatus.LastValidResponse = _dateTimeService.UtcNow;
                     }
                     else
                     {
-                        _context.Mini.QboxStatus.LastInvalidResponse = DateTime.UtcNow;
+                        _context.Mini.QboxStatus.LastInvalidResponse = _dateTimeService.UtcNow;
                     }
 
                     await VisitPayloadsAsync(parseResult.Model.Payloads);
@@ -180,7 +186,7 @@ namespace QboxNext.Extensions.Implementations
                     BuildResult(ResponseType.Basic);
                 }
 
-                _context.Mini.QboxStatus.LastSeen = DateTime.UtcNow;
+                _context.Mini.QboxStatus.LastSeen = _dateTimeService.UtcNow;
 
                 string resultWithEnvelope = _result.GetMessageWithEnvelope();
 
@@ -201,8 +207,8 @@ namespace QboxNext.Extensions.Implementations
             {
                 if (_context.Mini != null)
                 {
-                    _context.Mini.QboxStatus.LastSeen = DateTime.UtcNow;
-                    _context.Mini.QboxStatus.LastError = DateTime.UtcNow;
+                    _context.Mini.QboxStatus.LastSeen = _dateTimeService.UtcNow;
+                    _context.Mini.QboxStatus.LastError = _dateTimeService.UtcNow;
                     _context.Mini.QboxStatus.LastErrorMessage = exception.Message;
                 }
 
@@ -276,7 +282,7 @@ namespace QboxNext.Extensions.Implementations
             _result.Write((byte)_result.SequenceNr);
 
             // time in seconds since 1-1-2007
-            int seconds = Convert.ToInt32(DateTime.Now.Subtract(Epoch).TotalSeconds);
+            int seconds = Convert.ToInt32(_dateTimeService.Now.Subtract(Epoch).TotalSeconds);
             _result.Write(seconds);
 
             _result.Write(_context.Mini.Offset);
@@ -392,7 +398,7 @@ namespace QboxNext.Extensions.Implementations
             }
 
             // Counter is valid, set the LastDataReceived
-            _context.Mini.QboxStatus.LastDataReceived = DateTime.UtcNow;
+            _context.Mini.QboxStatus.LastDataReceived = _dateTimeService.UtcNow;
 
             // Counter is valid, define a valid CounterData object
             counterData = new CounterData
@@ -420,7 +426,7 @@ namespace QboxNext.Extensions.Implementations
                 {
                     string key = payload.DeviceSetting.ToString();
                     _context.Mini.QboxStatus.DebugSettings[key] = payload.DeviceSettingValueStr;
-                    _context.Mini.QboxStatus.DebugSettingsLastReceived[key] = DateTime.UtcNow;
+                    _context.Mini.QboxStatus.DebugSettingsLastReceived[key] = _dateTimeService.UtcNow;
                 }
             }
             catch (Exception e)
