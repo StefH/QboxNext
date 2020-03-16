@@ -96,7 +96,8 @@ namespace QboxNext.Extensions.Implementations
                     MessageType = QboxMessageType.Request,
                     Message = _context.Message,
                     State = _context.Mini.State,
-                    Status = _context.Mini.QboxStatus
+                    Status = _context.Mini.QboxStatus,
+                    MeterType = _context.Mini.MeterType
                 };
                 await _stateStoreService.StoreAsync(_correlationId, stateData);
 
@@ -168,7 +169,8 @@ namespace QboxNext.Extensions.Implementations
                             MessageType = QboxMessageType.Error,
                             Message = errorParseResult.Error,
                             State = _context.Mini.State,
-                            Status = _context.Mini.QboxStatus
+                            Status = _context.Mini.QboxStatus,
+                            MeterType = _context.Mini.MeterType
                         };
                         await _stateStoreService.StoreAsync(_correlationId, stateDataError);
                     }
@@ -188,7 +190,8 @@ namespace QboxNext.Extensions.Implementations
                     MessageType = QboxMessageType.Response,
                     Message = resultWithEnvelope,
                     State = _context.Mini.State,
-                    Status = _context.Mini.QboxStatus
+                    Status = _context.Mini.QboxStatus,
+                    MeterType = _context.Mini.MeterType
                 };
                 await _stateStoreService.StoreAsync(_correlationId, stateDataResponse);
 
@@ -209,7 +212,8 @@ namespace QboxNext.Extensions.Implementations
                     MessageType = QboxMessageType.Exception,
                     Message = null,
                     State = _context.Mini?.State ?? MiniState.Waiting,
-                    Status = _context.Mini?.QboxStatus
+                    Status = _context.Mini?.QboxStatus,
+                    MeterType = _context.Mini?.MeterType
                 };
                 await _stateStoreService.StoreAsync(_correlationId, stateDataException);
 

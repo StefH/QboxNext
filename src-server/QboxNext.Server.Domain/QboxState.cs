@@ -22,6 +22,9 @@ namespace QboxNext.Server.Domain
 
         public int? FirmwareVersion { get; set; }
 
+        [CanBeNull]
+        public string MeterType { get; set; }
+
         public DateTime? LastDataReceived { get; set; }
 
         public DateTime? LastElectricityConsumptionSeen { get; set; }

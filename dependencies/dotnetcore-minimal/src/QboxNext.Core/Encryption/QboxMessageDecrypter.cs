@@ -18,11 +18,11 @@ namespace QboxNext.Core.Encryption
         /// Handles the decryption of the message if needed.
         /// We need this handled here because the encrypted messages is sent in a different encoding as opposed to the 
         /// unencrypted message. The encrypted message is sent in binary and the unencrypted message is sent UTF-8.
-        /// So an encrypted message should be decrypted first or the conversion might remove somecharacters or even
+        /// So an encrypted message should be decrypted first or the conversion might remove some characters or even
         /// shorten the actual string.
         /// </summary>
         /// <param name="bytes">The actual message as a byte array</param>
-        /// <returns>The unecrypted message as a string without STX/ETX</returns>
+        /// <returns>The unencrypted message as a string without STX/ETX</returns>
         public static string DecryptPlainOrEncryptedMessage(byte[] bytes)
         {
             Logger.LogDebug(HexEncoding.ByteArrayToHexString(bytes));
@@ -55,11 +55,11 @@ namespace QboxNext.Core.Encryption
                 Logger.LogDebug("Encryption on");
             }
 
-            Logger.LogDebug(string.Format("Decrypted: {0}", message));
+            Logger.LogDebug("Decrypted: {message}", message);
+
             //todo: check refactor this smell. The message is not correctly delimited by the chars.
             return message.WithoutStxEtxEnvelope().Trim();
         }
-
 
         /// <summary>
         /// Remove whitespace from message and discard everything from '\0' onward.

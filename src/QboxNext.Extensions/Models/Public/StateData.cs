@@ -19,5 +19,8 @@ namespace QboxNext.Extensions.Models.Public
 
         [CanBeNull]
         public QboxStatus Status { get; set; }
+
+        [CanBeNull]
+        public DeviceMeterType? MeterType { get; set; }
     }
 }

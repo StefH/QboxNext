@@ -42,7 +42,8 @@ namespace QBoxNext.Server.Business.Implementations
                 State = stateData.State.ToString(),
                 FirmwareVersion = stateData.Status?.FirmwareVersion,
                 LastIpAddress = stateData.Status?.LastIpAddress.Key,
-                LastIpAddressUpdate = stateData.Status?.LastIpAddress.Value
+                LastIpAddressUpdate = stateData.Status?.LastIpAddress.Value,
+                MeterType = stateData.MeterType != null ? stateData.MeterType.ToString() : null
             };
 
             if (stateData.Message != null)
