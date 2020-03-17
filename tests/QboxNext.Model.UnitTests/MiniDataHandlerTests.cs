@@ -44,6 +44,7 @@ namespace QboxNext.Model.Tests
         [InlineData("2F940718D6D5A41E00", "9418D6728000")]
         [InlineData("2F610718D705B01E00", "6118D6728000")]
         [InlineData("2F9B0718D713481E00", "9B18D6728000")]
+        [InlineData("2FBF0500000A501E00", "BF18D6728000")]
         public void Handle_NoMeterMessage(string message, string response)
         {
             var mini = new Mini();
