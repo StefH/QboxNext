@@ -42,7 +42,7 @@ namespace QboxNext.Server.Frontend.Controllers
             var claimsIdentity = (Auth0ClaimsIdentity)User.Identities.First(i => i is Auth0ClaimsIdentity);
             string serialNumber = claimsIdentity.AppMetadata["qboxSerialNumber"].ToString();
 
-            if (!await _registrationService.IsValidRegistrationAsync(serialNumber))
+            if (await _registrationService.GetQboxRegistrationDetailsAsync(serialNumber) == null)
             {
                 return BadRequest();
             }

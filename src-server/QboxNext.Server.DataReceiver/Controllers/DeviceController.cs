@@ -50,7 +50,7 @@ namespace QboxNext.Server.DataReceiver.Controllers
 
             _logger.LogInformation("PostAsync /device/qbox/{productNumber}/{serialNumber}", productNumber, serialNumber);
 
-            if (!await _registrationService.IsValidRegistrationAsync(serialNumber))
+            if (await _registrationService.GetQboxRegistrationDetailsAsync(serialNumber) == null)
             {
                 _logger.LogWarning($"SerialNumber {serialNumber} is not registered.");
                 return BadRequest();
