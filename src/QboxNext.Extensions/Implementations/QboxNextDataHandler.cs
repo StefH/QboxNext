@@ -58,8 +58,6 @@ namespace QboxNext.Extensions.Implementations
         private readonly ILogger<QboxNextDataHandler> _logger;
         private readonly IDateTimeService _dateTimeService;
 
-        private BaseParseResult _result;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="QboxNextDataHandler"/> class.
         /// </summary>
@@ -112,9 +110,10 @@ namespace QboxNext.Extensions.Implementations
                 await _stateStoreService.StoreAsync(_correlationId, stateDataRequest);
 
                 var parser = _parserFactory.GetParser(_context.Message);
-                _result = parser.Parse(_context.Message);
+                var result = parser.Parse(_context.Message);
 
-                if (_result is MiniParseResult parseResult)
+                var responseMessageTime = _dateTimeService.Now;
+                if (result is MiniParseResult parseResult)
                 {
                     // handle the result
                     _context.Mini.QboxStatus.FirmwareVersion = parseResult.ProtocolNr;
@@ -125,7 +124,7 @@ namespace QboxNext.Extensions.Implementations
                     {
                         SerialNumber = _context.Mini.SerialNumber,
                         MessageType = MessageTypeRequestParsed,
-                        Message = _context.Message,
+                        Message = null, // Set to null
                         State = _context.Mini.State,
                         Status = _context.Mini.QboxStatus,
                         MeterType = parseResult.Model.MeterType,
@@ -179,13 +178,17 @@ namespace QboxNext.Extensions.Implementations
                         _context.Mini.QboxStatus.LastInvalidResponse = _dateTimeService.UtcNow;
                     }
 
-                    await VisitPayloadsAsync(parseResult.Model.Payloads);
+                    await VisitPayloadsAsync(parseResult);
 
-                    BuildResult(ResponseType.Normal);
+                    BuildResult(parseResult, responseMessageTime, ResponseType.Normal);
                 }
                 else
                 {
-                    if (_result is ErrorParseResult errorParseResult)
+                    // We could not handle the message normally, but if we don't answer at all, the Qbox will just retransmit the message.
+                    // So we just send back the basic message, without handling the queue and auto-answer.
+                    BuildResult(result, responseMessageTime, ResponseType.Basic);
+
+                    if (result is ErrorParseResult errorParseResult)
                     {
                         var stateDataError = new StateData
                         {
@@ -193,19 +196,16 @@ namespace QboxNext.Extensions.Implementations
                             MessageType = MessageTypeError,
                             Message = errorParseResult.Error,
                             State = _context.Mini.State,
-                            Status = _context.Mini.QboxStatus
+                            Status = _context.Mini.QboxStatus,
+                            MessageTime = responseMessageTime
                         };
                         await _stateStoreService.StoreAsync(_correlationId, stateDataError);
                     }
-
-                    // We could not handle the message normally, but if we don't answer at all, the Qbox will just retransmit the message.
-                    // So we just send back the basic message, without handling the queue and auto-answer.
-                    BuildResult(ResponseType.Basic);
                 }
 
                 _context.Mini.QboxStatus.LastSeen = _dateTimeService.UtcNow;
 
-                string resultWithEnvelope = _result.GetMessageWithEnvelope();
+                string resultWithEnvelope = result.GetMessageWithEnvelope();
 
                 var stateDataResponse = new StateData
                 {
@@ -213,7 +213,8 @@ namespace QboxNext.Extensions.Implementations
                     MessageType = MessageTypeResponse,
                     Message = resultWithEnvelope,
                     State = _context.Mini.State,
-                    Status = _context.Mini.QboxStatus
+                    Status = _context.Mini.QboxStatus,
+                    MessageTime = responseMessageTime
                 };
                 await _stateStoreService.StoreAsync(_correlationId, stateDataResponse);
 
@@ -244,8 +245,10 @@ namespace QboxNext.Extensions.Implementations
             }
         }
 
-        private async Task VisitPayloadsAsync(IList<BasePayload> payloads)
+        private async Task VisitPayloadsAsync(MiniParseResult miniParseResult)
         {
+            var payloads = miniParseResult.Model.Payloads;
+
             // Loop all payloads except CounterPayload and visit
             var exceptionInformation = new ConcurrentQueue<(string details, Exception exception)>();
             foreach (var payload in payloads.Where(p => !(p is CounterPayload)))
@@ -263,7 +266,7 @@ namespace QboxNext.Extensions.Implementations
             var counterDataList = new List<CounterData>();
             foreach (var counterPayload in payloads.OfType<CounterPayload>())
             {
-                if (TryMapCounterPayload(counterPayload, out CounterData counterData))
+                if (TryMapCounterPayload(miniParseResult, counterPayload, out CounterData counterData))
                 {
                     counterDataList.Add(counterData);
                 }
@@ -291,26 +294,27 @@ namespace QboxNext.Extensions.Implementations
             }
         }
 
-        private void BuildResult(ResponseType inResponseType)
+        private void BuildResult(BaseParseResult result, DateTime serverTime, ResponseType inResponseType)
         {
             // sequence number of the message received
-            _result.Write((byte)_result.SequenceNr);
+            result.Write((byte)result.SequenceNr);
 
             // time in seconds since 1-1-2007
-            int seconds = Convert.ToInt32(_dateTimeService.Now.Subtract(Epoch).TotalSeconds);
-            _result.Write(seconds);
+            int seconds = Convert.ToInt32(serverTime.Subtract(Epoch).TotalSeconds);
+            result.Write(seconds);
 
-            _result.Write(_context.Mini.Offset);
+            result.Write(_context.Mini.Offset);
 
             // SequenceNr is 0-255.
-            bool canSendAutoStatusCommand = inResponseType == ResponseType.Normal && CanSendAutoStatusCommand((byte)_result.SequenceNr);
+            bool canSendAutoStatusCommand = inResponseType == ResponseType.Normal && CanSendAutoStatusCommand((byte)result.SequenceNr);
             bool canSendAutoAnswerCommand = inResponseType == ResponseType.Normal;
+
             var responseBuilder = new QboxResponseBuilder(_context.Mini, ClientRepositories.Queue, canSendAutoStatusCommand, canSendAutoAnswerCommand);
 
             var commands = responseBuilder.Build();
             if (commands != null && commands.Count > 0)
             {
-                _result.Write(commands[0]);
+                result.Write(commands[0]);
                 QueueCommands(commands.Skip(1));
             }
         }
@@ -369,7 +373,7 @@ namespace QboxNext.Extensions.Implementations
             return _context.Mini.Counters.SingleOrDefault(s => s.CounterId == payload.InternalNr);
         }
 
-        private bool TryMapCounterPayload(CounterPayload payload, out CounterData counterData)
+        private bool TryMapCounterPayload(BaseParseResult result, CounterPayload payload, out CounterData counterData)
         {
             counterData = null;
 
@@ -406,7 +410,7 @@ namespace QboxNext.Extensions.Implementations
                 return false;
             }
 
-            if (!(_result is MiniParseResult parseResult))
+            if (!(result is MiniParseResult parseResult))
             {
                 _logger.LogWarning("TryMapCounterPayload failed for '{SerialNumber}'. The _result is not of type MiniParseResult", _context.Mini.SerialNumber);
                 return false;
