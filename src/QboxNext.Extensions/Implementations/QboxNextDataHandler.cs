@@ -24,6 +24,7 @@ namespace QboxNext.Extensions.Implementations
     /// Based on <see cref="MiniDataHandler"/> but with fixes for:
     /// - handle Payload.Visit(...) exceptions correctly
     /// - Async support
+    /// - More logging
     /// </summary>
     [UsedImplicitly]
     public class QboxNextDataHandler : IQboxNextDataHandler
