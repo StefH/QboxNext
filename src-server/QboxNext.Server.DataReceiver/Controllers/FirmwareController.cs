@@ -12,7 +12,7 @@ namespace QboxNext.Server.DataReceiver.Controllers
     public class FirmwareController : ControllerBase
     {
         private readonly IRegistrationService _registrationService;
-        [NotNull] private readonly ILogger<FirmwareController> _logger;
+        private readonly ILogger<FirmwareController> _logger;
 
         public FirmwareController(
             [NotNull] IRegistrationService registrationService,
@@ -40,7 +40,7 @@ namespace QboxNext.Server.DataReceiver.Controllers
             var details = await _registrationService.GetQboxRegistrationDetailsAsync(serialNumber);
             if (details == null)
             {
-                _logger.LogWarning($"SerialNumber {serialNumber} is not registered.");
+                _logger.LogWarning("SerialNumber {serialNumber} is not registered.", serialNumber);
                 return BadRequest();
             }
 
@@ -52,7 +52,7 @@ namespace QboxNext.Server.DataReceiver.Controllers
 
             if (string.IsNullOrEmpty(details.Firmware))
             {
-                _logger.LogWarning("Getting the Firmware version based on SerialNumber is yet supported.");
+                _logger.LogWarning("Getting the Firmware version based on the SerialNumber is yet supported.");
                 return BadRequest();
             }
 
