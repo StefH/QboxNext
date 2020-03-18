@@ -25,6 +25,7 @@ namespace QboxNext.Qboxes.Parsing.Tests.Protocols
         [Theory]
         [InlineData("2F0015000000031E00", MiniState.InvalidImage)]
         [InlineData("2F610718D705B01E00", MiniState.Operational)]
+        [InlineData("2F100718D9A3C41E00", MiniState.Operational)] // Qbox van R.
         public void Parse(string message, MiniState miniState)
         {
             // Arrange

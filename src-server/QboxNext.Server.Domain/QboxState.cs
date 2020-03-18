@@ -25,6 +25,15 @@ namespace QboxNext.Server.Domain
         [CanBeNull]
         public string MeterType { get; set; }
 
+        [CanBeNull]
+        public int? SequenceNumber { get; set; }
+
+        [CanBeNull]
+        public int? Payloads { get; set; }
+
+        [CanBeNull]
+        public DateTime? MessageTime { get; set; }
+
         public DateTime? LastDataReceived { get; set; }
 
         public DateTime? LastElectricityConsumptionSeen { get; set; }

@@ -1,6 +1,11 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using QboxNext.Core.Dto;
+using QboxNext.Core.Interfaces;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Interfaces.Public;
 using QboxNext.Extensions.Models.Public;
@@ -10,12 +15,6 @@ using QboxNext.Qboxes.Parsing;
 using QboxNext.Qboxes.Parsing.Elements;
 using QboxNext.Qboxes.Parsing.Protocols;
 using QboxNext.Qserver.Core.Interfaces;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using QboxNext.Core.Interfaces;
 
 namespace QboxNext.Extensions.Implementations
 {
@@ -29,6 +28,12 @@ namespace QboxNext.Extensions.Implementations
     [UsedImplicitly]
     public class QboxNextDataHandler : IQboxNextDataHandler
     {
+        private const string MessageTypeRequest = "Request";
+        private const string MessageTypeRequestParsed = "RequestParsed";
+        private const string MessageTypeResponse = "Response";
+        private const string MessageTypeError = "Error";
+        private const string MessageTypeException = "Exception";
+
         private static readonly Dictionary<int, int> SmartMeterIdMapping = new Dictionary<int, int>
         {
            { 1, QboxConstants.CounterIdConsumptionLow },
@@ -96,16 +101,15 @@ namespace QboxNext.Extensions.Implementations
         {
             try
             {
-                var stateData = new StateData
+                var stateDataRequest = new StateData
                 {
                     SerialNumber = _context.Mini.SerialNumber,
-                    MessageType = QboxMessageType.Request,
+                    MessageType = MessageTypeRequest,
                     Message = _context.Message,
                     State = _context.Mini.State,
-                    Status = _context.Mini.QboxStatus,
-                    MeterType = _context.Mini.MeterType
+                    Status = _context.Mini.QboxStatus
                 };
-                await _stateStoreService.StoreAsync(_correlationId, stateData);
+                await _stateStoreService.StoreAsync(_correlationId, stateDataRequest);
 
                 var parser = _parserFactory.GetParser(_context.Message);
                 _result = parser.Parse(_context.Message);
@@ -116,6 +120,20 @@ namespace QboxNext.Extensions.Implementations
                     _context.Mini.QboxStatus.FirmwareVersion = parseResult.ProtocolNr;
                     _context.Mini.State = parseResult.Model.Status.Status;
                     _context.Mini.QboxStatus.State = (byte)parseResult.Model.Status.Status;
+
+                    var stateDataRequestParsed = new StateData
+                    {
+                        SerialNumber = _context.Mini.SerialNumber,
+                        MessageType = MessageTypeRequestParsed,
+                        Message = _context.Message,
+                        State = _context.Mini.State,
+                        Status = _context.Mini.QboxStatus,
+                        MeterType = parseResult.Model.MeterType,
+                        MessageTime = parseResult.Model.MeasurementTime,
+                        SequenceNumber = parseResult.SequenceNr,
+                        Payloads = parseResult.Model.Payloads?.Count
+                    };
+                    await _stateStoreService.StoreAsync(_correlationId, stateDataRequestParsed);
 
                     bool operational = false;
 
@@ -172,11 +190,10 @@ namespace QboxNext.Extensions.Implementations
                         var stateDataError = new StateData
                         {
                             SerialNumber = _context.Mini.SerialNumber,
-                            MessageType = QboxMessageType.Error,
+                            MessageType = MessageTypeError,
                             Message = errorParseResult.Error,
                             State = _context.Mini.State,
-                            Status = _context.Mini.QboxStatus,
-                            MeterType = _context.Mini.MeterType
+                            Status = _context.Mini.QboxStatus
                         };
                         await _stateStoreService.StoreAsync(_correlationId, stateDataError);
                     }
@@ -193,11 +210,10 @@ namespace QboxNext.Extensions.Implementations
                 var stateDataResponse = new StateData
                 {
                     SerialNumber = _context.Mini.SerialNumber,
-                    MessageType = QboxMessageType.Response,
+                    MessageType = MessageTypeResponse,
                     Message = resultWithEnvelope,
                     State = _context.Mini.State,
-                    Status = _context.Mini.QboxStatus,
-                    MeterType = _context.Mini.MeterType
+                    Status = _context.Mini.QboxStatus
                 };
                 await _stateStoreService.StoreAsync(_correlationId, stateDataResponse);
 
@@ -215,11 +231,10 @@ namespace QboxNext.Extensions.Implementations
                 var stateDataException = new StateData
                 {
                     SerialNumber = _context.Mini?.SerialNumber ?? "N/A",
-                    MessageType = QboxMessageType.Exception,
+                    MessageType = MessageTypeException,
                     Message = null,
                     State = _context.Mini?.State ?? MiniState.Waiting,
-                    Status = _context.Mini?.QboxStatus,
-                    MeterType = _context.Mini?.MeterType
+                    Status = _context.Mini?.QboxStatus
                 };
                 await _stateStoreService.StoreAsync(_correlationId, stateDataException);
 

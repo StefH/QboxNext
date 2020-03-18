@@ -30,6 +30,12 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
 
         public string MeterType { get; set; }
 
+        public int? SequenceNumber { get; set; }
+
+        public int? Payloads { get; set; }
+
+        public DateTime? MessageTime { get; set; }
+
         public DateTime? LastDataReceived { get; set; }
         public DateTime? LastElectricityConsumptionSeen { get; set; }
         public DateTime? LastElectricityGenerationSeen { get; set; }
@@ -85,6 +91,9 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
             State = qboxState.State;
             FirmwareVersion = qboxState.FirmwareVersion;
             MeterType = qboxState.MeterType;
+            SequenceNumber = qboxState.SequenceNumber;
+            Payloads = qboxState.Payloads;
+            MessageTime = qboxState.MessageTime;
 
             // Copy all 'Last...' values
             var propertiesToCopy = typeof(QboxState).GetProperties()

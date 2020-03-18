@@ -1,5 +1,5 @@
-﻿using JetBrains.Annotations;
-using QboxNext.Core.Dto;
+﻿using System;
+using JetBrains.Annotations;
 using QboxNext.Model.Qboxes;
 using QboxNext.Qboxes.Parsing.Protocols;
 
@@ -10,7 +10,7 @@ namespace QboxNext.Extensions.Models.Public
         [NotNull]
         public string SerialNumber { get; set; }
 
-        public QboxMessageType MessageType { get; set; }
+        public string MessageType { get; set; }
 
         [CanBeNull]
         public string Message { get; set; }
@@ -22,5 +22,14 @@ namespace QboxNext.Extensions.Models.Public
 
         [CanBeNull]
         public DeviceMeterType? MeterType { get; set; }
+
+        [CanBeNull]
+        public DateTime? MessageTime { get; set; }
+
+        [CanBeNull]
+        public int? SequenceNumber { get; set; }
+
+        [CanBeNull]
+        public int? Payloads { get; set; }
     }
 }
