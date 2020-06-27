@@ -1,19 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 
 namespace WeatherApi
 {
@@ -31,14 +23,6 @@ namespace WeatherApi
         {
             // services.AddControllers();
 
-            // Configure AddControllers with AuthorizationPolicyBuilder (stef)
-            services.AddControllers(config =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                config.Filters.Add(new AuthorizeFilter(policy));
-            });
 
             // Auth0
             services.AddAuth0(options =>
@@ -55,6 +39,16 @@ namespace WeatherApi
                 options.Policies = section.GetSection("Policies").Get<List<string>>();
             });
 
+            // Configure AddControllers with AuthorizationPolicyBuilder (stef)
+            services.AddControllers(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
+
+
             //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             //    .AddJwtBearer(options =>
             //    {
@@ -64,7 +58,7 @@ namespace WeatherApi
 
             //        //options.
             //        //options.
-                    
+
             //        //options.TokenValidationParameters = new TokenValidationParameters
             //        //{
             //        //    NameClaimType = "name"
@@ -80,7 +74,7 @@ namespace WeatherApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(config => 
+            app.UseCors(config =>
             {
                 config.AllowAnyOrigin();
                 config.AllowAnyMethod();

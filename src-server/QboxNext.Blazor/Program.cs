@@ -40,6 +40,10 @@ namespace QboxNext.Blazor
                 // For more information, see https://aka.ms/blazor-standalone-auth
                 builder.Configuration.Bind("oidc", options.ProviderOptions);
 
+                //options.ProviderOptions.re
+
+                //options.ProviderOptions.Authority += "/v2.0";
+
                 // The callback url is : https://localhost:5001/authentication/login-callback
                 // Make sure to add this to the Auth0 allowed callback urls !
             });
