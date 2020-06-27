@@ -21,6 +21,8 @@ namespace QboxNext.Blazor
             //    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
             //});
 
+            // https://github.com/cradle77/BlazorSecurityDemo
+            // https://medium.com/@marcodesanctis2/securing-blazor-webassembly-with-identity-server-4-ee44aa1687ef
             builder.Services.AddHttpClient("api")
                 .AddHttpMessageHandler(sp =>
                 {
