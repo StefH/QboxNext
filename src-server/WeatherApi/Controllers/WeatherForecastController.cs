@@ -8,7 +8,8 @@ using Microsoft.Extensions.Logging;
 
 namespace WeatherApi.Controllers
 {
-    [Authorize("read:data")]
+    //[Authorize("read:data")]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase

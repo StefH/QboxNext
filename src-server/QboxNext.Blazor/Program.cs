@@ -28,8 +28,9 @@ namespace QboxNext.Blazor
                 {
                     var handler = sp.GetService<AuthorizationMessageHandler>()
                         .ConfigureHandler(
-                            authorizedUrls: new[] { "https://localhost:5002" },
-                            scopes: new[] { "openid profile" });
+                            authorizedUrls: new[] { "https://localhost:5002" }
+                            // scopes: new[] { "openid profile" }
+                        );
 
                     return handler;
                 });
@@ -42,8 +43,12 @@ namespace QboxNext.Blazor
                 // For more information, see https://aka.ms/blazor-standalone-auth
                 builder.Configuration.Bind("oidc", options.ProviderOptions);
 
-                //options.ProviderOptions.re
+               // builder.Logging.Services.Add();
 
+                //options.UserOptions.AuthenticationType
+
+                //options.ProviderOptions.re
+//
                 //options.ProviderOptions.Authority += "/v2.0";
 
                 // The callback url is : https://localhost:5001/authentication/login-callback
