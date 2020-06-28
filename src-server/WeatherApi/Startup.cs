@@ -29,6 +29,8 @@ namespace WeatherApi
         {
             // services.AddControllers();
 
+            services.AddControllers();
+
 
             // Auth0
             //services.AddAuth0(options =>
@@ -45,7 +47,7 @@ namespace WeatherApi
             //    options.Policies = section.GetSection("Policies").Get<List<string>>();
             //});
 
-            // Configure AddControllers with AuthorizationPolicyBuilder (stef)
+            // Configure AddControllers with AuthorizationPolicyBuilder(stef)
             //services.AddControllers(config =>
             //{
             //    var policy = new AuthorizationPolicyBuilder()
@@ -53,8 +55,6 @@ namespace WeatherApi
             //        .Build();
             //    config.Filters.Add(new AuthorizeFilter(policy));
             //});
-
-            services.AddControllers();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -70,6 +70,17 @@ namespace WeatherApi
 
                     options.Events = new JwtBearerEvents
                     {
+                        OnForbidden = (ctx) =>
+                        {
+                            Console.WriteLine("OnForbidden");
+                            return Task.CompletedTask;
+                        },
+
+                        OnChallenge = (ctx) => {
+                            Console.WriteLine("OnChallenge:" + ctx.Error);
+                            return Task.CompletedTask;
+                        },
+
                         OnAuthenticationFailed = (ctx) =>
                         {
                             Console.WriteLine(ctx.Exception.Message);
@@ -89,29 +100,15 @@ namespace WeatherApi
                         }
                     };
 
-                    options.TokenValidationParameters = new TokenValidationParameters()
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        NameClaimType = "name",
+                        RequireAudience = true,
+                        ValidAudience = "https://qboxnext.web.nl"
 
                     };
                 });
 
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.Authority = "https://stef-heyenrath.eu.auth0.com/api/v2";
-            //        options.Audience = "https://qboxnext.web.nl";
-
-
-            //        //options.
-            //        //options.
-
-            //        //options.TokenValidationParameters = new TokenValidationParameters
-            //        //{
-            //        //    NameClaimType = "name"
-            //        //};
-            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

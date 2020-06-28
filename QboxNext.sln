@@ -69,6 +69,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Blazor", "src-serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherApi", "src-server\WeatherApi\WeatherApi.csproj", "{E06AED18-AAC8-4E17-B841-BA23C4F80E49}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Security.Auth0.NETCoreApp3", "..\AspNetCore.Security.Auth0\src\AspNetCore.Security.Auth0.NETCoreApp3\AspNetCore.Security.Auth0.NETCoreApp3.csproj", "{4B7ECA47-7BDF-49D0-936C-9D86C2EDF701}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +153,10 @@ Global
 		{E06AED18-AAC8-4E17-B841-BA23C4F80E49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E06AED18-AAC8-4E17-B841-BA23C4F80E49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E06AED18-AAC8-4E17-B841-BA23C4F80E49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B7ECA47-7BDF-49D0-936C-9D86C2EDF701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B7ECA47-7BDF-49D0-936C-9D86C2EDF701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B7ECA47-7BDF-49D0-936C-9D86C2EDF701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B7ECA47-7BDF-49D0-936C-9D86C2EDF701}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -175,6 +181,7 @@ Global
 		{E30EFF47-20AE-4911-AB55-C121774FD280} = {586BBAB6-81B3-4D88-B26A-E1857DE9E000}
 		{45595C9E-8073-4F87-82F7-4CDCBF82F7F7} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 		{E06AED18-AAC8-4E17-B841-BA23C4F80E49} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
+		{4B7ECA47-7BDF-49D0-936C-9D86C2EDF701} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A6ED5AF-7B32-444B-887A-ABF343EE609C}
