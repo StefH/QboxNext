@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Blazor.Auth0;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,58 +22,47 @@ namespace QboxNext.Blazor
 
             //https://github.com/cradle77/BlazorSecurityDemo
             //https://medium.com/@marcodesanctis2/securing-blazor-webassembly-with-identity-server-4-ee44aa1687ef
-            //builder.Services.AddHttpClient("api")
-            //    .AddHttpMessageHandler(sp =>
-            //    {
-            //        var handler = sp.GetService<AuthorizationMessageHandler>()
-            //            .ConfigureHandler(
-            //                authorizedUrls: new[] { "https://localhost:5002" },
-            //                scopes: new[] { "openid profile" }
-            //            );
+            builder.Services.AddHttpClient("api")
+                .AddHttpMessageHandler(sp =>
+                {
+                    var handler = sp.GetService<AuthorizationMessageHandler>()
+                        .ConfigureHandler(
+                            authorizedUrls: new[] { "https://localhost:5002" },
+                            scopes: new[] { "openid profile" }
+                        );
 
-            //        return handler;
-            //    });
+                    return handler;
+                });
 
-            //builder.Services.AddScoped(sp => sp.GetService<IHttpClientFactory>().CreateClient("api"));
+            builder.Services.AddScoped(sp => sp.GetService<IHttpClientFactory>().CreateClient("api"));
 
-            builder.Services.AddBlazorAuth0(options =>
-            {
-                options.Domain = "stef-heyenrath.eu.auth0.com";
-                options.ClientId = "zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu";
-                options.Audience = "https://qboxnext.web.nl";
-
-                //options.RedirectUri = "https://localhost:5001/authentication/login-callback";
-
-
-            });
-            builder.Services.AddAuthorizationCore();
-            IAuthenticationService d;
-
-            //builder.Services.AddOidcAuthentication(options =>
+            //builder.Services.AddBlazorAuth0(options =>
             //{
-            //     Configure your authentication provider options here.
-            //     For more information, see https://aka.ms/blazor-standalone-auth
-            //    builder.Configuration.Bind("oidc", options.ProviderOptions);
+            //    options.Domain = "stef-heyenrath.eu.auth0.com";
+            //    options.ClientId = "zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu";
+            //    options.Audience = "https://qboxnext.web.nl";
 
-            //    options.ProviderOptions.ResponseType = "code";
+            //    //options.RedirectUri = "https://localhost:5001/authentication/login-callback";
 
-            //    options.ProviderOptions.
 
-            //    OidcProviderOptions o;
-
-            //    options.ProviderOptions.DefaultScopes.Add("'https://qboxnext.web.nl");
-
-            //     builder.Logging.Services.Add();
-
-            //    options.UserOptions.AuthenticationType
-
-            //    options.ProviderOptions.re
-
-            //    options.ProviderOptions.Authority += "/v2.0";
-
-            //     The callback url is : https://localhost:5001/authentication/login-callback
-            //     Make sure to add this to the Auth0 allowed callback urls !
             //});
+            //builder.Services.AddAuthorizationCore();
+            //IAuthenticationService d;
+
+            builder.Services.AddOidcAuthentication(options =>
+            {
+                // Configure your authentication provider options here.
+                // For more information, see https://aka.ms/blazor-standalone-auth
+                builder.Configuration.Bind("oidc", options.ProviderOptions);
+
+                //options.ProviderOptions.ResponseType = "code";
+
+               
+
+
+                // The callback url is : https://localhost:5001/authentication/login-callback
+                // Make sure to add this to the Auth0 allowed callback urls !
+            });
 
             await builder.Build().RunAsync();
         }

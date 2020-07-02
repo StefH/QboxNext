@@ -1,7 +1,7 @@
-﻿@using global::Blazor.Auth0
-
-@*@using Microsoft.AspNetCore.Components.Authorization
+﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Components
+@using System.Threading.Tasks
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
@@ -22,9 +22,9 @@
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo("authentication/logout");
     }
-}*@
+}
 
-@inject IAuthenticationService authService
+@*@inject IAuthenticationService authService
 
 <AuthorizeView>
     <Authorized>        
@@ -33,4 +33,4 @@
     <NotAuthorized>
         <button @onclick="authService.Authorize">Log in</button>
     </NotAuthorized>
-</AuthorizeView>
+</AuthorizeView>*@

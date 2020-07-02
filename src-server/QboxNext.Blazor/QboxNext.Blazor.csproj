@@ -17,9 +17,9 @@
     <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <ProjectReference Include="..\..\Blazor.Auth0\src\Blazor.Auth0.ClientSide\Blazor.Auth0.ClientSide.csproj" />
     <ProjectReference Include="..\..\Blazor.Auth0\src\Blazor.Auth0.Shared\Blazor.Auth0.Shared.csproj" />
-  </ItemGroup>
+  </ItemGroup>-->
 
 </Project>
