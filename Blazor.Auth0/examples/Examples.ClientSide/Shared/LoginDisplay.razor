@@ -1,0 +1,17 @@
+@inject Blazor.Auth0.IAuthenticationService authService
+
+<AuthorizeView>
+    <Authorized>
+        Authorized
+        <NavLink class="nav-link" href="javascript:void(0)" @onclick="@(async ()=> await authService.LogOut())">
+            <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+        </NavLink>
+
+    </Authorized>
+    <NotAuthorized>
+        NotAuthorized
+        <NavLink class="nav-link" href="javascript:void(0)" @onclick="authService.Authorize">
+            <span class="oi oi-account-login" aria-hidden="true"></span> Login
+        </NavLink>
+    </NotAuthorized>
+</AuthorizeView>

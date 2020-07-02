@@ -50,6 +50,7 @@ else
         //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
 
         var tokenResult = await TokenProvider.RequestAccessToken();
+        
 
         if (tokenResult.TryGetToken(out var token))
         {

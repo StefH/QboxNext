@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -76,20 +77,25 @@ namespace WeatherApi
                             return Task.CompletedTask;
                         },
 
-                        OnChallenge = (ctx) => {
-                            Console.WriteLine("OnChallenge:" + ctx.Error);
+                        OnChallenge = (ctx) =>
+                        {
+                            // invalid_token
+                            // https://github.com/auth0-samples/auth0-aspnetcore-webapi-samples/issues/13
+
+                            Console.WriteLine("OnChallenge Error: " + ctx.Error);
+                            Console.WriteLine("OnChallenge AuthenticateFailure.Message: " + ctx.AuthenticateFailure?.Message);
                             return Task.CompletedTask;
                         },
 
                         OnAuthenticationFailed = (ctx) =>
                         {
-                            Console.WriteLine(ctx.Exception.Message);
+                            Console.WriteLine("OnAuthenticationFailed:" + ctx.Exception.Message);
                             return Task.CompletedTask;
                         },
 
                         OnMessageReceived = (ctx) =>
                         {
-                            Console.WriteLine(ctx.Token);
+                            Console.WriteLine("OnMessageReceived:" + ctx.Token);
                             return Task.CompletedTask;
                         },
 
@@ -102,8 +108,8 @@ namespace WeatherApi
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        RequireAudience = true,
-                        ValidAudience = "https://qboxnext.web.nl"
+                        RequireAudience = false,
+                        //ValidAudience = "https://qboxnext.web.nl"
 
                     };
                 });

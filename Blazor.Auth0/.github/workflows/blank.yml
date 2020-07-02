@@ -1,0 +1,66 @@
+name: Github Actions CI
+
+on: [push]
+
+jobs:
+  build:    
+    
+    container: 
+      image: mcr.microsoft.com/dotnet/core/sdk:3.1.102-bionic
+    
+    runs-on: ubuntu-16.04    
+    
+    steps:    
+    
+    - uses: actions/checkout@v1
+    - name: Initializacion message
+      run: echo Initializatin Blazor.Auth0 build!    
+      
+      
+    - name: Build Blazor-Auth0-Shared project.
+      run: |        
+        dotnet build src/Blazor.Auth0.Shared
+        
+        
+    - name: Build Blazor-Auth0-ClientSide project.   
+      run: |
+        dotnet build src/Blazor.Auth0.ClientSide --source packages --source https://api.nuget.org/v3/index.json --configuration Release
+        
+        
+    - name: Build Blazor-Auth0-ServerSide project.
+      run: |
+        dotnet build src/Blazor.Auth0.ServerSide --source packages --source https://api.nuget.org/v3/index.json --configuration Release
+        
+        
+    - name: Build AspNetCoreHosted Example.
+      run: |        
+        dotnet build examples/Examples.AspNetCoreHosted/Server --source packages --source https://api.nuget.org/v3/index.json --configuration Release
+        
+        
+    - name: Build ClientSide Example.
+      run: |                
+        dotnet build examples/Examples.ClientSide --source packages --source https://api.nuget.org/v3/index.json --configuration Release
+        
+        
+    - name: Build ServerSide Example.
+      run: |                      
+        dotnet build examples/Examples.ServerSide --source packages --source https://api.nuget.org/v3/index.json --configuration Release
+       
+       
+    - name: Publish Blazor-Auth0-Share Nuget package.
+      if: github.ref == 'refs/heads/master'
+      continue-on-error: true          
+      run: |            
+        dotnet nuget push packages/Blazor-Auth0-Share*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json 
+
+    - name: Publish Blazor-Auth0-ClientSide Nuget package.
+      if: github.ref == 'refs/heads/master'
+      continue-on-error: true          
+      run: |
+        dotnet nuget push packages/Blazor-Auth0-ClientSide*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json 
+
+    - name: Publish Blazor-Auth0-ServerSide Nuget package.
+      if: github.ref == 'refs/heads/master'
+      continue-on-error: true          
+      run: |            
+        dotnet nuget push packages/Blazor-Auth0-ServerSide*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json 
