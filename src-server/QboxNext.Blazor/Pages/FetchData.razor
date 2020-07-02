@@ -47,17 +47,17 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("https://localhost:5002/WeatherForecast");
 
-        var tokenResult = await TokenProvider.RequestAccessToken();
-        
+        //var tokenResult = await TokenProvider.RequestAccessToken();
 
-        if (tokenResult.TryGetToken(out var token))
-        {
 
-            Token = token.Value;
-            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("https://localhost:5002/WeatherForecast");
-        }
+        //if (tokenResult.TryGetToken(out var token))
+        //{
+
+        //    Token = token.Value;
+        //    forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("https://localhost:5002/WeatherForecast");
+        //}
 
 
     }

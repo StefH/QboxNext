@@ -20,8 +20,8 @@ namespace QboxNext.Blazor
                 BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
             });
 
-            //https://github.com/cradle77/BlazorSecurityDemo
-            //https://medium.com/@marcodesanctis2/securing-blazor-webassembly-with-identity-server-4-ee44aa1687ef
+            // https://github.com/cradle77/BlazorSecurityDemo
+            // https://medium.com/@marcodesanctis2/securing-blazor-webassembly-with-identity-server-4-ee44aa1687ef
             builder.Services.AddHttpClient("api")
                 .AddHttpMessageHandler(sp =>
                 {
@@ -36,29 +36,10 @@ namespace QboxNext.Blazor
 
             builder.Services.AddScoped(sp => sp.GetService<IHttpClientFactory>().CreateClient("api"));
 
-            //builder.Services.AddBlazorAuth0(options =>
-            //{
-            //    options.Domain = "stef-heyenrath.eu.auth0.com";
-            //    options.ClientId = "zGwuLd2ot4Q1o4F2Z81jKQFS1c3FNswu";
-            //    options.Audience = "https://qboxnext.web.nl";
-
-            //    //options.RedirectUri = "https://localhost:5001/authentication/login-callback";
-
-
-            //});
-            //builder.Services.AddAuthorizationCore();
-            //IAuthenticationService d;
-
             builder.Services.AddOidcAuthentication(options =>
             {
-                // Configure your authentication provider options here.
-                // For more information, see https://aka.ms/blazor-standalone-auth
+                // Configure your authentication provider options here. For more information, see https://aka.ms/blazor-standalone-auth
                 builder.Configuration.Bind("oidc", options.ProviderOptions);
-
-                //options.ProviderOptions.ResponseType = "code";
-
-               
-
 
                 // The callback url is : https://localhost:5001/authentication/login-callback
                 // Make sure to add this to the Auth0 allowed callback urls !
