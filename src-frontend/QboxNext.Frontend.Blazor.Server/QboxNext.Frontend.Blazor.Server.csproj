@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Security.Auth0" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
+    <!--<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />-->
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src-server\QboxNext.Server.Domain\QboxNext.Server.Domain.csproj" />
     <ProjectReference Include="..\QboxNext.Frontend.Blazor.Client\QboxNext.Frontend.Blazor.Client.csproj" />
     <ProjectReference Include="..\QboxNext.Frontend.Blazor.Shared\QboxNext.Frontend.Blazor.Shared.csproj" />
 

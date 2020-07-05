@@ -8,21 +8,62 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 
 namespace QboxNext.Frontend.Blazor.Server
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        //public Startup(IConfiguration configuration)
+        //{
+        //    Configuration = configuration;
+        //}
+
+        public Startup(IWebHostEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                // builder.AddApplicationInsightsSettings(developerMode: true);
+            }
+
+            Configuration = builder.Build();
+            // HostingEnvironment = env;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
+        {
+            // Auth0
+            services.AddAuth0(options =>
+            {
+                var section = Configuration.GetSection("Auth0Options");
+
+                options.JwtAuthority = section["JwtAuthority"];
+                options.JwtAudience = section["JwtAudience"];
+
+                options.Audience = section["Audience"];
+                options.ClientId = section["ClientId"];
+                options.ClientSecret = section["ClientSecret"];
+                options.Domain = section["Domain"];
+                options.Policies = section.GetSection("Policies").Get<List<string>>();
+            });
+
+            services.AddGrpc();
+            services.AddControllers();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+        }
+
+        private void AddDefaultJwtAuthentication(IServiceCollection services)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -70,11 +111,6 @@ namespace QboxNext.Frontend.Blazor.Server
                         ValidAudience = options.Audience
                     };
                 });
-
-            services.AddGrpc();
-            services.AddControllers();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
