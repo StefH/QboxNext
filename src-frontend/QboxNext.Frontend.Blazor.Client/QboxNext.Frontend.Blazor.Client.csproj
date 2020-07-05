@@ -21,6 +21,7 @@
     <PackageReference Include="Grpc.Tools" Version="2.30.0" PrivateAssets="All" />
     <PackageReference Include="Grpc.Net.Client" Version="2.30.0-pre1" />
     <PackageReference Include="Grpc.Net.Client.Web" Version="2.30.0-pre1" />
+    <PackageReference Include="WebAssembly.Authentication.Auth0" Version="1.0.0.1" />
 
     <!--<PackageReference Include="Blazorise.Bootstrap" Version="0.9.1" />
     <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.1" />-->

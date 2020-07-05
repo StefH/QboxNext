@@ -24,9 +24,8 @@ namespace QboxNext.Frontend.Blazor.Client
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("QboxNext.Frontend.Blazor.ServerAPI"));
 
-            builder.Services.AddOidcAuthentication(options =>
+            builder.Services.AddAuth0Authentication(options =>
             {
-                // Configure your authentication provider options here. For more information, see https://aka.ms/blazor-standalone-auth
                 builder.Configuration.Bind("auth0", options.ProviderOptions);
 
                 // The callback url is : https://localhost:5001/authentication/login-callback
