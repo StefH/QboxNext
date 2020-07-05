@@ -9,17 +9,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
+using Microsoft.ApplicationInsights.Extensibility;
+using QboxNext.Server.DataReceiver.Telemetry;
+using CorrelationId.DependencyInjection;
+using QboxNext.Server.Infrastructure.Azure.Options;
+using DistributedCache.AzureTableStorage.Options;
 
 namespace QboxNext.Frontend.Blazor.Server
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
-
-        //public Startup(IConfiguration configuration)
-        //{
-        //    Configuration = configuration;
-        //}
 
         public Startup(IWebHostEnvironment env)
         {
@@ -31,17 +31,20 @@ namespace QboxNext.Frontend.Blazor.Server
 
             if (env.IsDevelopment())
             {
-                // builder.AddApplicationInsightsSettings(developerMode: true);
+                builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
             Configuration = builder.Build();
-            // HostingEnvironment = env;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // https://github.com/Microsoft/ApplicationInsights-aspnetcore/wiki/Custom-Configuration
+            services.AddSingleton<ITelemetryInitializer, QboxNextTelemetryInitializer>();
+            services.AddApplicationInsightsTelemetry();
+
             // Auth0
             services.AddAuth0(options =>
             {
@@ -57,10 +60,18 @@ namespace QboxNext.Frontend.Blazor.Server
                 options.Policies = section.GetSection("Policies").Get<List<string>>();
             });
 
+            services.AddBusiness();
+            
+            services.AddCorrelationId();
+
             services.AddGrpc();
             services.AddControllers();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+            //services.AddControllersWithViews();
+            //services.AddRazorPages();
+
+            // Configure
+            services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
+            services.Configure<AzureTableStorageCacheOptions>(Configuration.GetSection("AzureTableStorageCacheOptions"));
         }
 
         private void AddDefaultJwtAuthentication(IServiceCollection services)
@@ -146,7 +157,7 @@ namespace QboxNext.Frontend.Blazor.Server
 
                 endpoints.MapGrpcService<CounterService>().EnableGrpcWeb();
 
-                endpoints.MapRazorPages();
+                // endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });

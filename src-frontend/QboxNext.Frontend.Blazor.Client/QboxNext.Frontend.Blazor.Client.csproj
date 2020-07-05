@@ -34,6 +34,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src-server\QboxNext.Server.Domain\QboxNext.Server.Domain.csproj" />
     <ProjectReference Include="..\QboxNext.Frontend.Blazor.Shared\QboxNext.Frontend.Blazor.Shared.csproj" />
   </ItemGroup>
 

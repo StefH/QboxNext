@@ -10,7 +10,7 @@ using QboxNext.Server.Domain;
 
 namespace QboxNext.Frontend.Blazor.Server.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Authorize(QboxNextPolicies.ReadData)]
     [ApiController]
     [Route("[controller]")]
