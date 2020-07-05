@@ -73,7 +73,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Frontend.Blazor.Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Frontend.Blazor.Shared", "src-frontend\QboxNext.Frontend.Blazor.Shared\QboxNext.Frontend.Blazor.Shared.csproj", "{771373C9-DBEF-4553-9B34-9362DFBC2B00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Frontend.Blazor.Client", "src-frontend\QboxNext.Frontend.Blazor.Client\QboxNext.Frontend.Blazor.Client.csproj", "{E5D547EC-0C76-4B98-90D8-36B20E37AD84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QboxNext.Frontend.Blazor.Client", "src-frontend\QboxNext.Frontend.Blazor.Client\QboxNext.Frontend.Blazor.Client.csproj", "{07CB030E-5A0A-4964-9C30-9CF1D2F35EFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -165,10 +165,10 @@ Global
 		{771373C9-DBEF-4553-9B34-9362DFBC2B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{771373C9-DBEF-4553-9B34-9362DFBC2B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{771373C9-DBEF-4553-9B34-9362DFBC2B00}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E5D547EC-0C76-4B98-90D8-36B20E37AD84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E5D547EC-0C76-4B98-90D8-36B20E37AD84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E5D547EC-0C76-4B98-90D8-36B20E37AD84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E5D547EC-0C76-4B98-90D8-36B20E37AD84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07CB030E-5A0A-4964-9C30-9CF1D2F35EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07CB030E-5A0A-4964-9C30-9CF1D2F35EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07CB030E-5A0A-4964-9C30-9CF1D2F35EFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07CB030E-5A0A-4964-9C30-9CF1D2F35EFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -195,7 +195,7 @@ Global
 		{E06AED18-AAC8-4E17-B841-BA23C4F80E49} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 		{03DCAA72-4A48-49C7-A652-DB4265AE8473} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 		{771373C9-DBEF-4553-9B34-9362DFBC2B00} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
-		{E5D547EC-0C76-4B98-90D8-36B20E37AD84} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
+		{07CB030E-5A0A-4964-9C30-9CF1D2F35EFC} = {94D0B4A4-A4E0-4F74-B5FB-65ECD24A16E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A6ED5AF-7B32-444B-887A-ABF343EE609C}
