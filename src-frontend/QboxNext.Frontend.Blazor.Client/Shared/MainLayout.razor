@@ -1,16 +1,57 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
 
-<div class="main">
-    <div class="top-row px-4 auth">
-        <LoginDisplay />
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
+@inherits LayoutComponentBase
 
-    <div class="content px-4">
+<Layout>
+    <LayoutHeader Fixed="true">
+        <Bar Style="height: 48px;" Breakpoint="Breakpoint.Desktop" Background="Background.None" ThemeContrast="ThemeContrast.Light">
+            <BarBrand>
+                <BarItem>
+                    <BarLink To="">
+                        <img src="/images/logo_32x32.png" />
+                    </BarLink>
+                </BarItem>
+            </BarBrand>
+            <BarMenu>
+                <BarStart>
+                    <BarItem>
+                        <BarLink To="fetchdata">Electriciteit</BarLink>
+                    </BarItem>
+                    <BarItem>
+                        <BarLink To="https://blazorise.com/docs/">Documentation</BarLink>
+                    </BarItem>
+                </BarStart>
+                <BarEnd>
+                    <BarItem>
+                        <AuthorizeView>
+                            <Authorized>@context.User.Identity.Name</Authorized>
+                        </AuthorizeView>
+                    </BarItem>
+                </BarEnd>
+                <BarEnd>
+                    <BarItem>
+                        <AuthorizeView>
+                            <Authorized><button class="nav-link btn btn-link" @onclick="BeginLogout">Uitloggen</button></Authorized>
+                            <NotAuthorized><a href="authentication/login">Inloggen</a></NotAuthorized>
+                        </AuthorizeView>
+                    </BarItem>
+                </BarEnd>
+            </BarMenu>
+        </Bar>
+    </LayoutHeader>
+    <LayoutContent Padding="Padding.Is1.OnX">
         @Body
-    </div>
-</div>
+    </LayoutContent>
+</Layout>
+
+@code{
+    private async Task BeginLogout(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+}
