@@ -54,8 +54,8 @@ namespace QboxNext.Frontend.Blazor.Client.Pages
 
             var q = new QboxDataQuery
             {
-                From = DateTime.Now,
-                To = DateTime.Now.AddDays(1),
+                From = DateTime.Now.AddDays(-1),
+                To = DateTime.Now.AddDays(0),
                 Resolution = QboxQueryResolution.Hour,
                 AdjustHours = true
             };

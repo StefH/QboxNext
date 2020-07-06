@@ -50,7 +50,10 @@ namespace QboxNext.Frontend.Blazor.Client
                 return GrpcChannel.ForAddress(builder.HostEnvironment.BaseAddress, new GrpcChannelOptions { HttpHandler = httpHandler });
             });
 
-            await builder.Build().RunAsync();
+            var host = builder.Build();
+            host.Services.UseBootstrapProviders();
+
+            await host.RunAsync();
         }
     }
 }

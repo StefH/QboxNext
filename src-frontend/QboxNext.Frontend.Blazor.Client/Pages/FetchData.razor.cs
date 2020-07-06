@@ -41,7 +41,7 @@ namespace QboxNext.Frontend.Blazor.Client.Pages
                     AdjustHours = true
                 };
 
-                var x = Http.PostAsJsonAsync("api/data", q);
+                //var x = Http.PostAsJsonAsync("api/data", q);
             }
             catch (AccessTokenNotAvailableException exception)
             {
