@@ -10,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Blazorise;
 using Blazorise.Bootstrap;
-using Blazorise.Icons.FontAwesome;
 
 namespace QboxNext.Frontend.Blazor.Client
 {
@@ -27,8 +26,7 @@ namespace QboxNext.Frontend.Blazor.Client
                 {
                     options.ChangeTextOnKeyPress = true;
                 })
-                .AddBootstrapProviders()
-                .AddFontAwesomeIcons();
+                .AddBootstrapProviders();
 
             builder.Services.AddHttpClient("QboxNext.Frontend.Blazor.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();

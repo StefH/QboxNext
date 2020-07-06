@@ -7,6 +7,9 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using ProtoBuf.Grpc.Client;
+using QboxNext.Frontend.Blazor.Shared;
+using QboxNext.Server.Domain;
 
 namespace QboxNext.Frontend.Blazor.Client.Pages
 {
@@ -45,6 +48,20 @@ namespace QboxNext.Frontend.Blazor.Client.Pages
             {
                 { "Authorization", $"Bearer {Model.Token}" }
             };
+
+            var query = Channel.CreateGrpcService<IDataQueryServiceContract>();
+            var options = new CallOptions(headers);
+
+            var q = new QboxDataQuery
+            {
+                From = DateTime.Now,
+                To = DateTime.Now.AddDays(1),
+                Resolution = QboxQueryResolution.Hour,
+                AdjustHours = true
+            };
+
+            var dataResult1 = await query.GetCounterDataAsync(q, options);
+            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(dataResult1));
 
             var client = new Count.Counter.CounterClient(Channel);
             var call = client.StartCounter(new CounterRequest { Start = currentCount }, headers, cancellationToken: cts.Token);

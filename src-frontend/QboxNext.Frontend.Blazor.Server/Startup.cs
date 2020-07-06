@@ -14,6 +14,7 @@ using QboxNext.Server.DataReceiver.Telemetry;
 using CorrelationId.DependencyInjection;
 using QboxNext.Server.Infrastructure.Azure.Options;
 using DistributedCache.AzureTableStorage.Options;
+using ProtoBuf.Grpc.Server;
 
 namespace QboxNext.Frontend.Blazor.Server
 {
@@ -72,6 +73,15 @@ namespace QboxNext.Frontend.Blazor.Server
             // Configure
             services.Configure<AzureTableStorageOptions>(Configuration.GetSection("AzureTableStorageOptions"));
             services.Configure<AzureTableStorageCacheOptions>(Configuration.GetSection("AzureTableStorageCacheOptions"));
+
+            services.AddCodeFirstGrpc(config =>
+            {
+                config.ResponseCompressionLevel = System.IO.Compression.CompressionLevel.Optimal;
+            });
+            services.AddCodeFirstGrpcReflection();
+
+            // https://stackoverflow.com/questions/60264657/get-current-user-in-a-blazor-component
+            services.AddHttpContextAccessor();
         }
 
         private void AddDefaultJwtAuthentication(IServiceCollection services)
@@ -156,6 +166,9 @@ namespace QboxNext.Frontend.Blazor.Server
                 //endpoints.MapGrpcService<WeatherService>().EnableGrpcWeb();
 
                 endpoints.MapGrpcService<CounterService>().EnableGrpcWeb();
+
+                endpoints.MapGrpcService<GrpcDataQueryService>().EnableGrpcWeb();
+                endpoints.MapCodeFirstGrpcReflectionService();
 
                 // endpoints.MapRazorPages();
                 endpoints.MapControllers();

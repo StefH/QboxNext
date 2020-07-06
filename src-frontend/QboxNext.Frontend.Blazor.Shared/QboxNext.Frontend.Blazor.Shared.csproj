@@ -1,7 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="protobuf-net.Grpc" Version="1.0.110" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src-server\QboxNext.Server.Domain\QboxNext.Server.Domain.csproj" />
+	</ItemGroup>
 
 </Project>
