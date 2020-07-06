@@ -31,6 +31,12 @@ namespace QboxNext.Frontend.Blazor.Client.Pages
         [Inject]
         public GrpcBearerTokenProvider GrpcBearerTokenProvider { get; set; }
 
+
+        protected override Task OnAfterRenderAsync(bool firstRender)
+        {
+            return base.OnAfterRenderAsync(firstRender);
+        }
+
         private async Task IncrementCount()
         {
             cts = new CancellationTokenSource();

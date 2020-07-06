@@ -6,47 +6,114 @@
 
 @inherits LayoutComponentBase
 
-<Layout>
-    <LayoutHeader Fixed="true">
-        <Bar Style="height: 48px;" Breakpoint="Breakpoint.Desktop" Background="Background.None" ThemeContrast="ThemeContrast.Light">
-            <BarBrand>
-                <BarItem>
-                    <BarLink To="">
-                        <img src="/images/logo_32x32.png" />
-                    </BarLink>
-                </BarItem>
-            </BarBrand>
-            <BarMenu>
-                <BarStart>
-                    <BarItem>
-                        <BarLink To="fetchdata">Electriciteit</BarLink>
-                    </BarItem>
-                    <BarItem>
-                        <BarLink To="counter">Counter</BarLink>
-                    </BarItem>
-                </BarStart>
-                <BarEnd>
-                    <BarItem>
-                        <AuthorizeView>
-                            <Authorized>@context.User.Identity.Name</Authorized>
-                        </AuthorizeView>
-                    </BarItem>
-                </BarEnd>
-                <BarEnd>
-                    <BarItem>
-                        <AuthorizeView>
-                            <Authorized><button class="nav-link btn btn-link" @onclick="BeginLogout">Uitloggen</button></Authorized>
-                            <NotAuthorized><a href="authentication/login">Inloggen</a></NotAuthorized>
-                        </AuthorizeView>
-                    </BarItem>
-                </BarEnd>
-            </BarMenu>
-        </Bar>
-    </LayoutHeader>
-    <LayoutContent Padding="Padding.Is1.OnX">
-        @Body
-    </LayoutContent>
-</Layout>
+<Container>
+    <Layout Sider="true">
+        <LayoutSider>
+            <LayoutSiderContent>
+                <Bar Breakpoint="Breakpoint.Desktop" NavigationBreakpoint="Breakpoint.Tablet" ThemeContrast="ThemeContrast.Light" Mode="BarMode.VerticalInline">
+                    <BarBrand>
+                        <BarItem>
+                            <BarLink To="">
+                                <img src="/images/logo_32x32.png" />
+                            </BarLink>
+                        </BarItem>
+                    </BarBrand>
+                    <BarMenu>
+                        <BarStart>
+                            <BarLabel>Main</BarLabel>
+                            <BarItem>
+                                <BarDropdown>
+                                    <BarDropdownMenu>
+                                        <BarDropdownItem To="tests/buttons">
+                                            Buttons
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/modals">
+                                            Modals
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/cards">
+                                            Cards
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/progressbars">
+                                            Progress bars
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/elements">
+                                            General UI
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/typography">
+                                            Typography
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/collapse">
+                                            Collapse
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/tables">
+                                            Tables
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/figures">
+                                            Figures
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/tabs">
+                                            Tabs
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/carousel">
+                                            Carousel
+                                        </BarDropdownItem>
+                                        <BarDropdownItem To="tests/layout">
+                                            Layout
+                                        </BarDropdownItem>
+                                    </BarDropdownMenu>
+                                </BarDropdown>
+                            </BarItem>
+                        </BarStart>
+                    </BarMenu>
+                </Bar>
+            </LayoutSiderContent>
+        </LayoutSider>
+        <Layout>
+            <LayoutHeader Fixed="false">
+                <Bar Style="height: 48px;" Breakpoint="Breakpoint.Desktop" Background="Background.None" ThemeContrast="ThemeContrast.Light">
+                    <BarBrand>
+                        <BarItem>
+                            <BarLink To="">
+                                <img src="/images/logo_32x32.png" />
+                            </BarLink>
+                        </BarItem>
+                    </BarBrand>
+                    <BarMenu>
+                        <BarStart>
+                            <BarItem>
+                                <BarLink To="electricity">Electriciteit</BarLink>
+                            </BarItem>
+                            <BarItem>
+                                <BarLink To="fetchdata">fetch data</BarLink>
+                            </BarItem>
+                            <BarItem>
+                                <BarLink To="counter">Counter</BarLink>
+                            </BarItem>
+                        </BarStart>
+                        <BarEnd>
+                            <BarItem>
+                                <AuthorizeView>
+                                    <Authorized>@context.User.Identity.Name</Authorized>
+                                </AuthorizeView>
+                            </BarItem>
+                        </BarEnd>
+                        <BarEnd>
+                            <BarItem>
+                                <AuthorizeView>
+                                    <Authorized><button class="nav-link btn btn-link" @onclick="BeginLogout">Uitloggen</button></Authorized>
+                                    <NotAuthorized><a href="authentication/login">Inloggen</a></NotAuthorized>
+                                </AuthorizeView>
+                            </BarItem>
+                        </BarEnd>
+                    </BarMenu>
+                </Bar>
+            </LayoutHeader>
+            <LayoutContent Padding="Padding.Is1.OnX">
+                @Body
+            </LayoutContent>
+        </Layout>
+    </Layout>
+</Container>
 
 @code{
     private async Task BeginLogout(MouseEventArgs args)

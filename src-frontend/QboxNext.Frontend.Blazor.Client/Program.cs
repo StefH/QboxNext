@@ -41,14 +41,17 @@ namespace QboxNext.Frontend.Blazor.Client
                 // Make sure to add this to the Auth0 allowed callback urls !
             });
 
-            builder.Services.AddGrpcBearerTokenProvider();
-
             builder.Services.AddScoped(services =>
             {
-                // Create a channel with a GrpcWebHandler that is addressed to the backend server. GrpcWebText is used because server streaming requires it.
-                var httpHandler = new GrpcWebHandler(GrpcWebMode.GrpcWebText, new HttpClientHandler());
+                // Create a channel with a GrpcWebHandler that is addressed to the backend server.
+                var httpHandler = new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler());
                 return GrpcChannel.ForAddress(builder.HostEnvironment.BaseAddress, new GrpcChannelOptions { HttpHandler = httpHandler });
             });
+
+            // Own services
+            builder.Services.AddGrpcBearerTokenProvider();
+            builder.Services.AddScoped<AuthenticatedDataQueryClient>();
+            builder.Services.AddScoped<ChartService>();
 
             var host = builder.Build();
             host.Services.UseBootstrapProviders();
