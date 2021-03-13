@@ -16,5 +16,7 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
         public bool FirmwareDownloadAllowed { get; set; }
 
         public string FirmwareVersion { get; set; }
+
+        public string Comment { get; set; }
     }
 }
