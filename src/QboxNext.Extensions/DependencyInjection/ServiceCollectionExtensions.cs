@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using QboxNext.Core.Interfaces;
 using QboxNext.Core.Utils;
 using QboxNext.Extensions.Implementations;
 using QboxNext.Extensions.Interfaces.Internal;
@@ -37,6 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IQboxDataDumpContextFactory, QboxDataDumpContextFactory>();
             services.AddScoped<IQboxNextDataHandlerFactory, QboxNextDataHandlerFactory>();
             services.AddSingleton<IQboxMiniFactory, QboxMiniFactory>();
+            services.AddSingleton<IDateTimeService, DateTimeService>();
         }
     }
 }

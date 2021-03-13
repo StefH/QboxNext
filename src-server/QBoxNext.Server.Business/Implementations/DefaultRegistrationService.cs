@@ -3,6 +3,7 @@ using QboxNext.Server.Common.Validation;
 using QboxNext.Server.Infrastructure.Azure.Interfaces.Public;
 using QBoxNext.Server.Business.Interfaces.Public;
 using System.Threading.Tasks;
+using QboxNext.Server.Domain;
 
 namespace QBoxNext.Server.Business.Implementations
 {
@@ -21,10 +22,10 @@ namespace QBoxNext.Server.Business.Implementations
             _azureTablesService = azureTablesService;
         }
 
-        /// <inheritdoc cref="IRegistrationService.IsValidRegistrationAsync(string)"/>
-        public Task<bool> IsValidRegistrationAsync(string serialNumber)
+        /// <inheritdoc cref="IRegistrationService.GetQboxRegistrationDetailsAsync(string)"/>
+        public Task<QboxRegistrationDetails> GetQboxRegistrationDetailsAsync(string serialNumber)
         {
-            return _azureTablesService.IsValidRegistrationAsync(serialNumber);
+            return _azureTablesService.GetQboxRegistrationDetailsAsync(serialNumber);
         }
     }
 }

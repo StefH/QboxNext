@@ -38,11 +38,15 @@ namespace QBoxNext.Server.Business.Implementations
                 CorrelationId = correlationId,
                 LogTime = DateTime.UtcNow,
                 SerialNumber = stateData.SerialNumber,
-                MessageType = stateData.MessageType.ToString(),
+                MessageType = stateData.MessageType,
                 State = stateData.State.ToString(),
                 FirmwareVersion = stateData.Status?.FirmwareVersion,
+                SequenceNumber = stateData.SequenceNumber,
                 LastIpAddress = stateData.Status?.LastIpAddress.Key,
-                LastIpAddressUpdate = stateData.Status?.LastIpAddress.Value
+                LastIpAddressUpdate = stateData.Status?.LastIpAddress.Value,
+                MeterType = stateData.MeterType != null ? stateData.MeterType.ToString() : null,
+                Payloads = stateData.Payloads,
+                MessageTime = stateData.MessageTime
             };
 
             if (stateData.Message != null)

@@ -8,11 +8,11 @@ namespace QboxNext.Server.Infrastructure.Azure.Interfaces.Public
     public interface IAzureTablesQueryService
     {
         /// <summary>
-        /// Checks if the SerialNumber is a valid registration.
+        /// Get QboxRegistrationDetails for a SerialNumber.
         /// </summary>
         /// <param name="serialNumber"></param>
-        /// <returns>true/false</returns>
-        Task<bool> IsValidRegistrationAsync([CanBeNull] string serialNumber);
+        /// <returns>QboxRegistrationDetails if found, else null</returns>
+        Task<QboxRegistrationDetails> GetQboxRegistrationDetailsAsync([CanBeNull] string serialNumber);
 
         Task<QboxPagedDataQueryResult<QboxCounterData>> QueryDataAsync([NotNull] string serialNumber, DateTime from, DateTime to, QboxQueryResolution resolution, bool adjustHours);
     }

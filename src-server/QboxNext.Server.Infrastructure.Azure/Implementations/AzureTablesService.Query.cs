@@ -17,17 +17,27 @@ namespace QboxNext.Server.Infrastructure.Azure.Implementations
 {
     internal partial class AzureTablesService
     {
-        /// <inheritdoc cref="IAzureTablesService.IsValidRegistrationAsync(string)"/>
-        public async Task<bool> IsValidRegistrationAsync(string serialNumber)
+        /// <inheritdoc cref="IAzureTablesService.GetQboxRegistrationDetailsAsync(string)"/>
+        public async Task<QboxRegistrationDetails> GetQboxRegistrationDetailsAsync(string serialNumber)
         {
             if (string.IsNullOrEmpty(serialNumber))
             {
-                return false;
+                return null;
             }
 
             _logger.LogInformation("Querying Table {table} for SerialNumber {SerialNumber}", _registrationTable.Name, serialNumber);
 
-            return await _registrationTable.Set.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber) != null;
+            var result = await _registrationTable.Set.FirstOrDefaultAsync(r => r.SerialNumber == serialNumber);
+            if (result == null)
+            {
+                return null;
+            }
+
+            return new QboxRegistrationDetails
+            {
+                FirmwareDownloadAllowed = result.FirmwareDownloadAllowed,
+                Firmware = result.FirmwareVersion
+            };
         }
 
         /// <inheritdoc cref="IAzureTablesService.QueryDataAsync(string, DateTime, DateTime, QboxQueryResolution, bool)"/>

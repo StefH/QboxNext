@@ -12,5 +12,11 @@ namespace QboxNext.Server.Infrastructure.Azure.Models.Internal
         public string SerialNumber2 { get; set; }
 
         public DateTime RegistrationTimestamp { get; set; }
+
+        public bool FirmwareDownloadAllowed { get; set; }
+
+        public string FirmwareVersion { get; set; }
+
+        public string Comment { get; set; }
     }
 }
