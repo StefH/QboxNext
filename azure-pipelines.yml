@@ -25,6 +25,11 @@ steps:
   inputs:
     versionSpec: '10.x'
 
+- task: UseDotNet@2
+  displayName: 'Install .NET SDK 2.x'
+  inputs:
+    version: "2.x"
+
 - task: Npm@1
   displayName: 'qboxnext-frontend: npm install'
   inputs:
