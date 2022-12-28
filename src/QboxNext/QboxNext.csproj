@@ -1,51 +1,70 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Description>QboxNext is a modified clone of Qplatform.</Description>
-    <AssemblyTitle>QboxNext</AssemblyTitle>
-    <Authors>Sebastiaan;Stef Heyenrath</Authors>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
-    <PackageId>QboxNext</PackageId>
-    <PackageTags>qbox;qboxnext;qurrent;server</PackageTags>
-    <PackageReleaseNotes>See CHANGELOG.md</PackageReleaseNotes>
-    <PackageIconUrl>https://raw.githubusercontent.com/stefh/QboxNext/master/resources/logo_128x128.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/stefh/QboxNext</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/stefh/QboxNext/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/stefh/QboxNext</RepositoryUrl>
-    <ApplicationIcon>../../resources/logo.ico</ApplicationIcon>
-    <DebugType>full</DebugType>
-    <IncludeSource>True</IncludeSource>
-    <IncludeSymbols>True</IncludeSymbols>
-    <ProjectGuid>{D3804229-91F4-4502-9595-39884E5A01AD}</ProjectGuid>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-    <!--<CodeAnalysisRuleSet>WireMock.Net.ruleset</CodeAnalysisRuleSet>-->
-  </PropertyGroup>
+	<PropertyGroup>
+		<Description>QboxNext is a modified clone of Qplatform.</Description>
+		<AssemblyTitle>QboxNext</AssemblyTitle>
+		<Authors>Sebastiaan;Stef Heyenrath</Authors>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
+		<PackageId>QboxNext</PackageId>
+		<PackageTags>qbox;qboxnext;qurrent;server</PackageTags>
+		<PackageReleaseNotes>See CHANGELOG.md</PackageReleaseNotes>
+		<PackageIconUrl>https://raw.githubusercontent.com/stefh/QboxNext/master/resources/logo_128x128.png</PackageIconUrl>
+		<PackageProjectUrl>https://github.com/stefh/QboxNext</PackageProjectUrl>
+		<PackageLicenseUrl>https://raw.githubusercontent.com/stefh/QboxNext/master/LICENSE</PackageLicenseUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/stefh/QboxNext</RepositoryUrl>
+		<ApplicationIcon>../../resources/logo.ico</ApplicationIcon>
+		<DebugType>full</DebugType>
+		<IncludeSource>True</IncludeSource>
+		<IncludeSymbols>True</IncludeSymbols>
+		<ProjectGuid>{D3804229-91F4-4502-9595-39884E5A01AD}</ProjectGuid>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+		<GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+		<!--<CodeAnalysisRuleSet>WireMock.Net.ruleset</CodeAnalysisRuleSet>-->
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <PathMap>$(MSBuildProjectDirectory)=/</PathMap>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<PathMap>$(MSBuildProjectDirectory)=/</PathMap>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.Memory" Version="4.5.2" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.Memory" Version="4.5.2" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Storage.Abstractions\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Storage.Abstractions\**\*.cs" />
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Logging\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Logging\**\*.cs" />
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Model\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Model\**\*.cs" />
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Core\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Core\**\*.cs" />
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Qboxes.Parsing\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Qboxes.Parsing\**\*.cs" />
-    <Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Qserver.Core\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Qserver.Core\**\*.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Storage.Abstractions\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Storage.Abstractions\**\*.cs" />
+		<Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Logging\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Logging\**\*.cs" />
+		<Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Model\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Model\**\*.cs" />
+		<Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Core\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Core\**\*.cs" />
+		<Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Qboxes.Parsing\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Qboxes.Parsing\**\*.cs" />
+		<Compile Exclude="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Qserver.Core\obj\**\*AssemblyInfo.cs" Include="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Qserver.Core\**\*.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Core\obj\Debug\netstandard2.0\**" />
+	  <Compile Remove="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Logging\obj\Debug\netstandard2.0\**" />
+	  <Compile Remove="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Model\obj\Debug\netstandard2.0\**" />
+	  <Compile Remove="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Qboxes.Parsing\obj\Debug\netstandard2.0\**" />
+	  <Compile Remove="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Qserver.Core\obj\Debug\netstandard2.0\**" />
+	  <Compile Remove="..\..\dependencies\dotnetcore-minimal\src\QboxNext.Storage.Abstractions\obj\Debug\netstandard2.0\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="QboxNext.Model.Tests" />
+		<InternalsVisibleTo Include="QboxNext.Extensions.Tests" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Properties\" />
+	</ItemGroup>
+
 
 </Project>

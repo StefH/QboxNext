@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Linq;
-using System.Text;
 
 namespace QboxNext.Core.Utils
 {
@@ -11,8 +10,8 @@ namespace QboxNext.Core.Utils
     {
         public static byte[] HexStringToByteArray(string hex)
         {
-			if (hex == null)
-				return null;
+            if (hex == null)
+                return null;
 
             var numberChars = hex.Length;
             if (numberChars % 2 != 0)
@@ -95,42 +94,42 @@ namespace QboxNext.Core.Utils
         /// <returns>The string holding the byte array in hex string format</returns>
         public static string ByteArrayToHexString(byte[] inBytes)
         {
-			int len = inBytes.Length;
-			var c = new char[len * 2];
-			byte b;
+            int len = inBytes.Length;
+            var c = new char[len * 2];
+            byte b;
 
-			for (int bx = 0, cx = 0; bx < len; ++bx, ++cx)
-			{
-				b = ((byte)(inBytes[bx] >> 4));
-				c[cx] = (char)(b > 9 ? b + 0x37 + 0x20 : b + 0x30);
+            for (int bx = 0, cx = 0; bx < len; ++bx, ++cx)
+            {
+                b = ((byte)(inBytes[bx] >> 4));
+                c[cx] = (char)(b > 9 ? b + 0x37 + 0x20 : b + 0x30);
 
-				b = ((byte)(inBytes[bx] & 0x0F));
-				c[++cx] = (char)(b > 9 ? b + 0x37 + 0x20 : b + 0x30);
-			}
+                b = ((byte)(inBytes[bx] & 0x0F));
+                c[++cx] = (char)(b > 9 ? b + 0x37 + 0x20 : b + 0x30);
+            }
 
-			return new string(c);
+            return new string(c);
         }
 
 
-		/// <summary>
-		/// Convert a byte array to a hex string, in reverse byte order.
-		/// </summary>
-		public static string ByteArrayToReverseHexString(byte[] inBytes)
-		{
-			int len = inBytes.Length;
-			var c = new char[len * 2];
-			byte b;
+        /// <summary>
+        /// Convert a byte array to a hex string, in reverse byte order.
+        /// </summary>
+        public static string ByteArrayToReverseHexString(byte[] inBytes)
+        {
+            int len = inBytes.Length;
+            var c = new char[len * 2];
+            byte b;
 
-			for (int bx = 0, cx = 0; bx < len; ++bx, ++cx)
-			{
-				b = ((byte)(inBytes[len - 1 - bx] >> 4));
-				c[cx] = (char)(b > 9 ? b + 0x37 + 0x20 : b + 0x30);
+            for (int bx = 0, cx = 0; bx < len; ++bx, ++cx)
+            {
+                b = ((byte)(inBytes[len - 1 - bx] >> 4));
+                c[cx] = (char)(b > 9 ? b + 0x37 + 0x20 : b + 0x30);
 
-				b = ((byte)(inBytes[len - 1 - bx] & 0x0F));
-				c[++cx] = (char)(b > 9 ? b + 0x37 + 0x20 : b + 0x30);
-			}
+                b = ((byte)(inBytes[len - 1 - bx] & 0x0F));
+                c[++cx] = (char)(b > 9 ? b + 0x37 + 0x20 : b + 0x30);
+            }
 
-			return new string(c);
-		}
+            return new string(c);
+        }
     }
 }

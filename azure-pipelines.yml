@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'ubuntu-16.04'
+  vmImage: 'ubuntu-22.04'
 
 variables:
   buildConfiguration: 'Release'
@@ -24,6 +24,11 @@ steps:
   displayName: 'Install Node Version 10.x'
   inputs:
     versionSpec: '10.x'
+
+- task: UseDotNet@2
+  displayName: 'Install .NET SDK 2.x'
+  inputs:
+    version: "2.x"
 
 - task: Npm@1
   displayName: 'qboxnext-frontend: npm install'
